@@ -10,9 +10,13 @@ class DashboardController extends Controller
 {
     public function dashboard()
     {
-        // $hotel = Hotel::where('uuid', $uuid)->firstOrFail();
-        return view('dashboard.index', [
-            // 'hotel' => $hotel,
-        ]);
+        if (auth()->user()->hotel) {
+            // $hotel = Hotel::where('uuid', $uuid)->firstOrFail();
+            return view('dashboard.index', [
+                // 'hotel' => $hotel,
+            ]);
+        } else {
+            return redirect()->route('onboarding.setup-app');
+        }
     }
 }

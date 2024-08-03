@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->uuid('uuid')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('name')->nullable();
+            $table->string('hotel_name')->nullable();
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->foreignId('state_id')->nullable();

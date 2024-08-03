@@ -4,9 +4,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Web\IndexController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::get('/', [IndexController::class, 'index']);
 

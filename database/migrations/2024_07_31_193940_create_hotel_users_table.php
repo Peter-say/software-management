@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('hotel_users', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('hotel_id')->nullable()->constrained('hotels')->cascadeOnDelete(); // Ensure the hotel_id references the hotels table
-            $table->date('current_shift')->nullable();
+            $table->foreignId('hotel_id')->nullable()->constrained('hotels')->cascadeOnDelete(); 
             $table->string('phone')->nullable();
             $table->string('photo')->nullable();
             $table->text('address')->nullable();

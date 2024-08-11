@@ -38,7 +38,7 @@ class Onboarding
             'phone' => 'required|string|max:20',
             'state_id' => 'required|exists:states,id',
             'country_id' => 'required|exists:countries,id',
-            'logo' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'logo' => 'nullable|file|mimes:jpg,jpeg,png,webp|max:2048',
             'website' => 'nullable|url',
         ]);
 

@@ -22,18 +22,17 @@
     <!-- FAVICONS ICON -->
     <link rel="shortcut icon" type="image/png" href="{{ asset('dashboard/images/favicon.png') }}" />
     <!-- Custom Stylesheet -->
-    <link href="{{ asset('dashboard/vendor/jquery-smartwizard/dist/css/smart_wizard.min.css ')}}" rel="stylesheet">
+    <link href="{{ asset('dashboard/vendor/jquery-smartwizard/dist/css/smart_wizard.min.css ') }}" rel="stylesheet">
     <link href="{{ asset('dashboard/vendor/jquery-nice-select/css/nice-select.css') }}" rel="stylesheet">
     <link href="{{ asset('dashboard/vendor/owl-carousel/owl.carousel.css') }}" rel="stylesheet">
     <link href="{{ asset('dashboard/vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}"
         rel="stylesheet">
-
+  <!-- Datatable -->
+  <link href="{{ asset('dashboard/vendor/datatables/css/jquery.dataTables.min.css')}}" rel="stylesheet">
     <!-- Style css -->
     <link href="{{ asset('dashboard/css/style.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lobibox@1.2.0/dist/css/lobibox.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lobibox@1.2.0/dist/js/lobibox.min.js"></script>
-    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
 </head>
 
 <body>
@@ -58,7 +57,7 @@
     <div id="main-wrapper">
         @include('dashboard.layouts.navigations.top-nav')
         @include('dashboard.layouts.navigations.sidebar');
-          @include('notifications.flash-messages')
+        @include('notifications.flash-messages')
 
         @yield('contents')
 
@@ -95,6 +94,8 @@
     <!--**********************************
   Scripts
  ***********************************-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <!-- Required vendors -->
     <script src="{{ asset('dashboard/vendor/global/global.min.js') }}"></script>
 
@@ -115,12 +116,17 @@
     <script src="{{ asset('dashboard/vendor/bootstrap-datetimepicker/js/moment.js') }}"></script>
     <script src="{{ asset('dashboard/vendor/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
     <script src="{{ asset('vendor/global/global.min.js') }}"></script>
-    
+
     <script src="{{ asset('dashboard/vendor/jquery-steps/build/jquery.steps.min.js') }}"></script>
     <script src="{{ asset('dashboard/vendor/jquery-validation/jquery.validate.min.js') }}"></script>
     <!-- Form validate init -->
     <script src="{{ asset('dashboard/js/plugins-init/jquery.validate-init.js') }}"></script>
-    
+
+     <!-- Datatable -->
+     <script src="{{ asset('dashboard/vendor/datatables/js/jquery.dataTables.min.js')}}"></script>
+     <script src="{{ asset('dashboard/js/plugins-init/datatables.init.js')}}"></script>
+ 
+
     <!-- Form Steps -->
     <script src="{{ asset('dashboard/vendor/jquery-smartwizard/dist/js/jquery.smartWizard.js') }}"></script>
     <script src="{{ asset('dashboard/vendor/jquery-nice-select/js/jquery.nice-select.min.js') }}"></script>
@@ -128,13 +134,13 @@
     <script src="{{ asset('dashboard/js/dlabnav-init.js') }}"></script>
     <script src="{{ asset('dashboard/js/demo.js') }}"></script>
     <script src="{{ asset('dashboard/js/styleSwitcher.js') }}"></script>
-    
+
     <script>
-		$(document).ready(function(){
-			// SmartWizard initialize
-			$('#smartwizard').smartWizard(); 
-		});
-	</script>
+        $(document).ready(function() {
+            // SmartWizard initialize
+            $('#smartwizard').smartWizard();
+        });
+    </script>
     <script>
         function TravlCarousel() {
 

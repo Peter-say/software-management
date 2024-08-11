@@ -19,6 +19,11 @@
 						</ul>
 
 					</li>
+					<li><a href="{{route('dashboard.hotel-users.overview')}}" class="" aria-expanded="false">
+						<i class="flaticon-013-checkmark"></i>
+						<span class="nav-text">Users</span>
+					</a>
+				</li>
 					<li><a class="has-arrow " href="javascript:void()" aria-expanded="false">
 							<i class="flaticon-050-info"></i>
 							<span class="nav-text">Apps</span>

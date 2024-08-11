@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Models\hotelSoftware\Hotel;
+use App\Models\HotelSoftware\HotelUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -52,5 +53,10 @@ class User extends Authenticatable
     public function hotel()
     {
         return $this->hasOne(Hotel::class);
+    }
+
+    public function hotelUsers()
+    {
+        return $this->hasMany(HotelUser::class, 'user_id');
     }
 }

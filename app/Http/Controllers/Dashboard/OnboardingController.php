@@ -19,13 +19,17 @@ class OnboardingController extends Controller
 
     public function setupApp()
     {
-        return view('dashboard.onbaording.onboarding');
+        if (auth()->user()->hotel) {
+            return redirect()->route('dashboard.home');
+        } else {
+            return view('dashboard.onbaording.onboarding');
+        }
     }
 
     // In your controller method
     public function saveSetupApp(Request $request)
     {
-      
+
         try {
 
             $softwareTypeResult = $this->onboarding->validateSoftwareTypeInfo($request);
@@ -42,7 +46,6 @@ class OnboardingController extends Controller
                 return redirect()->back()->withErrors($hotelInfoResult)->withInput();
             }
             $this->onboarding->saveHotelInfo($request);
-            
             return redirect()->route('dashboard.home')->with('success_message', "App set-up completed successfully");
         } catch (Exception $e) {
             return back()->with('error_message', 'An error occurred while submitting your request. Please try again.');

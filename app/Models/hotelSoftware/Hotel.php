@@ -29,7 +29,7 @@ class Hotel extends Model
         return $this->hasMany(HotelUser::class, 'hotel_id');
     }
 
-    public function hotel()
+    public function user()
     {
         return $this->hasMany(User::class, 'user_id');
     }

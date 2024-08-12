@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\hotelSoftware\Hotel;
 use App\Models\User;
+
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -20,8 +22,12 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        $this->call(UserSeeder::class);
-        $this->call(StateSeeder::class);
-        $this->call(CountrySeeder::class);
+        $this->call([
+            UserSeeder::class,
+            StateSeeder::class,
+            CountrySeeder::class,
+            HotelSeeder::class,
+            HotelRoomTypeSeeder::class,
+        ]);
     }
 }

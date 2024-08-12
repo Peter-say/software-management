@@ -1,21 +1,26 @@
 <!--**********************************
    Nav header start
   ***********************************-->
-  <style>
-    #logo{
-        width:40px;
+<style>
+    #logo {
+        width: 40px;
         height: 40px;
     }
-  </style>
+</style>
 <div class="nav-header">
     <a href="{{ route('dashboard.home') }}" class="brand-logo">
         @php
             $hotel = auth()->user()->hotel;
-            $logoUrl = $hotel ? asset('storage/hotel/logos/' . $hotel->logo) : 'path/to/default/logo.png';
+            $logoFileName = $hotel ? $hotel->logo : 'dashboard/images/gallery/hotel1.jpg';
+            $logoUrl =
+                $hotel && $hotel->logo && file_exists(public_path('storage/hotel/logos/' . $logoFileName))
+                    ? asset('storage/hotel/logos/' . $logoFileName)
+                    : asset('dashboard/images/gallery/hotel1.jpg');
         @endphp
 
         <img class="img-fluid" id="logo" src="{{ $logoUrl }}" alt="Hotel Logo">
-        <svg class="brand-title" xmlns="http://www.w3.org/2000/svg" width="143" height="46.359" viewBox="0 0 143 46.359">
+        <svg class="brand-title" xmlns="http://www.w3.org/2000/svg" width="143" height="46.359"
+            viewBox="0 0 143 46.359">
             <g id="Group_26" data-name="Group 26" transform="translate(-134 -40.641)">
                 <text id="Hotel_Admin_Dashboard" data-name="Hotel Admin Dashboard" transform="translate(134 83)"
                     fill="#5d5449" font-size="12" font-family="Poppins-Light, Poppins" font-weight="300">
@@ -854,7 +859,8 @@
                     </li>
                     <li class="nav-item dropdown header-profile">
                         <a class="nav-link" href="javascript:void(0);" role="button" data-bs-toggle="dropdown">
-                            <img src="images/profile/pic1.jpg" width="20" alt="" />
+                           
+                            <img class="img-fluid" id="logo" src="{{ $logoUrl }}" alt="Hotel Logo">
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
                             <a href="app-profile.html" class="dropdown-item ai-icon">

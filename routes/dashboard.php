@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\Hotel\RoomController;
 use App\Http\Controllers\Dashboard\Hotel\UsersController;
 use App\Http\Controllers\Dashboard\OnboardingController;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,9 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::get('/dashboard/{id}/edit', [UsersController::class, 'edit'])->name('edit');
             Route::put('/dashboard/{id}', [UsersController::class, 'update'])->name('update');
             Route::delete('/{id}/delete', [UsersController::class, 'delete'])->name('delete');
+        });
+        Route::prefix('hotel')->as('hotel.')->group(function () {
+            Route::resource('rooms', RoomController::class);
         });
     });
 

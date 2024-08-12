@@ -9,6 +9,10 @@ class RoomType extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name', 'hotel_id', 'description', 'rate', 'discounted_rate'
+    ];
+
     public function files()
     {
         return $this->belongsToMany(File::class, 'room_type_files');

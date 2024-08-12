@@ -21,6 +21,8 @@ class RegistrationService
     // Validate user data
     public function validated($data, $id = null)
     {
+        $this->id = $id; // Assign the passed ID to the class property
+
         $validator = Validator::make($data, [
             'name' => 'required|string|max:255',
             'email' => [
@@ -50,36 +52,36 @@ class RegistrationService
     // Store user and hotel user data
     public function save(Request $request, $data)
     {
-        // Get the user ID from the request, if available
-        $id = $request->input('id');
+        // Get the HotelUser ID from the request, if available
+        $hotelUserId = $request->input('id');
+        
+        // Attempt to find the HotelUser by ID
+        $hotelUser = HotelUser::find($hotelUserId);
+        
+        // If a HotelUser is found, use the corresponding User ID for validation
+        $userId = $hotelUser ? $hotelUser->user_id : null;
         
         // Validate data
-        $validatedData = $this->validated($data, $id);
+        $validatedData = $this->validated($data, $userId);
         
-        // If an ID is provided, attempt to find the user for update
-        $hotel_user = HotelUser::find($id);
-        
-        // If no user is found and an ID was provided, it’s an error
-        if ($id && !$hotel_user) {
-            throw new \Exception('User not found.');
-        }
-        
-        if ($hotel_user) {
-            // Update the existing user
-            $hotel_user->user->update([
+        if ($hotelUser) {
+            // Update the existing User
+            $hotelUser->user->update([
                 'name' => $validatedData['name'],
-                'email' => $validatedData['email'] // Validate to avoid duplicates
+                'email' => $validatedData['email']
             ]);
     
             $isNewUser = false;
         } else {
-            // Create a new user
-            $hotel_user = User::create([
+            // Create a new User
+            $user = User::create([
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
                 'password' => Hash::make(Str::random(12)), // Create a random password
             ]);
     
+            $hotelUser = new HotelUser();
+            $hotelUser->user_id = $user->id;
             $isNewUser = true;
         }
         
@@ -92,29 +94,46 @@ class RegistrationService
         }
         
         // Exclude unwanted fields
-        $hotelUserData = $validatedData;
-        unset($hotelUserData['name']);
-        unset($hotelUserData['email']);
-        unset($hotelUserData['password']);
+        unset($validatedData['name'], $validatedData['email'], $validatedData['password']);
         
         // Add required fields for HotelUser
-        $hotelUserData['user_id'] = $hotel_user->id;
-        $hotelUserData['hotel_id'] = auth()->user()->hotel->id;
+        $validatedData['hotel_id'] = auth()->user()->hotel->id;
+        $validatedData['user_id'] = $hotelUser->user_id;
         
-        // Create or update the HotelUser
-        HotelUser::updateOrCreate(
-            ['user_id' => $hotel_user->id, 'hotel_id' => auth()->user()->hotel->id],
-            $hotelUserData
-        );
+        // Save HotelUser
+        $hotelUser->fill($validatedData);
+        $hotelUser->save();
         
         // Send login details if this is a new user
         if ($isNewUser) {
-            $this->sendLoginDetails($hotel_user->id);
+            $this->sendLoginDetails($hotelUser->user_id);
         }
         
-        return $hotel_user;
+        return $hotelUser;
     }
     
+    public function delete($hotelUserId)
+    {
+        try {
+            // Find the HotelUser by ID
+            $hotelUser = HotelUser::findOrFail($hotelUserId);
+
+            // Get the associated User ID
+            $userId = $hotelUser->user_id;
+
+            // Delete the HotelUser record
+            $hotelUser->delete();
+
+            // Delete the associated User record
+            $user = User::findOrFail($userId);
+            $user->delete();
+
+            return true;
+        } catch (\Exception $e) {
+            // Handle exception, log the error, or throw a custom exception
+            throw new \Exception("An error occurred while deleting the user: " . $e->getMessage());
+        }
+    }
     
     
 

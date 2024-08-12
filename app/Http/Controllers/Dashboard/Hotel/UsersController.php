@@ -65,11 +65,24 @@ class UsersController extends Controller
  
      public function update(Request $request, $id)
      {
+        // dd($request->all());
          $data = $request->all();
          try {
              $user = HotelUser::findOrFail($id); // Fetch the user to update
              $this->registration_service->save($request, $data, $user); // Pass the user to the save method
              return redirect()->route('dashboard.hotel-users.overview')->with('success_message', 'User updated successfully.');
+         } catch (ValidationException $e) {
+             return redirect()->back()->withErrors($e->errors())->withInput();
+         } catch (\Exception $e) {
+             return redirect()->back()->with('error_message', 'An error occurred while updating the user.' . $e->getMessage());
+         }
+     }
+
+     public function delete(Request $request, $id)
+     {
+         try {
+             $this->registration_service->delete($id);
+             return redirect()->route('dashboard.hotel-users.overview')->with('success_message', 'User deleted successfully.');
          } catch (ValidationException $e) {
              return redirect()->back()->withErrors($e->errors())->withInput();
          } catch (\Exception $e) {

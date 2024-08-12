@@ -1,11 +1,7 @@
 @extends('dashboard.layouts.app')
 
 @section('contents')
-
-    @extends('dashboard.layouts.app')
-
-@section('contents')
-    <div class="content-body ">
+    <div class="content-body">
         <div class="container-fluid">
             <div class="row page-titles">
                 <ol class="breadcrumb">
@@ -16,7 +12,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
-                        <h4 class="card-title">Hotel Uses</h4>
+                        <h4 class="card-title">Hotel Users</h4>
                         <a href="{{route('dashboard.hotel-users.create')}}" class="btn btn-primary">Add New</a>
                     </div>
                     <div class="card-body">
@@ -58,10 +54,12 @@
                                             <td>{{ $hotel_user->created_at->format('D M, Y') }}</td>
                                             <td>
                                                 <div class="d-flex">
-                                                    <a href="{{route('dashboard.hotel-users.edit', $hotel_user->id)}}" class="btn btn-primary shadow btn-xs sharp me-1"><i
-                                                            class="fas fa-pencil-alt"></i></a>
-                                                    <a href="#" class="btn btn-danger shadow btn-xs sharp"><i
-                                                            class="fa fa-trash"></i></a>
+                                                    <a href="{{ route('dashboard.hotel-users.edit', $hotel_user->id) }}" class="btn btn-primary shadow btn-xs sharp me-1">
+                                                        <i class="fas fa-pencil-alt"></i>
+                                                    </a>
+                                                    <a href="javascript:void(0);" class="btn btn-danger shadow btn-xs sharp" onclick="confirmDelete('{{ route('dashboard.hotel-users.delete', $hotel_user->id) }}')">
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -74,7 +72,36 @@
             </div>
         </div>
     </div>
-@endsection
 
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Delete Confirmation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this user?
+                </div>
+                <div class="modal-footer">
+                    <form method="POST" id="deleteForm">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <script>
+        function confirmDelete(url) {
+            $('#deleteForm').attr('action', url);
+            $('#deleteModal').modal('show');
+        }
+    </script>
 @endsection

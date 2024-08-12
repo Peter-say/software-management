@@ -39,7 +39,7 @@
                                     <div class="text-center mb-3">
                                         <a href="index.html"><img src="images/logo-full.png" alt=""></a>
                                     </div>
-
+@include('notifications.flash-messages')
                                     @yield('contents')
                                 </div>
                             </div>

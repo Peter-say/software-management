@@ -5,23 +5,26 @@ namespace App\Http\Controllers\Dashboard\Hotel;
 use App\Constants\StatusConstants;
 use App\Http\Controllers\Controller;
 use App\Models\HotelSoftware\Room;
+use App\Models\HotelSoftware\RoomType;
 use App\Services\Dashboard\Hotel\Room\RoomService;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 class RoomController extends Controller
 {
-    public $room_service;
-    protected function __construct(RoomService $room_service) {
+    protected $room_service;
+    public function __construct(RoomService $room_service) 
+    {
         $this->room_service = $room_service;
     }
+    
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         return view('dashboard.hotel.room.index', [
-            'rooms' => Room::where('hotel_id', auth()->user->hotel_id)->paginate(30),
+            'rooms' => Room::where('hotel_id', auth()->user()->hotel->id)->paginate(30),
         ]);
     }
 
@@ -31,6 +34,7 @@ class RoomController extends Controller
     public function create()
     {
         return view('dashboard.hotel.room.create', [
+            'room_types' => RoomType::all(),
             'statusOptions' => StatusConstants::ACTIVE_OPTIONS,
         ]);
     }
@@ -40,13 +44,15 @@ class RoomController extends Controller
      */
     public function store(Request $request)
     {
+
         $data = $request->all();
         try {
           $this->room_service->save($request, $data);
-            return redirect()->route('dashboard.hotel.room.index')->with('success_message', 'Room created successfully and login details sent.');
+            return redirect()->route('dashboard.hotel.rooms.index')->with('success_message', 'Room created successfully and login details sent.');
         } catch (ValidationException $e) {
             return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
+            $e->getMessage();
             return redirect()->back()->with('error_message', 'An error occurred while creating the room.');
         }
     }
@@ -56,7 +62,7 @@ class RoomController extends Controller
      */
     public function show(string $id)
     {
-        //
+       
     }
 
     /**
@@ -64,7 +70,11 @@ class RoomController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return view('dashboard.hotel.room.create', [
+            'room_types' => RoomType::all(),
+            'statusOptions' => StatusConstants::ACTIVE_OPTIONS,
+            'room' => Room::findOrFail($id),
+        ]);
     }
 
     /**
@@ -72,7 +82,15 @@ class RoomController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $data = $request->all();
+        try {
+          $this->room_service->save($request, $data);
+            return redirect()->route('dashboard.hotel.rooms.index')->with('success_message', 'Room updated successfully and login details sent.');
+        } catch (ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->withInput();
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error_message', 'An error occurred while creating the room.');
+        }
     }
 
     /**

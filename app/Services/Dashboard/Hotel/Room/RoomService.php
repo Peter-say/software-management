@@ -11,20 +11,21 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
-class RoomService{
+class RoomService
+{
     public function validated($data)
     {
+       
         $validator = Validator::make($data, [
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
             'status' => 'nullable|string|max:255',
-            'room_type' => 'required|exists:room_types,id',
+            'room_type_id' => 'required|exists:room_types,id',
         ]);
 
         if ($validator->fails()) {
             throw new ValidationException($validator);
         }
-
         return $validator->validated();
     }
 
@@ -32,9 +33,14 @@ class RoomService{
     {
         // Validate the incoming data
         $validatedData = $this->validated($data);
-    
+        
+        if (isset($data['id'])) {
+            $validatedData['id'] = $data['id'];
+        }
+        
+        $validatedData['hotel_id'] = auth()->user()->hotel->id;
+        
         // Check if this is an update or create request
-        $room = null;
         if (isset($validatedData['id'])) {
             // Update existing room
             $room = Room::find($validatedData['id']);
@@ -48,11 +54,11 @@ class RoomService{
         }
     
         // Handle file uploads
-        if ($request->hasFile('files')) {
-            foreach ($request->file('files') as $file) {
+        if ($request->hasFile('file_upload')) {
+            foreach ($request->file('file_upload') as $file) {
                 $fileDirectory = 'hotel/room/files';
-                Storage::disk('public')->makeDirectory( $fileDirectory);
-                $fileId = FileHelpers::saveFileRequest($file, 'files', $fileDirectory);
+                Storage::disk('public')->makeDirectory($fileDirectory);
+                $fileId = FileHelpers::saveFileRequest($file, $fileDirectory);
                 // Associate file with the room
                 RoomFile::create([
                     'room_id' => $room->id,

@@ -16,8 +16,8 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::get('overview', [UsersController::class, 'overview'])->name('overview');
             Route::get('create', [UsersController::class, 'create'])->name('create');
             Route::post('store', [UsersController::class, 'store'])->name('store');
-            Route::get('/dashboard/{id}/edit', [UsersController::class, 'edit'])->name('edit');
-            Route::put('/dashboard/{id}', [UsersController::class, 'update'])->name('update');
+            Route::get('/{id}/edit', [UsersController::class, 'edit'])->name('edit');
+            Route::put('/{id}', [UsersController::class, 'update'])->name('update');
             Route::delete('/{id}/delete', [UsersController::class, 'delete'])->name('delete');
         });
         Route::prefix('hotel')->as('hotel.')->group(function () {

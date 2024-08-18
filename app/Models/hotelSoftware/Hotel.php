@@ -3,6 +3,7 @@
 namespace App\Models\hotelSoftware;
 
 use App\Models\HotelSoftware\HotelUser;
+use App\Models\HotelSoftware\Room;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -32,5 +33,10 @@ class Hotel extends Model
     public function user()
     {
         return $this->hasMany(User::class, 'user_id');
+    }
+
+    public function room()
+    {
+        return $this->hasMany(Room::class, 'user_id');
     }
 }

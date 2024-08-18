@@ -9,6 +9,15 @@ class File extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'file_name',
+        'file_path',
+        'file_size',
+        'mime_type',
+        'type',
+        'description',
+    ];
+
     public function roomTypes()
     {
         return $this->belongsToMany(RoomType::class, 'room_type_files');

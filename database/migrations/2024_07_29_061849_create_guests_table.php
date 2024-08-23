@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name')->nullable();
             $table->string('other_names')->nullable();
-            $table->string('email')->nullable();
+            $table->string('email')->nullable()->unique(); // Make email unique
             $table->string('phone_code')->nullable();
-            $table->string('phone')->nullable();
+            $table->string('phone')->nullable()->unique();
             $table->string('other_phone')->nullable();
             $table->string('id_picture_location')->nullable();
             $table->date('birthday')->nullable();
@@ -28,9 +28,10 @@ return new class extends Migration
             $table->string('city')->nullable();
             $table->string('country')->nullable();
             $table->softDeletes();
-
+        
             $table->timestamps();
         });
+        
     }
 
     /**

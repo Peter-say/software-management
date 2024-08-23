@@ -1,9 +1,9 @@
 <?php
 
 namespace Database\Seeders;
-
 use App\Models\Hotel;
 use App\Models\hotelSoftware\Hotel as HotelSoftwareHotel;
+use App\Models\HotelSoftware\HotelUser;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -19,18 +19,27 @@ class HotelSeeder extends Seeder
         }
 
         // Seed the hotels table with some example data
-        HotelSoftwareHotel::insert([
-            [
-                'user_id' => $adminUser->id,
-                'hotel_name' => 'Hotel Grand',
-                'address' => '123 Main St, Grand City',
-                'phone' => '09088556677',
-                'state_id' => 1, // Adjust these IDs according to your states and countries
-                'country_id' => 1,
-                'logo' => null,
-                'website' => 'http://hotelgrand.com',
-            ],
-            // Add more hotel records as needed
+        $hotel = HotelSoftwareHotel::create([
+            'user_id' => $adminUser->id,
+            'hotel_name' => 'Hotel Grand',
+            'address' => '123 Main St, Grand City',
+            'phone' => '09088556677',
+            'state_id' => 1, // Adjust these IDs according to your states and countries
+            'country_id' => 1,
+            'logo' => null,
+            'website' => 'http://hotelgrand.com',
+        ]);
+
+        // Create a hotel user for this hotel
+        HotelUser::create([
+            'hotel_id' => $hotel->id,
+            'user_id' => $adminUser->id,
+            'phone' => '09088556677',
+            'photo' => null, // Adjust as needed
+            'address' => '123 Main St, Grand City',
+            'role' => 'Hotel_Owner',
+            'status' => 'Active',
+            'user_account_id' => $adminUser->id, // Adjust if needed
         ]);
     }
 }

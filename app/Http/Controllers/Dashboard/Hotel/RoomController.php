@@ -6,6 +6,7 @@ use App\Constants\StatusConstants;
 use App\Http\Controllers\Controller;
 use App\Models\HotelSoftware\Room;
 use App\Models\HotelSoftware\RoomType;
+use App\Models\User;
 use App\Services\Dashboard\Hotel\Room\RoomService;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -24,7 +25,7 @@ class RoomController extends Controller
     public function index()
     {
         return view('dashboard.hotel.room.index', [
-            'rooms' => Room::where('hotel_id', auth()->user()->hotel->id)->paginate(30),
+            'rooms' => Room::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->paginate(30),
         ]);
     }
 
@@ -48,11 +49,10 @@ class RoomController extends Controller
         $data = $request->all();
         try {
           $this->room_service->save($request, $data);
-            return redirect()->route('dashboard.hotel.rooms.index')->with('success_message', 'Room created successfully and login details sent.');
+            return redirect()->route('dashboard.hotel.rooms.index')->with('success_message', 'Room created successfully');
         } catch (ValidationException $e) {
             return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
-            $e->getMessage();
             return redirect()->back()->with('error_message', 'An error occurred while creating the room.');
         }
     }

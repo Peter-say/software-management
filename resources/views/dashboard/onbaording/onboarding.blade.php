@@ -293,9 +293,7 @@
                                                 <div class="col-lg-6 col-12 mb-3">
                                                     <div class="form-group">
                                                         <label for="logo" class="text-label form-label">Logo</label>
-                                                        <input type="file" id="logo" name="logo"
-                                                            class="form-control @error('logo') is-invalid @enderror"
-                                                            placeholder="Logo URL" value="{{ old('logo') }}">
+                                                        <input type="file" id="logo" name="logo" class="form-control w-100 @error('logo') is-invalid @enderror">
                                                         @error('logo')
                                                             <div class="invalid-feedback">
                                                                 {{ $message }}
@@ -303,11 +301,11 @@
                                                         @enderror
                                                     </div>
                                                 </div>
+                                                
 
                                                 <div class="col-lg-6 col-12 mb-3">
                                                     <div class="form-group">
-                                                        <label for="website"
-                                                            class="text-label form-label">Website</label>
+                                                        <label for="website"class="text-label form-label">Website</label>
                                                         <input type="text" id="website" name="website"
                                                             class="form-control @error('website') is-invalid @enderror"
                                                             placeholder="Website URL" value="{{ old('website') }}">

@@ -19,8 +19,8 @@ return new class extends Migration
             $table->foreignId('room_id')->constrained('rooms')->onDelete('cascade');
             $table->double('rate');
             $table->double('total_amount');
-            $table->timestamp('checkin_date')->nullable();
-            $table->timestamp('checkout_date')->nullable();
+            $table->date('checkin_date')->nullable();
+            $table->date('checkout_date')->nullable();
             $table->string('status')->default('Pending');
             $table->timestamp('checked_in_at')->nullable();
             $table->timestamp('checked_out_at')->nullable();

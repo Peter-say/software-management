@@ -5,6 +5,7 @@ namespace App\Services\Dashboard\Hotel\Room;
 use App\Helpers\FileHelpers;
 use App\Models\HotelSoftware\Room;
 use App\Models\HotelSoftware\RoomFile;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -38,7 +39,7 @@ class RoomService
             $validatedData['id'] = $data['id'];
         }
         
-        $validatedData['hotel_id'] = auth()->user()->hotel->id;
+        $validatedData['hotel_id'] = User::getAuthenticatedUser()->hotel->id;
         
         // Check if this is an update or create request
         if (isset($validatedData['id'])) {

@@ -3,8 +3,10 @@
 namespace App\Models\HotelSoftware;
 
 use App\Models\hotelSoftware\Hotel;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class Room extends Model
 {
@@ -27,6 +29,11 @@ class Room extends Model
         return $this->belongsTo(RoomType::class, 'room_type_id');
     }
 
+    public function reservations()
+    {
+        return $this->hasMany(RoomReservation::class);
+    }
+
     public function RoomImage()
     {
         $firstFile = $this->files()->first();
@@ -35,4 +42,5 @@ class Room extends Model
         }
         return null;
     }
+    
 }

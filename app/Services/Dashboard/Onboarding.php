@@ -6,6 +6,7 @@ use App\Helpers\FileHelpers;
 use App\Models\HotelSoftware\Hotel;
 use App\Models\HotelSoftware\HotelUser;
 use App\Models\SoftwareType;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -13,6 +14,7 @@ use Illuminate\Support\Str; // Import Laravel's Str class for UUID
 
 class Onboarding
 {
+    
     // In Onboarding.php
 
     public function validateSoftwareTypeInfo(Request $request)
@@ -53,7 +55,7 @@ class Onboarding
     public function storeSoftwareTypeInfo(Request $request)
     {
         $data = $this->validateSoftwareTypeInfo($request);
-        $data['created_by'] = auth()->user()->id;
+        $data['created_by'] = User::getAuthenticatedUser()->id;
         $software = SoftwareType::create($data);
 
         return $software;
@@ -73,15 +75,15 @@ class Onboarding
 
         // Generate UUID
         $data['uuid'] = Str::uuid(); // Using Laravel's Str class for UUID
-        $data['user_id'] = auth()->user()->id; // Assign the authenticated user's ID
+        $data['user_id'] =User::getAuthenticatedUser()->id; // Assign the authenticated user's ID
 
         $hotel = Hotel::create($data);
 
         HotelUser::create([
-            'user_id' => auth()->user()->id,
+            'user_id' =>User::getAuthenticatedUser()->id,
             'hotel_id' => $hotel->id, // The newly created hotel ID
             'role' => 'Hotel_Owner',
-            'user_account_id' => auth()->user()->id, // The user who is performing this onboarding action for the hotel
+            'user_account_id' =>User::getAuthenticatedUser()->id, // The user who is performing this onboarding action for the hotel
         ]);
 
         return $hotel;

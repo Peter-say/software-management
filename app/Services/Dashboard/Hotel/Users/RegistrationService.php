@@ -45,7 +45,7 @@ class RegistrationService
         return $validator->validated();
     }
 
-    
+
 
 
 
@@ -54,21 +54,26 @@ class RegistrationService
     {
         // Get the HotelUser ID from the request, if available
         $hotelUserId = $request->input('id');
-        
+    
         // Attempt to find the HotelUser by ID
         $hotelUser = HotelUser::find($hotelUserId);
-        
+    
+        $auth_user = User::getAuthenticatedUser();
         // If a HotelUser is found, use the corresponding User ID for validation
         $userId = $hotelUser ? $hotelUser->user_id : null;
-        
+    
         // Validate data
         $validatedData = $this->validated($data, $userId);
-        
+        $oldPhotoPath = null;
+    
         if ($hotelUser) {
+            // Store the old photo path
+            $oldPhotoPath = $hotelUser->photo;
+    
             // Update the existing User
             $hotelUser->user->update([
                 'name' => $validatedData['name'],
-                'email' => $validatedData['email']
+                'email' => $validatedData['email'],
             ]);
     
             $isNewUser = false;
@@ -77,41 +82,48 @@ class RegistrationService
             $user = User::create([
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
-                'password' => Hash::make(Str::random(12)), // Create a random password
             ]);
+            // Exclude unwanted fields
+            unset($validatedData['name'], $validatedData['email'], $validatedData['password']);
     
-            $hotelUser = new HotelUser();
-            $hotelUser->user_id = $user->id;
+            // Add required fields for HotelUser
+            $validatedData['hotel_id'] = $auth_user->hotel->id;
+            $validatedData['user_id'] = $user->id;
+            $validatedData['user_account_id'] = $auth_user->id;
+    
             $isNewUser = true;
         }
-        
+    
         // Handle file upload
         if ($request->hasFile('photo')) {
             $photoDirectory = 'hotel/users/photos';
             Storage::disk('public')->makeDirectory($photoDirectory);
-            $photoPath = basename(FileHelpers::saveFileRequest($request->file('photo'), $photoDirectory));
+            $photoPath = basename(FileHelpers::saveImageRequest($request->file('photo'), $photoDirectory));
             $validatedData['photo'] = $photoPath;
+    
+            // Delete the old photo if it exists
+            if ($oldPhotoPath) {
+                FileHelpers::deleteFiles([$photoDirectory . '/' . $oldPhotoPath]);
+            }
         }
-        
-        // Exclude unwanted fields
-        unset($validatedData['name'], $validatedData['email'], $validatedData['password']);
-        
-        // Add required fields for HotelUser
-        $validatedData['hotel_id'] = auth()->user()->hotel->id;
-        $validatedData['user_id'] = $hotelUser->user_id;
-        
-        // Save HotelUser
-        $hotelUser->fill($validatedData);
-        $hotelUser->save();
-        
+    
+        if ($hotelUser) {
+            // Update the HotelUser with the new data
+            $hotelUser->update($validatedData);
+        } else {
+            // Save HotelUser
+            $hotelUser = HotelUser::create($validatedData);
+        }
+    
         // Send login details if this is a new user
         if ($isNewUser) {
             $this->sendLoginDetails($hotelUser->user_id);
         }
-        
+    
         return $hotelUser;
     }
     
+
     public function delete($hotelUserId)
     {
         try {
@@ -134,8 +146,8 @@ class RegistrationService
             throw new \Exception("An error occurred while deleting the user: " . $e->getMessage());
         }
     }
-    
-    
+
+
 
 
 

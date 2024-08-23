@@ -121,4 +121,12 @@ class StatusConstants
         self::PENDING => "Pending",
         // Add more statuses as needed
     ];
+
+    const  ROOM_RESERVATION_STATUS_OPTION = [
+        self::RECEIVED => "Received",
+        self::PARTIAL => "Partial",
+        self::ORDERED => "Ordered",
+        self::PENDING => "Pending",
+        // Add more statuses as needed
+    ];
 }

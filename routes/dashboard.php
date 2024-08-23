@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\Hotel\Guest\GuestController;
 use App\Http\Controllers\Dashboard\Hotel\RoomController;
+use App\Http\Controllers\Dashboard\Hotel\RoomReservationController;
 use App\Http\Controllers\Dashboard\Hotel\UsersController;
 use App\Http\Controllers\Dashboard\OnboardingController;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +24,10 @@ Route::middleware('auth', 'verified')->group(function () {
         });
         Route::prefix('hotel')->as('hotel.')->group(function () {
             Route::resource('rooms', RoomController::class);
+            Route::resource('reservations', RoomReservationController::class);
+            Route::resource('guests', GuestController::class);
+            Route::get('set-guest-info', [GuestController::class, 'getGuestInfo'])->name('set-guest-info');
+            Route::post('check-room-availability', [RoomReservationController::class, 'getRoomAvailability']);
         });
     });
 

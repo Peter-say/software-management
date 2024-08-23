@@ -46,7 +46,22 @@ class FileHelpers
         return $fileRecord->id;
     }
 
+    public static function saveImageRequest($file, $directory)
+    {
+        // Check if the file was uploaded successfully
+        if (!$file->isValid()) {
+            throw new \Exception('File upload failed');
+        }
 
+        // Generate a unique file name
+        $file_name = uniqid() . '_' . $file->getClientOriginalName();
+
+        // Store the file in the specified directory within the storage folder
+        $path = $file->storeAs($directory, $file_name, 'public');
+
+        // Return the path to the saved file
+        return $path; 
+    }
 
     public static function deleteFiles(array $imagePaths)
     {

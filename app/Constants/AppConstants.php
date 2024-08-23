@@ -6,7 +6,7 @@ use App\Constants\Finance\TransactionConstants;
 
 class AppConstants
 {
-    
+
     const MALE = 'Male';
     const FEMALE = 'Female';
     const OTHERS = 'Others';
@@ -17,7 +17,7 @@ class AppConstants
     const Mrs = 'Mrs';
     const Miss = 'Others';
 
-  
+
     const DEFAULT_PASSWORD = "123456";
 
     const WEB_GUARD = "web";
@@ -34,7 +34,7 @@ class AppConstants
         self::OTHERS
     ];
 
-  
+
     const ADMIN_PAGINATION_SIZE = 50;
 
     const BOOL_OPTIONS = [
@@ -43,24 +43,38 @@ class AppConstants
     ];
 
     // Users role
+    const SUPER_USER = 'Hotel_Owner';
+    const ACCOUNT = 'Account';
+    const SALES = 'Sales';
+    const STORE = 'Store';
+    const RECEPTIONIST = 'Receptionist';
+    const CASHIER = 'Cashier';
+    const MANAGER = 'Manager';
 
-       
-        const SUPER_USER = 'Hotel_Owner';
-        const ACCOUNT = 'Account';
-        const SALES = 'Sales';
-        const STORE = 'Store';
-        const RECEPTIONIST = 'Receptionist';
-        const CASHIER = 'Cashier';
-        const MANAGER = 'Manager';
-        
-        
-        const ROLE_OPTIONS = [
-            self::ACCOUNT => self::ACCOUNT,
-            self::SALES => self::SALES,
-            self::STORE => self::STORE,
-            self::RECEPTIONIST => self::RECEPTIONIST,
-            self::CASHIER => self::CASHIER,
-            self::MANAGER => self::MANAGER,
-        ];
-      
+    const ROLE_OPTIONS = [
+        self::ACCOUNT => self::ACCOUNT,
+        self::SALES => self::SALES,
+        self::STORE => self::STORE,
+        self::RECEPTIONIST => self::RECEPTIONIST,
+        self::CASHIER => self::CASHIER,
+        self::MANAGER => self::MANAGER,
+    ];
+
+    // Title Otions
+
+    const MR = 'Mr';
+    const MRS = 'Mrs';
+    const DR = 'Dr';
+    const PROF = 'Prof';
+    const BAR = 'Bar';
+    const ENG = 'Eng';
+
+    const TITLE_OPTIONS = [
+        self::MR => self::MR,
+        self::MRS => self::MRS,
+        self::DR => self::DR,
+        self::PROF => self::PROF,
+        self::BAR => self::BAR,
+        self::ENG => self::ENG,
+    ];
 }

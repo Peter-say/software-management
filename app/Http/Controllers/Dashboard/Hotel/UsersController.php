@@ -7,10 +7,12 @@ use App\Constants\StatusConstants;
 use App\Http\Controllers\Controller;
 use App\Models\hotelSoftware\Hotel;
 use App\Models\HotelSoftware\HotelUser;
+use App\Models\User;
 use App\Services\Dashboard\Hotel\Users\RegistrationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Str;
 
 class UsersController extends Controller
 {
@@ -24,7 +26,8 @@ class UsersController extends Controller
 
     public function overview()
     {
-        $hotel = Hotel::where('uuid', auth()->user()->hotel->uuid)->firstOrFail();
+
+        $hotel = Hotel::where('uuid', User::getAuthenticatedUser()->hotel->uuid)->firstOrFail();
         $hotel_users = $hotel->hotelUser()->paginate(30);
         return view('dashboard.hotel.users.index', [
             'hotel_users' => $hotel_users
@@ -49,6 +52,7 @@ class UsersController extends Controller
         } catch (ValidationException $e) {
             return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
+            // throw $e;
             return redirect()->back()->with('error_message', 'An error occurred while creating the user.');
         }
     }

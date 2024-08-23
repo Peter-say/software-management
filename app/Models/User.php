@@ -9,6 +9,7 @@ use App\Models\HotelSoftware\HotelUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -58,5 +59,10 @@ class User extends Authenticatable
     public function hotelUsers()
     {
         return $this->hasMany(HotelUser::class, 'user_id');
+    }
+
+    public static function getAuthenticatedUser()
+    {
+        return Auth::user();
     }
 }

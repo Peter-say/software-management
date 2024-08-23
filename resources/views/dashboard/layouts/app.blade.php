@@ -27,11 +27,24 @@
     <link href="{{ asset('dashboard/vendor/owl-carousel/owl.carousel.css') }}" rel="stylesheet">
     <link href="{{ asset('dashboard/vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}"
         rel="stylesheet">
-  <!-- Datatable -->
-  <link href="{{ asset('dashboard/vendor/datatables/css/jquery.dataTables.min.css')}}" rel="stylesheet">
+    <!-- Pick date -->
+    <link rel="stylesheet" href="{{ asset('dashboard/vendor/pickadate/themes/default.css') }}">
+    <link rel="stylesheet" href="{{ asset('dashboard/vendor/pickadate/themes/default.date.css') }}">
+    <!-- Datatable -->
+    <link href="{{ asset('dashboard/vendor/datatables/css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <!-- Style css -->
     <link href="{{ asset('dashboard/css/style.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- Daterange picker -->
+    <link href="{{ asset('dashboard/vendor/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet">
+    <!-- Clockpicker -->
+    <link href="{{ asset('dashboard/vendor/clockpicker/css/bootstrap-clockpicker.min.css') }}" rel="stylesheet">
+    <!-- asColorpicker -->
+    <link href="{{ asset('dashboard/vendor/jquery-asColorPicker/css/asColorPicker.min.css') }}" rel="stylesheet">
+    <!-- Material color picker -->
+    <link
+        href="{{ asset('dashboard/vendor/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}"
+        rel="stylesheet">
 
 </head>
 
@@ -107,6 +120,10 @@
 
 
     <!-- Chart piety plugin files -->
+    <!-- Include jQuery via CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
 
     <!-- Dashboard 1 -->
@@ -122,10 +139,10 @@
     <!-- Form validate init -->
     <script src="{{ asset('dashboard/js/plugins-init/jquery.validate-init.js') }}"></script>
 
-     <!-- Datatable -->
-     <script src="{{ asset('dashboard/vendor/datatables/js/jquery.dataTables.min.js')}}"></script>
-     <script src="{{ asset('dashboard/js/plugins-init/datatables.init.js')}}"></script>
- 
+    <!-- Datatable -->
+    <script src="{{ asset('dashboard/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('dashboard/js/plugins-init/datatables.init.js') }}"></script>
+
 
     <!-- Form Steps -->
     <script src="{{ asset('dashboard/vendor/jquery-smartwizard/dist/js/jquery.smartWizard.js') }}"></script>
@@ -135,75 +152,91 @@
     <script src="{{ asset('dashboard/js/demo.js') }}"></script>
     <script src="{{ asset('dashboard/js/styleSwitcher.js') }}"></script>
 
+    <!-- pickdate -->
+    <script src="{{ asset('dashboard/vendor/pickadate/picker.js') }}"></script>
+    <script src="{{ asset('dashboard/vendor/pickadate/picker.time.js ') }}"></script>
+    <script src="{{ asset('dashboard/vendor/pickadate/picker.date.js') }}"></script>
+
+    <!-- Daterangepicker -->
+    <script src="{{ asset('dashboard/js/plugins-init/bs-daterange-picker-init.js') }}"></script>
+    <!-- Clockpicker init -->
+    <script src="{{ asset('dashboard/js/plugins-init/clock-picker-init.js') }}"></script>
+    <!-- asColorpicker -->
+    <link href="{{ asset('dashboard/vendor/jquery-asColorPicker/css/asColorPicker.min.css') }}" rel="stylesheet">
+    <!-- Material color picker init -->
+    <script src="{{ asset('dashboard/js/plugins-init/material-date-picker-init.js') }}"></script>
+    <!-- Pickdate -->
+    <script src="{{ asset('dashboard/js/plugins-init/pickadate-init.js') }}"></script>
+
+
     <script>
-        $(document).ready(function() {
-            // SmartWizard initialize
-            $('#smartwizard').smartWizard();
-        });
-    </script>
-    <script>
-        function TravlCarousel() {
-
-            /*  testimonial one function by = owl.carousel.js */
-            jQuery('.front-view-slider').owlCarousel({
-                loop: false,
-                margin: 15,
-                nav: true,
-                autoplaySpeed: 3000,
-                navSpeed: 3000,
-                paginationSpeed: 3000,
-                slideSpeed: 3000,
-                smartSpeed: 3000,
-                autoplay: false,
-                animateOut: 'fadeOut',
-                dots: true,
-                navText: ['<i class="fas fa-arrow-left"></i>', '<i class="fas fa-arrow-right"></i>'],
-                responsive: {
-                    0: {
-                        items: 1
-                    },
-
-                    768: {
-                        items: 2
-                    },
-
-                    1400: {
-                        items: 2
-                    },
-                    1600: {
-                        items: 3
-                    },
-                    1750: {
-                        items: 3
-                    }
-                }
-            })
-        }
-
-        jQuery(window).on('load', function() {
-            setTimeout(function() {
-                TravlCarousel();
-            }, 1000);
-        });
-    </script>
-    <script>
-        $(function() {
-            $('#datetimepicker').datetimepicker({
-                inline: true,
+        document.addEventListener('DOMContentLoaded', function() {
+            $(document).ready(function() {
+                // SmartWizard initialize
+                $('#smartwizard').smartWizard();
             });
-        });
 
-        $(document).ready(function() {
-            $(".booking-calender .fa.fa-clock-o").removeClass(this);
-            $(".booking-calender .fa.fa-clock-o").addClass('fa-clock');
-        });
-    </script>
-    <script>
-        jQuery(document).ready(function() {
-            setTimeout(function() {
-                dlabSettingsOptions.version = 'dark';
-                new dlabSettings(dlabSettingsOptions);
-            }, 1500)
+            function TravlCarousel() {
+
+                /*  testimonial one function by = owl.carousel.js */
+                jQuery('.front-view-slider').owlCarousel({
+                    loop: false,
+                    margin: 15,
+                    nav: true,
+                    autoplaySpeed: 3000,
+                    navSpeed: 3000,
+                    paginationSpeed: 3000,
+                    slideSpeed: 3000,
+                    smartSpeed: 3000,
+                    autoplay: false,
+                    animateOut: 'fadeOut',
+                    dots: true,
+                    navText: ['<i class="fas fa-arrow-left"></i>', '<i class="fas fa-arrow-right"></i>'],
+                    responsive: {
+                        0: {
+                            items: 1
+                        },
+
+                        768: {
+                            items: 2
+                        },
+
+                        1400: {
+                            items: 2
+                        },
+                        1600: {
+                            items: 3
+                        },
+                        1750: {
+                            items: 3
+                        }
+                    }
+                })
+            }
+
+            jQuery(window).on('load', function() {
+                setTimeout(function() {
+                    TravlCarousel();
+                }, 1000);
+            });
+
+            $(function() {
+                $('#datetimepicker').datetimepicker({
+                    inline: true,
+                });
+            });
+
+            $(document).ready(function() {
+                $(".booking-calender .fa.fa-clock-o").removeClass(this);
+                $(".booking-calender .fa.fa-clock-o").addClass('fa-clock');
+            });
+
+            jQuery(document).ready(function() {
+                setTimeout(function() {
+                    dlabSettingsOptions.version = 'dark';
+                    new dlabSettings(dlabSettingsOptions);
+                }, 1500)
+            });
         });
     </script>
 

@@ -13,4 +13,9 @@ class RoomFile extends Model
         'room_id',
         'file_id',
     ];
+
+    public function File()
+    {
+        return $this->belongsToMany(File::class, 'file_id');
+    }
 }

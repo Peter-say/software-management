@@ -82,6 +82,7 @@ class RegistrationService
             $user = User::create([
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
+                'password' => Hash::make(Str::random(12)), // Create a random password
             ]);
             // Exclude unwanted fields
             unset($validatedData['name'], $validatedData['email'], $validatedData['password']);

@@ -2,6 +2,7 @@
 
 namespace App\Models\HotelSoftware;
 
+use App\Models\Payment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -38,9 +39,19 @@ class RoomReservation extends Model
         return $this->belongsTo(Guest::class);
     }
 
+    public function hotel()
+    {
+        return $this->belongsTo(Hotel::class);
+    }
+
     // Define relationship with Room
     public function room()
     {
         return $this->belongsTo(Room::class);
+    }
+
+    public function payments()
+    {
+        return $this->morphMany(Payment::class, 'payable');
     }
 }

@@ -52,8 +52,11 @@
                                                         <th>Total Amount</th>
                                                         <th>Check-in Date</th>
                                                         <th>Check-out Date</th>
+                                                        <th>Check-In At</th>
+                                                        <th>Check-out At</th>
                                                         <th>Status</th>
                                                         <th>Created At</th>
+                                                        <th>Payment Status</th>
                                                         <th class="bg-none"></th>
                                                     </tr>
                                                 </thead>
@@ -73,7 +76,9 @@
                                                                 <td>{{ number_format($reservation->total_amount) }}</td>
                                                                 <td>{{ $reservation->checkin_date ? $reservation->checkin_date->format('Y-m-d') : 'N/A' }}
                                                                 </td>
-                                                                <td>{{ $reservation->checkout_date ? $reservation->checkout_date->format('Y-m-d') : 'N/A' }}
+                                                                <td>{{ $reservation->checkout_date ? $reservation->checkout_date->format('Y-m-d H:i:s') : 'N/A' }}</td>
+                                                                    <td>{{ $reservation->checkin_at ? $reservation->checkin_at->format('Y-m-d H:i:s') : 'N/A' }}</td>
+                                                                        <td>{{ $reservation->checkout_at ? $reservation->checkout_at->format('Y-m-d') : 'N/A' }}</td>
                                                                 </td>
 
                                                                 <td>
@@ -84,37 +89,18 @@
                                                                 </td>
                                                                 <td>{{ $reservation->created_at->format('Y-m-d H:i:s') }}
                                                                 </td>
+                                                                <td class="text-{{$reservation->payment_status === 'completed' ? 'seccess' : 'warning'}}">{{strtoupper( $reservation->payment_status) }}</td>
                                                                 <td>
-                                                                    <div class="dropdown dropend">
-                                                                        <a href="javascript:void(0);" class="btn-link"
-                                                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                                                            <svg width="24" height="24"
-                                                                                viewBox="0 0 24 24" fill="none"
-                                                                                xmlns="http://www.w3.org/2000/svg">
-                                                                                <path
-                                                                                    d="M11 12C11 12.5523 11.4477 13 12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12Z"
-                                                                                    stroke="#262626" stroke-width="2"
-                                                                                    stroke-linecap="round"
-                                                                                    stroke-linejoin="round" />
-                                                                                <path
-                                                                                    d="M18 12C18 12.5523 18.4477 13 19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12Z"
-                                                                                    stroke="#262626" stroke-width="2"
-                                                                                    stroke-linecap="round"
-                                                                                    stroke-linejoin="round" />
-                                                                                <path
-                                                                                    d="M4 12C4 12.5523 4.44772 13 5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12Z"
-                                                                                    stroke="#262626" stroke-width="2"
-                                                                                    stroke-linecap="round"
-                                                                                    stroke-linejoin="round" />
-                                                                            </svg>
+                                                                    <div class="d-flex">
+                                                                        <a href="{{ route('dashboard.hotel.reservations.show', $reservation->reservation_code) }}" class="btn btn-primary shadow btn-xs sharp me-1">
+                                                                            <i class="fas fa-eye"></i>
                                                                         </a>
-                                                                        <div class="dropdown-menu">
-                                                                            <a class="dropdown-item"
-                                                                                href="{{ route('dashboard.hotel.reservations.edit', $reservation->id) }}">Edit</a>
-                                                                            <a class="dropdown-item"
-                                                                                href="javascript:void(0);"
-                                                                                onclick="confirmDelete('{{ route('dashboard.hotel.reservations.destroy', $reservation->id) }}')">Delete</a>
-                                                                        </div>
+                                                                        <a href="{{ route('dashboard.hotel.reservations.edit', $reservation->id) }}" class="btn btn-primary shadow btn-xs sharp me-1">
+                                                                            <i class="fas fa-pencil-alt"></i>
+                                                                        </a>
+                                                                        <a href="javascript:void(0);" class="btn btn-danger shadow btn-xs sharp" onclick="confirmDelete('{{ route('dashboard.hotel.reservations.destroy', $reservation->id) }}')">
+                                                                            <i class="fa fa-trash"></i>
+                                                                        </a>
                                                                     </div>
                                                                 </td>
                                                             </tr>

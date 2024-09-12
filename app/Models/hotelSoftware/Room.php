@@ -42,5 +42,13 @@ class Room extends Model
         }
         return null;
     }
-    
+
+    public function RoomImages()
+    {
+        $file = $this->files()->get();
+        if ($file) {
+            return $file;
+        }
+        return null;
+    }
 }

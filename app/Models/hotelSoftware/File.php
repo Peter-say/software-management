@@ -27,4 +27,9 @@ class File extends Model
     {
         return $this->belongsToMany(Room::class, 'room_files');
     }
+
+    public function roomFile()
+    {
+        return $this->belongsTo(RoomFile::class, 'room_id');
+    }
 }

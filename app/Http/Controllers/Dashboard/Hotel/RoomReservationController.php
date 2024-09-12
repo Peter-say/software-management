@@ -27,7 +27,7 @@ class RoomReservationController extends Controller
     public function index()
     {
         return view('dashboard.hotel.room.reservation.list', [
-            'reservations' => RoomReservation::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->paginate(30),
+            'reservations' => RoomReservation::with('guest.payments')->where('hotel_id', User::getAuthenticatedUser()->hotel->id)->paginate(30),
         ]);
     }
 
@@ -59,6 +59,7 @@ class RoomReservationController extends Controller
         } catch (ValidationException $e) {
             return response()->json(['success' => false, 'error_message' => $e->errors()]);
         } catch (\Exception $e) {
+            throw $e;
             return response()->json([
                 'success' => false,
                 'error_message' => 'An error occurred while creating the reservation.',
@@ -71,9 +72,16 @@ class RoomReservationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $reservation_code)
     {
-        //
+        if (!empty($reservation_code)) {
+            $reservation = RoomReservation::where('reservation_code', $reservation_code)->first();
+        } else {
+            return  redirect()->route('dashboard.hotel.reservations.index')->with('error_messag', 'Reservation not found');
+        }
+        return view('dashboard.hotel.room.reservation.single', [
+            'reservation' => $reservation,
+        ]);
     }
 
     /**
@@ -104,6 +112,7 @@ class RoomReservationController extends Controller
         } catch (ValidationException $e) {
             return response()->json(['success' => false, 'error_message' => $e->errors()]);
         } catch (\Exception $e) {
+            // throw $e;
             return response()->json([
                 'success' => false,
                 'error_message' => 'An error occurred while creating the reservation.',
@@ -134,7 +143,7 @@ class RoomReservationController extends Controller
         dd($request->all());
         $checkinDate = $request->input('checkin_date');
         $checkoutDate = $request->input('checkout_date');
-    
+
         try {
             $isAvailable = $this->reservation_service->checkRoomAvailability($checkinDate, $checkoutDate);
             return response()->json(['success' => true, 'available' => $isAvailable]);
@@ -147,5 +156,4 @@ class RoomReservationController extends Controller
             ]);
         }
     }
-    
 }

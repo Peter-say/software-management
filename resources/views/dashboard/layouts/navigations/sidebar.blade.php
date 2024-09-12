@@ -2,12 +2,14 @@
    Sidebar start
 ***********************************-->
 <div class="dlabnav">
-    @php
-        $user = Auth::user();
-        $isHotelUser = $user->hotel && $user->hotel->hotelUser()->where('user_id', $user->id)->exists();
-    @endphp
 
-    @if ($isHotelUser)
+    @php
+        use App\Models\HotelSoftware\HotelUser;
+        $user = Auth::user();
+       // Check if the user is associated with any hotel
+       $hotelUser = HotelUser::where('user_id', $user->id)->first();
+    @endphp
+    @if ($hotelUser)
         <div class="dlabnav-scroll">
             <ul class="metismenu" id="menu">
                 <li>
@@ -16,6 +18,7 @@
                         <span class="nav-text">Dashboard</span>
                     </a>
                 </li>
+
                 <li>
                     <a href="{{ route('dashboard.hotel-users.overview') }}" aria-expanded="false">
                         <i class="flaticon-013-checkmark"></i>
@@ -34,13 +37,14 @@
                         <span class="nav-text">Room Reservations</span>
                     </a>
                 </li>
+
             </ul>
             <div class="dropdown header-profile2">
                 <div class="header-info2 text-center">
-                    <img src="{{ asset('dashboard/images/profile/pic1.jpg') }}" alt="" />
+                    <img src="images/profile/pic1.jpg" alt="" />
                     <div class="sidebar-info">
-                        <h5 class="font-w500 mb-0">{{ $user->name }}</h5>
-                        <span class="fs-12">{{ $user->email }}</span>
+                        <h5 class="font-w500 mb-0">William Johanson</h5>
+                        <span class="fs-12">williamjohn@mail.com</span>
                     </div>
                     <div>
                         <a href="javascript:void(0);" class="btn btn-md text-secondary">Contact Us</a>

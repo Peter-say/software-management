@@ -35,14 +35,14 @@ class GuestWalletController extends Controller
     public function payWithGuestWallet(Request $request, $id = null)
     {
         try {
-          $this->guest_wallet_service->payWithGuestWallet($request, $id);
+         $wallet = $this->guest_wallet_service->payWithGuestWallet($request, $id);
           return back()->with('success_message', 'Payment made successfully');
         } catch (ModelNotFoundException $e) {
             return redirect()->back()->with('error_message', 'Guest Wallet not found');
         } catch (Exception $e) {
             return redirect()->back()->withInput($request->all())->with('error_message', $e->getMessage());
         } catch (\Throwable $th) {
-            // throw $th;
+            throw $th;
             return redirect()->back()->with('error_message', 'Something went wrong');
         }
     }

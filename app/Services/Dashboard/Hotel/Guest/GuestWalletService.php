@@ -5,6 +5,7 @@ namespace App\Services\Dashboard\Hotel\Guest;
 use App\Models\Payment;
 use App\Models\Transaction;
 use App\Models\HotelSoftware\Guest;
+use App\Models\hotelSoftware\GuestPayment;
 use App\Models\HotelSoftware\RoomReservation;
 use App\Services\Dashboard\Payment\PaymentService;
 use App\Services\Dashboard\Transaction\TransactionService;
@@ -136,9 +137,10 @@ class GuestWalletService
         return $payment;
     }
 
-    public function payWithGuestWallet(Request $request, $reservation_id)
+    public function payWithGuestWallet(Request $request)
     {
-        return DB::transaction(function () use ($request, $reservation_id) {
+
+        return DB::transaction(function () use ($request) {
             $validatedData = $this->validatePayWithGuestWallet($request);
 
             // Retrieve the guest and reservation
@@ -153,12 +155,10 @@ class GuestWalletService
 
             // Process the payment
             $payment = $this->payment_service->processPayment($request);
-
             // Process the transaction using the existing payment
             $transaction = $this->transaction_service->processTransaction($request, $payment);
 
             $transaction->transaction_type = 'debit';
-
             // Link the transaction to the payment
             $payment->transactions()->save($transaction);
 
@@ -166,12 +166,40 @@ class GuestWalletService
             $guest->wallet->balance -= $validatedData['amount'];
             $guest->wallet->save();
 
-            // Update the reservation status
-            $reservation->status = 'confirmed';
-            $reservation->total_amount -= $validatedData['amount'];
-            $reservation->save();
+            // set guest payment ID
+            GuestPayment::create([
+                'guest_id' => $guest->id,
+            ]);
+
+            // Update reservation status and save
+            $this->updateReservationStatus($reservation, $validatedData['amount']);
 
             return $payment;
         });
+    }
+
+
+    protected function updateReservationStatus($reservation, $amount)
+    {
+        // Sum all the payments made for the reservation so far
+        $reservation_payments = ($reservation->payments() ?? collect())->sum('amount');
+
+        // Calculate the total paid, including the new amount
+        $total_paid = $reservation_payments + $amount;
+
+        // Check if the total paid matches the total amount
+        if ($total_paid >= $reservation->total_amount) {
+            $reservation->payment_status = 'confirmed';  // Full payment made or overpaid
+        } elseif ($total_paid > 0 && $total_paid < $reservation->total_amount) {
+            $reservation->payment_status = 'partial';  // Partial payment made
+        } else {
+            $reservation->payment_status = 'pending';  // No payment or invalid payment
+        }
+
+        // Update the reservation with the new payment status
+        $reservation->save();
+
+        // Return the updated payment status
+        return $reservation->payment_status;
     }
 }

@@ -50,7 +50,7 @@
                                     <tr>
                                         <th>Description</th>
                                         <th>Rate</th>
-                                        <th>Qty</th>
+                                        <th>Night(s)</th>
                                         <th>Total</th>
                                     </tr>
                                 </thead>
@@ -58,7 +58,7 @@
                                     <tr>
                                         <td>Room: {{ $reservation->room->name }}</td>
                                         <td>{{ number_format($reservation->rate) }}</td>
-                                        <td>1</td>
+                                        <td>{{ number_format($reservation->calculateNight()) }}</td>
                                         <td>{{ number_format($reservation->total_amount) }}</td>
                                     </tr>
                                     <!-- Add more rows here if there are additional services -->
@@ -82,18 +82,53 @@
                                         <td colspan="3" class="text-end">Net Total</td>
                                         <td>{{ number_format($reservation->total_amount) }}</td>
                                     </tr>
-                                    @if ($reservation->guest->payments->isNotEmpty())
-                                        <tr>
-                                            <th>Date & Time</th>
-                                            <th>Amount</th>
-                                        </tr>
+                                    @if ($reservation->guest)
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date & Time</th>
+                                                    <th>Amount</th>
+                                                    <th>Action</th>
 
-                                        @foreach ($reservation->guest->payments as $payment)
-                                            <tr>
-                                                <td>{{ $payment->created_at }}</td>
-                                                <td>{{ $payment->amount }}</td>
-                                            </tr>
-                                        @endforeach
+                                                    <th>Date & Time</th>
+                                                    <th>Amount</th>
+                                                    <th>Action</th>
+
+                                                    <th>Date & Time</th>
+                                                    <th>Amount</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @php
+                                                    $payments = $reservation->payments->where(
+                                                        'payable_id',
+                                                        $reservation->id,
+                                                    );
+                                                    $paymentChunks = $payments->chunk(3); // Chunk payments into groups of 3
+                                                @endphp
+
+                                                @foreach ($paymentChunks as $chunk)
+                                                    <tr>
+                                                        @foreach ($chunk as $payment)
+                                                            <td>{{ $payment->created_at }}</td>
+                                                            <td>{{ number_format($payment->amount) }}</td>
+                                                            <td>
+                                                                <button class="btn btn-sm btn-primary">Delete</button>
+                                                                <!-- Example action -->
+                                                            </td>
+                                                        @endforeach
+
+                                                        <!-- Fill in empty cells for any missing columns in the last chunk -->
+                                                        @for ($i = $chunk->count(); $i < 3; $i++)
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        @endfor
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     @endif
 
                                 </tbody>
@@ -126,12 +161,40 @@
                             </div>
 
                         </div>
-                        <div class="card-footer text-end">
-                            <button class="btn btn-secondary" data-bs-toggle="modal"
-                                data-bs-target="#checkinModal">Check-in</button>
-                            <button class="btn btn-danger" data-bs-toggle="modal"
-                                data-bs-target="#checkoutModal">Check-out</button>
+                        <div class="card-footer text-end d-flex flex-column align-items-end pr-2">
+                            <!-- Check-in Section -->
+                            @if ($reservation->checked_in_at)
+                                <div class="mb-2">
+                                    <strong>Checked In:</strong> {{ $reservation->checked_in_at }}
+                                </div>
+                            @else
+                                <form id="checkInGuestForm" method="POST" class="mb-2">
+                                    @csrf
+                                    @method('PUT')
+                                    <input type="hidden" id="checkinGuestId" name="id" value="{{ $reservation->id }}">
+                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#checkinModal">
+                                        Check-in
+                                    </button>
+                                </form>
+                            @endif
+                        
+                            <!-- Check-out Section -->
+                            @if ($reservation->checked_out_at)
+                                <div>
+                                    <strong>Checked Out:</strong> {{ $reservation->checked_out_at }}
+                                </div>
+                            @else
+                                <form id="checkOutGuestForm">
+                                    @csrf
+                                    @method('PUT')
+                                    <input type="hidden" id="checkoutGuestId" name="id" value="{{ $reservation->id }}">
+                                    <button type="button" id="checkoutModalConfirmationButton" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#checkoutModal">
+                                        Check-out
+                                    </button>
+                                </form>
+                            @endif
                         </div>
+                        
                     @else
                         <div class="alert alert-info text-center">
                             No reservation found
@@ -156,7 +219,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary">Confirm Check-in</button>
+                    <!-- Submit the form when this button is clicked -->
+                    <button type="button" class="btn btn-primary" id="confirmCheckIn">Confirm Check-in</button>
                 </div>
             </div>
         </div>
@@ -175,7 +239,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger">Confirm Check-out</button>
+                    <button type="button" class="btn btn-danger" id="confirmCheckOut">Confirm Check-out</button>
                 </div>
             </div>
         </div>
@@ -202,6 +266,18 @@
                     $('#Pay-with-wallet-modal').modal('show');
                 }
             });
+            // document.addEventListener('DOMContentLoaded', function() {
+            //     // Handle Check-in Modal Confirmation
+            //     document.getElementById('confirmCheckIn').addEventListener('click', function() {
+            //         document.getElementById('checkInGuestForm').dispatchEvent(new Event('submit'));
+            //     });
+
+            //     // Handle Check-out Modal Confirmation
+            //     document.getElementById('confirmCheckOut').addEventListener('click', function() {
+            //         document.getElementById('checkOutGuestForm').dispatchEvent(new Event('submit'));
+            //     });
+            // });
         });
     </script>
+    @include('dashboard.hotel.room.reservation.check-in-out-script');
 @endsection

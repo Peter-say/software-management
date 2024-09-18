@@ -14,7 +14,7 @@ use Illuminate\Validation\Rule;
 
 class GuestService
 {
-    public function validatedData($data, $guest_id = null)
+    public function validatedData($data, $guest_id)
     {
 
         $validator = Validator::make($data, [
@@ -54,7 +54,7 @@ class GuestService
     public function saveGuest(Request $request, $data, $guest_id = null)
     {
         // Validate the data
-        $validatedData = $this->validatedData($data);
+        $validatedData = $this->validatedData($data, $guest_id);
     
         // Assign hotel ID to the guest data
         $hotel = User::getAuthenticatedUser()->hotel->id;

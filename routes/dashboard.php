@@ -30,6 +30,9 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::get('set-guest-info', [GuestController::class, 'getGuestInfo'])->name('set-guest-info');
             Route::post('check-room-availability', [RoomReservationController::class, 'getRoomAvailability']);
 
+            Route::put('reservation/{id}/check-in-guest', [RoomReservationController::class, 'checkInGuest'])->name('reservation.check-in-guest');
+            Route::put('reservation/{id}/check-out-guest', [RoomReservationController::class, 'CheckOutGuest'])->name('reservation.check-out-guest');
+
             Route::post('fund-guest-wallet', [GuestWalletController::class, 'recordCreditTransaction'])->name('fund-guest-wallet');
             Route::post('deduct-guest-wallet', [GuestWalletController::class, 'recordDebitTransaction'])->name('deduct-guest-wallet');
             Route::post('pay-with-guest-wallet', [GuestWalletController::class, 'payWithGuestWallet'])->name('pay-with-guest-wallet');

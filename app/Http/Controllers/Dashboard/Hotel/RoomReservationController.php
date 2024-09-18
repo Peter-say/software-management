@@ -46,23 +46,24 @@ class RoomReservationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, string $id)
     {
         $data = $request->all();
         try {
-            $reservation = $this->reservation_service->save($request, $data);
-            return response()->json([
-                'success' => true,
-                'redirectUrl' => route('dashboard.hotel.reservations.index'),
-                'success_message' => 'Reservation created successfully.',
-            ]);
+            $message = $this->reservation_service->save($request, $data);
+            if ($message === 'Reservation created successfully') {
+                return response()->json(['success' => true, 'message' => $message,
+                'redirectUrl' => route('dashboard.hotel.reservations.index')]);
+            }
+            // Handle other cases where the message indicates a problem
+            return response()->json(['success' => false, 'message' => $message], 400);
         } catch (ValidationException $e) {
-            return response()->json(['success' => false, 'error_message' => $e->errors()]);
+            return response()->json(['success' => false, 'errors' => $e->errors()], 422);
         } catch (\Exception $e) {
-            throw $e;
+            // throw $e;
             return response()->json([
                 'success' => false,
-                'error_message' => 'An error occurred while creating the reservation.',
+                'message' => 'An error occurred while creating the reservation.',
             ]);
         }
     }
@@ -103,19 +104,20 @@ class RoomReservationController extends Controller
     {
         $data = $request->all();
         try {
-            $reservation = $this->reservation_service->save($request, $data);
-            return response()->json([
-                'success' => true,
-                'redirectUrl' => route('dashboard.hotel.reservations.index'),
-                'success_message' => 'Reservation updated successfully.',
-            ]);
+            $message = $this->reservation_service->save($request, $data);
+            if ($message === 'Reservation updated successfully') {
+                return response()->json(['success' => true, 'message' => $message,
+                'redirectUrl' => route('dashboard.hotel.reservations.index')]);
+            }
+            // Handle other cases where the message indicates a problem
+            return response()->json(['success' => false, 'message' => $message], 400);
         } catch (ValidationException $e) {
-            return response()->json(['success' => false, 'error_message' => $e->errors()]);
+            return response()->json(['success' => false, 'errors' => $e->errors()], 422);
         } catch (\Exception $e) {
             // throw $e;
             return response()->json([
                 'success' => false,
-                'error_message' => 'An error occurred while creating the reservation.',
+                'message' => 'An error occurred while creating the reservation.',
             ]);
         }
     }
@@ -127,7 +129,7 @@ class RoomReservationController extends Controller
     {
         try {
             $this->reservation_service->delete($id);
-            return redirect()->route('dashboard.hotel.reservations.index')->with('success_message', 'reservation deleted successfully and login details sent.');
+            return redirect()->route('dashboard.hotel.reservations.index')->with('success_message', 'reservation deleted successfully.');
         } catch (ModelNotFoundException $e) {
             return redirect()->back()->with('error_message', 'Reservation not found.');
         } catch (ValidationException $e) {
@@ -137,6 +139,43 @@ class RoomReservationController extends Controller
             return redirect()->back()->with('error_message', 'An error occurred while deleting the reservation.');
         }
     }
+
+    public function checkInGuest(string $id)
+    {
+        try {
+            // Call the service method and get the result message
+            $message = $this->reservation_service->checkInGuest($id);
+            // Determine if the message indicates success
+            if ($message === 'Guest checked in successfully') {
+                return response()->json(['success' => true, 'message' => $message]);
+            }
+            // Handle other cases where the message indicates a problem
+            return response()->json(['success' => false, 'message' => $message], 400);
+        } catch (ValidationException $e) {
+            return response()->json(['success' => false, 'errors' => $e->errors()], 422);
+        } catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => 'An error occurred while checking in the guest.'], 500);
+        }
+    }
+
+    public function checkOutGuest(string $id)
+    {
+        try {
+            // Call the service method and get the result message
+            $message = $this->reservation_service->checkOutGuest($id);
+            // Determine if the message indicates success
+            if ($message === 'Guest checked out successfully') {
+                return response()->json(['success' => true, 'message' => $message]);
+            }
+            // Handle other cases where the message indicates a problem
+            return response()->json(['success' => false, 'message' => $message], 400);
+        } catch (ValidationException $e) {
+            return response()->json(['success' => false, 'errors' => $e->errors()], 422);
+        } catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => 'An error occurred while checking in the guest.'], 500);
+        }
+    }
+
 
     public function getRoomAvailability(Request $request)
     {

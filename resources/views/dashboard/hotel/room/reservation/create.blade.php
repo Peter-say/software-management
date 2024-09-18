@@ -31,7 +31,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <label for="phone">Search Existing Guest</label>
-                                            <input type="hidden" id="guest_id" name="guest_id">
+                                            <input type="hidden" id="guest_id" name="guest_id" value="{{$reservation->guest_id}}">
                                             <input id="guest_name" autofocus name="guest_name" type="text" list="guests"
                                                 class="form-control" placeholder="Search Guest by Name">
                                         </div>
@@ -332,23 +332,23 @@
                         const data = await response.json();
                         if (data.success) {
                             Toastify({
-                                text: data.success_message || 'Operation successful.',
-                                duration: 3000,
+                                text: data.message || 'Operation successful.',
+                                duration: 5000,
                                 gravity: 'top',
                                 position: 'right',
                                 backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
                             }).showToast();
                             setTimeout(() => {
                                 window.location.href = data.redirectUrl;
-                            }, 3000);
+                            }, 5000);
                         } else {
-                            handleErrorMessages(data.error_message);
+                            handleErrorMessages(data.errors);
                         }
                     } catch (error) {
                         console.error('Error:', error);
                         Toastify({
-                            text: error.message || 'An unexpected error occurred.',
-                            duration: 3000,
+                            text: message || 'An unexpected error occurred.',
+                            duration: 5000,
                             gravity: 'top',
                             position: 'right',
                             backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
@@ -359,7 +359,7 @@
                         if (typeof errors === 'string') {
                             Toastify({
                                 text: errors,
-                                duration: 3000,
+                                duration: 5000,
                                 gravity: 'top',
                                 position: 'right',
                                 backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
@@ -370,7 +370,7 @@
                                     errors[key].forEach(error => {
                                         Toastify({
                                             text: error,
-                                            duration: 3000,
+                                            duration: 5000,
                                             gravity: 'top',
                                             position: 'right',
                                             backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
@@ -404,7 +404,7 @@
                             if (!data.available) {
                                 Toastify({
                                     text: 'No rooms available for the selected dates.',
-                                    duration: 3000,
+                                    duration: 5000,
                                     gravity: 'top',
                                     position: 'right',
                                     backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
@@ -414,7 +414,7 @@
                             Toastify({
                                 text: data.error_message ||
                                     'An error occurred while checking availability.',
-                                duration: 3000,
+                                duration: 5000,
                                 gravity: 'top',
                                 position: 'right',
                                 backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',

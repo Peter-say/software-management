@@ -2,6 +2,7 @@
 
 namespace App\Models\HotelSoftware;
 
+use App\Models\hotelSoftware\GuestPayment;
 use App\Models\Payment;
 use App\Models\User;
 use App\Models\Wallet;
@@ -45,7 +46,6 @@ class Guest extends Model
         return $this->morphMany(Payment::class, 'payable');
     }
 
-
     protected static function boot()
     {
         parent::boot();
@@ -55,7 +55,7 @@ class Guest extends Model
             Wallet::create([
                 'guest_id' => $guest->id,
                 'balance' => 0, // Set initial balance
-                'currency' => 'NG', // Default currency
+                'currency' => 'NGN', // Default currency
             ]);
         });
     }

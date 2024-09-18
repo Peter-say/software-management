@@ -76,9 +76,9 @@
                                                                 <td>{{ number_format($reservation->total_amount) }}</td>
                                                                 <td>{{ $reservation->checkin_date ? $reservation->checkin_date->format('Y-m-d') : 'N/A' }}
                                                                 </td>
-                                                                <td>{{ $reservation->checkout_date ? $reservation->checkout_date->format('Y-m-d H:i:s') : 'N/A' }}</td>
-                                                                    <td>{{ $reservation->checkin_at ? $reservation->checkin_at->format('Y-m-d H:i:s') : 'N/A' }}</td>
-                                                                        <td>{{ $reservation->checkout_at ? $reservation->checkout_at->format('Y-m-d') : 'N/A' }}</td>
+                                                                <td>{{ $reservation->checkout_date ? $reservation->checkout_date->format('Y-m-d') : 'N/A' }}</td>
+                                                                    <td>{{ $reservation->checked_in_at ? $reservation->checked_in_at->format('Y-m-d H:i:s') : 'N/A' }}</td>
+                                                                        <td>{{ $reservation->checked_out_at ? $reservation->checked_out_at->format('Y-m-d H:i:s') : 'N/A' }}</td>
                                                                 </td>
 
                                                                 <td>

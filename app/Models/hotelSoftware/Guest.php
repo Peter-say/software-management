@@ -2,8 +2,10 @@
 
 namespace App\Models\HotelSoftware;
 
+use App\Models\Country;
 use App\Models\hotelSoftware\GuestPayment;
 use App\Models\Payment;
+use App\Models\State;
 use App\Models\User;
 use App\Models\Wallet;
 use App\Services\Dashboard\Hotel\Room\ReservationService;
@@ -15,6 +17,10 @@ class Guest extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    protected $casts = [
+        'birthday' => 'date',
+    ];
 
     // Define relationship with Reservation
     public function reservations()
@@ -39,6 +45,14 @@ class Guest extends Model
     public function wallet()
     {
         return $this->hasOne(Wallet::class);
+    }
+    public function state()
+    {
+        return $this->belongsTo(State::class);
+    }
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
     }
 
     public function payments()

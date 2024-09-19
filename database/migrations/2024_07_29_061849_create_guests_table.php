@@ -25,8 +25,8 @@ return new class extends Migration
             $table->string('id_picture_location')->nullable();
             $table->date('birthday')->nullable();
             $table->string('address')->nullable();
-            $table->string('city')->nullable();
-            $table->string('country')->nullable();
+            $table->foreignId('state_id')->constrained('states')->nullable();
+            $table->foreignId('country_id')->constrained('countries')->nullable();
             $table->softDeletes();
         
             $table->timestamps();

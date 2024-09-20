@@ -2,6 +2,7 @@
 
 namespace App\Services\Dashboard\Hotel\Guest;
 
+use App\Constants\AppConstants;
 use App\Helpers\FileHelpers;
 use App\Models\HotelSoftware\Guest;
 use App\Models\User;
@@ -62,13 +63,12 @@ class GuestService
     }
 
 
-    public function saveGuest(Request $request, $guest_id)
+    public function saveGuest(Request $request, $guest_id = null)
     {
-        // dd($request->all());
         // Validate the data (passing request data as an array)
         $validatedData = $this->validatedData($request->all(), $guest_id);
 
-        // Assign hotel ID to the guest data
+        // Assign hotel ID to the guest data    
         $hotel = User::getAuthenticatedUser()->hotel->id;
         $validatedData['hotel_id'] = $hotel;
 
@@ -76,7 +76,7 @@ class GuestService
         if (isset($validatedData['birthday'])) {
             $validatedData['birthday'] = Carbon::createFromFormat('d F, Y', $validatedData['birthday'])->format('Y-m-d');
         }
-        // dd( $validatedData);
+
         // Handle ID picture upload
         if ($request->hasFile('id_picture_location')) {
             $imageDirectory = 'hotel/guest/id';
@@ -102,21 +102,42 @@ class GuestService
                 'error_message' => 'Guest with the same details already exists.'
             ]);
         }
-dd($guest_id );
-        // dd( $validatedData);
         // Check if we're updating an existing guest or creating a new one
-        if ($guest_id !== null) {
-            dd($validatedData, 'first');
+        if ($guest_id) {
             // Update existing guest
             $guest = Guest::findOrFail($guest_id);
             $guest->update($validatedData);
         } else {
-            dd($validatedData);
             // Create new guest
             $guest = Guest::create($validatedData);
         }
 
         // Return the guest object
         return $guest;
+    }
+
+    public static function list(array $data = [])
+    {
+        $builder = Guest::latest();
+        // Check if the user is an admin
+        if (User::getAuthenticatedUser()->role === AppConstants::ADMIN) {
+            // Admin can see all guests, no need to filter by hotel_id
+            return $builder;
+        }
+        // If the user is not an admin, restrict guests by hotel_id
+        $hotelId = User::getAuthenticatedUser()->hotel->id;
+        // Optionally allow overriding of the hotel_id from the $data array
+        if (!empty($data['hotel_id'])) {
+            $hotelId = $data['hotel_id'];
+        }
+        // Filter by the determined hotel ID
+        $builder = $builder->where("hotel_id", $hotelId);
+        return $builder;
+    }
+
+    public function delete($id)
+    {
+      $guest = $this->getById($id);
+      $guest->delete();
     }
 }

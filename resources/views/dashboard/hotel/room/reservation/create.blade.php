@@ -31,7 +31,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <label for="phone">Search Existing Guest</label>
-                                            <input type="hidden" id="guest_id" name="guest_id" value="{{$reservation->guest_id}}">
+                                            <input type="hidden" id="guest_id" name="guest_id" value="">
                                             <input id="guest_name" autofocus name="guest_name" type="text" list="guests"
                                                 class="form-control" placeholder="Search Guest by Name">
                                         </div>

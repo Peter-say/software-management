@@ -23,10 +23,10 @@ class GuestController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         return view('dashboard.hotel.guest.index', [
-            'guests' => Guest::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->paginate(30),
+            'guests' => $this->guest_service->list($request->all())->paginate(30),
         ]);
     }
 
@@ -35,10 +35,10 @@ class GuestController extends Controller
      */
     public function create()
     {
-       return view('dashboard.hotel.guest.create', [
-        'statusOptions' => StatusConstants::ACTIVE_OPTIONS,
-        'titleOptions' => AppConstants::TITLE_OPTIONS,
-       ]);
+        return view('dashboard.hotel.guest.create', [
+            'statusOptions' => StatusConstants::ACTIVE_OPTIONS,
+            'titleOptions' => AppConstants::TITLE_OPTIONS,
+        ]);
     }
 
     /**
@@ -46,15 +46,12 @@ class GuestController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request;
         try {
-            $this->guest_service->saveGuest($request, $data);
+            $this->guest_service->saveGuest($request);
             return redirect()->route('dashboard.hotel.guests.index')->with('success_message', 'Guest created successfully');
         } catch (Exception $e) {
-            dd($e);
             return redirect()->back()->withInput($request->all())->with('error_message', $e->getMessage());
         } catch (\Throwable $th) {
-            throw $th;
             return redirect()->back()->with('error_message', 'Something went wrong');
         }
     }
@@ -73,7 +70,7 @@ class GuestController extends Controller
     public function edit(string $id)
     {
         return view('dashboard.hotel.guest.create', [
-            'guest' =>$this->guest_service->getById($id),
+            'guest' => $this->guest_service->getById($id),
             'statusOptions' => StatusConstants::ACTIVE_OPTIONS,
             'titleOptions' => AppConstants::TITLE_OPTIONS,
         ]);
@@ -100,15 +97,25 @@ class GuestController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
-        //
+        try {
+            $this->guest_service->delete($id);
+            return redirect()->route('dashboard.hotel.guests.index')->with('success_message', 'Guest deleted successfully');
+        } catch (ModelNotFoundException $e) {
+            return redirect()->back()->with('error_message', 'Guest not found');
+        } catch (Exception $e) {
+            return redirect()->back()->withInput($request->all())->with('error_message', $e->getMessage());
+        } catch (\Throwable $th) {
+            throw $th;
+            return redirect()->back()->with('error_message', 'Something went wrong');
+        }
     }
 
     public function getGuestInfo(Request $request)
     {
         $id = $request->id;
-        $guest = Guest::find($id);
+        $guest = Guest::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->find($id);
         return response()->json($guest);
     }
 }

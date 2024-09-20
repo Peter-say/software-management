@@ -60,12 +60,12 @@ class ReservationService
         return $validated;
     }
 
-    public function save(Request $request, $data, $reservation_id = null)
+    public function save(Request $request, $reservation_id = null)
     {
         // dd( $data = $request->all());
-        return DB::transaction(function () use ($request, $data, $reservation_id) {
+        return DB::transaction(function () use ($request, $reservation_id) {
             // Validate the incoming data
-            $validatedData = $this->validatedData($data);
+            $validatedData = $this->validatedData($request->all(), $reservation_id);
 
 
             // Calculate the total price
@@ -84,7 +84,7 @@ class ReservationService
             if ($request->guest_id) {
                 $validatedData['guest_id'] = $request->guest_id;
             } else {
-                $guest = $this->guest_service->saveGuest($request, $data);
+                $guest = $this->guest_service->saveGuest($request);
                 $validatedData['guest_id'] = $guest->id;
             }
 

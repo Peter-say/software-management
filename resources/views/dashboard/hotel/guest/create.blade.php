@@ -6,7 +6,7 @@
             <div class="row page-titles">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active"><a href="{{ route('dashboard.home') }}">Home</a></li>
-                    <li class="breadcrumb-item active"><a href="{{route('dashboard.hotel.guests.index')}}">Guest</a></li>
+                    <li class="breadcrumb-item active"><a href="{{ route('dashboard.hotel.guests.index') }}">Guest</a></li>
                     <li class="breadcrumb-item">{{ isset($guest) ? 'Update Guest' : 'Create Guest' }}</li>
                 </ol>
             </div>
@@ -177,9 +177,6 @@
                                                 @enderror
                                             </div>
                                         </div>
-
-
-
                                         <!-- ID Picture Field -->
                                         <div class="col-md-6 col-12 mb-3">
                                             <div class="form-group">
@@ -211,6 +208,8 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            var stateId = '{{ old('state_id', $guest->state_id ?? '') }}';
+
             $('#country_id').on('change', function() {
                 var countryId = $(this).val();
                 var stateDropdown = $('#state_id');
@@ -225,10 +224,12 @@
                         },
                         success: function(response) {
                             stateDropdown.append(
-                                '<option value="">Select State</option>'); // Add placeholder
+                            '<option value="">Select State</option>'); // Add placeholder
                             $.each(response.states, function(key, state) {
+                                var selected = (state.id == stateId) ? 'selected' : '';
                                 stateDropdown.append('<option value="' + state.id +
-                                    '">' + state.name + '</option>');
+                                    '" ' + selected + '>' + state.name + '</option>'
+                                    );
                             });
                         },
                         error: function() {
@@ -239,6 +240,9 @@
                     stateDropdown.append('<option value="">Select State</option>');
                 }
             });
+
+            // Trigger change event on page load to populate states if country is pre-selected
+            $('#country_id').trigger('change');
         });
     </script>
 @endsection

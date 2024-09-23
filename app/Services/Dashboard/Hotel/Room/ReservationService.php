@@ -169,7 +169,7 @@ class ReservationService
     {
         $checkinDate = Carbon::createFromFormat('d F, Y', $checkinDate)->format('Y-m-d');
         $checkoutDate = Carbon::createFromFormat('d F, Y', $checkoutDate)->format('Y-m-d');
-
+        dd($checkinDate, $checkoutDate);
         $reservedRoom = (new Room)->reservations()
             ->where(function ($query) use ($checkinDate, $checkoutDate) {
                 $query->where('checkin_date', '<', $checkoutDate)

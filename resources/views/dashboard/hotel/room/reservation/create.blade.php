@@ -31,7 +31,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <label for="phone">Search Existing Guest</label>
-                                            <input type="hidden" id="guest_id" name="guest_id" value="{{$reservation->guest_id}}">
+                                            <input type="hidden" id="guest_id" name="guest_id" value="">
                                             <input id="guest_name" autofocus name="guest_name" type="text" list="guests"
                                                 class="form-control" placeholder="Search Guest by Name">
                                         </div>
@@ -424,22 +424,7 @@
                     .catch(error => console.error('Error:', error));
             }
 
-            // Handle date changes and room availability check
-            document.getElementById('checkin_date').addEventListener('change', function() {
-                const checkinDate = this.value;
-                const checkoutDate = document.getElementById('checkout_date').value;
-                if (checkinDate && checkoutDate) {
-                    checkRoomAvailability(checkinDate, checkoutDate);
-                }
-            });
-
-            document.getElementById('checkout_date').addEventListener('change', function() {
-                const checkoutDate = this.value;
-                const checkinDate = document.getElementById('checkin_date').value;
-                if (checkoutDate && checkinDate) {
-                    checkRoomAvailability(checkinDate, checkoutDate);
-                }
-            });
+          
 
 
             // Initialize the guest information and room selection handling

@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Models\HotelSoftware\Guest;
 use App\Models\hotelSoftware\Hotel;
 use App\Models\HotelSoftware\HotelUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -51,18 +52,39 @@ class User extends Authenticatable
         ];
     }
 
-    public function hotel()
+    // Relationship with HotelUser
+    public function hotelUser()
     {
-        return $this->hasOne(Hotel::class);
+        return $this->hasOne(HotelUser::class);
     }
 
-    public function hotelUsers()
+    // Relationship with Hotel through HotelUser
+    public function hotel()
     {
-        return $this->hasMany(HotelUser::class, 'user_id');
+        return $this->hasOneThrough(Hotel::class, HotelUser::class, 'user_id', 'id', 'id', 'hotel_id');
     }
 
     public static function getAuthenticatedUser()
     {
         return Auth::user();
+    }
+
+    public function wallet()
+    {
+        return $this->hasOne(Wallet::class);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Define the created event listener
+        static::created(function ($guest) {
+            Wallet::create([
+                'user_id' => $guest->id,
+                'balance' => 0, // Set initial balance
+                'currency' => 'NG', // Default currency
+            ]);
+        });
     }
 }

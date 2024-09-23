@@ -25,14 +25,16 @@ class Hotel extends Model
         'user_id',
     ];
 
-    public function hotelUser()
+    // Relationship with HotelUser
+    public function hotelUsers()
     {
-        return $this->hasMany(HotelUser::class, 'hotel_id');
+        return $this->hasMany(HotelUser::class);
     }
 
-    public function user()
+    // Relationship with User through HotelUser
+    public function users()
     {
-        return $this->hasMany(User::class, 'user_id');
+        return $this->hasManyThrough(User::class, HotelUser::class);
     }
 
     public function room()

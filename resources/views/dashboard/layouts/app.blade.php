@@ -4,6 +4,7 @@
 <!-- Mirrored from travl.dexignlab.com/xhtml/index-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 31 Jul 2024 20:07:20 GMT -->
 
 <head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="keywords" content="" />
@@ -45,6 +46,7 @@
     <link
         href="{{ asset('dashboard/vendor/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}"
         rel="stylesheet">
+        
 
 </head>
 

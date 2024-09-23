@@ -10,7 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str; // Import Laravel's Str class for UUID
+use Illuminate\Support\Str; 
 
 class Onboarding
 {

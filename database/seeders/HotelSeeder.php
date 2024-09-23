@@ -6,6 +6,7 @@ use App\Models\hotelSoftware\Hotel as HotelSoftwareHotel;
 use App\Models\HotelSoftware\HotelUser;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str; 
 
 class HotelSeeder extends Seeder
 {
@@ -20,6 +21,7 @@ class HotelSeeder extends Seeder
 
         // Seed the hotels table with some example data
         $hotel = HotelSoftwareHotel::create([
+            'uuid' => Str::uuid(),
             'user_id' => $adminUser->id,
             'hotel_name' => 'Hotel Grand',
             'address' => '123 Main St, Grand City',

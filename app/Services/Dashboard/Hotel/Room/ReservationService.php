@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Services\Dashboard\Hotel\Guest\GuestService;
 use Carbon\Carbon;
 use DateTime;
+use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -90,13 +91,62 @@ class ReservationService
             // Check if updating an existing reservation or creating a new one
             if ($reservation_id = $request->reservation_id) {
                 $room_reservation = $this->getById($reservation_id);
+                if ($room_reservation->checked_out_at) {
+                    throw ValidationException::withMessages([
+                        'reservation' => 'Cannot update this reservation because guest has already checked out'
+                    ]);
+                }
                 $room_reservation->update($validatedData);
+                return 'Reservation updated successfully';
             } else {
                 $room_reservation = RoomReservation::create($validatedData);
+                return 'Reservation created successfully';
             }
             return $room_reservation;
         });
     }
+
+    public function checkInGuest($reservation_id)
+    {
+        $reservation = $this->getById($reservation_id);
+        if ($reservation->checked_in_at) {
+            throw ValidationException::withMessages([
+                'checked_in_at' => 'Already checked in'
+            ]);
+        }
+        $reservation->update([
+            'checked_in_at' => now(),
+            'status' => 'occupied',
+        ]);
+        $reservation->refresh();
+        return 'Guest checked in successfully';
+    }
+
+    public function checkOutGuest($reservation_id)
+    {
+        $reservation = $this->getById($reservation_id);
+        $reservation_payment = ($reservation->payments() ?? collect())->sum('amount');
+        if (!$reservation->checked_in_at) {
+            throw ValidationException::withMessages([
+                'checked_in_at' => 'Cannot checkout guest when you have not checked them in'
+            ]);
+        }
+        // Ensure that payment is completed before checking out
+        if ($reservation->total_amount > $reservation_payment) {
+            throw ValidationException::withMessages([
+                'payment_status' => 'Cannot check guest out because their payment has not been completed'
+            ]);
+        }
+
+        // Update the reservation status and checkout time
+        $reservation->update([
+            'checked_out_at' => now(),
+            'status' => 'confirmed',
+        ]);
+        $reservation->refresh();
+        return 'Guest checked out successfully';
+    }
+
 
     private function generateReservationCode()
     {
@@ -119,7 +169,7 @@ class ReservationService
     {
         $checkinDate = Carbon::createFromFormat('d F, Y', $checkinDate)->format('Y-m-d');
         $checkoutDate = Carbon::createFromFormat('d F, Y', $checkoutDate)->format('Y-m-d');
-
+        dd($checkinDate, $checkoutDate);
         $reservedRoom = (new Room)->reservations()
             ->where(function ($query) use ($checkinDate, $checkoutDate) {
                 $query->where('checkin_date', '<', $checkoutDate)

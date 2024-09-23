@@ -28,7 +28,7 @@ class UsersController extends Controller
     {
 
         $hotel = Hotel::where('uuid', User::getAuthenticatedUser()->hotel->uuid)->firstOrFail();
-        $hotel_users = $hotel->hotelUser()->paginate(30);
+        $hotel_users = $hotel->hotelUsers()->paginate(30);
         return view('dashboard.hotel.users.index', [
             'hotel_users' => $hotel_users
         ]);

@@ -31,7 +31,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <label for="phone">Search Existing Guest</label>
-                                            <input type="hidden" id="guest_id" name="guest_id">
+                                            <input type="hidden" id="guest_id" name="guest_id" value="">
                                             <input id="guest_name" autofocus name="guest_name" type="text" list="guests"
                                                 class="form-control" placeholder="Search Guest by Name">
                                         </div>
@@ -251,6 +251,7 @@
                 const guestsDataList = document.getElementById('guests');
                 const guestIdField = document.getElementById('guest_id');
 
+                // Handle guest selection and autofill guest details
                 guestInput.addEventListener('input', function() {
                     const inputValue = guestInput.value;
                     let selectedOption = null;
@@ -271,13 +272,16 @@
                 function fetchGuestInfo(guestId) {
                     fetch(`/dashboard/hotel/set-guest-info?id=${guestId}`)
                         .then(response => {
+                            // Log the status and content-type of the response for debugging
                             console.log('Response status:', response.status);
                             console.log('Response content-type:', response.headers.get('content-type'));
 
+                            // Check if the response is not a 404 or another error
                             if (!response.ok) {
                                 throw new Error('Network response was not ok: ' + response.statusText);
                             }
 
+                            // Check if the response is JSON
                             if (response.headers.get('content-type')?.includes('application/json')) {
                                 return response.json();
                             } else {
@@ -294,6 +298,90 @@
                         })
                         .catch(error => console.error('Error fetching guest data:', error));
                 }
+
+
+                // Handle room selection and update rate field
+                const roomSelect = document.getElementById('room_id');
+                const rateField = document.getElementById('rate');
+
+                roomSelect.addEventListener('change', function() {
+                    const selectedRoom = roomSelect.options[roomSelect.selectedIndex];
+                    const roomRate = selectedRoom.getAttribute('data-rate');
+
+                    if (roomRate) {
+                        rateField.value = roomRate; // Set the value of the rate field
+                    } else {
+                        rateField.value = ''; // Clear rate if no rate is available
+                    }
+                });
+
+                const reservationForm = document.getElementById('reservationForm');
+                reservationForm.addEventListener('submit', async function(event) {
+                    event.preventDefault();
+
+                    try {
+                        const formData = new FormData(reservationForm);
+                        const response = await fetch(reservationForm.action, {
+                            method: reservationForm.method,
+                            body: formData,
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        });
+                        const data = await response.json();
+                        if (data.success) {
+                            Toastify({
+                                text: data.message || 'Operation successful.',
+                                duration: 5000,
+                                gravity: 'top',
+                                position: 'right',
+                                backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
+                            }).showToast();
+                            setTimeout(() => {
+                                window.location.href = data.redirectUrl;
+                            }, 5000);
+                        } else {
+                            handleErrorMessages(data.errors);
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        Toastify({
+                            text: message || 'An unexpected error occurred.',
+                            duration: 5000,
+                            gravity: 'top',
+                            position: 'right',
+                            backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
+                        }).showToast();
+                    }
+
+                    function handleErrorMessages(errors) {
+                        if (typeof errors === 'string') {
+                            Toastify({
+                                text: errors,
+                                duration: 5000,
+                                gravity: 'top',
+                                position: 'right',
+                                backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
+                            }).showToast();
+                        } else if (typeof errors === 'object') {
+                            for (let key in errors) {
+                                if (errors.hasOwnProperty(key)) {
+                                    errors[key].forEach(error => {
+                                        Toastify({
+                                            text: error,
+                                            duration: 5000,
+                                            gravity: 'top',
+                                            position: 'right',
+                                            backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
+                                        }).showToast();
+                                    });
+                                }
+                            }
+                        }
+                    }
+
+                });
             }
 
             function checkRoomAvailability(checkinDate, checkoutDate) {
@@ -316,7 +404,7 @@
                             if (!data.available) {
                                 Toastify({
                                     text: 'No rooms available for the selected dates.',
-                                    duration: 3000,
+                                    duration: 5000,
                                     gravity: 'top',
                                     position: 'right',
                                     backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
@@ -326,7 +414,7 @@
                             Toastify({
                                 text: data.error_message ||
                                     'An error occurred while checking availability.',
-                                duration: 3000,
+                                duration: 5000,
                                 gravity: 'top',
                                 position: 'right',
                                 backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
@@ -336,28 +424,10 @@
                     .catch(error => console.error('Error:', error));
             }
 
-            document.getElementById('checkin_date').addEventListener('change', function() {
-                const checkinDate = this.value;
-                const checkoutDate = document.getElementById('checkout_date').value;
-                console.log('Check-in Date Changed:', checkinDate);
+          
 
-                if (checkinDate && checkoutDate) {
-                    console.log('Both dates are set. Checking availability...');
-                    checkRoomAvailability(checkinDate, checkoutDate);
-                }
-            });
 
-            document.getElementById('checkout_date').addEventListener('change', function() {
-                const checkoutDate = this.value;
-                const checkinDate = document.getElementById('checkin_date').value;
-                console.log('Check-out Date Changed:', checkoutDate);
-
-                if (checkoutDate && checkinDate) {
-                    console.log('Both dates are set. Checking availability...');
-                    checkRoomAvailability(checkinDate, checkoutDate);
-                }
-            });
-
+            // Initialize the guest information and room selection handling
             setGuestInformation();
         });
     </script>

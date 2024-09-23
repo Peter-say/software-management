@@ -43,7 +43,11 @@ class AppConstants
     ];
 
     // Users role
-    const SUPER_USER = 'Hotel_Owner';
+    const ADMIN = 'Admin';
+    const MODERATOR = 'Moderator';
+    const USER  = 'User';
+
+    const HOTEL_OWNER = 'Hotel_Owner';
     const ACCOUNT = 'Account';
     const SALES = 'Sales';
     const STORE = 'Store';

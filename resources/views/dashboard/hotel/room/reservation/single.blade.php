@@ -82,10 +82,16 @@
                                         <td colspan="3" class="text-end">Net Total</td>
                                         <td>{{ number_format($reservation->total_amount) }}</td>
                                     </tr>
-                                    @if ($reservation->guest)
+                                    @if ($reservation->payments->count())
                                         <table class="table table-bordered">
                                             <thead>
                                                 <tr>
+                                                    {{-- @if ($reservation->payments->count() === 3)
+                                                        @if ($reservation->payments->count() === 2)
+                                                            @if ($reservation->payments->count() === 1)
+                                                            @endif
+                                                        @endif
+                                                    @endif --}}
                                                     <th>Date & Time</th>
                                                     <th>Amount</th>
                                                     <th>Action</th>
@@ -171,13 +177,15 @@
                                 <form id="checkInGuestForm" method="POST" class="mb-2">
                                     @csrf
                                     @method('PUT')
-                                    <input type="hidden" id="checkinGuestId" name="id" value="{{ $reservation->id }}">
-                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#checkinModal">
+                                    <input type="hidden" id="checkinGuestId" name="id"
+                                        value="{{ $reservation->id }}">
+                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                                        data-bs-target="#checkinModal">
                                         Check-in
                                     </button>
                                 </form>
                             @endif
-                        
+
                             <!-- Check-out Section -->
                             @if ($reservation->checked_out_at)
                                 <div>
@@ -187,14 +195,15 @@
                                 <form id="checkOutGuestForm">
                                     @csrf
                                     @method('PUT')
-                                    <input type="hidden" id="checkoutGuestId" name="id" value="{{ $reservation->id }}">
-                                    <button type="button" id="checkoutModalConfirmationButton" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#checkoutModal">
+                                    <input type="hidden" id="checkoutGuestId" name="id"
+                                        value="{{ $reservation->id }}">
+                                    <button type="button" id="checkoutModalConfirmationButton" class="btn btn-danger"
+                                        data-bs-toggle="modal" data-bs-target="#checkoutModal">
                                         Check-out
                                     </button>
                                 </form>
                             @endif
                         </div>
-                        
                     @else
                         <div class="alert alert-info text-center">
                             No reservation found

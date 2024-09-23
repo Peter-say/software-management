@@ -46,11 +46,10 @@ class RoomReservationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, string $id)
+    public function store(Request $request)
     {
-        $data = $request->all();
         try {
-            $message = $this->reservation_service->save($request, $data);
+            $message = $this->reservation_service->save($request);
             if ($message === 'Reservation created successfully') {
                 return response()->json(['success' => true, 'message' => $message,
                 'redirectUrl' => route('dashboard.hotel.reservations.index')]);

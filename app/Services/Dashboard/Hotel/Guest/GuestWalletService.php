@@ -50,6 +50,7 @@ class GuestWalletService
             'reservation_id' => 'required|exists:room_reservations,id',
             'amount' => 'required|numeric|min:0.01',
             'description' => 'nullable|string',
+            
         ]);
     }
 

@@ -216,8 +216,7 @@
 
                                                 <div class="col-lg-6 col-12 mb-3">
                                                     <div class="form-group">
-                                                        <label for="address"
-                                                            class="text-label form-label">Address*</label>
+                                                        <label for="address" class="text-label form-label">Address*</label>
                                                         <input type="text" id="address" name="address"
                                                             class="form-control @error('address') is-invalid @enderror"
                                                             placeholder="Hotel Address" value="{{ old('address') }}"
@@ -245,47 +244,36 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-6 col-12 mb-3">
+                                                <!-- Country Field -->
+                                                <div class="col-md-6 col-12 mb-3">
                                                     <div class="form-group">
-                                                        <label for="state_id" class="text-label form-label">State</label>
-                                                        <select id="state_id" name="state_id"
-                                                            class="form-control @error('state_id') is-invalid @enderror">
-                                                            <option value="">Select State</option>
-                                                            <!-- Populate states dynamically -->
-                                                            @foreach (getModelItems('states') as $state)
-                                                                <option value="{{ $state->id }}"
-                                                                    {{ old('state_id') == $state->id ? 'selected' : '' }}>
-                                                                    {{ $state->name }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                        @error('state_id')
-                                                            <div class="invalid-feedback">
-                                                                {{ $message }}
-                                                            </div>
-                                                        @enderror
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-6 col-12 mb-3">
-                                                    <div class="form-group">
-                                                        <label for="country_id"
-                                                            class="text-label form-label">Country</label>
+                                                        <label for="country_id" class="form-label">Country</label>
                                                         <select id="country_id" name="country_id"
                                                             class="form-control @error('country_id') is-invalid @enderror">
                                                             <option value="">Select Country</option>
-                                                            <!-- Populate countries dynamically -->
                                                             @foreach (getModelItems('countries') as $country)
                                                                 <option value="{{ $country->id }}"
-                                                                    {{ old('country_id') == $country->id ? 'selected' : '' }}>
+                                                                    {{ old('country_id', $country_id ?? '') == $country->id ? 'selected' : '' }}>
                                                                     {{ $country->name }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
                                                         @error('country_id')
-                                                            <div class="invalid-feedback">
-                                                                {{ $message }}
-                                                            </div>
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+                                                </div>
+
+                                                <!-- State Field -->
+                                                <div class="col-md-6 col-12 mb-3">
+                                                    <div class="form-group">
+                                                        <label for="state_id" class="form-label">State</label>
+                                                        <select id="state_id" name="state_id"
+                                                            class="form-control @error('state_id') is-invalid @enderror">
+                                                            <option value="">Select State</option>
+                                                        </select>
+                                                        @error('state_id')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
                                                         @enderror
                                                     </div>
                                                 </div>
@@ -293,7 +281,8 @@
                                                 <div class="col-lg-6 col-12 mb-3">
                                                     <div class="form-group">
                                                         <label for="logo" class="text-label form-label">Logo</label>
-                                                        <input type="file" id="logo" name="logo" class="form-control w-100 @error('logo') is-invalid @enderror">
+                                                        <input type="file" id="logo" name="logo"
+                                                            class="form-control w-100 @error('logo') is-invalid @enderror">
                                                         @error('logo')
                                                             <div class="invalid-feedback">
                                                                 {{ $message }}
@@ -301,7 +290,7 @@
                                                         @enderror
                                                     </div>
                                                 </div>
-                                                
+
 
                                                 <div class="col-lg-6 col-12 mb-3">
                                                     <div class="form-group">
@@ -318,7 +307,7 @@
                                                 </div>
                                             </div>
 
-                                          
+
 
                                         </div>
 
@@ -354,7 +343,7 @@
             button.addEventListener('click', function() {
                 // Remove the selected class from all cards
                 document.querySelectorAll('.choice-card').forEach(card => card.classList.remove(
-                'selected'));
+                    'selected'));
 
                 // Add the selected class to the clicked card
                 const card = this.closest('.choice-card');
@@ -369,6 +358,45 @@
                 // Optionally, log the choice to the console
                 console.log('Selected choice:', choice);
             });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var stateId = '{{ old('state_id') }}';
+
+            $('#country_id').on('change', function() {
+                var countryId = $(this).val();
+                var stateDropdown = $('#state_id');
+                stateDropdown.empty();
+
+                if (countryId) {
+                    $.ajax({
+                        url: '{{ route('get-states-by-country') }}',
+                        type: 'GET',
+                        data: {
+                            country_id: countryId
+                        },
+                        success: function(response) {
+                            stateDropdown.append(
+                            '<option value="">Select State</option>'); // Add placeholder
+                            $.each(response.states, function(key, state) {
+                                var selected = (state.id == stateId) ? 'selected' : '';
+                                stateDropdown.append('<option value="' + state.id +
+                                    '" ' + selected + '>' + state.name + '</option>'
+                                    );
+                            });
+                        },
+                        error: function() {
+                            alert('Error fetching states');
+                        }
+                    });
+                } else {
+                    stateDropdown.append('<option value="">Select State</option>');
+                }
+            });
+
+            // Trigger change event on page load to populate states if country is pre-selected
+            $('#country_id').trigger('change');
         });
     </script>
 @endsection

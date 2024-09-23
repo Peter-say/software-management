@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Services\Dashboard\Onboarding;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class OnboardingController extends Controller
@@ -57,5 +58,23 @@ class OnboardingController extends Controller
 
             return back()->with('error_message', 'An error occurred while submitting your request. Please try again.');
         }
+    }
+
+    public function getStatesByCountry(Request $request)
+    {
+        $countryId = $request->country_id;
+
+        if ($countryId) {
+            // Fetch states by country_id
+            $states = DB::table('states')
+                ->where('country_id', $countryId)
+                ->select('id', 'name')
+                ->orderBy('name', 'asc')
+                ->get();
+
+            return response()->json(['states' => $states]);
+        }
+
+        return response()->json(['states' => []]);
     }
 }

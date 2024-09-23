@@ -2,6 +2,7 @@
 
 namespace App\Services\Dashboard;
 
+use App\Constants\AppConstants;
 use App\Helpers\FileHelpers;
 use App\Models\HotelSoftware\Hotel;
 use App\Models\HotelSoftware\HotelUser;
@@ -74,7 +75,7 @@ class Onboarding
         }
 
         // Generate UUID
-        $data['uuid'] = Str::uuid(); // Using Laravel's Str class for UUID
+        $data['uuid'] = Str::uuid(); 
         $data['user_id'] =User::getAuthenticatedUser()->id; // Assign the authenticated user's ID
 
         $hotel = Hotel::create($data);
@@ -82,7 +83,7 @@ class Onboarding
         HotelUser::create([
             'user_id' =>User::getAuthenticatedUser()->id,
             'hotel_id' => $hotel->id, // The newly created hotel ID
-            'role' => 'Hotel_Owner',
+            'role' => AppConstants::HOTEL_OWNER,
             'user_account_id' =>User::getAuthenticatedUser()->id, // The user who is performing this onboarding action for the hotel
         ]);
 

@@ -40,6 +40,7 @@ Route::middleware('auth', 'verified')->group(function () {
         });
            
     });
+    Route::get('/get-states-by-country', [OnboardingController::class, 'getStatesByCountry'])->name('get-states-by-country');
 
     Route::prefix('onboarding')->as('onboarding.')->group(function () {
         Route::get('setup-app', [OnboardingController::class, 'setupApp'])->name('setup-app');

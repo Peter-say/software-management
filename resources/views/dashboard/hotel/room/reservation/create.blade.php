@@ -151,14 +151,12 @@
                                             <div class="form-group">
                                                 <label for="checkin_date" class="text-label form-label">Check-in
                                                     Date*</label>
-                                                <input type="text" id="checkin_date" name="checkin_date"
-                                                    class="form-control datepicker-default @error('checkin_date') is-invalid @enderror"
+                                                <input type="date" id="checkin-date" name="checkin_date"
+                                                    class="form-control  @error('checkin_date') is-invalid @enderror"
                                                     value="{{ old('checkin_date', isset($reservation) ? $reservation->checkin_date->format('d F, Y') : '') }}"
                                                     required>
                                                 @error('checkin_date')
-                                                    <div class="invalid-feedback">
-                                                        {{ $message }}
-                                                    </div>
+                                                    <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
@@ -166,14 +164,12 @@
                                             <div class="form-group">
                                                 <label for="checkout_date" class="text-label form-label">Check-out
                                                     Date*</label>
-                                                <input type="text" id="checkout_date" name="checkout_date"
-                                                    class="form-control datepicker-default @error('checkout_date') is-invalid @enderror"
+                                                <input type="date" id="checkout-date" name="checkout_date"
+                                                    class="form-control  @error('checkout_date') is-invalid @enderror"
                                                     value="{{ old('checkout_date', isset($reservation) ? $reservation->checkout_date->format('d F, Y') : '') }}"
                                                     required>
                                                 @error('checkout_date')
-                                                    <div class="invalid-feedback">
-                                                        {{ $message }}
-                                                    </div>
+                                                    <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
@@ -186,16 +182,13 @@
                                                     @foreach (getModelItems('rooms') as $room)
                                                         <option value="{{ $room->id }}"
                                                             data-rate="{{ $room->roomType->rate }}"
-                                                            {{ old('room_id', $reservation->room_id ?? '') == $room->id ? 'selected' : '' }}>
+                                                            {{ old('room_id', isset($reservation->room_id)) == $room->id ? 'selected' : '' }}>
                                                             {{ $room->name }}
                                                         </option>
                                                     @endforeach
-
                                                 </select>
                                                 @error('room_id')
-                                                    <div class="invalid-feedback">
-                                                        {{ $message }}
-                                                    </div>
+                                                    <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
@@ -207,27 +200,23 @@
                                                     class="form-control @error('rate') is-invalid @enderror"
                                                     value="{{ old('rate', $reservation->rate ?? '') }}" readonly>
                                                 @error('rate')
-                                                    <div class="invalid-feedback">
-                                                        {{ $message }}
-                                                    </div>
+                                                    <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
 
-
                                         <div class="col-md-12 col-12 mb-3">
                                             <div class="form-group">
-                                                <label for="notes " class="text-label form-label">Notes</label>
-                                                <textarea class="form-control @error('notes ') is-invalid @enderror" name="notes " id="notes " rows="4">{{ old('notes ', $reservation->notes ?? '') }}</textarea>
-                                                @error('notes ')
-                                                    <div class="invalid-feedback">
-                                                        {{ $message }}
-                                                    </div>
+                                                <label for="notes" class="text-label form-label">Notes</label>
+                                                <textarea class="form-control @error('notes') is-invalid @enderror" name="notes" id="notes" rows="4">{{ old('notes', $reservation->notes ?? '') }}</textarea>
+                                                @error('notes')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
 
                             <div class="mt-4">
@@ -384,36 +373,49 @@
                 });
             }
 
+            // Function to check room availability
             function checkRoomAvailability(checkinDate, checkoutDate) {
-                fetch(`/dashboard/hotel/check-room-availability`, {
+                const data = {
+                    checkin_date: checkinDate || null,
+                    checkout_date: checkoutDate || null
+                };
+
+                fetch('/dashboard/hotel/check-room-availability', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': '{{ csrf_token() }}',
                         },
-                        body: JSON.stringify({
-                            checkin_date: checkinDate,
-                            checkout_date: checkoutDate
-                        })
+                        body: JSON.stringify(data)
                     })
                     .then(response => response.json())
                     .then(data => {
-                        if (data.success) {
-                            const roomSelect = document.getElementById('room_id');
-                            roomSelect.disabled = !data.available;
-                            if (!data.available) {
-                                Toastify({
-                                    text: 'No rooms available for the selected dates.',
-                                    duration: 5000,
-                                    gravity: 'top',
-                                    position: 'right',
-                                    backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
-                                }).showToast();
-                            }
+                        const roomSelect = document.getElementById('room_id');
+                        roomSelect.innerHTML = ''; // Clear previous options
+
+                        // Handle nested response structure
+                        const availableRooms = data?.available?.original?.rooms || [];
+
+                        if (availableRooms.length > 0) {
+                            let defaultOption = document.createElement('option');
+                            defaultOption.value = '';
+                            defaultOption.textContent = 'Select Room';
+                            roomSelect.appendChild(defaultOption);
+
+                            // Populate room options and include the rate as a data attribute
+                            availableRooms.forEach(room => {
+                                let option = document.createElement('option');
+                                option.value = room.id;
+                                option.textContent = room.name;
+                                option.setAttribute('data-rate', room.room_type.rate); // Attach the rate to each option
+                                roomSelect.appendChild(option);
+                            });
+
+                            roomSelect.disabled = false; // Enable the dropdown
                         } else {
+                            roomSelect.disabled = true; // Disable dropdown if no rooms
                             Toastify({
-                                text: data.error_message ||
-                                    'An error occurred while checking availability.',
+                                text: 'No rooms available for the selected dates.',
                                 duration: 5000,
                                 gravity: 'top',
                                 position: 'right',
@@ -424,24 +426,47 @@
                     .catch(error => console.error('Error:', error));
             }
 
-            // Handle date changes and room availability check
-            document.getElementById('checkin_date').addEventListener('change', function() {
-                const checkinDate = this.value;
-                const checkoutDate = document.getElementById('checkout_date').value;
+            // Listen for room selection and update the rate field
+            document.getElementById('room_id').addEventListener('change', function() {
+                const selectedRoom = this.options[this.selectedIndex];
+                const rate = selectedRoom.getAttribute(
+                'data-rate'); // Get the rate from the selected option
+
+                if (rate) {
+                    document.getElementById('rate').value = rate; // Set the rate field
+                } else {
+                    document.getElementById('rate').value = ''; // Clear the rate if no room is selected
+                }
+            });
+
+
+            // Handle check-in and check-out date change events
+            const checkinInput = document.getElementById('checkin-date');
+            const checkoutInput = document.getElementById('checkout-date');
+
+            function handleDateChange() {
+                console.log("Date change detected.");
+                const checkinDate = checkinInput.value;
+                const checkoutDate = checkoutInput.value;
+
+                console.log("Selected Check-in Date:", checkinDate);
+                console.log("Selected Check-out Date:", checkoutDate);
+
+                // Check availability only if both dates are selected
                 if (checkinDate && checkoutDate) {
                     checkRoomAvailability(checkinDate, checkoutDate);
+                } else {
+                    console.log("Both dates are not selected.");
                 }
-            });
+            }
 
-            document.getElementById('checkout_date').addEventListener('change', function() {
-                const checkoutDate = this.value;
-                const checkinDate = document.getElementById('checkin_date').value;
-                if (checkoutDate && checkinDate) {
-                    checkRoomAvailability(checkinDate, checkoutDate);
-                }
-            });
+            // Add event listeners to both inputs to handle changes
+            checkinInput.addEventListener('change', handleDateChange);
+            checkoutInput.addEventListener('change', handleDateChange);
 
-
+            // Debug logging to check if elements are found correctly
+            console.log("Check-in input element:", checkinInput);
+            console.log("Check-out input element:", checkoutInput);
             // Initialize the guest information and room selection handling
             setGuestInformation();
         });

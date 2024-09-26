@@ -11,6 +11,7 @@ use App\Services\Dashboard\Hotel\Room\ReservationService;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class RoomReservationController extends Controller
@@ -51,15 +52,18 @@ class RoomReservationController extends Controller
         try {
             $message = $this->reservation_service->save($request);
             if ($message === 'Reservation created successfully') {
-                return response()->json(['success' => true, 'message' => $message,
-                'redirectUrl' => route('dashboard.hotel.reservations.index')]);
+                return response()->json([
+                    'success' => true,
+                    'message' => $message,
+                    'redirectUrl' => route('dashboard.hotel.reservations.index')
+                ]);
             }
             // Handle other cases where the message indicates a problem
             return response()->json(['success' => false, 'message' => $message], 400);
         } catch (ValidationException $e) {
             return response()->json(['success' => false, 'errors' => $e->errors()], 422);
         } catch (\Exception $e) {
-            // throw $e;
+            throw $e;
             return response()->json([
                 'success' => false,
                 'message' => 'An error occurred while creating the reservation.',
@@ -105,8 +109,11 @@ class RoomReservationController extends Controller
         try {
             $message = $this->reservation_service->save($request, $data);
             if ($message === 'Reservation updated successfully') {
-                return response()->json(['success' => true, 'message' => $message,
-                'redirectUrl' => route('dashboard.hotel.reservations.index')]);
+                return response()->json([
+                    'success' => true,
+                    'message' => $message,
+                    'redirectUrl' => route('dashboard.hotel.reservations.index')
+                ]);
             }
             // Handle other cases where the message indicates a problem
             return response()->json(['success' => false, 'message' => $message], 400);
@@ -178,16 +185,15 @@ class RoomReservationController extends Controller
 
     public function getRoomAvailability(Request $request)
     {
-        dd($request->all());
-        $checkinDate = $request->input('checkin_date');
-        $checkoutDate = $request->input('checkout_date');
-
         try {
-            $isAvailable = $this->reservation_service->checkRoomAvailability($checkinDate, $checkoutDate);
-            return response()->json(['success' => true, 'available' => $isAvailable]);
+            // Call the service method to check room availability
+            $response = $this->reservation_service->checkRoomAvailability($request);
+            // Return the response from the checkRoomAvailability method
+            return response()->json(['success' => true, 'available' => $response]);
         } catch (ValidationException $e) {
             return response()->json(['success' => false, 'error_message' => $e->errors()]);
         } catch (\Exception $e) {
+            Log::error('Error in getRoomAvailability: ' . $e->getMessage());
             return response()->json([
                 'success' => false,
                 'error_message' => 'An error occurred while checking room availability.',

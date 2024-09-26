@@ -12,6 +12,7 @@ use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Str;
@@ -54,15 +55,11 @@ class ReservationService
 
         // Convert the validated dates to 'Y-m-d' for storage in the database
         $validated = $validator->validated();
-        $validated['checkin_date'] = Carbon::createFromFormat('d F, Y', $validated['checkin_date'])->format('Y-m-d');
-        $validated['checkout_date'] = Carbon::createFromFormat('d F, Y', $validated['checkout_date'])->format('Y-m-d');
-
         return $validated;
     }
 
     public function save(Request $request, $reservation_id = null)
     {
-        // dd( $data = $request->all());
         return DB::transaction(function () use ($request, $reservation_id) {
             // Validate the incoming data
             $validatedData = $this->validatedData($request->all(), $reservation_id);
@@ -165,18 +162,32 @@ class ReservationService
         $reservation->delete();
     }
 
-    public function checkRoomAvailability($checkinDate, $checkoutDate)
+    public function checkRoomAvailability(Request $request)
     {
-        $checkinDate = Carbon::createFromFormat('d F, Y', $checkinDate)->format('Y-m-d');
-        $checkoutDate = Carbon::createFromFormat('d F, Y', $checkoutDate)->format('Y-m-d');
+        try {
+            $checkinDate = $request->checkin_date ? Carbon::parse($request->checkin_date)->format('Y-m-d') : null;
+            $checkoutDate = $request->checkin_date ? Carbon::parse($request->checkout_date)->format('Y-m-d') : null;
 
-        $reservedRoom = (new Room)->reservations()
-            ->where(function ($query) use ($checkinDate, $checkoutDate) {
-                $query->where('checkin_date', '<', $checkoutDate)
-                    ->where('checkout_date', '>', $checkinDate);
-            })
-            ->exists();
+            if ($checkinDate && $checkoutDate) {
+                // Filter rooms that are not reserved within the given date range
+                $availableRooms = Room::with('roomType')->where('hotel_id', User::getAuthenticatedUser()->hotel->id)->whereDoesntHave('reservations', function ($query) use ($checkinDate, $checkoutDate) {
+                    $query->where(function ($subQuery) use ($checkinDate, $checkoutDate) {
+                        $subQuery->where('checkin_date', '<', $checkoutDate)
+                            ->where('checkout_date', '>', $checkinDate);
+                    });
+                })->get();
+            } else {
+                // Return all rooms if no check-in and check-out dates are provided
+                $availableRooms = Room::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->get();;
+            }
 
-        return !$reservedRoom;
+            // Return the rooms
+            return response()->json(['rooms' => $availableRooms]);
+        } catch (\Exception $e) {
+            Log::error('Error in room availability check: ' . $e->getMessage());
+            return response()->json([
+                'error' => 'An error occurred while checking room availability.'
+            ], 500);
+        }
     }
 }

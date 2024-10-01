@@ -6,20 +6,21 @@
             <div class="row page-titles">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active"><a href="{{ route('dashboard.home') }}">Home</a></li>
-                    <li class="breadcrumb-item"><a href="javascript:void(0)">Components</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Restaurant Items</a></li>
                 </ol>
             </div>
             <div class="container-fluid">
                 <div class="mt-4 d-flex justify-content-between align-items-center flex-wrap">
-                    <div class="card-action coin-tabs mb-2">
+                    <div class="card-action coin-tabs ">
                         <ul class="nav nav-tabs" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" data-bs-toggle="tab" href="#AllRooms">All Rooms</a>
+                                {{-- <a class="nav-link active" data-bs-toggle="tab" href="#AllRooms">All Rooms</a> --}}
                             </li>
                         </ul>
                     </div>
                     <div class="d-flex align-items-center mb-2">
-                        <a href="{{ route('dashboard.hotel.rooms.create') }}" class="btn btn-secondary">+ New Room</a>
+                        <a href="{{ route('dashboard.hotel.restaurant-items.create') }}" class="btn btn-secondary">+ New
+                            Item</a>
                         <div class="newest ms-3">
                             <select class="default-select">
                                 <option>Newest</option>
@@ -28,7 +29,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mt-4">
+                <div class="row ">
                     <div class="col-xl-12">
                         <div class="card">
                             <div class="card-body p-0">
@@ -45,16 +46,16 @@
                                                                     value="" id="checkAll3">
                                                             </div>
                                                         </th>
-                                                        <th>Room Name</th>
-                                                        <th>Room Type</th>
-                                                        <th>Rate</th>
+                                                        <th>Item Name</th>
+                                                        <th>Image</th>
+                                                        <th>Price</th>
                                                         <th>Description</th>
                                                         <th>Status</th>
                                                         <th class="bg-none"></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach ($rooms as $room)
+                                                    @foreach ($restaurant_items as $item)
                                                         <tr>
                                                             <td>
                                                                 <div class="form-check style-1">
@@ -64,55 +65,38 @@
                                                             </td>
                                                             <td>
                                                                 <div class="room-list-bx d-flex align-items-center">
-                                                                    <a href="{{ $room->RoomImage() }}"
-                                                                        data-fancybox="gallery_{{ $room->id }}"
-                                                                        data-caption="{{ $room->name }}">
-                                                                        <img class="me-3 rounded img-thumbnail"
-                                                                            src="{{ $room->RoomImage() }}"
-                                                                            alt="{{ basename($room->RoomImage()) }}">
-                                                                    </a>
-                                                                    @foreach ($room->RoomImages()->skip(1) as $key => $image)
-                                                                        <a href="{{ asset('storage/' . $image->file_path) }}"
-                                                                            data-fancybox="gallery_{{ $room->id }}"
-                                                                            data-caption="{{ $room->name }}">
-                                                                            <img class="me-3 rounded img-thumbnail"
-                                                                                src="{{ asset('storage/' . $image->file_path) }}"
-                                                                                alt="{{ basename($image->file_path) }}"
-                                                                                style="display: none">
-                                                                        </a>
-                                                                    @endforeach
-
                                                                     <div>
                                                                         <span
-                                                                            class="fs-16 font-w500 text-nowrap">{{ $room->name }}</span>
+                                                                            class="fs-16 font-w500 text-nowrap">{{ $item->name }}</span>
                                                                     </div>
                                                                 </div>
                                                             </td>
-
+                                                            <td>
+                                                                <div class="room-list-bx d-flex align-items-center">
+                                                                    @if ($item->image)
+                                                                        <!-- Display the first attachment -->
+                                                                        <a href="{{ $item->itemImage() }}"
+                                                                            data-fancybox="gallery_{{ $item->id }}"
+                                                                            data-caption="{{ $item->name }}">
+                                                                            <img src="{{ $item->itemImage() }}"
+                                                                                alt="Image" class="img-thumbnail"
+                                                                                style="width: 60px; height: 60px;">
+                                                                        </a>
+                                                                    @else
+                                                                        {{ 'N/A' }}
+                                                                    @endif
+                                                                </div>
+                                                            </td>
                                                             <td>
                                                                 <span
-                                                                    class="fs-16 font-w500 text-nowrap">{{ $room->roomType->name }}</span>
+                                                                    class="fs-16 font-w500 text-nowrap">₦{{ number_format($item->price) }}</span>
                                                             </td>
                                                             <td>
-                                                                <div class="">
-                                                                    <span class="mb-2">Price</span>
-                                                                    <span
-                                                                        class="font-w500">{{ $room->roomType->rate }}<small
-                                                                            class="fs-14 ms-2">/night</small></span>
-                                                                </div>
+                                                                <span
+                                                                    class="fs-16 font-w500 text-nowrap">{{ $item->description }}</span>
                                                             </td>
-                                                            <td>
-                                                                <div>
-                                                                    <span
-                                                                        class="fs-16 font-w500">{{ $room->description }}</span>
-                                                                </div>
-                                                            </td>
-
-                                                            <td>
-                                                                <a href="javascript:void(0);"
-                                                                    class="btn btn-{{ $room->status == 'active' ? 'success' : 'danger' }} btn-md">
-                                                                    {{ strtoupper($room->status) }}
-                                                                </a>
+                                                            <td> <span
+                                                                    class="fs-16 font-w500 text-nowrap">{{ getItemAvailability($item->is_available) }}</span>
                                                             </td>
                                                             <td>
                                                                 <div class="dropdown dropend">
@@ -140,9 +124,9 @@
                                                                     </a>
                                                                     <div class="dropdown-menu">
                                                                         <a class="dropdown-item"
-                                                                            href="{{ route('dashboard.hotel.rooms.edit', $room->id) }}">Edit</a>
+                                                                            href="{{ route('dashboard.hotel.restaurant-items.edit', $item->id) }}">Edit</a>
                                                                         <a class="dropdown-item" href="javascript:void(0);"
-                                                                            onclick="confirmDelete('{{ route('dashboard.hotel.rooms.destroy', $room->id) }}')">Delete</a>
+                                                                            onclick="confirmDelete('{{ route('dashboard.hotel.restaurant-items.destroy', $item->id) }}')">Delete</a>
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -153,7 +137,7 @@
                                         </div>
                                         <!-- Pagination -->
                                         <div class="d-flex justify-content-center">
-                                            {{ $rooms->links() }}
+                                            {{ $restaurant_items->links() }}
                                         </div>
                                     </div>
                                 </div>

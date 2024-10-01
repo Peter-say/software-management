@@ -123,4 +123,8 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*  
+    Stripe credential call from the enviromental variable file
+    */
+    'stripe_key' => env('STRIPE_KEY'),
 ];

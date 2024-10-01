@@ -15,7 +15,7 @@
                     @if ($reservation)
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <h4 class="card-title">Reservation Invoice</h4>
-                            <button onclick="window.print()" class="btn btn-primary">Print Invoice</button>
+                            <a href="{{route('dashboard.hotel.reservation.print.invoice-pdf', $reservation->id)}}" class="btn btn-primary">Print Invoice</a>
                         </div>
                         <div class="card-body">
                             <!-- Invoice Header -->
@@ -255,6 +255,7 @@
     </div>
     @if ($reservation)
         @include('dashboard.hotel.room.reservation.pay-with-wallet-modal')
+        @include('dashboard.hotel.guest.wallet.credit', ['guest' => $reservation->guest])
     @endif
 
     <script>

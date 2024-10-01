@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\HotelSoftware\Guest;
+use App\Models\HotelSoftware\Outlet;
 use App\Models\HotelSoftware\Room;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -18,7 +19,9 @@ function getModelItems($model)
     }elseif($model == 'guests'){
         $model_list  = Guest::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->get();
     }
-
+    if ($model == 'restaurant-outlets') {
+        $model_list = Outlet::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->where('type', 'restaurant')->get();
+      }
     return $model_list;
 }
 
@@ -28,5 +31,13 @@ function getStatusAsString(int $status): string
         return 'Active';
     } else {
         return 'Inactive';
+    }
+}
+function getItemAvailability(int $status): string
+{
+    if ($status === 1) {
+        return 'Available';
+    } else {
+        return 'Not Available';
     }
 }

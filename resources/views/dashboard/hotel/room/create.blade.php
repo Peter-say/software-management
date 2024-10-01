@@ -15,11 +15,11 @@
                         <h4 class="card-title">{{ isset($room) ? 'Update Room' : 'Create Room' }}</h4>
                     </div>
                     <div class="card-body">
-                        <form action="{{ isset($room) ? route('dashboard.hotel.rooms.update', $room->id) : route('dashboard.hotel.rooms.store') }}" 
-                              enctype="multipart/form-data" 
-                              method="POST">
+                        <form
+                            action="{{ isset($room) ? route('dashboard.hotel.rooms.update', $room->id) : route('dashboard.hotel.rooms.store') }}"
+                            enctype="multipart/form-data" method="POST">
                             @csrf
-                            @if(isset($room))
+                            @if (isset($room))
                                 @method('PUT')
                                 <input type="hidden" name="id" value="{{ $room->id }}">
                             @endif
@@ -47,7 +47,8 @@
                                             <option value="" disabled>Select Type</option>
                                             @foreach ($room_types as $type)
                                                 <option value="{{ $type->id }}"
-                                                    {{ old('room_type_id', $room->roomType->id ?? '') == $type->id ? 'selected' : '' }}>{{ $type->name }}</option>
+                                                    {{ old('room_type_id', $room->roomType->id ?? '') == $type->id ? 'selected' : '' }}>
+                                                    {{ $type->name }}</option>
                                             @endforeach
                                         </select>
                                         @error('room_type_id')
@@ -79,7 +80,8 @@
                                             <option value="" disabled>Select Status</option>
                                             @foreach ($statusOptions as $status)
                                                 <option value="{{ $status }}"
-                                                    {{ old('status', $room->status ?? '') == $status ? 'selected' : '' }}>{{ $status }}</option>
+                                                    {{ old('status', $room->status ?? '') == $status ? 'selected' : '' }}>
+                                                    {{ $status }}</option>
                                             @endforeach
                                         </select>
                                         @error('status')
@@ -94,8 +96,7 @@
                             <div class="col-lg-12 col-12 mb-3">
                                 <div class="form-group">
                                     <label for="description" class="text-label form-label">Description</label>
-                                    <textarea id="description" name="description"
-                                        class="form-control @error('description') is-invalid @enderror">{{ old('description', $room->description ?? '') }}</textarea>
+                                    <textarea id="description" name="description" class="form-control @error('description') is-invalid @enderror">{{ old('description', $room->description ?? '') }}</textarea>
                                     @error('description')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -104,7 +105,8 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">{{ isset($room) ? 'Update' : 'Submit' }}</button>
+                            <button type="submit"
+                                class="btn btn-primary">{{ isset($room) ? 'Update' : 'Submit' }}</button>
                         </form>
                     </div>
                 </div>

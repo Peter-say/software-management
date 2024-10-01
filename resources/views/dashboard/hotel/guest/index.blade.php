@@ -58,15 +58,21 @@
                                             <td>{{ $guest->birthday ? $guest->birthday->format('D M, Y') : 'N/A' }}</td>
                                             <td>
                                                 <div class="d-flex">
-                                                    <a href="{{ route('dashboard.hotel.guests.edit', $guest->id) }}" class="btn btn-primary shadow btn-xs sharp me-1">
+                                                    <a href="{{ route('dashboard.hotel.guests.edit', $guest->id) }}"
+                                                        class="btn btn-primary shadow btn-xs sharp me-1">
                                                         <i class="fas fa-pencil-alt"></i>
                                                     </a>
-                                                    <a href="javascript:void(0);" class="btn btn-danger shadow btn-xs sharp" onclick="confirmDelete('{{ route('dashboard.hotel.guests.destroy', $guest->id) }}')">
+                                                    <a href="javascript:void(0);" class="btn btn-danger shadow btn-xs sharp"
+                                                        onclick="confirmDelete('{{ route('dashboard.hotel.guests.destroy', $guest->id) }}')">
                                                         <i class="fa fa-trash"></i>
                                                     </a>
+                                                    <a type="button" data-bs-toggle="modal"
+                                                        data-bs-target="#fund-guest-wallet-modal"
+                                                        class="btn btn-primary">Fund wallet</a>
                                                 </div>
                                             </td>
                                         </tr>
+                                        @include('dashboard.hotel.guest.wallet.credit', ['guest' => $guest])
                                     @endforeach
                                 </tbody>
                             </table>
@@ -78,7 +84,8 @@
     </div>
 
     <!-- Delete Confirmation Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">

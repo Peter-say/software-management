@@ -4,14 +4,19 @@ namespace App\Services\Dashboard\Payment;
 
 use App\Models\Payment;
 use App\Models\User;
+use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PaymentService
 {
+    protected $stripe_service;
+    public function __construct(StripeService $stripe_service) {
+        $this->stripe_service = $stripe_service;
+    }
 
-    protected function validatePayment(Request $request)
+    public function validatePayment(Request $request)
     {
         return $request->validate([
             'amount' => 'required|numeric|min:0.01',
@@ -31,12 +36,20 @@ class PaymentService
 
     public function processPayment(Request $request, $payment_id = null)
     {
+        // dd($request->all());
         return DB::transaction(function () use ($request, $payment_id) {
             $data = $this->validatePayment($request);
             $data['user_id'] = User::getAuthenticatedUser()->id;
             $data['payable_id'] = $request->input('payable_id');
             $data['payable_type'] = $request->input('payable_type');
             $data['transaction_id'] = 'TXN' . strtoupper(uniqid());
+
+            // dd('e reach here');
+            // Create the Stripe payment
+        //    $this->stripe_service->charge($request);
+            // Handle successful charge
+            $data['status'] = 'completed';
+
             $payment = Payment::create($data);
 
             $statusInfo = $this->evaluatePaymentStatus($payment->amount, $request->total_amount);
@@ -73,4 +86,6 @@ class PaymentService
             'message' => ucfirst($status),
         ];
     }
+
+    public function stripCredit() {}
 }

@@ -50,7 +50,7 @@ class GuestWalletService
             'reservation_id' => 'required|exists:room_reservations,id',
             'amount' => 'required|numeric|min:0.01',
             'description' => 'nullable|string',
-            
+
         ]);
     }
 
@@ -65,41 +65,28 @@ class GuestWalletService
 
     public function recordCreditTransaction(Request $request)
     {
-        $validatedData = $this->validateCreditTransaction($request);
-
+        dd($request->all());
         DB::beginTransaction();
+        $validatedData = $this->validateCreditTransaction($request);
+        dd($validatedData);
+        $guest = Guest::findOrFail($validatedData['guest_id']);
+        dd($guest);
+        // Process the payment
+        $payment = $this->payment_service->processPayment($request);
+        dd($payment);
+        // Process the transaction using the existing payment
+        $transaction = $this->transaction_service->processTransaction($request, $payment);
+        dd($transaction);
+        $transaction->transaction_type = 'credit';
+        // Link the transaction to the payment
+        $payment->transactions()->save($transaction);
 
-        try {
-            $guest = Guest::findOrFail($validatedData['guest_id']);
+        // Deduct the amount from the guest's wallet
+        $guest->wallet->balance += $validatedData['amount'];
+        $guest->wallet->save();
 
-            $payment = $guest->walletPayments()->create([
-                'user_id' => $guest->user_id,
-                'amount' => $validatedData['amount'],
-                'payment_method' => $validatedData['mode_of_payment'],
-                'description' => $validatedData['note'],
-                'status' => 'completed',
-                'transaction_id' => 'TXN' . time(),
-            ]);
-
-            $guest->wallet->balance += $validatedData['amount'];
-            $guest->wallet->save();
-
-            $transaction = new Transaction([
-                'amount' => $validatedData['amount'],
-                'transaction_type' => 'credit',
-                'status' => 'completed',
-                'description' => $validatedData['note'],
-                'transaction_reference' => $payment->transaction_id,
-            ]);
-            $payment->transactions()->save($transaction);
-
-            DB::commit();
-
-            return back()->with('success_message', 'Funds added to wallet successfully.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return back()->with('error_message', 'Error occurred while adding funds to wallet: ' . $e->getMessage());
-        }
+        DB::commit();
+        return $guest;
     }
 
     public function recordDebitTransaction(Request $request)

@@ -10,6 +10,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class RestaurantItemsController extends Controller
 {
@@ -65,7 +66,7 @@ class RestaurantItemsController extends Controller
     public function show(string $id)
     {
         return view('dashboard.hotel.restaurant-item.create', [
-        'restaurant_item' => $this->restaurant_item_service->getById($id),
+            'restaurant_item' => $this->restaurant_item_service->getById($id),
         ]);
     }
 
@@ -112,4 +113,45 @@ class RestaurantItemsController extends Controller
             return redirect()->back()->with('error_message', 'Something went wrong');
         }
     }
+
+    public function importItems(Request $request)
+    {
+        try {
+            $message = $this->restaurant_item_service->importItems($request);
+            return response()->json([
+                'success' => true,
+                'message' => $message,
+                'redirectUrl' => route('dashboard.hotel.restaurant-items.index')
+            ]);
+        } catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage(),], 500); // Send a 500 response on error
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+            ], 500);
+        }
+    }
+
+    public function downloadSample(Request $request)
+{
+
+    // Initialize filePath variable
+    $filePath = null;
+
+    // Determine the file path based on the current URL
+    if ($request->current_url === url(route('dashboard.hotel.restaurant-items.index'))) {
+        $filePath = public_path('dashboard/samples/restaurant_menu_sample_with_ingredients.csv'); // Use forward slashes
+    }
+
+    // Check if the file exists
+    if (!file_exists($filePath)) {
+        return response()->json(['success' => false, 'message' => 'Sample file not found.'], 404);
+    }
+
+    // Return the file for download
+    return response()->download($filePath);
+}
+
+    
 }

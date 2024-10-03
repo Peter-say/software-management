@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\hotelSoftware\Hotel;
+use App\Models\HotelSoftware\StoreItem;
 use App\Models\User;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -23,12 +24,14 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            // UserSeeder::class,
-            // StateSeeder::class,
-            // CountrySeeder::class,
-            // HotelSeeder::class,
-            // HotelRoomTypeSeeder::class,
+            UserSeeder::class,
+            StateSeeder::class,
+            CountrySeeder::class,
+            HotelSeeder::class,
+            HotelRoomTypeSeeder::class,
             OutletSeeder::class,
+            ItemCategorySeeder::class,
+            StoreItemSeeder::class,
         ]);
     }
 }

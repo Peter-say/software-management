@@ -101,6 +101,25 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
+                                    <div class="col-lg-6 col-12 mb-3">
+                                        <div class="form-group">
+                                            <label for="category" class="text-label form-label">Category*</label>
+                                            <input list="categoryList" id="category" name="category"
+                                                   class="form-control @error('category') is-invalid @enderror"
+                                                   value="{{ old('category', $item->category ?? '') }}" required>
+                                            <datalist id="categoryList">
+                                                @foreach (getModelItems('item-categories') as $category)
+                                                    <option value="{{ $category->name }}">{{ $category->name }}</option>
+                                                @endforeach
+                                            </datalist>
+                                            @error('category')
+                                                <div class="invalid-feedback">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        </div>
+                                        
+                                    </div>
                                     <h6 class="card-header ">Publish Box</h6>
                                     <div class="card-body">
                                         <div class="form-check mb-3">

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\HotelSoftware\Guest;
+use App\Models\HotelSoftware\ItemCategory;
 use App\Models\HotelSoftware\Outlet;
 use App\Models\HotelSoftware\Room;
 use App\Models\User;
@@ -14,14 +15,17 @@ function getModelItems($model)
         $model_list = DB::table('countries')->select('id', 'name')->orderBy('name', 'asc')->get();
     } elseif ($model == 'states') {
         $model_list = DB::table('states')->select('id', 'name')->orderBy('name', 'asc')->get();
-    }elseif($model == 'rooms'){
+    } elseif ($model == 'rooms') {
         $model_list  = Room::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->get();
-    }elseif($model == 'guests'){
+    } elseif ($model == 'guests') {
         $model_list  = Guest::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->get();
     }
     if ($model == 'restaurant-outlets') {
         $model_list = Outlet::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->where('type', 'restaurant')->get();
-      }
+    }
+    if ($model == 'item-categories') {
+        $model_list = ItemCategory::all();
+    }
     return $model_list;
 }
 

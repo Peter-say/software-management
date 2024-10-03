@@ -13,18 +13,19 @@ return new class extends Migration
     {
         Schema::create('restaurant_order_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('restaurant_order_id')->constrained()->onDelete('cascade');
-            $table->foreignId('restaurant_item_id')->constrained()->onDelete('cascade');
-            $table->double('qty');
-            $table->double('amount');
-            $table->double('tax_rate');
-            $table->double('tax_amount');
-            $table->double('discount_rate');
-            $table->string('discount_type');
-            $table->double('discount_amount');
-            $table->double('total_amount');
-            $table->timestamps();
+            $table->foreignId('restaurant_order_id')->constrained('restaurant_orders')->onDelete('cascade'); // Links to restaurant orders
+            $table->foreignId('restaurant_item_id')->constrained('restaurant_items')->onDelete('cascade'); // Links to specific menu items
+            $table->double('qty'); // Quantity of this item ordered
+            $table->double('amount'); // Subtotal for this item
+            $table->double('tax_rate'); // Tax rate applied
+            $table->double('tax_amount'); // Total tax for this item
+            $table->double('discount_rate'); // Discount rate applied
+            $table->string('discount_type'); // Type of discount (percentage, fixed)
+            $table->double('discount_amount'); // Total discount for this item
+            $table->double('total_amount'); // Final amount for this item after tax and discount
+            $table->timestamps(); // Created and updated timestamps
         });
+        
     }
 
     /**

@@ -10,7 +10,7 @@ class RestaurantItem extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['outlet_id', 'name', 'image', 'price', 'cost', 'description', 'is_available'];
+    protected $fillable = ['outlet_id', 'category', 'name', 'image', 'price', 'cost', 'description', 'is_available'];
 
     public function hotel()
     {
@@ -26,6 +26,7 @@ class RestaurantItem extends Model
     {
         return $this->belongsTo(Outlet::class, 'outlet_id');
     }
+
     public function itemImage()
     {
         $image = $this->image;
@@ -33,5 +34,11 @@ class RestaurantItem extends Model
             return asset('storage/hotel/restaurant/items/' . $image);
         }
         return null;
+    }
+
+    public function storeItems()
+    {
+        return $this->belongsToMany(StoreItem::class, 'store_item_restaurant_item')
+            ->withPivot('quantity');
     }
 }

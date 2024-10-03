@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth', 'verified')->group(function () {
 
     Route::prefix('dashboard')->as('dashboard.')->group(function () {
+        Route::get('download.sample', [RestaurantItemsController::class, 'downloadSample'])->name('download.sample');
+
         Route::get('home', [DashboardController::class, 'dashboard'])->name('home');
 
         Route::prefix('hotel-users')->as('hotel-users.')->group(function () {
@@ -41,6 +43,8 @@ Route::middleware('auth', 'verified')->group(function () {
             // Route::post('pay-with-guest-wallet', [GuestWalletController::class, 'payWithGuestWallet'])->name('pay-with-guest-wallet');
     
             Route::get('reservation/print/{id}/invoice-pdf', [RoomReservationInvoiceController::class, 'printInvoicePDF'])->name('reservation.print.invoice-pdf');
+
+            Route::post('restaurant-items/upload', [RestaurantItemsController::class, 'importItems'])->name('restaurant-items.upload');
         });
            
     });

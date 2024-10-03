@@ -37,12 +37,15 @@
                         <span class="nav-text">Rooms</span>
                     </a>
                 </li>
-                <li>
-                    <a href="{{ route('dashboard.hotel.restaurant-items.index') }}" aria-expanded="false">
-                        <i class="flaticon-013-checkmark"></i>
-                        <span class="nav-text">Add Item</span>
-                    </a>
-                </li>
+                
+                <li><a class="has-arrow " href="javascript:void()" aria-expanded="false">
+                    <i class="flaticon-045-heart"></i>
+                    <span class="nav-text">Restaurant</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('dashboard.hotel.restaurant-items.index') }}">Items</a></li>
+                </ul>
+            </li>
                 <li>
                     <a href="{{ route('dashboard.hotel.reservations.index') }}" aria-expanded="false">
                         <i class="flaticon-013-checkmark"></i>

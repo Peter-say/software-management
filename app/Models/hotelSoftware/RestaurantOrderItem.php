@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\HotelSoftware;
 
 use App\Models\HotelSoftware\RestaurantItem;
 use App\Models\HotelSoftware\RestaurantOrder;

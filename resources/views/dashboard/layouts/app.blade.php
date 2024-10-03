@@ -20,55 +20,58 @@
     <!-- PAGE TITLE HERE -->
     <title>Travl Hotel Admin Dashboard</title>
 
-        <!-- Favicon Icon -->
-        <link rel="shortcut icon" type="image/png" href="{{ asset('dashboard/images/favicon.png') }}" />
+    <!-- Favicon Icon -->
+    <link rel="shortcut icon" type="image/png" href="{{ asset('dashboard/images/favicon.png') }}" />
 
-        <!-- Google Material Icons -->
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    
-        <!-- jQuery UI (for datepicker) -->
-        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    
-        <!-- SweetAlert2 CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    
-        <!-- Custom Stylesheets -->
-        <link href="{{ asset('dashboard/css/style.css') }}" rel="stylesheet">
-    
-        <!-- jQuery Smart Wizard -->
-        <link href="{{ asset('dashboard/vendor/jquery-smartwizard/dist/css/smart_wizard.min.css') }}" rel="stylesheet">
-    
-        <!-- jQuery Nice Select -->
-        <link href="{{ asset('dashboard/vendor/jquery-nice-select/css/nice-select.css') }}" rel="stylesheet">
-    
-        <!-- Owl Carousel -->
-        <link href="{{ asset('dashboard/vendor/owl-carousel/owl.carousel.css') }}" rel="stylesheet">
-    
-        <!-- Bootstrap Datetimepicker -->
-        <link href="{{ asset('dashboard/vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
-    
-        <!-- Pickadate (for date picking) -->
-        <link rel="stylesheet" href="{{ asset('dashboard/vendor/pickadate/themes/default.css') }}">
-        <link rel="stylesheet" href="{{ asset('dashboard/vendor/pickadate/themes/default.date.css') }}">
-    
-        <!-- Datatables CSS -->
-        <link href="{{ asset('dashboard/vendor/datatables/css/jquery.dataTables.min.css') }}" rel="stylesheet">
-    
-        <!-- Daterange Picker -->
-        <link href="{{ asset('dashboard/vendor/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet">
-    
-        <!-- Clockpicker -->
-        <link href="{{ asset('dashboard/vendor/clockpicker/css/bootstrap-clockpicker.min.css') }}" rel="stylesheet">
-    
-        <!-- asColorPicker -->
-        <link href="{{ asset('dashboard/vendor/jquery-asColorPicker/css/asColorPicker.min.css') }}" rel="stylesheet">
-    
-        <!-- Bootstrap Material Datetimepicker -->
-        <link href="{{ asset('dashboard/vendor/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}" rel="stylesheet">
-    
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
-        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
-        
+    <!-- Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- jQuery UI (for datepicker) -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <!-- Custom Stylesheets -->
+    <link href="{{ asset('dashboard/css/style.css') }}" rel="stylesheet">
+
+    <!-- jQuery Smart Wizard -->
+    <link href="{{ asset('dashboard/vendor/jquery-smartwizard/dist/css/smart_wizard.min.css') }}" rel="stylesheet">
+
+    <!-- jQuery Nice Select -->
+    <link href="{{ asset('dashboard/vendor/jquery-nice-select/css/nice-select.css') }}" rel="stylesheet">
+
+    <!-- Owl Carousel -->
+    <link href="{{ asset('dashboard/vendor/owl-carousel/owl.carousel.css') }}" rel="stylesheet">
+
+    <!-- Bootstrap Datetimepicker -->
+    <link href="{{ asset('dashboard/vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}"
+        rel="stylesheet">
+
+    <!-- Pickadate (for date picking) -->
+    <link rel="stylesheet" href="{{ asset('dashboard/vendor/pickadate/themes/default.css') }}">
+    <link rel="stylesheet" href="{{ asset('dashboard/vendor/pickadate/themes/default.date.css') }}">
+
+    <!-- Datatables CSS -->
+    <link href="{{ asset('dashboard/vendor/datatables/css/jquery.dataTables.min.css') }}" rel="stylesheet">
+
+    <!-- Daterange Picker -->
+    <link href="{{ asset('dashboard/vendor/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet">
+
+    <!-- Clockpicker -->
+    <link href="{{ asset('dashboard/vendor/clockpicker/css/bootstrap-clockpicker.min.css') }}" rel="stylesheet">
+
+    <!-- asColorPicker -->
+    <link href="{{ asset('dashboard/vendor/jquery-asColorPicker/css/asColorPicker.min.css') }}" rel="stylesheet">
+
+    <!-- Bootstrap Material Datetimepicker -->
+    <link
+        href="{{ asset('dashboard/vendor/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
+
 </head>
 
 <body>
@@ -94,7 +97,7 @@
         @include('dashboard.layouts.navigations.top-nav')
         @include('dashboard.layouts.navigations.sidebar');
         @include('notifications.flash-messages')
-
+        @include('dashboard.general.modal.item-description-modal')
         @yield('contents')
 
 
@@ -109,6 +112,77 @@
                 </p>
             </div>
         </div>
+
+        <script>
+            document.getElementById('downloadSample').addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent the default link behavior
+
+                var currentUrl = document.getElementById('currentUrl').value;
+
+                // AJAX request to initiate the download
+                $.ajax({
+                    url: "{{ route('dashboard.download.sample') }}", // Correct route reference
+                    type: 'GET', // Ensure this is a GET request
+                    data: {
+                        current_url: currentUrl
+                    },
+                    xhrFields: {
+                        responseType: 'blob' // Important for handling binary data
+                    },
+                    success: function(response, status, xhr) {
+                        // Create a link element to download the file
+                        var filename = ""; // Default filename
+
+                        // Get the filename from the content-disposition header
+                        var disposition = xhr.getResponseHeader('Content-Disposition');
+                        if (disposition && disposition.indexOf('attachment') !== -1) {
+                            var matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(disposition);
+                            if (matches != null && matches[1]) {
+                                filename = matches[1].replace(/['"]/g, '');
+                            }
+                        }
+
+                        // Create a blob URL and initiate download
+                        var blob = new Blob([response], {
+                            type: xhr.getResponseHeader('Content-Type')
+                        });
+                        var url = window.URL.createObjectURL(blob);
+                        var link = document.createElement('a');
+                        link.href = url;
+                        link.download = filename ||
+                            'restaurant_item_sample.csv'; // Use the filename from the response or a default one
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        window.URL.revokeObjectURL(url); // Clean up the blob URL
+
+                        // Show success message
+                        Toastify({
+                            text: 'Download started.',
+                            duration: 5000,
+                            gravity: 'top',
+                            position: 'right',
+                            backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
+                        }).showToast();
+                    },
+                    error: function(xhr) {
+                        // Check if xhr.responseJSON is defined and has a message property
+                        var errorMessage = (xhr.responseJSON && xhr.responseJSON.message) ||
+                            'An error occurred while downloading the file.';
+
+                        Toastify({
+                            text: errorMessage,
+                            duration: 5000,
+                            gravity: 'top',
+                            position: 'right',
+                            backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
+                        }).showToast();
+                    }
+
+                });
+            });
+        </script>
+
         <!--**********************************
    Footer end
   ***********************************-->
@@ -130,83 +204,83 @@
     <!--**********************************
   Scripts
  ***********************************-->
-       <!-- jQuery (only include once) -->
-       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery (only include once) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-       <!-- SweetAlert2 -->
-       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-   
-       <!-- Moment.js (required for date/time handling) -->
-       <script src="{{ asset('dashboard/vendor/moment/moment.min.js') }}"></script>
-   
-       <!-- Bootstrap Daterangepicker -->
-       <script src="{{ asset('dashboard/vendor/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
-   
-       <!-- Global Scripts (only include once) -->
-       <script src="{{ asset('dashboard/vendor/global/global.min.js') }}"></script>
-   
-       <!-- jQuery UI (for Datepicker functionality) -->
-       <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-       <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-   
-       <!-- Toastify JS (for notifications) -->
-       <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-       <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-   
-       <!-- ApexCharts -->
-       <script src="{{ asset('dashboard/vendor/apexchart/apexchart.js') }}"></script>
-   
-       <!-- jQuery Nice Select (only include once) -->
-       <script src="{{ asset('dashboard/vendor/jquery-nice-select/js/jquery.nice-select.min.js') }}"></script>
-   
-       <!-- Dashboard 1 Scripts -->
-       <script src="{{ asset('dashboard/js/dashboard/dashboard-1.js') }}"></script>
-   
-       <!-- Owl Carousel -->
-       <script src="{{ asset('dashboard/vendor/owl-carousel/owl.carousel.js') }}"></script>
-   
-       <!-- Bootstrap Datetime Picker -->
-       <script src="{{ asset('dashboard/vendor/bootstrap-datetimepicker/js/moment.js') }}"></script>
-       <script src="{{ asset('dashboard/vendor/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
-   
-       <!-- jQuery Steps & Validation -->
-       <script src="{{ asset('dashboard/vendor/jquery-steps/build/jquery.steps.min.js') }}"></script>
-       <script src="{{ asset('dashboard/vendor/jquery-validation/jquery.validate.min.js') }}"></script>
-       <script src="{{ asset('dashboard/js/plugins-init/jquery.validate-init.js') }}"></script>
-   
-       <!-- Datatables -->
-       <script src="{{ asset('dashboard/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
-       <script src="{{ asset('dashboard/js/plugins-init/datatables.init.js') }}"></script>
-   
-       <!-- SmartWizard -->
-       <script src="{{ asset('dashboard/vendor/jquery-smartwizard/dist/js/jquery.smartWizard.js') }}"></script>
-   
-       <!-- Custom Scripts -->
-       <script src="{{ asset('dashboard/js/custom.min.js') }}"></script>
-       <script src="{{ asset('dashboard/js/dlabnav-init.js') }}"></script>
-       <script src="{{ asset('dashboard/js/demo.js') }}"></script>
-       <script src="{{ asset('dashboard/js/styleSwitcher.js') }}"></script>
-   
-       <!-- Pickadate (for date/time picking functionality) -->
-       <script src="{{ asset('dashboard/vendor/pickadate/picker.js') }}"></script>
-       <script src="{{ asset('dashboard/vendor/pickadate/picker.time.js') }}"></script>
-       <script src="{{ asset('dashboard/vendor/pickadate/picker.date.js') }}"></script>
-   
-       <!-- Daterangepicker Initialization -->
-       <script src="{{ asset('dashboard/js/plugins-init/bs-daterange-picker-init.js') }}"></script>
-   
-       <!-- Clockpicker Initialization -->
-       <script src="{{ asset('dashboard/js/plugins-init/clock-picker-init.js') }}"></script>
-   
-       <!-- asColorPicker Styles -->
-       <link href="{{ asset('dashboard/vendor/jquery-asColorPicker/css/asColorPicker.min.css') }}" rel="stylesheet">
-   
-       <!-- Material Color Picker Initialization -->
-       <script src="{{ asset('dashboard/js/plugins-init/material-date-picker-init.js') }}"></script>
-   
-       <!-- Pickadate Initialization -->
-       <script src="{{ asset('dashboard/js/plugins-init/pickadate-init.js') }}"></script>
-   
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Moment.js (required for date/time handling) -->
+    <script src="{{ asset('dashboard/vendor/moment/moment.min.js') }}"></script>
+
+    <!-- Bootstrap Daterangepicker -->
+    <script src="{{ asset('dashboard/vendor/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+
+    <!-- Global Scripts (only include once) -->
+    <script src="{{ asset('dashboard/vendor/global/global.min.js') }}"></script>
+
+    <!-- jQuery UI (for Datepicker functionality) -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+    <!-- Toastify JS (for notifications) -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+    <!-- ApexCharts -->
+    <script src="{{ asset('dashboard/vendor/apexchart/apexchart.js') }}"></script>
+
+    <!-- jQuery Nice Select (only include once) -->
+    <script src="{{ asset('dashboard/vendor/jquery-nice-select/js/jquery.nice-select.min.js') }}"></script>
+
+    <!-- Dashboard 1 Scripts -->
+    <script src="{{ asset('dashboard/js/dashboard/dashboard-1.js') }}"></script>
+
+    <!-- Owl Carousel -->
+    <script src="{{ asset('dashboard/vendor/owl-carousel/owl.carousel.js') }}"></script>
+
+    <!-- Bootstrap Datetime Picker -->
+    <script src="{{ asset('dashboard/vendor/bootstrap-datetimepicker/js/moment.js') }}"></script>
+    <script src="{{ asset('dashboard/vendor/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js') }}"></script>
+
+    <!-- jQuery Steps & Validation -->
+    <script src="{{ asset('dashboard/vendor/jquery-steps/build/jquery.steps.min.js') }}"></script>
+    <script src="{{ asset('dashboard/vendor/jquery-validation/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('dashboard/js/plugins-init/jquery.validate-init.js') }}"></script>
+
+    <!-- Datatables -->
+    <script src="{{ asset('dashboard/vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('dashboard/js/plugins-init/datatables.init.js') }}"></script>
+
+    <!-- SmartWizard -->
+    <script src="{{ asset('dashboard/vendor/jquery-smartwizard/dist/js/jquery.smartWizard.js') }}"></script>
+
+    <!-- Custom Scripts -->
+    <script src="{{ asset('dashboard/js/custom.min.js') }}"></script>
+    <script src="{{ asset('dashboard/js/dlabnav-init.js') }}"></script>
+    <script src="{{ asset('dashboard/js/demo.js') }}"></script>
+    <script src="{{ asset('dashboard/js/styleSwitcher.js') }}"></script>
+
+    <!-- Pickadate (for date/time picking functionality) -->
+    <script src="{{ asset('dashboard/vendor/pickadate/picker.js') }}"></script>
+    <script src="{{ asset('dashboard/vendor/pickadate/picker.time.js') }}"></script>
+    <script src="{{ asset('dashboard/vendor/pickadate/picker.date.js') }}"></script>
+
+    <!-- Daterangepicker Initialization -->
+    <script src="{{ asset('dashboard/js/plugins-init/bs-daterange-picker-init.js') }}"></script>
+
+    <!-- Clockpicker Initialization -->
+    <script src="{{ asset('dashboard/js/plugins-init/clock-picker-init.js') }}"></script>
+
+    <!-- asColorPicker Styles -->
+    <link href="{{ asset('dashboard/vendor/jquery-asColorPicker/css/asColorPicker.min.css') }}" rel="stylesheet">
+
+    <!-- Material Color Picker Initialization -->
+    <script src="{{ asset('dashboard/js/plugins-init/material-date-picker-init.js') }}"></script>
+
+    <!-- Pickadate Initialization -->
+    <script src="{{ asset('dashboard/js/plugins-init/pickadate-init.js') }}"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             $(document).ready(function() {

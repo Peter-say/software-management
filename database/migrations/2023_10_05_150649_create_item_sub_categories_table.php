@@ -11,15 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('restaurant_items', function (Blueprint $table) {
+        Schema::create('item_sub_categories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('outlet_id')->constrained('outlets')->onDelete('cascade');
+            $table->foreignId('item_category_id')->constrained('item_categories')->onDelete('cascade');
+            $table->foreignId('hotel_id')->constrained('hotels')->onDelete('cascade');
             $table->string('name');
-            $table->string('image')->nullable();
-            $table->double('price');
-            $table->string('description')->nullable();
-            $table->double('cost')->nullable();
-            $table->boolean('is_available')->default(true);
             $table->timestamps();
         });
     }
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('restaurant_items');
+        Schema::dropIfExists('item_sub_categories');
     }
 };

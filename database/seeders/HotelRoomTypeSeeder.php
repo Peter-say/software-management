@@ -25,14 +25,14 @@ class HotelRoomTypeSeeder extends Seeder
                 'name' => 'Single',
                 'hotel_id' => 1,
                 'description' => 'Category description',
-                'rate' => 50000,
+                'rate' => 35000,
                 'discounted_rate' => 0,
             ],
             [
                 'name' => 'Double',
                 'hotel_id' => 1,
                 'description' => 'Category description',
-                'rate' => 50000,
+                'rate' => 65000,
                 'discounted_rate' => 5000,
             ],
         ];

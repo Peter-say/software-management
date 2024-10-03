@@ -3,12 +3,14 @@
 namespace App\Services\Dashboard\Hotel\Restaurant;
 
 use App\Helpers\FileHelpers;
+use App\Imports\RestaurantItemImport;
 use App\Models\HotelSoftware\RestaurantItem;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RestaurantItemsService
 {
@@ -19,6 +21,7 @@ class RestaurantItemsService
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'description' => 'nullable|string',
+            'category' => 'required|string',
             'image' => 'nullable|image|max:2048',
             'outlet_id' => 'required|exists:outlets,id',
             'is_available' => 'boolean',
@@ -70,5 +73,37 @@ class RestaurantItemsService
     {
         $item = $this->getById($item_id);
         $item->delete();
+    }
+
+    public function importItems(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv'
+        ]);
+
+        $file = $request->file('file');
+        $import = new RestaurantItemImport();
+        Excel::import($import, $file);
+
+        $importedItemCount = $import->importedItemCount;
+        $skippedItems = $import->skippedItems;
+
+        $message = $importedItemCount . ' Items imported successfully.';
+
+        if (count($skippedItems) > 0) {
+            $message .= ' The following items were skipped because they already exist: ' . implode(', ', $skippedItems);
+        }
+
+        return $message;
+    }
+
+    public function download(Request $request)
+    {
+        if ($request->current_url === url(route('dashboard.hotel.restaurant-items.index'))) {
+            $filePath = public_path('dashboard\samples\restaurant_menu_sample_with_ingredients.csv');
+        }
+
+        // Proceed with the download logic
+        return response()->download($filePath);
     }
 }

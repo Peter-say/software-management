@@ -48,4 +48,22 @@ class Hotel extends Model
     {
         return $this->hasMany(HotelSoftwareOutlet::class);
     }
+
+    public function defaultRestaurant()
+    {
+        //return the first outlet that is a bar belonging to this hotel
+        return $this->outlet()->where('type', 'restaurant')->first();
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Define the created event listener
+        static::created(function ($hotel) {
+           Store::create([
+                'hotel_id' => $hotel->id,
+            ]);
+        });
+    }
 }

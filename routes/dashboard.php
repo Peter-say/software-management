@@ -5,6 +5,7 @@ use App\Http\Controllers\Dashboard\Hotel\Guest\GuestController;
 use App\Http\Controllers\Dashboard\Hotel\Guest\GuestWalletController;
 use App\Http\Controllers\Dashboard\Hotel\Invoices\Guest\RoomReservationInvoiceController;
 use App\Http\Controllers\Dashboard\Hotel\Restaurant\RestaurantItemsController;
+use App\Http\Controllers\Dashboard\Hotel\Restaurant\RestaurantOrderController;
 use App\Http\Controllers\Dashboard\Hotel\RoomController;
 use App\Http\Controllers\Dashboard\Hotel\RoomReservationController;
 use App\Http\Controllers\Dashboard\Hotel\UsersController;
@@ -40,11 +41,13 @@ Route::middleware('auth', 'verified')->group(function () {
 
             Route::post('fund-guest-wallet', [GuestWalletController::class, 'creditGuestWallet'])->name('fund-guest-wallet');
             Route::post('deduct-guest-wallet', [GuestWalletController::class, 'recordDebitTransaction'])->name('deduct-guest-wallet');
-            // Route::post('pay-with-guest-wallet', [GuestWalletController::class, 'payWithGuestWallet'])->name('pay-with-guest-wallet');
+            Route::post('pay-with-guest-wallet', [GuestWalletController::class, 'payWithGuestWallet'])->name('pay-with-guest-wallet');
     
             Route::get('reservation/print/{id}/invoice-pdf', [RoomReservationInvoiceController::class, 'printInvoicePDF'])->name('reservation.print.invoice-pdf');
 
             Route::post('restaurant-items/upload', [RestaurantItemsController::class, 'importItems'])->name('restaurant-items.upload');
+            Route::get('restaurant/create-order', [RestaurantOrderController::class, 'createOrder'])->name('restaurant.create-order');
+            Route::post('restaurant/save-order', [RestaurantOrderController::class, 'saveOrder'])->name('restaurant.save-order');
         });
            
     });

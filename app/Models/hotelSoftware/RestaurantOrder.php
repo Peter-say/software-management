@@ -14,7 +14,7 @@ class RestaurantOrder extends Model
 
     protected $fillable = ['outlet_id', 'hotel_id', 'user_id', 'guest_id', 'order_date', 
     'status', 'amount', 'tax_rate', 'tax_amount', 'discount_rate', 'discount_type', 
-    'discount_amount', 'total_amount'];
+    'discount_amount', 'total_amount', 'walk_in_customer_id'];
 
     public function outlet()
     {
@@ -34,6 +34,11 @@ class RestaurantOrder extends Model
     public function guest()
     {
         return $this->belongsTo(Guest::class);
+    }
+
+    public function walkInCustomer()
+    {
+        return $this->belongsTo(WalkInCustomer::class);
     }
 
     public function invoice()

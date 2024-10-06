@@ -24,6 +24,8 @@ class StatusConstants
 
     const ORDERED = 'Ordered';
 
+    const OPENED = 'Open';
+
     const PENDING = 'Pending';
 
     const COMPLETED = 'Completed';

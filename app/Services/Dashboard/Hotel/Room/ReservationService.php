@@ -106,6 +106,14 @@ class ReservationService
     public function checkInGuest($reservation_id)
     {
         $reservation = $this->getById($reservation_id);
+        $reservation_payment = ($reservation->payments() ?? collect())->sum('amount');
+
+        // Ensure that at least 90% of the payment is completed before checking in
+        if ($reservation_payment < $reservation->total_amount * 0.9) {
+            throw ValidationException::withMessages([
+                'payment_status' => 'Cannot check guest in because their payment has not reached 90% of the total amount.'
+            ]);
+        }
         if ($reservation->checked_in_at) {
             throw ValidationException::withMessages([
                 'checked_in_at' => 'Already checked in'

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('restaurant_items', function (Blueprint $table) {
-           $table->string('category_id')->after('outlet_id')->default('Drink');
+           $table->string('category')->after('outlet_id')->default('Food');
         });
     }
 

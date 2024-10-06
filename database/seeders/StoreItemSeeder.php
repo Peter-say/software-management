@@ -16,7 +16,7 @@ class StoreItemSeeder extends Seeder
     {
         $storeItems = [
             [
-                'store_id' => 2,
+                'store_id' => 1,
                 'item_category_id' => 1,
                 'item_sub_category_id' => 1,
                 'name' => 'Chicken Breast',
@@ -31,7 +31,7 @@ class StoreItemSeeder extends Seeder
                 'for_sale' => true,
             ],
             [
-                'store_id' => 2,
+                'store_id' => 1,
                 'item_category_id' => 2,
                 'item_sub_category_id' => 2,
                 'name' => 'Red Wine',
@@ -46,7 +46,7 @@ class StoreItemSeeder extends Seeder
                 'for_sale' => true,
             ],
             [
-                'store_id' => 2,
+                'store_id' => 1,
                 'item_category_id' => 3,
                 'item_sub_category_id' => null,
                 'name' => 'Dishwashing Soap',
@@ -62,7 +62,7 @@ class StoreItemSeeder extends Seeder
             ],
             // New Items Added Below
             [
-                'store_id' => 2,
+                'store_id' => 1,
                 'item_category_id' => 1,
                 'item_sub_category_id' => 3,
                 'name' => 'Beef Steak',
@@ -77,7 +77,7 @@ class StoreItemSeeder extends Seeder
                 'for_sale' => true,
             ],
             [
-                'store_id' => 2,
+                'store_id' => 1,
                 'item_category_id' => 2,
                 'item_sub_category_id' => 4,
                 'name' => 'White Wine',
@@ -92,7 +92,7 @@ class StoreItemSeeder extends Seeder
                 'for_sale' => true,
             ],
             [
-                'store_id' => 2,
+                'store_id' => 1,
                 'item_category_id' => 4,
                 'item_sub_category_id' => null,
                 'name' => 'Laundry Detergent',
@@ -107,7 +107,7 @@ class StoreItemSeeder extends Seeder
                 'for_sale' => false,
             ],
             [
-                'store_id' => 2,
+                'store_id' => 1,
                 'item_category_id' => 3,
                 'item_sub_category_id' => 5,
                 'name' => 'Spaghetti',
@@ -122,7 +122,7 @@ class StoreItemSeeder extends Seeder
                 'for_sale' => true,
             ],
             [
-                'store_id' => 2,
+                'store_id' => 1,
                 'item_category_id' => 5,
                 'item_sub_category_id' => 6,
                 'name' => 'Olive Oil',

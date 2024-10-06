@@ -140,6 +140,39 @@
                                                 @enderror
                                             </div>
                                         </div>
+                                         <!-- Country Field -->
+                                         <div class="col-md-6 col-12 mb-3">
+                                            <div class="form-group">
+                                                <label for="country_id" class="form-label">Country</label>
+                                                <select id="country_id" name="country_id"
+                                                    class="form-control @error('country_id') is-invalid @enderror">
+                                                    <option value="">Select Country</option>
+                                                    @foreach (getModelItems('countries') as $country)
+                                                        <option value="{{ $country->id }}"
+                                                            {{ old('country_id', $reservation->guest->country_id ?? '') == $country->id ? 'selected' : '' }}>
+                                                            {{ $country->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                @error('country_id')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <!-- State Field -->
+                                        <div class="col-md-6 col-12 mb-3">
+                                            <div class="form-group">
+                                                <label for="state_id" class="form-label">State</label>
+                                                <select id="state_id" name="state_id"
+                                                    class="form-control @error('state_id') is-invalid @enderror">
+                                                    <option value="">Select State</option>
+                                                </select>
+                                                @error('state_id')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
 

@@ -43,7 +43,8 @@
                     <span class="nav-text">Restaurant</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{ route('dashboard.hotel.restaurant-items.index') }}">Items</a></li>
+                    <li><a href="{{ route('dashboard.hotel.restaurant-items.index') }}">Menu Items</a></li>
+                    <li><a href="{{ route('dashboard.hotel.restaurant.create-order') }}">Create Order</a></li>
                 </ul>
             </li>
                 <li>

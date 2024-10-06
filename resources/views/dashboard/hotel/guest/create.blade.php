@@ -206,43 +206,4 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var stateId = '{{ old('state_id', $guest->state_id ?? '') }}';
-
-            $('#country_id').on('change', function() {
-                var countryId = $(this).val();
-                var stateDropdown = $('#state_id');
-                stateDropdown.empty();
-
-                if (countryId) {
-                    $.ajax({
-                        url: '{{ route('get-states-by-country') }}',
-                        type: 'GET',
-                        data: {
-                            country_id: countryId
-                        },
-                        success: function(response) {
-                            stateDropdown.append(
-                            '<option value="">Select State</option>'); // Add placeholder
-                            $.each(response.states, function(key, state) {
-                                var selected = (state.id == stateId) ? 'selected' : '';
-                                stateDropdown.append('<option value="' + state.id +
-                                    '" ' + selected + '>' + state.name + '</option>'
-                                    );
-                            });
-                        },
-                        error: function() {
-                            alert('Error fetching states');
-                        }
-                    });
-                } else {
-                    stateDropdown.append('<option value="">Select State</option>');
-                }
-            });
-
-            // Trigger change event on page load to populate states if country is pre-selected
-            $('#country_id').trigger('change');
-        });
-    </script>
 @endsection

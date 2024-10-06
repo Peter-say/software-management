@@ -46,6 +46,5 @@ class HotelSeeder extends Seeder
             'user_account_id' => $adminUser->id, // Adjust if needed
         ]);
 
-    
     }
 }

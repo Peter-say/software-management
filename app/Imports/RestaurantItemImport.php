@@ -41,7 +41,7 @@ class RestaurantItemImport implements ToModel, WithStartRow
         if ($existingItem) {
             // Optionally, update the existing item with new data
             $existingItem->update([
-                'category_id' => $row[1],
+                'category' => $row[1],
                 'name' => $row[0],
                 'price' => $row[2],
                 'description' => $row[3],
@@ -54,7 +54,7 @@ class RestaurantItemImport implements ToModel, WithStartRow
             // Create a new item
             $this->importedItemCount++;
             return new RestaurantItem([
-                'category_id' => $row[1],
+                'category' => $row[1],
                 'name' => $row[0],
                 'price' => $row[2],
                 'outlet_id' => $this->outlet_id,

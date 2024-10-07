@@ -9,6 +9,7 @@ use App\Models\hotelSoftware\GuestPayment;
 use App\Models\HotelSoftware\RoomReservation;
 use App\Services\Dashboard\Payment\PaymentService;
 use App\Services\Dashboard\Transaction\TransactionService;
+use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -26,12 +27,14 @@ class GuestWalletService
 
     protected function validateCreditTransaction(Request $request)
     {
+
         return $request->validate([
             'guest_id' => 'required|exists:guests,id',
             'amount' => 'required|numeric|min:0',
-            'mode_of_payment' => 'required',
-            'note' => 'nullable|string',
+            'payment_method' => 'required',
+            'description' => 'nullable|string',
         ]);
+        dd($request->all());
     }
 
     protected function validateDebitTransaction(Request $request)
@@ -65,29 +68,39 @@ class GuestWalletService
 
     public function recordCreditTransaction(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         DB::beginTransaction();
-        $validatedData = $this->validateCreditTransaction($request);
-        dd($validatedData);
-        $guest = Guest::findOrFail($validatedData['guest_id']);
-        dd($guest);
-        // Process the payment
-        $payment = $this->payment_service->processPayment($request);
-        dd($payment);
-        // Process the transaction using the existing payment
-        $transaction = $this->transaction_service->processTransaction($request, $payment);
-        dd($transaction);
-        $transaction->transaction_type = 'credit';
-        // Link the transaction to the payment
-        $payment->transactions()->save($transaction);
 
-        // Deduct the amount from the guest's wallet
-        $guest->wallet->balance += $validatedData['amount'];
-        $guest->wallet->save();
+        try {
+            // Validate the credit transaction data
+            $validatedData = $this->validateCreditTransaction($request);
 
-        DB::commit();
-        return $guest;
+            // Process the payment
+            $payment = $this->payment_service->processPayment($request);
+           
+            // Process the transaction using the existing payment
+            $transaction = $this->transaction_service->processTransaction($request, $payment);
+            $transaction->transaction_type = 'credit';
+
+            // Link the transaction to the payment
+            $payment->transactions()->save($transaction);
+
+            $guest = Guest::find($request->guest_id);
+            // Update the wallet balance from the request
+            $guestWallet = $guest->wallet;
+            $guestWallet->balance += $validatedData['amount'];
+            $guestWallet->save();
+
+            DB::commit();
+
+            return $guestWallet; // Return the updated wallet
+        } catch (Exception $e) {
+            DB::rollBack(); // Rollback the transaction on failure
+            throw $e; // Rethrow the exception to be handled in the controller
+        }
     }
+
+
 
     public function recordDebitTransaction(Request $request)
     {

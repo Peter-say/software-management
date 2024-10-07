@@ -127,4 +127,5 @@ return [
     Stripe credential call from the enviromental variable file
     */
     'stripe_key' => env('STRIPE_KEY'),
+    'stripe_secret' => env('STRIPE_SECRET'),
 ];

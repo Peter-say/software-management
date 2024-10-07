@@ -69,9 +69,6 @@ class RestaurantOrderService
         $data['discount_amount'] = 0.00;
         $data['total_amount'] = $data['quantity'] * $data['amount'] + $data['tax_amount'];
 
-        // Debugging: check the data being passed to create
-        // dd($data);
-
         // Create the restaurant order
         $restaurantOrder = RestaurantOrder::create($data);
         if ($restaurantOrder) {

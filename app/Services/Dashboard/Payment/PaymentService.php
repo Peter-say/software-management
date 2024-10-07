@@ -6,14 +6,17 @@ use App\Models\Payment;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Services\Dashboard\Payment\StripeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PaymentService
 {
     protected $stripe_service;
-    public function __construct(StripeService $stripe_service) {
-        $this->stripe_service = $stripe_service;
+
+    public function __construct(StripeService $stripe_service)
+    {
+        $this->stripe_service = $stripe_service; // Assigning the stripe service to the property
     }
 
     public function validatePayment(Request $request)
@@ -36,7 +39,6 @@ class PaymentService
 
     public function processPayment(Request $request, $payment_id = null)
     {
-        // dd($request->all());
         return DB::transaction(function () use ($request, $payment_id) {
             $data = $this->validatePayment($request);
             $data['user_id'] = User::getAuthenticatedUser()->id;
@@ -44,19 +46,25 @@ class PaymentService
             $data['payable_type'] = $request->input('payable_type');
             $data['transaction_id'] = 'TXN' . strtoupper(uniqid());
 
-            // dd('e reach here');
-            // Create the Stripe payment
-        //    $this->stripe_service->charge($request);
-            // Handle successful charge
-            $data['status'] = 'completed';
+            // Create the Stripe payment using the Stripe service
+            $stripeCharge = $this->stripe_service->charge($request);
 
+            // Handle successful charge
+            if ($stripeCharge->status == 'succeeded') {
+                $data['status'] = 'completed';
+            } else {
+                throw new Exception('Stripe payment failed: ' . $stripeCharge->failure_message);
+            }
+
+            // Create the payment record
             $payment = Payment::create($data);
 
-            $statusInfo = $this->evaluatePaymentStatus($payment->amount, $request->total_amount);
+            // Evaluate payment status based on the paid amount and total amount
+            $statusInfo = $this->evaluatePaymentStatus($data['amount'], $request->total_amount);
             $payment->status = $statusInfo['status'];
             $payment->save();
 
-            return $payment;
+            return $payment; // Return the created payment
         });
     }
 

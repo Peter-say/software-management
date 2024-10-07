@@ -1,5 +1,4 @@
 <!-- Button trigger modal -->
-@include('notifications.flash-messages')
 
 <div class="modal fade" id="fund-guest-wallet-modal" tabindex="-1" role="dialog" aria-labelledby="fund-guest-wallet-modal" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -39,6 +38,7 @@
                         <input type="hidden" name="payment_method" id="fund-wallet-method" value="WALLET">
                         <input type="hidden" name="hotel_id" value="{{ auth()->user()->id }}">
                         <input type="hidden" name="guest_id" value="{{ $guest->id }}">
+                        <input type="hidden" name="payable_id" value="{{$guest->id }}">
                         <input type="hidden" name="payable_type" value="{{ get_class($guest) }}">
 
                         <button type="submit" class="btn btn-primary">Fund Now</button>
@@ -78,9 +78,9 @@
             // Remove commas before submitting the form
             amountInput.value = amountInput.value.replace(/,/g, '');
         });
-    });a
+    });
 </script>
-{{-- <script src="https://js.stripe.com/v3/"></script> --}}
+<script src="https://js.stripe.com/v3/"></script>
 <script>
     var stripe = Stripe('{{config('app.stripe_key')}}');
     var elements = stripe.elements();

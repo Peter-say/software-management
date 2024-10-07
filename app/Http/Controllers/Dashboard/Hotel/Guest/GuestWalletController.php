@@ -15,26 +15,28 @@ class GuestWalletController extends Controller
     {
         $this->guest_wallet_service = $guest_wallet_service;
     }
+
+  
     public function getWallet()
     {
         // recordDebitTransaction
     }
 
-    // public function creditGuestWallet(Request $request)
-    // {
-    //     dd($request->all());
-    //     try {
-    //      $wallet = $this->guest_wallet_service->recordCreditTransaction($request);
-    //       return back()->with('success_message', 'wallet credit successfully');
-    //     } catch (ModelNotFoundException $e) {
-    //         return redirect()->back()->with('error_message', 'Guest Wallet not found');
-    //     } catch (Exception $e) {
-    //         return redirect()->back()->withInput($request->all())->with('error_message', $e->getMessage());
-    //     } catch (\Throwable $th) {
-    //         throw $th;
-    //         return redirect()->back()->with('error_message', 'Something went wrong');
-    //     }
-    // }
+    public function creditGuestWallet(Request $request)
+    {
+        // dd($request->all());
+        try {
+         $wallet = $this->guest_wallet_service->recordCreditTransaction($request);
+          return back()->with('success_message', 'wallet credit successfully');
+        } catch (ModelNotFoundException $e) {
+            return redirect()->back()->with('error_message', 'Guest Wallet not found');
+        } catch (Exception $e) {
+            return redirect()->back()->withInput($request->all())->with('error_message', $e->getMessage());
+        } catch (\Throwable $th) {
+            throw $th;
+            return redirect()->back()->with('error_message', 'Something went wrong');
+        }
+    }
 
     public function payWithGuestWallet(Request $request, $id = null)
     {

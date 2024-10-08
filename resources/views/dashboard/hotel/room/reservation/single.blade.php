@@ -255,7 +255,7 @@
     </div>
     @if ($reservation)
         @include('dashboard.hotel.room.reservation.pay-with-wallet-modal')
-        {{-- @include('dashboard.hotel.guest.wallet.credit', ['guest' => $reservation->guest]) --}}
+        @include('dashboard.hotel.guest.wallet.credit', ['guest' => $reservation->guest])
     @endif
 
     <script>

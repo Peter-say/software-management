@@ -35,7 +35,8 @@
                     <input type="hidden" name="stripeToken" id="stripe-token">
 
                     <div class="modal-footer">
-                        <input type="hidden" name="payment_method" id="fund-wallet-method" value="WALLET">
+                        <input type="hidden" name="stripe_payment" id="fund-wallet-method" value="Stripe">
+                        <input type="hidden" name="payment_method" id="fund-wallet-method" value="CARD">
                         <input type="hidden" name="hotel_id" value="{{ auth()->user()->id }}">
                         <input type="hidden" name="guest_id" value="{{ $guest->id }}">
                         <input type="hidden" name="payable_id" value="{{$guest->id }}">

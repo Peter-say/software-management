@@ -37,7 +37,6 @@ class Guest extends Model
     {
         // Concatenate title, first name, last name, and other names
         $fullName = trim($this->title . ' ' . $this->first_name . ' ' . $this->last_name . ' ' . $this->other_names);
-
         // If the full name is empty, return a default message
         return $fullName ?: 'No Name Provided';
     }

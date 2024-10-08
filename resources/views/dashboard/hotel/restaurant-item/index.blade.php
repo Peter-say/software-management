@@ -145,7 +145,7 @@
             </div>
         </div>
     </div>
-    @include('dashboard.hotel.restaurant-item.upload-modal')
+    {{-- @include('dashboard.hotel.restaurant-item.upload-modal') --}}
     <!-- Delete Confirmation Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
         aria-hidden="true">

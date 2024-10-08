@@ -4,6 +4,7 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\Hotel\Guest\GuestController;
 use App\Http\Controllers\Dashboard\Hotel\Guest\GuestWalletController;
 use App\Http\Controllers\Dashboard\Hotel\Invoices\Guest\RoomReservationInvoiceController;
+use App\Http\Controllers\Dashboard\Hotel\OutletController;
 use App\Http\Controllers\Dashboard\Hotel\Restaurant\RestaurantItemsController;
 use App\Http\Controllers\Dashboard\Hotel\Restaurant\RestaurantOrderController;
 use App\Http\Controllers\Dashboard\Hotel\RoomController;
@@ -33,6 +34,8 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::resource('reservations', RoomReservationController::class);
             Route::resource('guests', GuestController::class);
             Route::resource('restaurant-items', RestaurantItemsController::class);
+            Route::resource('outlets', OutletController::class);
+
             Route::get('set-guest-info', [GuestController::class, 'getGuestInfo'])->name('set-guest-info');
             Route::post('check-room-availability', [RoomReservationController::class, 'getRoomAvailability']);
 
@@ -48,6 +51,10 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::post('restaurant-items/upload', [RestaurantItemsController::class, 'importItems'])->name('restaurant-items.upload');
             Route::get('restaurant/create-order', [RestaurantOrderController::class, 'createOrder'])->name('restaurant.create-order');
             Route::post('restaurant/save-order', [RestaurantOrderController::class, 'saveOrder'])->name('restaurant.save-order');
+            Route::get('restaurant/view-orders', [RestaurantOrderController::class, 'viewOrders'])->name('restaurant.view-orders');
+            Route::get('restaurant/edit-order', [RestaurantOrderController::class, 'editOrder'])->name('restaurant.edit-order');
+            Route::delete('restaurant/destroy-order', [RestaurantOrderController::class, 'destroyOrder'])->name('restaurant.destroy-order');
+            Route::post('restaurant/cancel-order', [RestaurantOrderController::class, 'cancelOrder'])->name('restaurant.cancel-order');
         });
            
     });

@@ -4,6 +4,7 @@ use App\Models\HotelSoftware\Guest;
 use App\Models\HotelSoftware\ItemCategory;
 use App\Models\HotelSoftware\Outlet;
 use App\Models\HotelSoftware\Room;
+use App\Models\HotelSoftware\WalkInCustomer;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -22,6 +23,17 @@ function getModelItems($model)
     }
     if ($model == 'restaurant-outlets') {
         $model_list = Outlet::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->where('type', 'restaurant')->get();
+    }
+
+    if ($model == 'walk_in_customers') {
+        $hotel_Id = User::getAuthenticatedUser()->hotel->id;
+
+        // Get the outlet (restaurant) for the hotel
+        $outlet = Outlet::where('hotel_id', $hotel_Id)->where('type', 'restaurant')->first();
+        // Get all walk-in customers associated with that restaurant outlet
+        $model_list = WalkInCustomer::whereHas('restaurantOrders', function ($query) use ($outlet) {
+            $query->where('outlet_id', $outlet->id);
+        })->get();
     }
     if ($model == 'item-categories') {
         $model_list = ItemCategory::all();

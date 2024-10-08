@@ -5,6 +5,7 @@ namespace App\Imports;
 use App\Models\HotelSoftware\RestaurantItem;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Events\AfterImport;
@@ -17,7 +18,18 @@ class RestaurantItemImport implements ToModel, WithStartRow
 
     public function __construct()
     {
-        $this->outlet_id = User::getAuthenticatedUser()->hotel->defaultRestaurant()->id;
+        $defaultRestaurant = User::getAuthenticatedUser()->hotel->defaultRestaurant();
+        if (!$this->outlet_id) {
+            if ($defaultRestaurant) {
+                // If outlet_id is not set, assign the default restaurant's ID
+                $this->outlet_id = $defaultRestaurant->id;
+            } else {
+                // Throw an exception if no default restaurant is found
+                throw ValidationException::withMessages([
+                    'outlet' => 'You need to create a restaurant outlet before you can add items to it.'
+                ]);
+            }
+        }
     }
 
     public function startRow(): int

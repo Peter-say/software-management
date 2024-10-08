@@ -46,14 +46,15 @@ class PaymentService
             $data['payable_type'] = $request->input('payable_type');
             $data['transaction_id'] = 'TXN' . strtoupper(uniqid());
 
-            // Create the Stripe payment using the Stripe service
-            $stripeCharge = $this->stripe_service->charge($request);
-
-            // Handle successful charge
-            if ($stripeCharge->status == 'succeeded') {
-                $data['status'] = 'completed';
-            } else {
-                throw new Exception('Stripe payment failed: ' . $stripeCharge->failure_message);
+            if ($request->stripe_payment === 'Stripe') {
+                // Create the Stripe payment using the Stripe service
+                $stripeCharge = $this->stripe_service->charge($request);
+                // Handle successful charge
+                if ($stripeCharge->status == 'succeeded') {
+                    $data['status'] = 'completed';
+                } else {
+                    throw new Exception('Stripe payment failed: ' . $stripeCharge->failure_message);
+                }
             }
 
             // Create the payment record
@@ -97,3 +98,4 @@ class PaymentService
 
     public function stripCredit() {}
 }
+

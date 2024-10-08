@@ -103,12 +103,20 @@
                                 <div class="mb-3">
                                     <label for="guestSelect" class="form-label fw-bold">Select Guest</label>
                                     <select class="form-select" id="guestId">
-                                        <option value="" selected>Select or search for a guest</option>
-                                        <!-- Populate this with existing guests from your database -->
-                                        @foreach ($guests as $guest)
-                                            <option value="{{ $guest->id }}">{{ $guest->full_name }}</option>
+                                        <option value="" selected>Select or search for a guest or customer</option>
+                                        @foreach (getModelItems('guests') as $guest)
+                                            <option value="guest_{{ $guest->id }}">
+                                                <i class="fas fa-user"></i> {{ $guest->full_name }}
+                                            </option>
+                                        @endforeach
+                                        <hr>
+                                        @foreach (getModelItems('walk_in_customers') as $customer)
+                                            <option value="walkin_{{ $customer->id }}">
+                                                <i class="fas fa-walking"></i> {{ $customer->walkInCustomerInfo() }}
+                                            </option>
                                         @endforeach
                                     </select>
+
                                     <button type="button" class="btn btn-link" id="addWalkInCustomerBtn">Add Walk-In
                                         Customer</button>
                                 </div>
@@ -166,7 +174,7 @@
                                     <select class="form-select" id="outlet_id" required>
                                         <option value="" selected>Select Outlet</option>
                                         <!-- Populate this with existing guests from your database -->
-                                        @foreach ($outlets as $outlet)
+                                        @foreach (getModelItems('restaurant-outlets') as $outlet)
                                             <option value="{{ $outlet->id }}">{{ $outlet->name }}</option>
                                         @endforeach
                                     </select>
@@ -467,16 +475,33 @@
                             return;
                         }
 
+                        var selectedValue = $('#guestId').val();
+                        var guest_id = null;
+                        var walk_in_customer_id = null;
+
+                        if (selectedValue) {
+                            var parts = selectedValue.split('_');
+                            var type = parts[0];
+                            var id = parts[1];
+
+                            if (type === 'guest') {
+                                guest_id = id;
+                            } else if (type === 'walkin') {
+                                walk_in_customer_id = id;
+                            }
+                        }
+                       
                         // Prepare order data to send
                         const orderData = {
                             outlet_id: $('#outlet_id').val(), // Get the selected outlet ID
-                            guest_id: $('#guestId').val(), // Get the selected guest ID, if any
+                            guest_id: guest_id, // Use the correct guest ID or null
+                            walk_in_customer_id: walk_in_customer_id, // Use the correct walk-in customer ID or null
                             customer_name: $('#customerName')
-                                .val(), // Get walk-in customer name, if filled
+                        .val(), // Get walk-in customer name, if filled
                             customer_email: $('#customerEmail')
-                                .val(), // Get walk-in customer email, if filled
+                        .val(), // Get walk-in customer email, if filled
                             customer_phone: $('#customerPhone')
-                                .val(), // Get walk-in customer phone, if filled
+                        .val(), // Get walk-in customer phone, if filled
                             items: orderItems,
                             totalPrice: orderItems.reduce((total, item) => total + (item.price *
                                 item.quantity), 0),
@@ -499,7 +524,7 @@
                         }
 
                         // Check if guest_id is not provided and customer details are missing
-                        if (!orderData.guest_id && (!orderData.customer_name || !orderData
+                        if (!orderData.guest_id && !walk_in_customer_id &&(!orderData.customer_name || !orderData
                                 .customer_email || !orderData.customer_phone)) {
                             Toastify({
                                 text: "Either Guest ID or walk-in customer details must be provided.",

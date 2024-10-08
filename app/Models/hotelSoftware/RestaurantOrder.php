@@ -41,6 +41,11 @@ class RestaurantOrder extends Model
         return $this->belongsTo(WalkInCustomer::class);
     }
 
+    public function restaurantOrderItems()
+    {
+        return $this->hasMany(RestaurantOrderItem::class);
+    }
+
     public function invoice()
     {
         return $this->morphMany(Invoice::class, 'invoiceable');

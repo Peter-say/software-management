@@ -7,5 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class WalkInCustomer extends Model
 {
+    protected $guarded = [];
     use HasFactory;
+
+    public function restaurantOrders()
+    {
+        return $this->hasMany(RestaurantOrder::class, 'walk_in_customer_id');
+    }
+    public function walkInCustomerInfo()
+    {
+        return trim($this->name . ' - ' . $this->phone);
+    }
 }

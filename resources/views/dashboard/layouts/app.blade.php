@@ -98,6 +98,7 @@
         @include('dashboard.layouts.navigations.sidebar');
         @include('notifications.flash-messages')
         @include('dashboard.general.modal.item-description-modal')
+        @include('dashboard.hotel.restaurant-item.upload-modal')
         @yield('contents')
 
 

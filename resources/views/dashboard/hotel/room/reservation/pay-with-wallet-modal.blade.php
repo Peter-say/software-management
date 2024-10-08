@@ -2,7 +2,6 @@
 @php
     $date = Date('d/m/y');
 @endphp
-@include('notifications.flash-messages')
 <div class="modal fade" id="Pay-with-wallet-modal" tabindex="-1" role="dialog" aria-labelledby="Pay-with-wallet-modal"
     aria-hidden="true">
     <div class="modal-dialog" role="document">

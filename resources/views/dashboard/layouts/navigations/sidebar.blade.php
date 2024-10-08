@@ -6,8 +6,8 @@
     @php
         use App\Models\HotelSoftware\HotelUser;
         $user = Auth::user();
-       // Check if the user is associated with any hotel
-       $hotelUser = HotelUser::where('user_id', $user->id)->first();
+        // Check if the user is associated with any hotel
+        $hotelUser = HotelUser::where('user_id', $user->id)->first();
     @endphp
     @if ($hotelUser)
         <div class="dlabnav-scroll">
@@ -37,20 +37,27 @@
                         <span class="nav-text">Rooms</span>
                     </a>
                 </li>
-                
+
                 <li><a class="has-arrow " href="javascript:void()" aria-expanded="false">
-                    <i class="flaticon-045-heart"></i>
-                    <span class="nav-text">Restaurant</span>
-                </a>
-                <ul aria-expanded="false">
-                    <li><a href="{{ route('dashboard.hotel.restaurant-items.index') }}">Menu Items</a></li>
-                    <li><a href="{{ route('dashboard.hotel.restaurant.create-order') }}">Create Order</a></li>
-                </ul>
-            </li>
+                        <i class="flaticon-045-heart"></i>
+                        <span class="nav-text">Restaurant</span>
+                    </a>
+                    <ul aria-expanded="false">
+                        <li><a href="{{ route('dashboard.hotel.restaurant-items.index') }}">Menu Items</a></li>
+                        <li><a href="{{ route('dashboard.hotel.restaurant.create-order') }}">Create Order</a></li>
+                        <li><a href="{{ route('dashboard.hotel.restaurant.view-orders') }}">View Orders</a></li>
+                    </ul>
+                </li>
                 <li>
                     <a href="{{ route('dashboard.hotel.reservations.index') }}" aria-expanded="false">
                         <i class="flaticon-013-checkmark"></i>
                         <span class="nav-text">Room Reservations</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('dashboard.hotel.outlets.index') }}" aria-expanded="false">
+                        <i class="flaticon-013-checkmark"></i>
+                        <span class="nav-text">Outlets</span>
                     </a>
                 </li>
 

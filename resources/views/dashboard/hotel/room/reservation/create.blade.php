@@ -101,8 +101,7 @@
                                                 <label for="other_names" class="text-label form-label">Other Names*</label>
                                                 <input type="text" id="other_names" name="other_names"
                                                     class="form-control @error('other_names') is-invalid @enderror"
-                                                    value="{{ old('other_names', $reservation->guest->other_names ?? '') }}"
-                                                    required>
+                                                    value="{{ old('other_names', $reservation->guest->other_names ?? '') }}">
                                                 @error('other_names')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}

@@ -141,14 +141,13 @@ class RestaurantItemsController extends Controller
 
         // Determine the file path based on the current URL
         if ($request->current_url === url(route('dashboard.hotel.restaurant-items.index'))) {
-            $filePath = public_path('dashboard/samples/restaurant_menu_sample_with_ingredients.csv'); // Use forward slashes
+            $filePath = public_path('dashboard/samples/restaurant_menu_sample_with_ingredients.xlsx'); // Use forward slashes
         }
 
         // Check if the file exists
         if (!file_exists($filePath)) {
             return response()->json(['success' => false, 'message' => 'Sample file not found.'], 404);
         }
-
         // Return the file for download
         return response()->download($filePath);
     }

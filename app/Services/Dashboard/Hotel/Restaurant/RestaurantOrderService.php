@@ -21,14 +21,23 @@ class RestaurantOrderService
         $validator = Validator::make($data, [
             'outlet_id' => 'required|exists:outlets,id',
             'quantity' => 'required|numeric|min:1',
-            'items' => 'required|array', // Validate items as an array
-            'items.*.id' => 'required|exists:restaurant_items,id', // Each item must have a valid ID
-            'items.*.quantity' => 'required|numeric|min:1', // Quantity for each item
+            'items' => 'required|array',
+            'items.*.id' => 'required|exists:restaurant_items,id',
+            'items.*.quantity' => 'required|numeric|min:1',
+
+            'guest_id' => 'nullable|exists:guests,id',
+            'walk_in_customer_id' => 'nullable|exists:walk_in_customers,id',
+            'customer_name' => 'nullable|string|max:255',  // Change required_without_all to nullable
+            'customer_email' => 'nullable|email',
+            'customer_phone' => 'nullable|string|max:15',
         ]);
 
-        // Add a custom condition to check at least one of guest_id, walkin_customer_id, or details is present
-        $validator->sometimes(['guest_id', 'walkin_customer_id', 'customer_details'], 'required_without_all:guest_id,walkin_customer_id,customer_details', function ($input) {
-            return !isset($input['guest_id']) && !isset($input['walkin_customer_id']) && empty($input['customer_details']);
+        // Custom validation to ensure that at least one of guest_id or customer details is provided
+        $validator->after(function ($validator) use ($data) {
+            // Ensure that at least one of guest_id, walk_in_customer_id, or customer_name is present
+            if (empty($data['guest_id']) && empty($data['walk_in_customer_id']) && empty($data['customer_name'])) {
+                $validator->errors()->add('customer_name', 'You must select a guest or provide customer details.');
+            }
         });
 
         if ($validator->fails()) {
@@ -56,7 +65,9 @@ class RestaurantOrderService
         } elseif ($request->walk_in_customer_id) {
             $data['walk_in_customer_id'] = $request->walk_in_customer_id;
         } else {
-            $customerData = $request->only(['customer_name', 'customer_email', 'customer_phone']);
+            $customerData['name'] = $request->customer_name;
+            $customerData['email'] = $request->customer_email;
+            $customerData['phone'] = $request->customer_phone;
             $customer = WalkInCustomer::create($customerData);
             $data['walk_in_customer_id'] = $customer->id;
         }

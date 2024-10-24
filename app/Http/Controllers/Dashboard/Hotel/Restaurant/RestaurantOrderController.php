@@ -10,6 +10,7 @@ use App\Models\HotelSoftware\RestaurantItem;
 use App\Models\HotelSoftware\RestaurantOrder;
 use App\Models\User;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class RestaurantOrderController extends Controller
@@ -23,8 +24,6 @@ class RestaurantOrderController extends Controller
     public function viewOrders()
     {
         $hotel = User::getAuthenticatedUser()->hotel->id;
-        // $restaurant_orders = RestaurantOrder::with('restaurantOrderItems', 'guest', 'walkInCustomer') ->where('hotel_id', $hotel)->get();
-        // dd($restaurant_orders);
         return view('dashboard.hotel.restaurant-item.order.index', [
             'restaurant_orders' => RestaurantOrder::with('restaurantOrderItems', 'guest', 'walkInCustomer')
                 ->where('hotel_id', $hotel)
@@ -48,23 +47,41 @@ class RestaurantOrderController extends Controller
     {
         try {
             $message = $this->restaurant_order_service->saveOrder($request);
-            return response()->json([
-                'success' => true,
-                'message' => $message,
-            ]);
+            return response()->json(['success' => true, 'message' => $message,]);
         } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage(),], 500); // Send a 500 response on error
         } catch (\Throwable $th) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Something went wrong while trying to save order',
-            ], 500);
+            return response()->json(['success' => false, 'message' => 'Something went wrong while trying to save order',], 500);
         }
     }
 
     public function editOrder() {}
 
-    public function deleteOrder() {}
+    public function deleteOrder($order)
+    {
+        try {
+            $this->restaurant_order_service->deleteOrder($order);
+            return response()->json(['success' => true, 'message' => "Order deleted successfully",]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['success' => false, 'message' => 'Order not found',], 404);
+        } catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage(),], 500);
+        } catch (\Throwable $th) {
+            return response()->json(['success' => false, 'message' => 'Something went wrong while trying to save order',], 500);
+        }
+    }
 
-    public function cancelOrder() {}
+    public function cancelOrder($order)
+    {
+        try {
+            $this->restaurant_order_service->cancelOrder($order);
+            return response()->json(['success' => true, 'message' => "Order cancelled successfully",]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['success' => false, 'message' => 'Order not found',], 404);
+        } catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage(),], 500);
+        } catch (\Throwable $th) {
+            return response()->json(['success' => false, 'message' => 'Something went wrong while trying to save order',], 500);
+        }
+    }
 }

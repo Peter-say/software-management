@@ -48,6 +48,14 @@
                         <li><a href="{{ route('dashboard.hotel.restaurant.view-orders') }}">View Orders</a></li>
                     </ul>
                 </li>
+                <li><a class="has-arrow " href="javascript:void()" aria-expanded="false">
+                    <i class="flaticon-045-heart"></i>
+                    <span class="nav-text">Kitchen</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('dashboard.hotel.kitchen.orders') }}">Orders</a></li>
+                </ul>
+            </li>
                 <li>
                     <a href="{{ route('dashboard.hotel.reservations.index') }}" aria-expanded="false">
                         <i class="flaticon-013-checkmark"></i>

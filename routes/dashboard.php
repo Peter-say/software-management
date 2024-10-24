@@ -4,6 +4,7 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\Hotel\Guest\GuestController;
 use App\Http\Controllers\Dashboard\Hotel\Guest\GuestWalletController;
 use App\Http\Controllers\Dashboard\Hotel\Invoices\Guest\RoomReservationInvoiceController;
+use App\Http\Controllers\Dashboard\Hotel\Kitchen\KitchenOrderController;
 use App\Http\Controllers\Dashboard\Hotel\OutletController;
 use App\Http\Controllers\Dashboard\Hotel\Restaurant\RestaurantItemsController;
 use App\Http\Controllers\Dashboard\Hotel\Restaurant\RestaurantOrderController;
@@ -54,9 +55,14 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::get('restaurant/view-orders', [RestaurantOrderController::class, 'viewOrders'])->name('restaurant.view-orders');
             Route::get('restaurant/edit-order', [RestaurantOrderController::class, 'editOrder'])->name('restaurant.edit-order');
             Route::delete('restaurant/destroy-order', [RestaurantOrderController::class, 'destroyOrder'])->name('restaurant.destroy-order');
-            Route::post('restaurant/cancel-order', [RestaurantOrderController::class, 'cancelOrder'])->name('restaurant.cancel-order');
+            Route::post('restaurant/{id}/cancel-order', [RestaurantOrderController::class, 'cancelOrder'])->name('restaurant.cancel-order');
+
+            Route::get('kitchen/orders', [KitchenOrderController::class, 'viewOrders'])->name('kitchen.orders');
+            Route::put('kitchen/orders/{id}/change-status', [KitchenOrderController::class, 'updateStatus'])->name('kitchen.orders.change-status');
+            Route::put('kitchen/orders/{id}/add-note', [KitchenOrderController::class, 'addNote'])->name('kitchen.orders.add-note');
+
         });
-           
+        
     });
     Route::get('/get-states-by-country', [OnboardingController::class, 'getStatesByCountry'])->name('get-states-by-country');
 

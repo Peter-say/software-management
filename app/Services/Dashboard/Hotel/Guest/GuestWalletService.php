@@ -6,6 +6,7 @@ use App\Models\Payment;
 use App\Models\Transaction;
 use App\Models\HotelSoftware\Guest;
 use App\Models\hotelSoftware\GuestPayment;
+use App\Models\HotelSoftware\RestaurantOrder;
 use App\Models\HotelSoftware\RoomReservation;
 use App\Services\Dashboard\Payment\PaymentService;
 use App\Services\Dashboard\Transaction\TransactionService;
@@ -49,22 +50,29 @@ class GuestWalletService
     protected function validatePayWithGuestWallet(Request $request)
     {
         return $request->validate([
-            // 'guest_id' => 'required|exists:guests,id',
-            'reservation_id' => 'required|exists:room_reservations,id',
             'amount' => 'required|numeric|min:0.01',
             'description' => 'nullable|string',
 
         ]);
     }
 
-    public function getById($id)
+    public function getReservationById($id)
     {
         $reservation = RoomReservation::find($id);
         if (empty($reservation)) {
-            throw new ModelNotFoundException("Reservation not found");
+            throw new ModelNotFoundException("Reservation not found with ID: {$id}");
         }
         return $reservation;
     }
+    public function getOrderById($id)
+    {
+        $order = RestaurantOrder::find($id);
+        if (empty($order)) {
+            throw new ModelNotFoundException("Order not found with ID: {$id}");
+        }
+        return $order;
+    }
+
 
     public function recordCreditTransaction(Request $request)
     {
@@ -77,7 +85,7 @@ class GuestWalletService
 
             // Process the payment
             $payment = $this->payment_service->processPayment($request);
-           
+
             // Process the transaction using the existing payment
             $transaction = $this->transaction_service->processTransaction($request, $payment);
             $transaction->transaction_type = 'credit';
@@ -140,14 +148,30 @@ class GuestWalletService
 
     public function payWithGuestWallet(Request $request)
     {
-
+        // dd($request->all());
         return DB::transaction(function () use ($request) {
             $validatedData = $this->validatePayWithGuestWallet($request);
 
-            // Retrieve the guest and reservation
-            $reservation = $this->getById($request->input('reservation_id'));
-            $guest = $reservation->guest;
-            $guest['guest_id'] = $guest->id;
+            // Initialize guest variable
+            $guest = null;
+            $reservation = null;
+            $order = null;
+
+            // Check if reservation_id is present and retrieve the reservation
+            if ($request->has('reservation_id')) {
+                $reservation = $this->getReservationById($request->input('reservation_id'));
+                if ($reservation) {
+                    $guest = $reservation->guest; // Assign guest from reservation
+                }
+            }
+
+            // Check if order_id is present and retrieve the order
+            if ($request->has('order_id')) {
+                $order = $this->getOrderById($request->input('order_id'));
+                if ($order) {
+                    $guest = $order->guest; // Assign guest from order
+                }
+            }
 
             // Check for sufficient balance
             if ($validatedData['amount'] > $guest->wallet->balance) {
@@ -172,9 +196,14 @@ class GuestWalletService
                 'guest_id' => $guest->id,
             ]);
 
-            // Update reservation status and save
-            $this->updateReservationStatus($reservation, $validatedData['amount']);
-
+            if ($reservation) {
+                // Update reservation status and save
+                $this->updateReservationStatus($reservation, $validatedData['amount']);
+            }
+            if ($order) {
+                // Update reservation status and save
+                $this->updateOrderStatus($order, $validatedData['amount']);
+            }
             return $payment;
         });
     }
@@ -202,5 +231,35 @@ class GuestWalletService
 
         // Return the updated payment status
         return $reservation->payment_status;
+    }
+
+    protected function updateOrderStatus($order, $amount)
+    {
+        // Sum all the payments made for the order so far
+        $order_payments = $order->payments()->sum('amount');
+
+        // Calculate the total paid, including the new amount
+        $total_paid = $order_payments + $amount;
+
+        // Update the status based on the total paid amount
+        if ($total_paid >= $order->total_amount) {
+            $order->status = 'closed';  // Full payment made or overpaid
+            // Automatically update the status for all orders where total payment is >= total amount
+            RestaurantOrder::where('id', '!=', $order->id) // Exclude the current order
+                ->whereHas('payments', function ($query) {
+                    $query->havingRaw('SUM(amount) >= total_amount');
+                })
+                ->update(['status' => 'closed']);
+        } elseif ($total_paid > 0) {
+            $order->status = 'open';  // Partial payment made
+        } else {
+            $order->status = 'open';  // No payment or invalid payment
+        }
+
+        // Save the updated order status
+        $order->save();
+
+        // Return the updated payment status
+        return $order->status;
     }
 }

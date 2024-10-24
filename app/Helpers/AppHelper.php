@@ -57,3 +57,23 @@ function getItemAvailability(int $status): string
         return 'Not Available';
     }
 }
+function getStatuses()
+{
+    return [
+        'pending' => [
+            'icon' => 'fas fa-hourglass-start',
+            'color' => 'text-warning',
+            'label' => 'Pending'
+        ],
+        'in_progress' => [
+            'icon' => 'fas fa-spinner',
+            'color' => 'text-info',
+            'label' => 'In Progress'
+        ],
+        'ready' => [
+            'icon' => 'fas fa-check',
+            'color' => 'text-success',
+            'label' => 'Ready'
+        ],
+    ];
+}

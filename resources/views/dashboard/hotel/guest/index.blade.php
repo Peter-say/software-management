@@ -66,7 +66,7 @@
                                                         onclick="confirmDelete('{{ route('dashboard.hotel.guests.destroy', $guest->id) }}')">
                                                         <i class="fa fa-trash"></i>
                                                     </a>
-                                                    <a type="button" data-bs-toggle="modal" data-bs-target="#fund-guest-wallet-modal" class="btn btn-primary shadow btn-xs sharp me-1">
+                                                    <a type="button" data-bs-toggle="modal" data-bs-target="#fund-guest-wallet-modal" class="btn btn-primary shadow btn-xs sharp">
                                                         <i class="fas fa-wallet"></i>
                                                     </a>
                                                     

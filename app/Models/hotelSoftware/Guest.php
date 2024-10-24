@@ -59,6 +59,10 @@ class Guest extends Model
         return $this->morphMany(Payment::class, 'payable');
     }
 
+    public function restaurantOrder(){
+        return $this->hasMany(RestaurantOrder::class);
+    }
+
     protected static function boot()
     {
         parent::boot();

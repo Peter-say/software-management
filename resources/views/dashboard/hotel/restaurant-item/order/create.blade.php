@@ -44,7 +44,7 @@
             <!-- Main Section -->
             <div class="row mb-3">
                 <!-- Recent Orders and Menu Items Section (8 Columns) -->
-                <div class="col-lg-8">
+                <div class="col-lg-8 ">
                     <!-- Recent Orders Section -->
                     <div class="card shadow-sm rounded-lg ">
                         <div class="card-header bg-primary text-white">
@@ -136,6 +136,18 @@
                                         <option value="2">Table 2</option>
                                         <option value="3">Table 3</option>
                                     </select>
+                                </div>
+                                <!-- Button to Open Notes Modal -->
+                                <div class="mb-3">
+                                    <button type="button" class="btn btn-info" data-bs-toggle="modal"
+                                        data-bs-target="#notesModal">
+                                        <i class="fas fa-sticky-note"></i> Add Notes
+                                    </button>
+                                </div>
+                                <!-- Note Section -->
+                                <div class="mb-3">
+                                    <label for="notes" class="form-label fw-bold">Notes</label>
+                                    <textarea class="form-control" name="orderNotes" id="orderNotes" rows="1" style="display: none;"></textarea>
                                 </div>
                             </form>
                         </div>
@@ -490,18 +502,20 @@
                                 walk_in_customer_id = id;
                             }
                         }
-                       
+
                         // Prepare order data to send
                         const orderData = {
                             outlet_id: $('#outlet_id').val(), // Get the selected outlet ID
                             guest_id: guest_id, // Use the correct guest ID or null
                             walk_in_customer_id: walk_in_customer_id, // Use the correct walk-in customer ID or null
                             customer_name: $('#customerName')
-                        .val(), // Get walk-in customer name, if filled
+                                .val(), // Get walk-in customer name, if filled
                             customer_email: $('#customerEmail')
-                        .val(), // Get walk-in customer email, if filled
+                                .val(), // Get walk-in customer email, if filled
                             customer_phone: $('#customerPhone')
-                        .val(), // Get walk-in customer phone, if filled
+                                .val(), // Get walk-in customer phone, if filled
+                            notes: localStorage.getItem('orderNotes') ||
+                                '', // Get notes from localStorage
                             items: orderItems,
                             totalPrice: orderItems.reduce((total, item) => total + (item.price *
                                 item.quantity), 0),
@@ -524,7 +538,8 @@
                         }
 
                         // Check if guest_id is not provided and customer details are missing
-                        if (!orderData.guest_id && !walk_in_customer_id &&(!orderData.customer_name || !orderData
+                        if (!orderData.guest_id && !walk_in_customer_id && (!orderData.customer_name ||
+                                !orderData
                                 .customer_email || !orderData.customer_phone)) {
                             Toastify({
                                 text: "Either Guest ID or walk-in customer details must be provided.",
@@ -592,4 +607,5 @@
 
             });
         </script>
+        @include('dashboard.hotel.restaurant-item.order.notes-modal')
     @endsection

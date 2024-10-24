@@ -12,9 +12,23 @@ class RestaurantOrder extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['outlet_id', 'hotel_id', 'user_id', 'guest_id', 'order_date', 
-    'status', 'amount', 'tax_rate', 'tax_amount', 'discount_rate', 'discount_type', 
-    'discount_amount', 'total_amount', 'walk_in_customer_id'];
+    protected $fillable = [
+        'outlet_id',
+        'hotel_id',
+        'user_id',
+        'guest_id',
+        'order_date',
+        'status',
+        'amount',
+        'tax_rate',
+        'tax_amount',
+        'discount_rate',
+        'discount_type',
+        'discount_amount',
+        'total_amount',
+        'walk_in_customer_id',
+        'notes'
+    ];
 
     public function outlet()
     {
@@ -56,10 +70,33 @@ class RestaurantOrder extends Model
         return $this->morphMany(Payment::class, 'payable');
     }
 
+    public function paymentStatus()
+    {
+        // Get the payments collection
+        $payments = $this->payments()->get();
+
+        // Calculate the total payment required from all related order items
+        $totalPayment = $this->restaurantOrderItems->sum('total_amount');
+
+        // Check the payment status based on total payment and payments
+        if ($payments->isEmpty()) {
+            return 'pending';
+        } elseif ($payments->sum('amount') < $totalPayment) {
+            return 'partial';
+        } else {
+            return 'paid';
+        }
+    }
+
+    public function kitchenOrder()
+    {
+        return $this->hasMany(KitchenOrder::class, 'order_id');
+    }
+   
     public function items()
     {
         return $this->belongsToMany(RestaurantItem::class, 'restaurant_order_items', 'restaurant_order_id', 'restaurant_item_id')
-        ->withPivot('qty', 'price', 'amount');
+            ->withPivot('qty', 'price', 'amount');
     }
 
     protected static function booted()

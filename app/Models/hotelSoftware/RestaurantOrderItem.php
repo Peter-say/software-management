@@ -20,4 +20,9 @@ class RestaurantOrderItem extends Model
     public function restaurantItem(){
         return $this->belongsTo(RestaurantItem::class);
     }
+
+    public function totalPayment()
+    {
+        return $this->total_amount;
+    }
 }

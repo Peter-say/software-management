@@ -3,11 +3,13 @@
 namespace App\Services\Dashboard\Hotel\Restaurant;
 
 use App\Constants\StatusConstants;
+use App\Models\hotelSoftware\KitchenOrder;
 use App\Models\HotelSoftware\RestaurantOrder;
 use App\Models\HotelSoftware\RestaurantOrderItem;
 use App\Models\HotelSoftware\WalkInCustomer;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
@@ -17,13 +19,14 @@ class RestaurantOrderService
 {
     public function validatedData(array $data)
     {
-        // dd($data);
+    
         $validator = Validator::make($data, [
             'outlet_id' => 'required|exists:outlets,id',
             'quantity' => 'required|numeric|min:1',
             'items' => 'required|array',
             'items.*.id' => 'required|exists:restaurant_items,id',
             'items.*.quantity' => 'required|numeric|min:1',
+            'notes' => 'nullable|string',
 
             'guest_id' => 'nullable|exists:guests,id',
             'walk_in_customer_id' => 'nullable|exists:walk_in_customers,id',
@@ -86,6 +89,10 @@ class RestaurantOrderService
             $restaurantOrder->update(['status' => StatusConstants::OPENED]);
         }
 
+        KitchenOrder::create([
+          'order_id' => $restaurantOrder->id,
+        ]);
+
         // Initialize total amount
         $totalAmount = 0;
 
@@ -110,5 +117,29 @@ class RestaurantOrderService
         $restaurantOrder->save();
 
         return 'Order created successfully!';
+    }
+
+    public function getById($id)
+    {
+        $order = RestaurantOrder::find($id);
+        if (empty($order)) {
+            throw new ModelNotFoundException("Order not found");
+        }
+        return $order;
+    }
+
+    public function cancelOrder($order)
+    {
+      $order = $this->getById($order);
+      dd($order);
+      $order->update(['status' => StatusConstants::CANCELLED]);
+      return $order;
+    }
+
+    public function deleteOrder($order)
+    {
+      $order = $this->getById($order);
+      $order->delete();
+      return $order;
     }
 }

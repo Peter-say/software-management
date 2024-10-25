@@ -17,11 +17,15 @@
     <meta property="og:image" content="social-image.png" />
     <meta name="format-detection" content="telephone=no">
 
+    <!-- Pass Pusher configuration as JavaScript variables -->
+
     <!-- PAGE TITLE HERE -->
     <title>Travl Hotel Admin Dashboard</title>
 
     <!-- Favicon Icon -->
     <link rel="shortcut icon" type="image/png" href="{{ asset('dashboard/images/favicon.png') }}" />
+    @vite(['resources/js/app.js', 'resources/js/echo.js'])
+
 
     <!-- Google Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">

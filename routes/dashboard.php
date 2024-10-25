@@ -11,7 +11,12 @@ use App\Http\Controllers\Dashboard\Hotel\Restaurant\RestaurantOrderController;
 use App\Http\Controllers\Dashboard\Hotel\RoomController;
 use App\Http\Controllers\Dashboard\Hotel\RoomReservationController;
 use App\Http\Controllers\Dashboard\Hotel\UsersController;
+use App\Http\Controllers\Dashboard\Notification\NotificationController;
 use App\Http\Controllers\Dashboard\OnboardingController;
+use App\Models\hotelSoftware\KitchenOrder;
+use App\Models\HotelSoftware\RestaurantOrder;
+use App\Models\User;
+use App\Notifications\KitchenOrderNotification;
 use Illuminate\Support\Facades\Route;
 
 
@@ -46,7 +51,7 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::post('fund-guest-wallet', [GuestWalletController::class, 'creditGuestWallet'])->name('fund-guest-wallet');
             Route::post('deduct-guest-wallet', [GuestWalletController::class, 'recordDebitTransaction'])->name('deduct-guest-wallet');
             Route::post('pay-with-guest-wallet', [GuestWalletController::class, 'payWithGuestWallet'])->name('pay-with-guest-wallet');
-    
+
             Route::get('reservation/print/{id}/invoice-pdf', [RoomReservationInvoiceController::class, 'printInvoicePDF'])->name('reservation.print.invoice-pdf');
 
             Route::post('restaurant-items/upload', [RestaurantItemsController::class, 'importItems'])->name('restaurant-items.upload');
@@ -61,8 +66,10 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::put('kitchen/orders/{id}/change-status', [KitchenOrderController::class, 'updateStatus'])->name('kitchen.orders.change-status');
             Route::put('kitchen/orders/{id}/add-note', [KitchenOrderController::class, 'addNote'])->name('kitchen.orders.add-note');
 
+            Route::get('notifications/unread', [NotificationController::class, 'unread'])->name('notifications.unread');
+            Route::get('notifications/mark-as-read', [NotificationController::class, 'makeAsRead'])->name('notifications.mark-as-read');
         });
-        
+
     });
     Route::get('/get-states-by-country', [OnboardingController::class, 'getStatesByCountry'])->name('get-states-by-country');
 
@@ -71,3 +78,4 @@ Route::middleware('auth', 'verified')->group(function () {
         Route::post('save-setup-app', [OnboardingController::class, 'saveSetupApp'])->name('save-setup-app');
     });
 });
+

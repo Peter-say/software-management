@@ -1,0 +1,97 @@
+<?php
+
+namespace App\Notifications;
+
+use App\Models\HotelSoftware\RestaurantOrder;
+use Illuminate\Broadcasting\Channel;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Log;
+
+class KitchenOrderNotification extends Notification implements ShouldBroadcast
+{
+    use Queueable;
+    public $restaurantOrder;
+
+    public function __construct(RestaurantOrder $restaurantOrder)
+    {
+        // Ensure to load items with restaurantItem
+        $this->restaurantOrder = $restaurantOrder->load('restaurantOrderItems.restaurantItem');
+    }
+
+    // Specify the channels for the notification
+    public function via($notifiable)
+    {
+        return ['database', 'broadcast', 'mail'];
+    }
+
+    // Store the notification in the database
+    public function toDatabase($notifiable): array
+    {
+        return $this->buildData($notifiable);
+    }
+
+    // Broadcast the notification via Pusher
+    public function toBroadcast($notifiable): BroadcastMessage
+    {
+        return new BroadcastMessage($this->buildData($notifiable));
+    }
+    
+
+    /**
+     * Get the mail representation of the notification.
+     */
+    public function toMail(object $notifiable): MailMessage
+    {
+        $data = $this->buildData($notifiable);
+        return (new MailMessage)
+            ->line('The introduction to the notification.')
+            ->action('Notification Action', url('/'))
+            ->line('Thank you for using our application!');
+    }
+
+    public function broadcastOn()
+    {
+        return new Channel('kitchen-orders');
+    }
+
+    public function broadcastAs()
+    {
+        return 'OrderCreated'; // Matches the 'listen' event in JavaScript
+    }
+
+    /**
+     * Get the array representation of the notification.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(object $notifiable): array
+    {
+        return [
+            // Additional data for array representation can be added here
+        ];
+    }
+
+    protected function buildData($notifiable): array
+    {
+        return [
+            'title' => 'Order Created!',
+            'message' => "A new order was created",
+            'order_id' => $this->restaurantOrder->id,
+            'total_amount' => $this->restaurantOrder->total_amount,
+            'link' => null,
+            'status' => $this->restaurantOrder->status,
+            'items' => $this->restaurantOrder->restaurantOrderItems->map(function ($item) {
+                // Check if restaurantItem exists
+                return [
+                    'name' => $item->restaurantItem ? $item->restaurantItem->name : 'Unknown Item',
+                    'quantity' => $item->qty,
+                ];
+            }),
+        ];
+    }
+}

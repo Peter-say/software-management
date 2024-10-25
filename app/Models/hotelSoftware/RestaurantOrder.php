@@ -96,7 +96,7 @@ class RestaurantOrder extends Model
     public function items()
     {
         return $this->belongsToMany(RestaurantItem::class, 'restaurant_order_items', 'restaurant_order_id', 'restaurant_item_id')
-            ->withPivot('qty', 'price', 'amount');
+            ->withPivot('qty', 'amount');
     }
 
     protected static function booted()

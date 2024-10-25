@@ -58,16 +58,15 @@
                                                                 {{-- <td>{{ $kitchen->order->outlet->name }}</td> --}}
                                                                 <td>{{ $kitchen->user->name ?? 'Not Available' }}</td>
                                                                 <td>
-                                                                    {{-- <button type="button" class="btn btn-info"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#orderItemsModal{{ $kitchen->order->id }}">
-                                                                    View Items
-                                                                </button>
-
-                                                                @include(
-                                                                    'dashboard.hotel.restaurant-item.order.order-items-modal',
-                                                                    ['order' => $kitchen->order->id]
-                                                                ) --}}
+                                                                    {{-- @php
+                                                                        dd($kitchen->restaurantOrder);
+                                                                    @endphp --}}
+                                                                    <button type="button" class="btn btn-info" data-bs-toggle="modal" 
+                                                                            data-bs-target="#orderItemsModal{{ $kitchen->restaurantOrder->id }}">
+                                                                        View Items
+                                                                    </button>
+                                                                    
+                                                                    @include('dashboard.hotel.restaurant-item.order.order-items-modal', ['order' => $kitchen->restaurantOrder->id])
                                                                 </td>
                                                                 <td>
 
@@ -128,8 +127,15 @@
                                             </table>
                                         </div>
                                         <!-- Pagination -->
-                                        <div class="d-flex justify-content-center">
-                                            {{ $kitchen_orders->links() }}
+                                        <div class="d-flex justify-content-between align-items-center mt-3">
+                                            <div class="text-muted">
+                                                Showing {{$kitchen_orders->firstItem() }} to {{ $kitchen_orders->lastItem() }} of {{ $kitchen_orders->total() }} entries
+                                            </div>
+                                            <nav aria-label="Page navigation">
+                                                <ul class="pagination">
+                                                    {{ $kitchen_orders->links('pagination::bootstrap-4') }}
+                                                </ul>
+                                            </nav>
                                         </div>
                                     </div>
                                 </div>

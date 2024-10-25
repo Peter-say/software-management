@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard\Hotel\Restaurant;
 use App\Services\Dashboard\Hotel\Restaurant\RestaurantOrderService;
 use App\Http\Controllers\Controller;
 use App\Models\HotelSoftware\Guest;
+use App\Models\hotelSoftware\Notification;
 use App\Models\HotelSoftware\Outlet;
 use App\Models\HotelSoftware\RestaurantItem;
 use App\Models\HotelSoftware\RestaurantOrder;
@@ -45,9 +46,10 @@ class RestaurantOrderController extends Controller
 
     public function saveOrder(Request $request)
     {
+        // dd($request->all());
         try {
             $message = $this->restaurant_order_service->saveOrder($request);
-            return response()->json(['success' => true, 'message' => $message,]);
+            return response()->json(['success' => true, 'message' => $message]);
         } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage(),], 500); // Send a 500 response on error
         } catch (\Throwable $th) {

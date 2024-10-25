@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\hotelSoftware\Notification;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,5 +33,11 @@ class AppServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->group(base_path('routes/dashboard.php'));
         }
+
+        // View::composer('*', function ($view) {
+        //     $countNotification = (new Notification())->countNotification();
+        //     $view->with('countNotification', $countNotification);
+        // });
     }
+    
 }

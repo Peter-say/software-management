@@ -17,8 +17,10 @@ class KitchenOrderController extends Controller
     {
         $hotel = User::getAuthenticatedUser()->hotel;
         $restaurantOrders = RestaurantOrder::where('hotel_id', $hotel->id)->pluck('id');
+        // $kitchen_orders = KitchenOrder::whereIn('order_id', $restaurantOrders)->paginate();
         return view('dashboard.hotel.kitchen.orders', [
-            'kitchen_orders' => KitchenOrder::whereIn('order_id', $restaurantOrders)->paginate(),
+            'kitchen_orders' => KitchenOrder::whereIn('order_id', $restaurantOrders)
+            ->with(['restaurantOrder', 'user'])->paginate(),
         ]);
     }
 

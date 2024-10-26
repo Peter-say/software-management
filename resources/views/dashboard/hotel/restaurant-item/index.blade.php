@@ -26,7 +26,12 @@
                         <a href="{{ route('dashboard.hotel.restaurant-items.create') }}" class="btn btn-secondary me-2">+
                             New Item</a>
                         <a type="button" data-bs-toggle="modal" data-bs-target="#upload-items-modal"
-                            class="btn btn-primary">Upload Item</a>
+                            class="btn btn-primary me-2">Upload Items</a>
+                            <a type="button" data-bs-toggle="modal" data-bs-target="#truncate-items-modal"
+                            class="btn btn-primary me-2">Truncate Items <i class="fas fa-question-circle" 
+                            data-bs-toggle="tooltip" 
+                            data-bs-placement="top" 
+                            title="Delete all the restaurant items"></i></a>
                     </div>
                 </div>
 
@@ -105,7 +110,7 @@
                                                                         data-item-id="{{ $item->id }}"
                                                                         data-item-content="{{ $item->description }}">
                                                                         View
-                                                                        </button>
+                                                                    </button>
                                                                 </span>
                                                             </td>
                                                             <td>
@@ -115,17 +120,20 @@
                                                             <td>
                                                                 <div class="d-flex">
                                                                     <!-- Edit Button -->
-                                                                    <a href="{{ route('dashboard.hotel.restaurant-items.edit', $item->id) }}" class="btn btn-primary shadow btn-xs sharp me-1">
+                                                                    <a href="{{ route('dashboard.hotel.restaurant-items.edit', $item->id) }}"
+                                                                        class="btn btn-primary shadow btn-xs sharp me-1">
                                                                         <i class="fas fa-pencil-alt"></i>
                                                                     </a>
-                                                            
+
                                                                     <!-- Delete Button -->
-                                                                    <a href="javascript:void(0);" class="btn btn-danger shadow btn-xs sharp" onclick="confirmDelete('{{ route('dashboard.hotel.restaurant-items.destroy', $item->id) }}')">
+                                                                    <a href="javascript:void(0);"
+                                                                        class="btn btn-danger shadow btn-xs sharp"
+                                                                        onclick="confirmDelete('{{ route('dashboard.hotel.restaurant-items.destroy', $item->id) }}')">
                                                                         <i class="fa fa-trash"></i>
                                                                     </a>
                                                                 </div>
                                                             </td>
-                                                            
+
                                                         </tr>
                                                     @endforeach
                                                 </tbody>
@@ -145,6 +153,7 @@
             </div>
         </div>
     </div>
+    @include('dashboard.hotel.restaurant-item.truncate-modal',[ 'items' => $restaurant_items]);
     {{-- @include('dashboard.hotel.restaurant-item.upload-modal') --}}
     <!-- Delete Confirmation Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"

@@ -55,6 +55,7 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::get('reservation/print/{id}/invoice-pdf', [RoomReservationInvoiceController::class, 'printInvoicePDF'])->name('reservation.print.invoice-pdf');
 
             Route::post('restaurant-items/upload', [RestaurantItemsController::class, 'importItems'])->name('restaurant-items.upload');
+            Route::delete('restaurant-items/truncate', [RestaurantItemsController::class, 'truncateItems'])->name('restaurant-items.truncate');
             Route::get('restaurant/create-order', [RestaurantOrderController::class, 'createOrder'])->name('restaurant.create-order');
             Route::post('restaurant/save-order', [RestaurantOrderController::class, 'saveOrder'])->name('restaurant.save-order');
             Route::get('restaurant/view-orders', [RestaurantOrderController::class, 'viewOrders'])->name('restaurant.view-orders');
@@ -67,7 +68,8 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::put('kitchen/orders/{id}/add-note', [KitchenOrderController::class, 'addNote'])->name('kitchen.orders.add-note');
 
             Route::get('notifications/unread', [NotificationController::class, 'unread'])->name('notifications.unread');
-            Route::get('notifications/mark-as-read', [NotificationController::class, 'makeAsRead'])->name('notifications.mark-as-read');
+            Route::post('notifications/mark-as-read/{id}', [NotificationController::class, 'makeAsRead'])->name('notifications.mark-as-read');
+            Route::get('notifications/{uuid}/view', [NotificationController::class, 'view'])->name('notifications.view');
         });
 
     });

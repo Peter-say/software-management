@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const badge = document.getElementById("notificationcount");
     let unreadCount = 0; // Track unread notifications count
-    const maxNotifications = 5; // Limit to 5 notifications
 
     // Fetch unread notifications count and list on page load
     try {
@@ -37,7 +36,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         );
         const defaultImage =
             "http://127.0.0.1:7000/storage/hotel/restaurant/items/6701f36a193c3_food1.jpeg"; // Default image path
-        
         // Display empty state if no notifications
         function displayEmptyState() {
             if (notificationList) {
@@ -53,31 +51,27 @@ document.addEventListener("DOMContentLoaded", async function () {
                 const imageUrl =
                     notification.data.items[0]?.image || defaultImage;
                 const linkUrl = notification.data.link || "#";
-
-                // Determine notification message
-                const itemCount = notification.data.items.length;
-                const firstItemName = notification.data.items[0]?.name || "Item";
-                const notificationMessage = itemCount > 1
-                    ? `${firstItemName} ordered and ${itemCount - 1} more`
-                    : `${firstItemName} ordered`;
-
                 const notificationItem = document.createElement("li");
                 notificationItem.innerHTML = `
-                <div class="timeline-panel" data-notification-id="${notification.id}">
+                <div class="timeline-panel" data-notification-id="${
+                    notification.id
+                }">
                     <div class="media me-2">
                         <img alt="image" width="50" src="${imageUrl}">
                     </div>
                     <div class="media-body">
                      <a href="${linkUrl}" class="notification-link" target="_blank">
-                        <h6 class="mb-1">${notificationMessage}</h6>
+                        <h6 class="mb-1">${
+                            notification.data.title || "New notification"
+                        }</h6>
+                         <p class="mb-1">${notification.data.message}</p>
                         <small class="d-block">${new Date(
                             notification.created_at
                         ).toLocaleString()}</small>
                         </a>
                     </div>
                 </div>
-                `;
-
+            `;
                 if (notificationList) {
                     notificationList.prepend(notificationItem);
                 }
@@ -86,9 +80,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                 notificationItem.addEventListener("click", async () => {
                     await markNotificationAsRead(notification.id);
                 });
-
-                // Limit the number of notifications displayed
-                limitNotificationDisplay(notificationList);
             });
         }
     } catch (error) {
@@ -99,31 +90,28 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Listen for new notifications
     window.Echo.channel("kitchen-orders").listen(".OrderCreated", (event) => {
         console.log("New order notification:", event);
-        
+
         // Add the new notification item to the list
         const defaultImage =
             "http://127.0.0.1:7000/storage/hotel/restaurant/items/6701f36a193c3_food1.jpeg"; // Ensure default image is defined
         const imageUrl = event.items[0]?.image || defaultImage;
         const linkUrl = event.link || "#";
 
-        // Determine notification message
-        const itemCount = event.items.length;
-        const firstItemName = event.items[0]?.name || "Item";
-        const notificationMessage = itemCount > 1
-            ? `${firstItemName} ordered and ${itemCount - 1} more`
-            : `${firstItemName} ordered`;
-
         const notificationItem = document.createElement("li");
         notificationItem.innerHTML = `
-            <div class="timeline-panel" data-notification-id="${event.notification_id}">
+            <div class="timeline-panel" data-notification-id="${
+                event.notification_id
+            }">
                 <div class="media me-2">
-                    <img alt="image" width="50" src="${imageUrl}">
+                   <img alt="image" width="50" src="${imageUrl}">
                 </div>
                 <div class="media-body">
-                    <a href="${linkUrl}" class="notification-link" target="_blank">
-                        <h6 class="mb-1">${notificationMessage}</h6>
-                        <small class="d-block">${new Date().toLocaleString()}</small>
-                    </a>
+                 <a href="${linkUrl}" class="notification-link" target="_blank">
+                    <h6 class="mb-1">${
+                        event.items[0]?.name || "Item"
+                    } ordered</h6>
+                    <small class="d-block">${new Date().toLocaleString()}</small>
+                      </a>
                 </div>
             </div>
         `;
@@ -144,44 +132,34 @@ document.addEventListener("DOMContentLoaded", async function () {
         notificationItem.addEventListener("click", async () => {
             await markNotificationAsRead(event.notification_id);
         });
-        
-        // Limit the number of notifications displayed
-        limitNotificationDisplay(notificationList);
     });
 
     // Function to mark notification as read
     async function markNotificationAsRead(notificationId) {
         try {
             console.log("Marking notification as read:", notificationId);
-
+    
             // Get the CSRF token from the meta tag
-            const csrfToken = document
-                .querySelector('meta[name="csrf-token"]')
-                .getAttribute("content");
-
-            const response = await fetch(
-                `/dashboard/hotel/notifications/mark-as-read/${notificationId}`,
-                {
-                    method: "POST",
-                    headers: {
-                        "X-CSRF-TOKEN": csrfToken,
-                        "Content-Type": "application/json",
-                    },
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    
+            const response = await fetch(`/dashboard/hotel/notifications/mark-as-read/${notificationId}`, {
+                method: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Content-Type': 'application/json'
                 }
-            );
-
+            });
+    
             if (response.ok) {
                 unreadCount -= 1; // Decrement unread count
                 badge.innerText = unreadCount;
-
+    
                 if (unreadCount === 0) {
                     badge.classList.remove("bg-primary");
                 }
-
+    
                 // Remove the notification from the DOM
-                const notificationItem = document.querySelector(
-                    `[data-notification-id="${notificationId}"]`
-                );
+                const notificationItem = document.querySelector(`[data-notification-id="${notificationId}"]`);
                 if (notificationItem) {
                     notificationItem.remove(); // Remove only if successfully marked as read
                 }
@@ -190,12 +168,5 @@ document.addEventListener("DOMContentLoaded", async function () {
             console.error("Error marking notification as read:", error);
         }
     }
-
-    function limitNotificationDisplay(notificationList) {
-        const notifications = notificationList.querySelectorAll("li");
-        if (notifications.length > maxNotifications) {
-            // Remove the oldest notification
-            notifications[notifications.length - 1].remove();
-        }
-    }
+    
 });

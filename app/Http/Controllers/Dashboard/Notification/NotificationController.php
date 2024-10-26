@@ -11,7 +11,7 @@ class NotificationController extends Controller
     public function unread()
     {
         $user = Auth::user();
-        $notifications = $user->unreadNotifications; // Fetch unread notifications
+        $notifications = $user->unreadNotifications()->latest()->limit(5)->get(); // Fetch unread notifications
         return response()->json(['unread_count' => $user->unreadNotifications->count(), 'notification' => $notifications]);
     }
 
@@ -29,5 +29,11 @@ class NotificationController extends Controller
         }
 
         return response()->json(['success' => false], 404);
+    }
+
+    public function view($uuid)
+    {
+        $user = Auth::user(); 
+        $notification = $user->notifications()->find($uuid);
     }
 }

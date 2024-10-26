@@ -1,9 +1,9 @@
   <!-- Modal to display items for the order -->
-  <div class="modal fade" id="orderItemsModal{{ $order->id }}" tabindex="-1" aria-labelledby="orderItemsModalLabel{{ $order->id }}" aria-hidden="true">
+  <div class="modal fade" id="orderItemsModal{{ $kitchen->restaurantOrder->id }}" tabindex="-1" aria-labelledby="orderItemsModalLabel{{ $kitchen->restaurantOrder->id }}" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="orderItemsModalLabel{{ $order->id }}">Order #{{ $order->id }} Items</h5>
+                <h5 class="modal-title" id="orderItemsModalLabel{{ $kitchen->restaurantOrder->id }}">Order #{{ $kitchen->restaurantOrder->id }} Items</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -19,7 +19,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($order->restaurantOrderItems as $item)
+                        @foreach($kitchen->restaurantOrder->restaurantOrderItems as $item)
                             <tr>
                                 <td>{{ $item->restaurantItem->name }}</td>
                                 <td>{{ $item->qty }}</td>
@@ -33,7 +33,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

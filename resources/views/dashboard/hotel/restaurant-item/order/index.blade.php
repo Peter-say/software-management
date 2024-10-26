@@ -176,8 +176,15 @@
                                             </table>
                                         </div>
                                         <!-- Pagination -->
-                                        <div class="d-flex justify-content-center">
-                                            {{ $restaurant_orders->links() }}
+                                        <div class="d-flex justify-content-between align-items-center mt-3">
+                                            <div class="text-muted">
+                                                Showing {{$restaurant_orders->firstItem() }} to {{ $restaurant_orders->lastItem() }} of {{ $restaurant_orders->total() }} entries
+                                            </div>
+                                            <nav aria-label="Page navigation">
+                                                <ul class="pagination">
+                                                    {{ $restaurant_orders->links('pagination::bootstrap-4') }}
+                                                </ul>
+                                            </nav>
                                         </div>
                                     </div>
                                 </div>

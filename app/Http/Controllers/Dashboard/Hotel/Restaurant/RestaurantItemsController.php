@@ -126,6 +126,7 @@ class RestaurantItemsController extends Controller
         } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage(),], 500); // Send a 500 response on error
         } catch (\Throwable $th) {
+            throw $th;
             return response()->json([
                 'success' => false,
                 'message' => 'Something went wrong',
@@ -150,6 +151,28 @@ class RestaurantItemsController extends Controller
         }
         // Return the file for download
         return response()->download($filePath);
+    }
+
+    public function truncateItems(Request $request)
+    {
+        dd($request->all());
+        try {
+            $message = $this->restaurant_item_service->trucateItems($request);
+            return response()->json([
+                'success' => true,
+                'message' => $message,
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['success' => false, 'message' => 'Items not found']);
+        } catch (Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage(),], 500); // Send a 500 response on error
+        } catch (\Throwable $th) {
+            throw $th;
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong',
+            ], 500);
+        }
     }
    
 }

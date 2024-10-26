@@ -162,7 +162,7 @@
                     <!-- Menu Items Section -->
                     <div class="card shadow-sm rounded-lg">
                         <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
-                            <h4 class="card-title">Menu</h4>
+                            <h4 class="card-title text-white">Menu</h4>
                             <ul class="nav nav-pills card-header-pills">
 
                                 @foreach ($categories as $category)
@@ -192,6 +192,7 @@
                                     </select>
                                 </div>
                                 <!-- Menu Items by Category -->
+
                                 @foreach ($itemsByCategory as $category => $items)
                                     @php
                                         // Normalize category name for class usage
@@ -199,55 +200,61 @@
                                             preg_replace('/[^a-z0-9]+/', '-', trim($category)),
                                         );
                                     @endphp
-                                    <div class="menu-category {{ $normalizedCategory }}" style="display: none;">
-                                        <section>
-                                            <div class="container my-5">
-                                                <header class="mb-4">
-                                                    <h3>{{ $category }}</h3>
-                                                </header>
+                                    @if ($items)
+                                        <div class="menu-category {{ $normalizedCategory }}" style="display: none;">
+                                            <section>
+                                                <div class="container my-5">
+                                                    <header class="mb-4">
+                                                        <h3>{{ $category }}</h3>
+                                                    </header>
 
-                                                <div class="row">
-                                                    @foreach ($items as $item)
-                                                        <div class="col-lg-6 col-md-6 col-sm-6">
-                                                            <div class="card px-4 border shadow-0 mb-4 mb-lg-0">
-                                                                <div class="mask px-2" style="height: 50px;">
-                                                                    <div class="d-flex justify-content-between">
-                                                                        <h6><span
-                                                                                class="badge bg-danger pt-1 mt-3 ms-2">New</span>
-                                                                        </h6>
-                                                                        <a href="#"><i
-                                                                                class="fas fa-heart text-primary fa-lg float-end pt-3 m-2"></i></a>
+                                                    <div class="row">
+                                                        @foreach ($items as $item)
+                                                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                                                <div class="card px-4 border shadow-0 mb-4 mb-lg-0">
+                                                                    <div class="mask px-2" style="height: 50px;">
+                                                                        <div class="d-flex justify-content-between">
+                                                                            <h6><span
+                                                                                    class="badge bg-danger pt-1 mt-3 ms-2">New</span>
+                                                                            </h6>
+                                                                            <a href="#"><i
+                                                                                    class="fas fa-heart text-primary fa-lg float-end pt-3 m-2"></i></a>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <a href="#">
-                                                                    <img src="{{ asset('storage/hotel/restaurant/items/' . $item->image) }}"
-                                                                        class="card-img-top rounded-2" />
-                                                                </a>
-                                                                <div class="card-body d-flex flex-column pt-3 border-top">
-                                                                    <a href="#"
-                                                                        class="nav-link">{{ $item->name }}</a>
-                                                                    <div class="price-wrap mb-2">
-                                                                        <strong
-                                                                            class="">${{ $item->price }}</strong>
-                                                                        <del
-                                                                            class="">${{ $item->discount ?? '0.00' }}</del>
-                                                                    </div>
+                                                                    <a href="#">
+                                                                        <img src="{{ asset('storage/hotel/restaurant/items/' . $item->image) }}"
+                                                                            class="card-img-top rounded-2" />
+                                                                    </a>
                                                                     <div
-                                                                        class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
+                                                                        class="card-body d-flex flex-column pt-3 border-top">
                                                                         <a href="#"
-                                                                            class="btn btn-outline-primary w-100 add-to-cart"
-                                                                            data-item-id="{{ $item->id }}"
-                                                                            data-item-price="{{ $item->price }}">Add to
-                                                                            cart</a>
+                                                                            class="nav-link">{{ $item->name }}</a>
+                                                                        <div class="price-wrap mb-2">
+                                                                            <strong
+                                                                                class="">${{ $item->price }}</strong>
+                                                                            <del
+                                                                                class="">${{ $item->discount ?? '0.00' }}</del>
+                                                                        </div>
+                                                                        <div
+                                                                            class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
+                                                                            <a href="#"
+                                                                                class="btn btn-outline-primary w-100 add-to-cart"
+                                                                                data-item-id="{{ $item->id }}"
+                                                                                data-item-price="{{ $item->price }}">Add
+                                                                                to
+                                                                                cart</a>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    @endforeach
+                                                        @endforeach
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </section>
-                                    </div>
+                                            </section>
+                                        </div>
+                                    @else
+                                        <div class="text-center">No Items available.</div>
+                                    @endif
                                 @endforeach
                             </div>
                         </div>
@@ -282,14 +289,17 @@
         </div>
 
         <script>
-            document.getElementById('addWalkInCustomerBtn').addEventListener('click', function() {
-                // Toggle the visibility of the walk-in customer form
-                const walkInCustomerForm = document.getElementById('walkInCustomerForm');
-                if (walkInCustomerForm.style.display === 'none') {
-                    walkInCustomerForm.style.display = 'block';
-                } else {
-                    walkInCustomerForm.style.display = 'none';
-                }
+            document.addEventListener('DOMContentLoaded', function() {
+                document.getElementById('addWalkInCustomerBtn').addEventListener('click', function() {
+                    const walkInCustomerForm = document.getElementById('walkInCustomerForm');
+                    // Check if the form is currently hidden, and toggle accordingly
+                    if (walkInCustomerForm.style.display === 'none' || walkInCustomerForm.style.display ===
+                        '') {
+                        walkInCustomerForm.style.display = 'block';
+                    } else {
+                        walkInCustomerForm.style.display = 'none';
+                    }
+                });
             });
             document.addEventListener("DOMContentLoaded", function() {
                 $(document).ready(function() {

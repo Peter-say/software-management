@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Models\HotelSoftware\RestaurantOrder;
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -16,11 +17,13 @@ class KitchenOrderNotification extends Notification implements ShouldBroadcast
 {
     use Queueable;
     public $restaurantOrder;
+    public $user;
 
-    public function __construct(RestaurantOrder $restaurantOrder)
+    public function __construct(RestaurantOrder $restaurantOrder, User $user)
     {
         // Ensure to load items with restaurantItem
         $this->restaurantOrder = $restaurantOrder->load('restaurantOrderItems.restaurantItem');
+        $this->user = $user;
     }
 
     // Specify the channels for the notification
@@ -56,7 +59,10 @@ class KitchenOrderNotification extends Notification implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        return new Channel('kitchen-orders');
+        // Only broadcast if the user has the 'Sales' role
+        return $this->user->hotelUser->role === 'Sales'
+            ? new Channel('kitchen-orders')
+            : null;
     }
 
     public function broadcastAs()

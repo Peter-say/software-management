@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class SendUserLoginDetailsMail extends Mailable
 {
@@ -20,10 +21,10 @@ class SendUserLoginDetailsMail extends Mailable
      */
 
     public function __construct($user, $randomPassword)
-{
-    $this->user = $user;
-    $this->randomPassword = $randomPassword;
-}
+    {
+        $this->user = $user;
+        $this->randomPassword = $randomPassword;
+    }
 
     /**
      * Get the message envelope.
@@ -38,11 +39,15 @@ class SendUserLoginDetailsMail extends Mailable
     /**
      * Get the message content definition.
      */
-    public function content(): Content
+    public function content(): array //Content
     {
-        return new Content(
-            view: 'emails.account-created',
-        );
+        $data = $this->buildData();
+        return   $data;
+        Log::info($data);
+        // return new Content(
+          
+        //     // view: 'emails.account-created',
+        // );
     }
 
     /**
@@ -53,5 +58,13 @@ class SendUserLoginDetailsMail extends Mailable
     public function attachments(): array
     {
         return [];
+    }
+
+    public function buildData()
+    {
+        return [
+           'email' =>  $this->user->email,
+           'password' => $this->randomPassword,
+        ];
     }
 }

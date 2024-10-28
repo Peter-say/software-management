@@ -731,7 +731,7 @@
                                     <!-- Existing notifications will be populated here -->
                                 </ul>
                             </div>
-                            <a class="all-notification" href="javascript:void(0);">See all notifications <i
+                            <a class="all-notification" href="{{route('dashboard.hotel.notifications.view-all')}}">See all notifications <i
                                     class="ti-arrow-end"></i></a>
                         </div>
                         

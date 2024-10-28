@@ -68,7 +68,16 @@
                         <span class="nav-text">Outlets</span>
                     </a>
                 </li>
-
+                <li><a class="has-arrow " href="javascript:void()" aria-expanded="false">
+                    <i class="flaticon-045-heart"></i>
+                    <span class="nav-text">Notifications</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('dashboard.hotel.notifications.view-all') }}">Orders</a></li>
+                    {{-- <li><a href="{{ route('dashboard.hotel.restaurant.create-order') }}">Create Order</a></li>
+                    <li><a href="{{ route('dashboard.hotel.restaurant.view-orders') }}">View Orders</a></li> --}}
+                </ul>
+            </li>
             </ul>
             <div class="dropdown header-profile2">
                 <div class="header-info2 text-center">

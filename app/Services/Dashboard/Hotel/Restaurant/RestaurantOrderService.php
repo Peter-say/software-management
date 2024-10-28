@@ -3,6 +3,7 @@
 namespace App\Services\Dashboard\Hotel\Restaurant;
 
 use App\Constants\StatusConstants;
+use App\Models\HotelSoftware\HotelUser;
 use App\Models\hotelSoftware\KitchenOrder;
 use App\Models\HotelSoftware\RestaurantOrder;
 use App\Models\HotelSoftware\RestaurantOrderItem;
@@ -53,86 +54,88 @@ class RestaurantOrderService
 
 
     public function saveOrder(Request $request)
-{
-    // dd($request->all()); // Debugging to see the full request data
-    $data = $this->validatedData($request->all()); // Validate the data
+    {
+        // dd($request->all()); // Debugging to see the full request data
+        $data = $this->validatedData($request->all()); // Validate the data
 
-    $user = User::getAuthenticatedUser();
-    $data['user_id'] = $user->id;
-    $data['hotel_id'] = $user->hotel->id;
-    $data['order_date'] = Carbon::today();
+        $user = User::getAuthenticatedUser();
+        $data['user_id'] = $user->id;
+        $data['hotel_id'] = $user->hotel->id;
+        $data['order_date'] = Carbon::today();
 
-    // Initialize total amount to calculate the total price
-    $totalAmount = 0;
+        // Initialize total amount to calculate the total price
+        $totalAmount = 0;
 
-    // Loop through items to calculate the amount from each item price
-    foreach ($data['items'] as $item) {
-        // Ensure the price is taken from each item
-        $totalAmount += $item['price'] * $item['quantity'];
-    }
+        // Loop through items to calculate the amount from each item price
+        foreach ($data['items'] as $item) {
+            // Ensure the price is taken from each item
+            $totalAmount += $item['price'] * $item['quantity'];
+        }
 
-    $data['amount'] = $totalAmount;
+        $data['amount'] = $totalAmount;
 
-    // Proceed with guest or walk-in customer handling
-    if ($request->guest_id) {
-        $data['guest_id'] = $request->guest_id;
-    } elseif ($request->walk_in_customer_id) {
-        $data['walk_in_customer_id'] = $request->walk_in_customer_id;
-    } else {
-        $customerData['name'] = $request->customer_name;
-        $customerData['email'] = $request->customer_email;
-        $customerData['phone'] = $request->customer_phone;
-        $customer = WalkInCustomer::create($customerData);
-        $data['walk_in_customer_id'] = $customer->id;
-    }
+        // Proceed with guest or walk-in customer handling
+        if ($request->guest_id) {
+            $data['guest_id'] = $request->guest_id;
+        } elseif ($request->walk_in_customer_id) {
+            $data['walk_in_customer_id'] = $request->walk_in_customer_id;
+        } else {
+            $customerData['name'] = $request->customer_name;
+            $customerData['email'] = $request->customer_email;
+            $customerData['phone'] = $request->customer_phone;
+            $customer = WalkInCustomer::create($customerData);
+            $data['walk_in_customer_id'] = $customer->id;
+        }
 
-    // Set tax details and calculate total
-    $data['tax_rate'] = 2; // Example tax rate
-    $data['tax_amount'] = $data['amount'] * ($data['tax_rate'] / 100);
-    $data['discount_rate'] = 0;
-    $data['discount_type'] = 'Loyalty Discounts';
-    $data['discount_amount'] = 0.00;
-    $data['total_amount'] = $data['amount'] + $data['tax_amount'];
+        // Set tax details and calculate total
+        $data['tax_rate'] = 2; // Example tax rate
+        $data['tax_amount'] = $data['amount'] * ($data['tax_rate'] / 100);
+        $data['discount_rate'] = 0;
+        $data['discount_type'] = 'Loyalty Discounts';
+        $data['discount_amount'] = 0.00;
+        $data['total_amount'] = $data['amount'] + $data['tax_amount'];
 
-    // Create the restaurant order
-    $restaurantOrder = RestaurantOrder::create($data);
-    if ($restaurantOrder) {
-        $restaurantOrder->update(['status' => StatusConstants::OPENED]);
-    }
+        // Create the restaurant order
+        $restaurantOrder = RestaurantOrder::create($data);
+        if ($restaurantOrder) {
+            $restaurantOrder->update(['status' => StatusConstants::OPENED]);
+        }
 
-    // Create Kitchen Order
-    KitchenOrder::create([
-        'order_id' => $restaurantOrder->id,
-    ]);
-
-    // Save the individual items in the restaurant order
-    foreach ($data['items'] as $item) {
-        RestaurantOrderItem::create([
-            'restaurant_order_id' => $restaurantOrder->id,
-            'restaurant_item_id' => $item['id'],
-            'qty' => $item['quantity'],
-            'amount' => $item['price'] * $item['quantity'], // Calculate amount for each item
-            'tax_rate' => $data['tax_rate'],
-            'tax_amount' => ($item['price'] * $item['quantity']) * ($data['tax_rate'] / 100),
-            'discount_rate' => $data['discount_rate'],
-            'discount_type' => $data['discount_type'],
-            'discount_amount' => 0,
-            'total_amount' => ($item['price'] * $item['quantity']) + ($item['price'] * $item['quantity'] * ($data['tax_rate'] / 100)),
+        // Create Kitchen Order
+        KitchenOrder::create([
+            'order_id' => $restaurantOrder->id,
         ]);
+
+        // Save the individual items in the restaurant order
+        foreach ($data['items'] as $item) {
+            RestaurantOrderItem::create([
+                'restaurant_order_id' => $restaurantOrder->id,
+                'restaurant_item_id' => $item['id'],
+                'qty' => $item['quantity'],
+                'amount' => $item['price'] * $item['quantity'], // Calculate amount for each item
+                'tax_rate' => $data['tax_rate'],
+                'tax_amount' => ($item['price'] * $item['quantity']) * ($data['tax_rate'] / 100),
+                'discount_rate' => $data['discount_rate'],
+                'discount_type' => $data['discount_type'],
+                'discount_amount' => 0,
+                'total_amount' => ($item['price'] * $item['quantity']) + ($item['price'] * $item['quantity'] * ($data['tax_rate'] / 100)),
+            ]);
+        }
+
+        // Update total amount in the order
+        $restaurantOrder->total_amount = $totalAmount + $data['tax_amount'] - $data['discount_amount'];
+        $restaurantOrder->save();
+
+        // Notify kitchen staff
+        $kitchenStaff = HotelUser::where('role', 'Sales')->get();
+        foreach ($kitchenStaff as $staff) {
+            if ($staff->user && $staff->user->email) {
+                $staff->user->notify(new KitchenOrderNotification($restaurantOrder, $staff->user));
+            }
+        }
+
+        return 'Order created successfully!';
     }
-
-    // Update total amount in the order
-    $restaurantOrder->total_amount = $totalAmount + $data['tax_amount'] - $data['discount_amount'];
-    $restaurantOrder->save();
-
-    // Notify kitchen staff
-    $kitchenStaff = User::where('role', 'Admin')->get();
-    foreach ($kitchenStaff as $staff) {
-        $staff->notify(new KitchenOrderNotification($restaurantOrder));
-    }
-
-    return 'Order created successfully!';
-}
 
 
     public function getById($id)
@@ -147,7 +150,6 @@ class RestaurantOrderService
     public function cancelOrder($order)
     {
         $order = $this->getById($order);
-        dd($order);
         $order->update(['status' => StatusConstants::CANCELLED]);
         return $order;
     }
@@ -158,5 +160,4 @@ class RestaurantOrderService
         $order->delete();
         return $order;
     }
-
 }

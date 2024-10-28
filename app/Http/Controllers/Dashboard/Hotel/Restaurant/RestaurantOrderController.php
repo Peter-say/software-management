@@ -53,6 +53,7 @@ class RestaurantOrderController extends Controller
         } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage(),], 500); // Send a 500 response on error
         } catch (\Throwable $th) {
+            // throw $th;
             return response()->json(['success' => false, 'message' => 'Something went wrong while trying to save order',], 500);
         }
     }
@@ -77,9 +78,9 @@ class RestaurantOrderController extends Controller
     {
         try {
             $this->restaurant_order_service->cancelOrder($order);
-            return response()->json(['success' => true, 'message' => "Order cancelled successfully",]);
+            return response()->json(['success' => true, 'message' => "Order cancelled successfully",  'redirectUrl' => route('dashboard.hotel.restaurant.view-orders')]);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['success' => false, 'message' => 'Order not found',], 404);
+            return response()->json(['success' => false, 'message' => 'Order not found', ], 404);
         } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage(),], 500);
         } catch (\Throwable $th) {

@@ -73,27 +73,26 @@
                                                                 <td>{{ $order->user->name }}</td>
                                                                 <td>
                                                                     @if ($order->guest)
-                                                                        {{ $order->guest->full_name }} 
+                                                                        {{ $order->guest->full_name }}
                                                                         <span>
-                                                                            <i class="fas fa-question-circle" 
-                                                                               data-bs-toggle="tooltip" 
-                                                                               data-bs-placement="top" 
-                                                                               title="Guest Order">
+                                                                            <i class="fas fa-question-circle"
+                                                                                data-bs-toggle="tooltip"
+                                                                                data-bs-placement="top" title="Guest Order">
                                                                             </i>
                                                                         </span>
-                                                                        @endif
-                                                                    @if($order->walkInCustomer)
-                                                                        {{ $order->walkInCustomer->name }} 
+                                                                    @endif
+                                                                    @if ($order->walkInCustomer)
+                                                                        {{ $order->walkInCustomer->name }}
                                                                         <span>
-                                                                            <i class="fas fa-question-circle" 
-                                                                               data-bs-toggle="tooltip" 
-                                                                               data-bs-placement="top" 
-                                                                               title="Walk-in Customer">
+                                                                            <i class="fas fa-question-circle"
+                                                                                data-bs-toggle="tooltip"
+                                                                                data-bs-placement="top"
+                                                                                title="Walk-in Customer">
                                                                             </i>
                                                                         </span>
                                                                     @endif
                                                                 </td>
-                                                                
+
                                                                 <td>
                                                                     <button type="button" class="btn btn-info"
                                                                         data-bs-toggle="modal"
@@ -109,31 +108,30 @@
                                                                 <td>${{ number_format($order->total_amount, 2) }}</td>
                                                                 <td>
                                                                     <a href="javascript:void(0);"
-                                                                        class="text-{{ $order->status == 'active' ? 'success' : 'danger' }} btn-md">
+                                                                        class="text-{{ $order->status == 'Open' ? 'success' : ($order->status == 'closed' ? 'secondary' : ($order->status == 'Cancelled' ? 'danger' : 'muted')) }} btn-md">
                                                                         {{ strtoupper($order->status) }}
                                                                     </a>
                                                                 </td>
+
                                                                 <td>{{ $order->created_at->format('Y-m-d H:i:s') }}</td>
-                                                                <td class="text-{{ $order->paymentStatus() === 'paid' ? 'success' : ($order->paymentStatus() === 'partial' ? 'warning' : 'danger') }}">
+                                                                <td
+                                                                    class="text-{{ $order->paymentStatus() === 'paid' ? 'success' : ($order->paymentStatus() === 'partial' ? 'warning' : 'danger') }}">
                                                                     {{ strtoupper($order->paymentStatus()) }}
                                                                     <span>
-                                                                        <i class="fas fa-question-circle" 
-                                                                           data-bs-toggle="tooltip" 
-                                                                           data-bs-placement="top" 
-                                                                           title="
-                                                                                @if ($order->paymentStatus() === 'paid')
-                                                                                    Paid: ₦{{ number_format($order->payments->sum('amount'), 2, '.', ',') }} (Fully Paid)
+                                                                        <i class="fas fa-question-circle"
+                                                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                            title="
+                                                                                @if ($order->paymentStatus() === 'paid') Paid: ₦{{ number_format($order->payments->sum('amount'), 2, '.', ',') }} (Fully Paid)
                                                                                 @elseif ($order->paymentStatus() === 'partial')
                                                                                     Paid: ₦{{ number_format($order->payments->sum('amount'), 2, '.', ',') }} 
                                                                                     (Remaining: ₦{{ number_format($order->total_amount - $order->payments->sum('amount'), 2, '.', ',') }})
                                                                                 @else
-                                                                                    Not Paid
-                                                                                @endif
+                                                                                    Not Paid @endif
                                                                            ">
                                                                         </i>
                                                                     </span>
                                                                 </td>
-                                                                
+
                                                                 <td>
                                                                     <div class="d-flex">
                                                                         {{-- Edit Order --}}
@@ -147,25 +145,33 @@
                                                                             onclick="confirmDelete('{{ route('dashboard.hotel.restaurant.destroy-order', $order->id) }}')">
                                                                             <i class="fa fa-trash"></i>
                                                                         </a>
-                                                                      @if($order->total_amount > $order->payments()->sum('amount') || $order->payments() === null)
-                                                                        {{-- Payment Modal Button --}}
-                                                                        <a type="button" data-bs-toggle="modal"
-                                                                            data-bs-target="#paymentModal{{$order->id}}"
-                                                                            class="btn btn-primary shadow btn-xs sharp me-2">
-                                                                            <i class="fas fa-money-bill"></i>
-                                                                        </a>
+                                                                        @if ($order->total_amount > $order->payments()->sum('amount') || $order->payments() === null)
+                                                                            {{-- Payment Modal Button --}}
+                                                                            <a type="button" data-bs-toggle="modal"
+                                                                                data-bs-target="#paymentModal{{ $order->id }}"
+                                                                                class="btn btn-primary shadow btn-xs sharp me-2">
+                                                                                <i class="fas fa-money-bill"></i>
+                                                                            </a>
                                                                         @endif
-                                                                        <a type="button" data-bs-toggle="modal"
-                                                                        data-bs-target="#cancelOrderModal{{$order->id}}"
-                                                                        class="btn btn-warning shadow btn-xs sharp me-2">
-                                                                        <i class="fas fa-times"></i>
-                                                                    </a>
+                                                                        @if ($order->status !== 'Cancelled')
+                                                                            <!-- Button to trigger modal for each order -->
+                                                                            <a type="button" data-bs-toggle="modal"
+                                                                                data-bs-target="#cancelOrderModal"
+                                                                                data-order-id="{{ $order->id }}"
+                                                                                class="btn btn-warning shadow btn-xs sharp me-2 cancelOrderBtn">
+                                                                                <i class="fas fa-times"></i>
+                                                                            </a>
+                                                                        @endif
+
+                                                                        </a>
                                                                     </div>
                                                                 </td>
                                                             </tr>
 
-                                                            @include('dashboard.hotel.restaurant-item.order.choose-paymet-method-modal', ['order' => $order])
-                                                            @include('dashboard.hotel.restaurant-item.order.cancel-modal', ['order' => $order])
+                                                            @include(
+                                                                'dashboard.hotel.restaurant-item.order.choose-paymet-method-modal',
+                                                                ['order' => $order]
+                                                            )
                                                         @endforeach
                                                     @else
                                                         <tr>
@@ -174,11 +180,17 @@
                                                     @endif
                                                 </tbody>
                                             </table>
+                                            @include('dashboard.hotel.restaurant-item.order.cancel-modal', [
+                                                'order' => $order,
+                                            ])
+
                                         </div>
                                         <!-- Pagination -->
                                         <div class="d-flex justify-content-between align-items-center mt-3">
                                             <div class="text-muted">
-                                                Showing {{$restaurant_orders->firstItem() }} to {{ $restaurant_orders->lastItem() }} of {{ $restaurant_orders->total() }} entries
+                                                Showing {{ $restaurant_orders->firstItem() }} to
+                                                {{ $restaurant_orders->lastItem() }} of {{ $restaurant_orders->total() }}
+                                                entries
                                             </div>
                                             <nav aria-label="Page navigation">
                                                 <ul class="pagination">
@@ -228,6 +240,6 @@
             $('#deleteModal').modal('show');
         }
     </script>
-    
-    
+
+
 @endsection

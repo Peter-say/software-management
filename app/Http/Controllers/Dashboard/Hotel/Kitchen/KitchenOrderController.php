@@ -16,11 +16,13 @@ class KitchenOrderController extends Controller
     public function viewOrders()
     {
         $hotel = User::getAuthenticatedUser()->hotel;
+        $staffs = $hotel->hotelUsers;
         $restaurantOrders = RestaurantOrder::where('hotel_id', $hotel->id)->pluck('id');
         // $kitchen_orders = KitchenOrder::whereIn('order_id', $restaurantOrders)->paginate();
         return view('dashboard.hotel.kitchen.orders', [
             'kitchen_orders' => KitchenOrder::whereIn('order_id', $restaurantOrders)
             ->with(['restaurantOrder', 'user'])->paginate(),
+            'staffs' => $staffs,
         ]);
     }
 
@@ -60,6 +62,27 @@ class KitchenOrderController extends Controller
             return redirect()->back()->withErrors($e->errors())->withInput();
         }  catch (\Exception $e) {
             return redirect()->back()->with('error_message', 'An error occurred additing note');
+        }
+    }
+
+    public function assignTask(Request $request, $id)
+    {
+        // dd($request->all());
+        try {
+            $validatedData = $request->validate([
+                'user_id' => 'required|string',
+            ]);
+            $kitchen = $this->getById($id);
+            $kitchen->update([
+                'user_id' => $validatedData['user_id'],
+            ]);
+
+            return back()->with('success_message', 'Task assigned to '  . $kitchen->user->name . ' successfully');
+        } catch (ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->withInput();
+        }  catch (\Exception $e) {
+            throw $e;
+            return redirect()->back()->with('error_message', 'An error occurred assigning task');
         }
     }
 

@@ -32,7 +32,13 @@
                     </tbody>
                 </table>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer d-flex justify-content-between">
+                @if ($kitchen->restaurantOrder->notes)
+                <button class="btn-primary"> <i class="fas fa-question-circle text-white" 
+                    data-bs-toggle="tooltip" 
+                    data-bs-placement="top" 
+                    title="{{$kitchen->restaurantOrder->notes}}">Read notes</i></button>
+                @endif
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>

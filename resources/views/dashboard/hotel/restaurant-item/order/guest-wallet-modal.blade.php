@@ -81,6 +81,7 @@
         </div>
     </div>
 </div>
+@include('dashboard.hotel.guest.wallet.credit', ['guest' => optional($order->guest)])
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const amountInput = document.getElementById('amount');

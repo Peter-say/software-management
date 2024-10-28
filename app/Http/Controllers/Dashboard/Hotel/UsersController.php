@@ -93,4 +93,29 @@ class UsersController extends Controller
             return redirect()->back()->with('error_message', 'An error occurred while updating the user.' . $e->getMessage());
         }
     }
+
+    public function search(Request $request)
+    {
+        // Retrieve the search query from the request
+        $query = $request->query('query');
+
+        // Searching hotel users based on the user name
+        $users = HotelUser::with('user') // Load the user relationship
+            ->whereHas('user', function ($q) use ($query) {
+                // Filter by name in the users table
+                $q->where('name', 'LIKE', '%' . $query . '%');
+            })
+            ->where('hotel_id', User::getAuthenticatedUser()->hotel->id) // Filter by hotel
+            ->get(['id', 'user_id']); // Get hotel user ID and user ID
+
+        // Map the results to include user names
+        $result = $users->map(function ($hotelUser) {
+            return [
+                'id' => $hotelUser->id,
+                'name' => $hotelUser->user ? $hotelUser->user->name : 'N/A' // Handle null user gracefully
+            ];
+        });
+
+        return response()->json($result);
+    }
 }

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\SendUserLoginDetailsMail;
 use App\Models\HotelSoftware\HotelUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -79,10 +80,12 @@ class RegistrationService
             $isNewUser = false;
         } else {
             // Create a new User
+            $randomPassword = Str::random(12);
+            Log::info($randomPassword);
             $user = User::create([
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
-                'password' => Hash::make(Str::random(12)), // Create a random password
+                'password' => Hash::make($randomPassword), // Create a random password
             ]);
             // Exclude unwanted fields
             unset($validatedData['name'], $validatedData['email'], $validatedData['password']);
@@ -115,7 +118,6 @@ class RegistrationService
             // Save HotelUser
             $hotelUser = HotelUser::create($validatedData);
         }
-    
         // Send login details if this is a new user
         if ($isNewUser) {
             $this->sendLoginDetails($hotelUser->user_id);
@@ -160,6 +162,7 @@ class RegistrationService
 
             // Generate a random password
             $randomPassword = Str::random(12);
+           Log::info( $randomPassword );
             $hotel_user->password = Hash::make($randomPassword);
             $hotel_user->save();
 
@@ -169,7 +172,7 @@ class RegistrationService
             return $hotel_user->toArray();
         } catch (\Exception $e) {
             // Handle exception
-            return ['error_message' => 'An error occurred while updating the user.'];
+            return ['error_message' => 'An error occurred while sending login details to user.'];
         }
     }
 }

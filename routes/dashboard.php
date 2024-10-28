@@ -34,6 +34,7 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::get('/{id}/edit', [UsersController::class, 'edit'])->name('edit');
             Route::put('/{id}', [UsersController::class, 'update'])->name('update');
             Route::delete('/{id}/delete', [UsersController::class, 'delete'])->name('delete');
+            Route::get('/search', [UsersController::class, 'search'])->name('search');
         });
         Route::prefix('hotel')->as('hotel.')->group(function () {
             Route::resource('rooms', RoomController::class);
@@ -66,12 +67,15 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::get('kitchen/orders', [KitchenOrderController::class, 'viewOrders'])->name('kitchen.orders');
             Route::put('kitchen/orders/{id}/change-status', [KitchenOrderController::class, 'updateStatus'])->name('kitchen.orders.change-status');
             Route::put('kitchen/orders/{id}/add-note', [KitchenOrderController::class, 'addNote'])->name('kitchen.orders.add-note');
+            Route::put('kitchen/orders/{id}/assign-task', [KitchenOrderController::class, 'assignTask'])->name('kitchen.orders.assign-task');
 
             Route::get('notifications/unread', [NotificationController::class, 'unread'])->name('notifications.unread');
             Route::post('notifications/mark-as-read/{id}', [NotificationController::class, 'makeAsRead'])->name('notifications.mark-as-read');
             Route::get('notifications/{uuid}/view', [NotificationController::class, 'view'])->name('notifications.view');
+            Route::get('notifications/view-all', [NotificationController::class, 'viewAll'])->name('notifications.view-all');
+            Route::delete('/notifications/{id}/delete', [NotificationController::class, 'deleteNotification'])->name('notifications.delete');
+            Route::delete('/notifications/delete-bulk', [NotificationController::class, 'deleteBulk'])->name('notifications.delete-bulk');
         });
-
     });
     Route::get('/get-states-by-country', [OnboardingController::class, 'getStatesByCountry'])->name('get-states-by-country');
 
@@ -80,4 +84,3 @@ Route::middleware('auth', 'verified')->group(function () {
         Route::post('save-setup-app', [OnboardingController::class, 'saveSetupApp'])->name('save-setup-app');
     });
 });
-

@@ -60,7 +60,7 @@ class KitchenOrderNotification extends Notification implements ShouldBroadcast
     public function broadcastOn()
     {
         // Only broadcast if the user has the 'Sales' role
-        return $this->user->hotelUser->role === 'Sales'
+        return $this->user->hotelUser->role === 'Sales' || $this->user->hotelUser->role == 'Hotel_Owner'
             ? new Channel('kitchen-orders')
             : null;
     }

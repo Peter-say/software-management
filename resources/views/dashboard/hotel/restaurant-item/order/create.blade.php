@@ -292,13 +292,8 @@
             document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById('addWalkInCustomerBtn').addEventListener('click', function() {
                     const walkInCustomerForm = document.getElementById('walkInCustomerForm');
-                    // Check if the form is currently hidden, and toggle accordingly
-                    if (walkInCustomerForm.style.display === 'none' || walkInCustomerForm.style.display ===
-                        '') {
-                        walkInCustomerForm.style.display = 'block';
-                    } else {
-                        walkInCustomerForm.style.display = 'none';
-                    }
+                    walkInCustomerForm.style.display === 'block' 
+                       
                 });
             });
             document.addEventListener("DOMContentLoaded", function() {

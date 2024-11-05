@@ -11,179 +11,123 @@ document.addEventListener("DOMContentLoaded", async function () {
         forceTLS: true,
     });
 
-    Pusher.logToConsole = true;
-
     const badge = document.getElementById("notificationcount");
-    let unreadCount = 0; // Track unread notifications count
+    const notificationList = document.querySelector("#DZ_W_Notification1 .timeline");
     const maxNotifications = 5; // Limit to 5 notifications
+    let unreadCount = 0;
 
-    // Fetch unread notifications count and list on page load
-    try {
-        const response = await fetch("/dashboard/hotel/notifications/unread");
-        const data = await response.json();
-        unreadCount = data.unread_count;
-        badge.innerText = unreadCount;
+    // Standard image fallback
+    const defaultImage = "http://127.0.0.1:7000/storage/hotel/restaurant/items/6701f36a193c3_food1.jpeg";
 
-        // Update badge class based on unread count
-        if (unreadCount > 0) {
-            badge.classList.add("bg-primary");
-        } else {
-            badge.classList.remove("bg-primary");
-        }
-
-        // Display notifications
-        const notificationList = document.querySelector(
-            "#DZ_W_Notification1 .timeline"
-        );
-        const defaultImage =
-            "http://127.0.0.1:7000/storage/hotel/restaurant/items/6701f36a193c3_food1.jpeg"; // Default image path
-        
-        // Display empty state if no notifications
-        function displayEmptyState() {
-            if (notificationList) {
-                notificationList.innerHTML =
-                    '<li><div class="timeline-panel"><div class="media-body text-center"><p>No notifications available</p></div></div></li>';
-            }
-        }
-
-        if (data.notification.length === 0) {
-            displayEmptyState();
-        } else {
-            data.notification.forEach((notification) => {
-                const imageUrl =
-                    notification.data.items[0]?.image || defaultImage;
-                const linkUrl = notification.data.link || "#";
-
-                // Determine notification message
-                const itemCount = notification.data.items.length;
-                const firstItemName = notification.data.items[0]?.name || "Item";
-                const notificationMessage = itemCount > 1
-                    ? `${firstItemName} ordered and ${itemCount - 1} more`
-                    : `${firstItemName} ordered`;
-
-                const notificationItem = document.createElement("li");
-                notificationItem.innerHTML = `
-                <div class="timeline-panel" data-notification-id="${notification.id}">
-                    <div class="media me-2">
-                        <img alt="image" width="50" src="${imageUrl}">
-                    </div>
-                    <div class="media-body">
-                     <a href="${linkUrl}" class="notification-link" target="_blank">
-                        <h6 class="mb-1">${notificationMessage}</h6>
-                        <small class="d-block">${new Date(
-                            notification.created_at
-                        ).toLocaleString()}</small>
-                        </a>
-                    </div>
-                </div>
-                `;
-
-                if (notificationList) {
-                    notificationList.prepend(notificationItem);
-                }
-
-                // Add click event listener to the notification item
-                notificationItem.addEventListener("click", async () => {
-                    await markNotificationAsRead(notification.id);
-                });
-
-                // Limit the number of notifications displayed
-                limitNotificationDisplay(notificationList);
-            });
-        }
-    } catch (error) {
-        console.error("Error fetching unread notifications:", error);
-        displayEmptyState();
-    }
-
-    // Listen for new notifications
-    window.Echo.channel("kitchen-orders").listen(".OrderCreated", (event) => {
-        console.log("New order notification:", event);
-        
-        // Add the new notification item to the list
-        const defaultImage =
-            "http://127.0.0.1:7000/storage/hotel/restaurant/items/6701f36a193c3_food1.jpeg"; // Ensure default image is defined
-        const imageUrl = event.items[0]?.image || defaultImage;
-        const linkUrl = event.link || "#";
-
-        // Determine notification message
-        const itemCount = event.items.length;
-        const firstItemName = event.items[0]?.name || "Item";
+    // Helper function to format notification data
+    function formatNotificationData(notification) {
+        const items = notification.data?.items || notification.items || [];
+        const imageUrl = items[0]?.image || defaultImage;
+        const linkUrl = notification.data?.link || notification.link || "#";
+        const itemCount = items.length;
+        const firstItemName = items[0]?.name || "Item";
         const notificationMessage = itemCount > 1
             ? `${firstItemName} ordered and ${itemCount - 1} more`
             : `${firstItemName} ordered`;
 
+        return {
+            id: notification.id || notification.notification_id,
+            imageUrl,
+            linkUrl,
+            message: notificationMessage,
+            createdAt: new Date(notification.created_at || new Date()).toLocaleString(),
+        };
+    }
+
+    // Function to add a notification to the DOM
+    function addNotificationToList(notificationData) {
         const notificationItem = document.createElement("li");
         notificationItem.innerHTML = `
-            <div class="timeline-panel" data-notification-id="${event.notification_id}">
+            <div class="timeline-panel" data-notification-id="${notificationData.id}">
                 <div class="media me-2">
-                    <img alt="image" width="50" src="${imageUrl}">
+                    <img alt="image" width="50" src="${notificationData.imageUrl}">
                 </div>
                 <div class="media-body">
-                    <a href="${linkUrl}" class="notification-link" target="_blank">
-                        <h6 class="mb-1">${notificationMessage}</h6>
-                        <small class="d-block">${new Date().toLocaleString()}</small>
+                    <a href="${notificationData.linkUrl}" class="notification-link" target="_blank">
+                        <h6 class="mb-1">${notificationData.message}</h6>
+                        <small class="d-block">${notificationData.createdAt}</small>
                     </a>
                 </div>
             </div>
         `;
 
-        const notificationList = document.querySelector(
-            "#DZ_W_Notification1 .timeline"
-        );
-        if (notificationList) {
-            notificationList.prepend(notificationItem);
-        }
+        // Add click event to mark as read
+        notificationItem.addEventListener("click", async () => {
+            await markNotificationAsRead(notificationData.id, notificationItem);
+        });
 
-        // Increment the unread notifications counter
+        // Prepend new notification to list
+        notificationList.prepend(notificationItem);
+        limitNotificationDisplay(notificationList);
+    }
+
+    // Function to limit displayed notifications
+    function limitNotificationDisplay(notificationList) {
+        const notifications = notificationList.querySelectorAll("li");
+        if (notifications.length > maxNotifications) {
+            notifications[notifications.length - 1].remove();
+        }
+    }
+
+    // Fetch unread notifications on page load
+    try {
+        const response = await fetch("/dashboard/hotel/notifications/unread");
+        const data = await response.json();
+        unreadCount = data.unread_count;
+        badge.innerText = unreadCount;
+        badge.classList.toggle("bg-primary", unreadCount > 0);
+
+        if (data.notification.length === 0) {
+            notificationList.innerHTML = '<li><div class="timeline-panel"><div class="media-body text-center"><p>No notifications available</p></div></div></li>';
+        } else {
+            data.notification.forEach(notification => {
+                const formattedData = formatNotificationData(notification);
+                addNotificationToList(formattedData);
+            });
+        }
+    } catch (error) {
+        console.error("Error fetching unread notifications:", error);
+    }
+
+    // Listen for new notifications via Pusher
+    window.Echo.channel("kitchen-orders").listen(".OrderCreated", (event) => {
+        const formattedData = formatNotificationData(event);
+        addNotificationToList(formattedData);
+
+        // Update badge count
         unreadCount += 1;
         badge.innerText = unreadCount;
         badge.classList.add("bg-primary");
-
-        // Add click event listener to the notification item
-        notificationItem.addEventListener("click", async () => {
-            await markNotificationAsRead(event.notification_id);
-        });
-        
-        // Limit the number of notifications displayed
-        limitNotificationDisplay(notificationList);
     });
 
-    // Function to mark notification as read
-    async function markNotificationAsRead(notificationId) {
+    // Mark notification as read and remove it from DOM
+    async function markNotificationAsRead(notificationId, notificationItem) {
         try {
-            console.log("Marking notification as read:", notificationId);
-
-            // Get the CSRF token from the meta tag
-            const csrfToken = document
-                .querySelector('meta[name="csrf-token"]')
-                .getAttribute("content");
-
-            const response = await fetch(
-                `/dashboard/hotel/notifications/mark-as-read/${notificationId}`,
-                {
-                    method: "POST",
-                    headers: {
-                        "X-CSRF-TOKEN": csrfToken,
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+            const response = await fetch(`/dashboard/hotel/notifications/mark-as-read/${notificationId}`, {
+                method: "POST",
+                headers: {
+                    "X-CSRF-TOKEN": csrfToken,
+                    "Content-Type": "application/json",
+                },
+            });
 
             if (response.ok) {
-                unreadCount -= 1; // Decrement unread count
+                unreadCount -= 1;
                 badge.innerText = unreadCount;
+                badge.classList.toggle("bg-primary", unreadCount > 0);
+                // notificationItem.remove();
+                notificationItem.style.color = "gray";
+                
 
-                if (unreadCount === 0) {
-                    badge.classList.remove("bg-primary");
-                }
-
-                // Remove the notification from the DOM
-                const notificationItem = document.querySelector(
-                    `[data-notification-id="${notificationId}"]`
-                );
-                if (notificationItem) {
-                    notificationItem.remove(); // Remove only if successfully marked as read
+                // Re-fetch unread notifications if space is available
+                if (notificationList.childElementCount < maxNotifications) {
+                    fetchAndAddUnreadNotifications();
                 }
             }
         } catch (error) {
@@ -191,11 +135,17 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
 
-    function limitNotificationDisplay(notificationList) {
-        const notifications = notificationList.querySelectorAll("li");
-        if (notifications.length > maxNotifications) {
-            // Remove the oldest notification
-            notifications[notifications.length - 1].remove();
+    // Fetch additional unread notifications to fill up empty space
+    async function fetchAndAddUnreadNotifications() {
+        try {
+            const response = await fetch("/dashboard/hotel/notifications/unread");
+            const data = await response.json();
+            data.notification.slice(0, maxNotifications - notificationList.childElementCount).forEach(notification => {
+                const formattedData = formatNotificationData(notification);
+                addNotificationToList(formattedData);
+            });
+        } catch (error) {
+            console.error("Error fetching additional unread notifications:", error);
         }
     }
 });

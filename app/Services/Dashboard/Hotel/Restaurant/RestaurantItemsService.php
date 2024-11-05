@@ -131,7 +131,7 @@ class RestaurantItemsService
                     if ($storageSuccess) {
                         // Update the item record with the new image filename
                         $item->update([
-                            'image' => $imageDirectory . $fileName,
+                            'image' => $fileName,
                         ]);
                     } else {
                         throw new \Exception('Failed to store the random image: ' . $fileName);
@@ -162,6 +162,7 @@ class RestaurantItemsService
     public function trucateItems()
     {
         $items = RestaurantItem::all();
+        dd($items);
         if ($items->isEmpty()) {
             throw new ModelNotFoundException("Items not found");
         }

@@ -3,16 +3,19 @@
 namespace App\Http\Controllers\Dashboard\Notification;
 
 use App\Http\Controllers\Controller;
+use App\Models\hotelSoftware\Hotel;
+use App\Models\HotelSoftware\HotelUser;
 use App\Models\hotelSoftware\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
-    protected function authorizeRole($role = 'Sales')
+    protected function authorizeRole()
     {
-        $user = Auth::user();
-        return $user && $user->hotelUser && $user->hotelUser->role === $role;
+        $user =  Auth::user();
+        $hotelUser = HotelUser::where('user_id', $user->id)->first();
+        return $hotelUser->role === 'Hotel_Owner' || $hotelUser->role === 'Manager' || $hotelUser->role === 'Sales';
     }
 
     public function unread()
@@ -22,9 +25,22 @@ class NotificationController extends Controller
         }
 
         $user = Auth::user();
-        $notifications = $user->unreadNotifications()->latest()->limit(5)->get(); // Fetch unread notifications
+        $notifications = $user->unreadNotifications()->latest()->get(); // Fetch unread notifications
         return response()->json([
             'unread_count' => $user->unreadNotifications->count(),
+            'notification' => $notifications
+        ]);
+    }
+
+    public function fetchAll()
+    {
+        if (!$this->authorizeRole()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $user = Auth::user();
+        $notifications = $user->notifications()->latest()->get(); // Fetch unread notifications
+        return response()->json([
             'notification' => $notifications
         ]);
     }
@@ -32,7 +48,7 @@ class NotificationController extends Controller
     public function makeAsRead($id)
     {
         if (!$this->authorizeRole()) {
-           abort(403, 'Unauthorized');
+            abort(403, 'Unauthorized');
         }
 
         $user = Auth::user();
@@ -56,7 +72,8 @@ class NotificationController extends Controller
         }
 
         $user = Auth::user();
-        $notification = $user->notifications()->find($uuid);
+        $notification = $user->notifications()
+        ->where('notifiable_id', $user->hotel->id)->find($uuid);
 
         if ($notification) {
             // Customize this view with relevant data for display
@@ -73,15 +90,16 @@ class NotificationController extends Controller
         }
 
         $user = Auth::user();
-        $notifications = $user->notifications()->latest()->paginate(20);
-
+        $notifications = $user->notifications()
+            ->where('notifiable_id', $user->hotel->id)  // hotel ID associated with the user
+            ->latest()
+            ->paginate(20);
         // Customize this view with relevant data for displaying all notifications
         return view('dashboard.notification.order.index', ['notifications' => $notifications]);
     }
 
     public function deleteNotification($id)
     {
-        dd($id);
         $notification = Notification::findOrFail($id);
         $notification->delete();
 

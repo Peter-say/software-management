@@ -19,7 +19,7 @@
                     {{-- Additional Notes (optional) --}}
                     <div class="form-group mb-3">
                         <label for="notes">Notes</label>
-                        <textarea name="notes" class="form-control" rows="3"></textarea>
+                        <textarea name="notes" class="form-control" rows="3">{{old('notes', $kitchen->notes)}}</textarea>
                     </div>
 
                     <div class="modal-footer">

@@ -34,9 +34,9 @@
             $.ajax({
                 url: '{{ route('dashboard.hotel.restaurant-items.truncate') }}',
                 type: 'DELETE',
-                data: {
-                    _token: '{{ csrf_token() }}', 
-                },
+                // data: {
+                //     _token: '{{ csrf_token() }}', 
+                // },
                 success: function(response) {
                     console.log(response);
                     Toastify({

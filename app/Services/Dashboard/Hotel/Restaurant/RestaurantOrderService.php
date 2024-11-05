@@ -10,10 +10,12 @@ use App\Models\HotelSoftware\RestaurantOrderItem;
 use App\Models\HotelSoftware\WalkInCustomer;
 use App\Models\User;
 use App\Notifications\KitchenOrderNotification;
+use App\Providers\RoleServiceProvider;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -127,7 +129,10 @@ class RestaurantOrderService
         $restaurantOrder->save();
 
         // Notify kitchen staff
-        $kitchenStaff = HotelUser::where('role', 'Sales')->get();
+        $user = Auth::user();
+        $role_service = new RoleServiceProvider($user);
+        $role = $role_service->userCanAccessSalesRole($user);
+        $kitchenStaff = HotelUser::where('role', $role)->get();
         foreach ($kitchenStaff as $staff) {
             if ($staff->user && $staff->user->email) {
                 $staff->user->notify(new KitchenOrderNotification($restaurantOrder, $staff->user));

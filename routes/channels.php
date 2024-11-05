@@ -1,9 +1,9 @@
 <?php
 
 use App\Models\HotelSoftware\HotelUser;
-use App\Providers\RoleProvider;
+use App\Providers\RoleServiceProvider;
 use Illuminate\Support\Facades\Broadcast;
 
 Broadcast::channel('kitchen-orders', function ($user) {
-    (new RoleProvider($user))->acessSalesRole();
+    return (new RoleServiceProvider($user))->userCanAccessSalesRole($user);
 });

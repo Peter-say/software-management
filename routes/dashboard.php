@@ -73,6 +73,7 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::post('notifications/mark-as-read/{id}', [NotificationController::class, 'makeAsRead'])->name('notifications.mark-as-read');
             Route::get('notifications/{uuid}/view', [NotificationController::class, 'view'])->name('notifications.view');
             Route::get('notifications/view-all', [NotificationController::class, 'viewAll'])->name('notifications.view-all');
+            Route::get('notifications/fetch-all', [NotificationController::class, 'fetchAll'])->name('notifications.fetch-all');
             Route::delete('/notifications/{id}/delete', [NotificationController::class, 'deleteNotification'])->name('notifications.delete');
             Route::delete('/notifications/delete-bulk', [NotificationController::class, 'deleteBulk'])->name('notifications.delete-bulk');
         });

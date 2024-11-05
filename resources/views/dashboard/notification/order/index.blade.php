@@ -79,6 +79,12 @@
                                                                     </a>
                                                                 </td>
                                                             </tr>
+                                                            {{-- <script>
+                                                                const routes = {
+                                                                    deleteSingle: "{{ route('dashboard.hotel.notifications.delete', $notification->id) }}", // Route URL without ID
+                                                                    deleteBulk: "{{ route('dashboard.hotel.notifications.delete-bulk') }}"
+                                                                };
+                                                            </script> --}}
                                                         @endforeach
                                                     @endif
                                                 </tbody>
@@ -127,12 +133,7 @@
         </div>
     </div>
 
-    <script>
-        const routes = {
-            deleteSingle: "{{ route('dashboard.hotel.notifications.delete', $notification->id) }}", // Route URL without ID
-            deleteBulk: "{{ route('dashboard.hotel.notifications.delete-bulk') }}"
-        };
-    </script>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -169,7 +170,7 @@
             confirmDeleteButton.addEventListener('click', function() {
                 const url = selectedNotifications.length === 1 ?
                     routes.deleteSingle.replace('{id}', selectedNotifications[
-                    0]) // Replace placeholder with actual ID
+                        0]) // Replace placeholder with actual ID
                     :
                     routes.deleteBulk;
                 console.log(url); // Log the URL before the fetch call
@@ -250,6 +251,114 @@
                     });
             };
         }
+        document.addEventListener('DOMContentLoaded', function() {
+            const tbody = document.querySelector(
+                'tbody'); // Select the table body where notifications are displayed
+
+            function fetchUnreadNotifications() {
+                fetch('/dashboard/hotel/notifications/unread', {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.unread_count > 0) {
+                            data.notification.forEach(notification => {
+                                // Check if the notification already exists in the table by ID
+                                if (!document.querySelector(
+                                        `tr[data-notification-id="${notification.id}"]`)) {
+                                    appendNotification(
+                                        notification); // Append only if it doesn't already exist
+                                }
+                            });
+                            document.getElementById('notificationcount').innerText = data
+                                .unread_count; // Update the count
+                        }
+                    })
+                    .catch(error => console.error('Error fetching notifications:', error));
+            }
+
+            // Call fetchUnreadNotifications every 10 seconds
+            setInterval(fetchUnreadNotifications, 10000);
+
+            // Function to append a notification to the table body
+            function appendNotification(notification) {
+                const items = notification.data.items;
+                const firstItemName = items[0].name || 'Unknown';
+                const additionalCount = items.length - 1;
+
+                const newRow = document.createElement('tr');
+                newRow.setAttribute('data-notification-id', notification.id);
+
+                newRow.innerHTML = `
+                    <td>
+                        <div class="form-check ">
+                            <input class="form-check-input" type="checkbox" value="">
+                        </div>
+                    </td>
+                    <td>${notification.id}</td>
+                    <td>
+                        <a href="#" class="btn notification-link" data-id="${notification.id}" data-bs-toggle="modal"
+                           data-bs-target="#notificationModal${notification.id}">
+                            ${notification.data.message} for ${firstItemName}
+                            ${additionalCount > 0 ? `and ${additionalCount} more` : ''}
+                        </a>
+                       
+                    </td>
+                    <td>
+                        <a href="javascript:void(0);" class="btn-md text-info" data-status-id="${notification.id}">
+                            <i class="fas fa-times-circle"></i> Not Read
+                        </a>
+                    </td>
+                    <td>${formatDate(notification.created_at)}</td>
+                     <td>
+                                                                    <a href="javascript:void(0);"
+                                                                        onclick="confirmDelete('{{ $notification->id }}')"
+                                                                        class="btn btn-danger shadow btn-xs sharp">
+                                                                        <i class="fa fa-trash"></i>
+                                                                    </a>
+                                                                </td>
+                `;
+
+                tbody.prepend(newRow); // Add the new notification at the top of the list
+
+                // Reattach event listeners for the "mark as read" functionality
+                attachNotificationClickHandler(newRow);
+            }
+
+            // Function to attach the click event for marking notifications as read
+            function attachNotificationClickHandler(row) {
+                row.querySelector('.notification-link').addEventListener('click', function() {
+                    const notificationId = this.getAttribute('data-id');
+
+                    fetch(`/dashboard/hotel/notifications/mark-as-read/${notificationId}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Update UI for read status
+                                const statusElement = document.querySelector(
+                                    `[data-status-id="${notificationId}"]`);
+                                if (statusElement) {
+                                    statusElement.classList.remove('text-info');
+                                    statusElement.classList.add('text-success');
+                                    statusElement.innerHTML =
+                                        `<i class="fas fa-check-circle"></i> Read`;
+                                }
+                            }
+                        })
+                        .catch(error => console.error('Error marking notification as read:', error));
+                });
+            }
+        });
     </script>
 
 @endsection

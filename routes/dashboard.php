@@ -10,6 +10,7 @@ use App\Http\Controllers\Dashboard\Hotel\Restaurant\RestaurantItemsController;
 use App\Http\Controllers\Dashboard\Hotel\Restaurant\RestaurantOrderController;
 use App\Http\Controllers\Dashboard\Hotel\RoomController;
 use App\Http\Controllers\Dashboard\Hotel\RoomReservationController;
+use App\Http\Controllers\Dashboard\Hotel\SupplierController;
 use App\Http\Controllers\Dashboard\Hotel\UsersController;
 use App\Http\Controllers\Dashboard\Notification\NotificationController;
 use App\Http\Controllers\Dashboard\OnboardingController;
@@ -42,6 +43,7 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::resource('guests', GuestController::class);
             Route::resource('restaurant-items', RestaurantItemsController::class);
             Route::resource('outlets', OutletController::class);
+            Route::resource('suppliers', SupplierController::class);
 
             Route::get('set-guest-info', [GuestController::class, 'getGuestInfo'])->name('set-guest-info');
             Route::post('check-room-availability', [RoomReservationController::class, 'getRoomAvailability']);

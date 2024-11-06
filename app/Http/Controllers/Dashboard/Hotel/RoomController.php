@@ -45,7 +45,6 @@ class RoomController extends Controller
      */
     public function store(Request $request)
     {
-
         $data = $request->all();
         try {
           $this->room_service->save($request, $data);

@@ -74,6 +74,12 @@
                         <span class="nav-text">Suppliers</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('dashboard.hotel.expenses.index') }}" aria-expanded="false">
+                        <i class="flaticon-013-checkmark"></i>
+                        <span class="nav-text">Expenses</span>
+                    </a>
+                </li>
                 <li><a class="has-arrow " href="javascript:void()" aria-expanded="false">
                     <i class="flaticon-045-heart"></i>
                     <span class="nav-text">Notifications</span>

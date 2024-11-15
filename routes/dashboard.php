@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\Hotel\ExpenseController;
 use App\Http\Controllers\Dashboard\Hotel\Guest\GuestController;
 use App\Http\Controllers\Dashboard\Hotel\Guest\GuestWalletController;
 use App\Http\Controllers\Dashboard\Hotel\Invoices\Guest\RoomReservationInvoiceController;
@@ -44,6 +45,7 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::resource('restaurant-items', RestaurantItemsController::class);
             Route::resource('outlets', OutletController::class);
             Route::resource('suppliers', SupplierController::class);
+            Route::resource('expenses', ExpenseController::class);
 
             Route::get('set-guest-info', [GuestController::class, 'getGuestInfo'])->name('set-guest-info');
             Route::post('check-room-availability', [RoomReservationController::class, 'getRoomAvailability']);

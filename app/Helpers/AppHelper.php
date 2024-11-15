@@ -1,9 +1,12 @@
 <?php
 
+use App\Models\hotelSoftware\ExpenseCategory;
+use App\Models\hotelSoftware\ExpenseItem;
 use App\Models\HotelSoftware\Guest;
 use App\Models\HotelSoftware\ItemCategory;
 use App\Models\HotelSoftware\Outlet;
 use App\Models\HotelSoftware\Room;
+use App\Models\hotelSoftware\Supplier;
 use App\Models\HotelSoftware\WalkInCustomer;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -23,6 +26,18 @@ function getModelItems($model)
     }
     if ($model == 'restaurant-outlets') {
         $model_list = Outlet::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->where('type', 'restaurant')->get();
+    }
+
+    if ($model == 'suppliers') {
+        $model_list = Supplier::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->get();
+    }
+
+    if ($model == 'expense-categories') {
+        $model_list = ExpenseCategory::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->get();
+    }
+
+    if ($model == 'expense-items') {
+        $model_list = ExpenseItem::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->get();
     }
 
     if ($model == 'walk_in_customers') {

@@ -24,14 +24,15 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            UserSeeder::class,
-            StateSeeder::class,
-            CountrySeeder::class,
-            HotelSeeder::class,
-            HotelRoomTypeSeeder::class,
-            OutletSeeder::class,
-            ItemCategorySeeder::class,
-            StoreItemSeeder::class,
+            // UserSeeder::class,
+            // StateSeeder::class,
+            // CountrySeeder::class,
+            // HotelSeeder::class,
+            // HotelRoomTypeSeeder::class,
+            // OutletSeeder::class,
+            // ItemCategorySeeder::class,
+            // StoreItemSeeder::class,
+            // ExpenseCategorySeeder::class,
         ]);
     }
 }

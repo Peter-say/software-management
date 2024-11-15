@@ -1,7 +1,8 @@
 <?php
 
-namespace App\hotelSoftwareModels;
+namespace App\Models\hotelSoftware;
 
+use App\Models\Payment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,49 +10,79 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Expense extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $fillable = [
-        'supplier_id','category_id','description','amount',
-        'expense_date','qty','rate','note','hotel_id'
+
+    protected $casts = [
+        'expense_date' => 'datetime',
     ];
-    public function supplier(){
-        return $this->belongsTo('App\Models\Supplier');
+    protected $fillable = [
+        'supplier_id',
+        'category_id',
+        'amount',   
+        'expense_date',
+        'note',
+        'hotel_id',
+        'note',
+        'description',
+        'uploaded_file',
+    ];
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
     }
-    public function payments(){
-        return $this->hasMany('App\Models\ExpensePayment');
+
+    public function category()
+    {
+        return $this->belongsTo(ExpenseCategory::class, 'category_id');
     }
-    public function category(){
-        return $this->belongsTo('App\Models\ExpenseCategory','category_id');
+
+    public function items()
+    {
+        return $this->hasMany(ExpenseExpenseItem::class, 'expense_id');
     }
-    public function items(){
-        return $this->hasMany('App\Models\ExpenseExpenseItem','expense_id');
-    }
-    // public function expenseItems(){
-    //     return $this->hasMany('App\Models\ExpenseItem','expense_id');
-    // }
+
     public function expenseItems()
     {
         return $this->belongsToMany(ExpenseItem::class, 'expense_expense_items', 'expense_id', 'expense_item_id')
             ->withPivot('qty', 'rate', 'amount', 'unit_qty');
     }
-    
+
     public function getItems()
     {
         $itemsString = '';
-        $itemNames = $this->items->map(function ($expenseItem) {
-            return $expenseItem->expenseItem->name;
+        $itemNames = $this->expenseItems->map(function ($expenseItem) {
+            return $expenseItem->name;
         })->toArray();
 
         $itemsString = implode(', ', $itemNames);
         return $itemsString;
     }
-    public function paymentStatus(){
-        $status = "Not Paid";
-        if($this->payments()->sum('amount') >= $this->amount){
-            $status = "All Paid"; 
+
+    public function payments()
+    {
+        return $this->morphMany(Payment::class, 'payable');
+    }
+
+    public function paymentStatus()
+    {
+        // Get the payments collection
+        $payments = $this->payments()->get();
+
+        // Calculate the total payment required from all related order items
+        $totalPayment = $this->expenseItems()->sum('amount');
+
+        // Check the payment status based on total payment and payments
+        if ($payments->isEmpty()) {
+            return 'pending';
+        } elseif ($payments->sum('amount') < $totalPayment) {
+            return 'partial';
+        } else {
+            return 'paid';
         }
-        if($this->payments()->sum('amount') < $this->amount  && $this->payments()->sum('amount') > 0){
-            $status = "Part Paid"; 
-        }
-        return $status;
+    }
+
+    public function item()
+    {
+        return $this->belongsTo(ExpenseExpenseItem::class);
     }
 }

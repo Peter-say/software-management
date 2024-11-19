@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard\Hotel;
 
+use App\Constants\CurrencyConstants;
 use App\Http\Controllers\Controller;
 use App\Models\hotelSoftware\Expense;
 use App\Models\User;
@@ -22,8 +23,12 @@ class ExpenseController extends Controller
      */
     public function index()
     {
+        $expense = Expense::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->latest()->paginate(50);
         return view('dashboard.hotel.expenses.index', [
-            'expenses' => Expense::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->latest()->paginate(50),
+            'expenses' => $expense,
+            'payableType' => get_class(new Expense()),
+            'currencies' => CurrencyConstants::CURRENCY_CODES,
+
         ]);
     }
 
@@ -55,10 +60,7 @@ class ExpenseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-       
-    }
+    public function show(string $id) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -66,12 +68,12 @@ class ExpenseController extends Controller
     public function edit(string $id)
     {
         $expense =  $this->expenses_service->getById($id);
-        foreach($expense->items as $item){
+        foreach ($expense->items as $item) {
             // dd($expense->items, $item);
         }
-      
+
         return view('dashboard.hotel.expenses.create',  [
-           $expense = 'expense' => $this->expenses_service->getById($id),
+            'expense' => $this->expenses_service->getById($id),
         ]);
     }
 

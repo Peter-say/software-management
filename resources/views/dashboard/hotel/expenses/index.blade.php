@@ -24,7 +24,7 @@
                     </div>
                     <div class="d-flex align-items-center mb-2">
                         <a href="{{ route('dashboard.hotel.expenses.create') }}" class="btn btn-secondary me-2">+
-                           Add New</a>
+                            Add New</a>
                     </div>
                 </div>
 
@@ -68,7 +68,7 @@
                                                                 <div class="room-list-bx d-flex align-items-center">
                                                                     <div>
                                                                         <span
-                                                                            class="fs-16 font-w500 text-nowrap">{{  $expense->expense_date->format('jS, M Y') }}</span>
+                                                                            class="fs-16 font-w500 text-nowrap">{{ $expense->expense_date->format('jS, M Y') }}</span>
                                                                     </div>
                                                                 </div>
                                                             </td>
@@ -78,27 +78,35 @@
                                                             </td>
                                                             <td>
                                                                 <span
-                                                                    class="fs-16 font-w500 text-nowrap">{{ $expense->getItems() ?? ''  }}</span>
+                                                                    class="fs-16 font-w500 text-nowrap">{{ $expense->getItems() ?? '' }}</span>
                                                             </td>
                                                             <td>
                                                                 <span
                                                                     class="fs-16 font-w500 text-nowrap">{{ $expense->supplier->name ?? 'N/A' }}</span>
                                                             </td>
-                                                           
+
                                                             <td>
                                                                 <a href="javascript:void(0);"
                                                                     class="text-{{ $expense->paymentStatus() === 'pending' ? 'danger' : ($expense->paymentStatus() === 'partial' ? 'warning' : 'success') }} btn-md">
                                                                     {{ strtoupper($expense->paymentStatus()) }}
                                                                 </a>
                                                             </td>
-                                                            
+
                                                             <td>
                                                                 <span
-                                                                class="fs-16 font-w500 text-nowrap">{{ number_format($expense->amount) ?? '' }}</span>
+                                                                    class="fs-16 font-w500 text-nowrap">{{ number_format($expense->amount) ?? '' }}</span>
                                                             </td>
-                                                            
+
                                                             <td>
                                                                 <div class="d-flex">
+                                                                    @if ($expense->amount > $expense->payments()->sum('amount') || $expense->payments() === null)
+                                                                        {{-- Payment Modal Button --}}
+                                                                        <a type="button" data-bs-toggle="modal"
+                                                                            data-bs-target="#payment-modal-{{ $expense->id }}"
+                                                                            class="btn btn-primary shadow btn-xs sharp me-2">
+                                                                            <i class="fas fa-money-bill"></i>
+                                                                        </a>
+                                                                    @endif
                                                                     <!-- Edit Button -->
                                                                     <a href="{{ route('dashboard.hotel.expenses.edit', $expense->id) }}"
                                                                         class="btn btn-primary shadow btn-xs sharp me-1">
@@ -113,7 +121,11 @@
                                                                     </a>
                                                                 </div>
                                                             </td>
-
+                                                            @include('dashboard.general.payment.modal', [
+                                                                'payableType' => $payableType,
+                                                                'payableModel' => $expense,
+                                                                'currencies' => $currencies,
+                                                            ])
                                                         </tr>
                                                     @endforeach
                                                 </tbody>
@@ -133,7 +145,7 @@
             </div>
         </div>
     </div>
-  
+
     <!-- Delete Confirmation Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
         aria-hidden="true">

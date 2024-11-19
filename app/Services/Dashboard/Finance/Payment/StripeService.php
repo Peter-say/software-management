@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Dashboard\Payment;
+namespace App\Services\Dashboard\Finance\Payment;
 
 use App\Models\HotelSoftware\Guest;
 use App\Models\HotelSoftware\HotelUser;
@@ -17,15 +17,16 @@ class StripeService
     {
         try {
             // Set the secret key for Stripe
-            \Stripe\Stripe::setApiKey('sk_test_51NgZJ0CELUDJ3vYZsE8oxanTJgR81YTRKuGAGnO9bZR2jqSepe0pssxqQ395rQfy36kmN1LBR9e26fj24kf6TtqI00JQOtc7yl');
-    
+         $key =   \Stripe\Stripe::setApiKey(config('app.stripe_secret'));
+  
             // Ensure you have the correct token
             if (!$request->stripeToken) {
                 throw new Exception('Stripe token is missing');
             }
     
-            // Get the amount from request
+            // Get the amount and currency from the request
             $amount = $request->input('amount') * 100; // Stripe uses cents
+            $currency = strtolower($request->input('currency', 'usd')); 
     
             // Get the billing address
             $address = $this->getAddress($request);
@@ -33,9 +34,9 @@ class StripeService
             // Create the Stripe charge
             $stripeCharge = \Stripe\Charge::create([
                 'amount' => $amount,
-                'currency' => 'usd', // Change currency if necessary
+                'currency' => $currency,
                 'source' => $request->stripeToken,
-                'description' => 'Wallet funding',
+                'description' => $request->description,
                 'metadata' => [
                     'country' => $address['country'],
                     'line1' => $address['line1'],
@@ -44,7 +45,7 @@ class StripeService
                 ],
             ]);
     
-            return $stripeCharge; // Return the charge object if needed
+            return $stripeCharge; // Return the charge object
         } catch (\Exception $e) {
             throw new Exception('Stripe payment error: ' . $e->getMessage());
         }

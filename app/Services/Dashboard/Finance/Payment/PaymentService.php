@@ -1,14 +1,17 @@
 <?php
 
-namespace App\Services\Dashboard\Payment;
+namespace App\Services\Dashboard\Finance\Payment;
 
+use App\Constants\CurrencyConstants;
 use App\Models\Payment;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Services\Dashboard\Payment\StripeService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class PaymentService
 {
@@ -19,13 +22,25 @@ class PaymentService
         $this->stripe_service = $stripe_service; // Assigning the stripe service to the property
     }
 
-    public function validatePayment(Request $request)
+    public function validatePayment(array $data)
     {
-        return $request->validate([
-            'amount' => 'required|numeric|min:0.01',
+        $validator = Validator::make($data, [
+            'amount' => 'required|numeric|min:1', // Amount is required and must be a positive number
+            'currency' => 'nullable|string',Rule::in(CurrencyConstants::CURRENCY_CODES), // Currency is nullable and must be one of the allowed currencies if provided
+            'payment_method' => 'required|string|in:CARD,BANK_TRANSFER,WALLET', // Payment method type (e.g., card, bank transfer) is required
             'description' => 'nullable|string',
-            'payment_method' => 'required|string',
         ]);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
+        }
+    }
+
+    public function messages()
+    {
+        return [
+            'currency.in' => 'The selected currency is invalid. Please choose from the allowed currencies.',
+        ];
     }
 
     public function getById($id)
@@ -40,18 +55,21 @@ class PaymentService
     public function processPayment(Request $request, $payment_id = null)
     {
         return DB::transaction(function () use ($request, $payment_id) {
-            $data = $this->validatePayment($request);
+            $data = $this->validatePayment($request->all());
             $data['user_id'] = User::getAuthenticatedUser()->id;
             $data['payable_id'] = $request->input('payable_id');
             $data['payable_type'] = $request->input('payable_type');
             $data['transaction_id'] = 'TXN' . strtoupper(uniqid());
-
+            $data['amount'] = $request->amount;
+            $data['description'] = $request->description;
             if ($request->stripe_payment === 'Stripe') {
                 // Create the Stripe payment using the Stripe service
                 $stripeCharge = $this->stripe_service->charge($request);
                 // Handle successful charge
                 if ($stripeCharge->status == 'succeeded') {
                     $data['status'] = 'completed';
+                    $data['currency'] = strtoupper($stripeCharge->currency); // Save the currency
+                    $data['payment_method'] = strtoupper($stripeCharge->payment_method_details->type ?? 'unknown');// Save the payment method
                 } else {
                     throw new Exception('Stripe payment failed: ' . $stripeCharge->failure_message);
                 }
@@ -68,6 +86,7 @@ class PaymentService
             return $payment; // Return the created payment
         });
     }
+
 
 
     /**
@@ -97,5 +116,9 @@ class PaymentService
     }
 
     public function stripCredit() {}
-}
 
+    public function payWithCard(Request $request)
+    {
+        $this->validatePayment($request->al);
+    }
+}

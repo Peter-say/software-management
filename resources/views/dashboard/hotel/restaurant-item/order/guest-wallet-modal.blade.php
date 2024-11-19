@@ -1,5 +1,5 @@
-<div class="modal fade" id="Pay-with-wallet-modal{{ $order->id }}" tabindex="-1" role="dialog" aria-labelledby="Pay-with-wallet-modal{{ $order->id }}"
-    aria-hidden="true">
+<div class="modal fade" id="Pay-with-wallet-modal{{ $order->id }}" tabindex="-1" role="dialog"
+    aria-labelledby="Pay-with-wallet-modal{{ $order->id }}" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -13,9 +13,7 @@
                     <div class="modal-body text-dark">
                         <div class="d-flex justify-content-between">
                             <div>
-                                {{-- @php
-                                    dd($order->guest->id);
-                                @endphp --}}
+
                                 <p>Current balance</p>
                                 <p>
                                     @if ($order->guest && $order->guest->wallet)
@@ -39,34 +37,43 @@
                         </div>
 
                         <div class="col-12 m-3">
-                            <div class="form-group">
-                                <label for="amount">How Much Do You Want To Pay?</label>
-                                <input type="text" class="form-control @error('amount') is-invalid @enderror" id="amount"
-                                    name="amount" placeholder="Enter Amount">
-                                @error('amount')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
+                            <label for="amount">How Much Do You Want To Pay?</label>
+                            <input type="text" class="form-control @error('amount') is-invalid @enderror"
+                                id="amount" name="amount" placeholder="Enter Amount">
+                            @error('amount')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
-
+                        <div class="col-12 mb-3">
+                            <label for="currency" class="form-label">Currency</label>
+                            <select id="currency" name="currency"
+                                class="form-control @error('currency') is-invalid @enderror">
+                                <option value="">Select Currency</option>
+                                @foreach (\App\Constants\CurrencyConstants::CURRENCY_CODES as $currency)
+                                    <option value="{{ $currency }}"
+                                        {{ old('currency', $currency ?? '') == $currency ? 'selected' : '' }}>
+                                        {{ $currency }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('currency')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
                         <div class="col-12 m-3">
-                            <div class="form-group">
-                                <label for="description">Comment</label>
-                                <textarea class="form-control @error('description') is-invalid @enderror" name="description"
-                                    cols="5" rows="2" placeholder="Enter payment comment if any">{{ old('description') }}</textarea>
-                                @error('description')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
+                            <label for="description">Comment</label>
+                            <textarea class="form-control @error('description') is-invalid @enderror" name="description" cols="5"
+                                rows="2" placeholder="Enter payment comment if any">{{ old('description') }}</textarea>
+                            @error('description')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                     </div>
-{{-- @php
-    dd($order->id);
-@endphp --}}
+
                     <div class="modal-footer">
                         <input type="hidden" name="payment_method" value="WALLET">
                         <input type="hidden" name="hotel_id" value="{{ auth()->user()->id }}">
@@ -74,7 +81,8 @@
                         <input type="hidden" name="payable_id" value="{{ $order->id }}">
                         <input type="hidden" name="payable_type" value="{{ get_class($order) }}">
                         <button type="submit" class="btn btn-primary">Pay now</button>
-                        <button type="button" data-bs-toggle="modal" data-bs-target="#fund-guest-wallet-modal" class="btn btn-primary">Fund your wallet</button>
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#fund-guest-wallet-modal"
+                            class="btn btn-primary">Fund your wallet</button>
                     </div>
                 </div>
             </form>

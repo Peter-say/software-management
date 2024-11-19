@@ -8,8 +8,8 @@ use App\Models\HotelSoftware\Guest;
 use App\Models\hotelSoftware\GuestPayment;
 use App\Models\HotelSoftware\RestaurantOrder;
 use App\Models\HotelSoftware\RoomReservation;
-use App\Services\Dashboard\Payment\PaymentService;
-use App\Services\Dashboard\Transaction\TransactionService;
+use App\Services\Dashboard\Finance\Payment\PaymentService;
+use App\Services\Dashboard\Finance\Transaction\TransactionService;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -26,35 +26,17 @@ class GuestWalletService
         $this->transaction_service = $transaction_service;
     }
 
-    protected function validateCreditTransaction(Request $request)
+    protected function validateData(Request $request)
     {
-
         return $request->validate([
-            'guest_id' => 'required|exists:guests,id',
+            'guest_id' => 'nullable|exists:guests,id',
             'amount' => 'required|numeric|min:0',
-            'payment_method' => 'required',
+            'payment_method' => 'required|in:WALLET',
             'description' => 'nullable|string',
         ]);
-        dd($request->all());
     }
 
-    protected function validateDebitTransaction(Request $request)
-    {
-        return $request->validate([
-            'guest_id' => 'required|exists:guests,id',
-            'amount' => 'required|numeric|min:0',
-            'note' => 'nullable|string',
-        ]);
-    }
 
-    protected function validatePayWithGuestWallet(Request $request)
-    {
-        return $request->validate([
-            'amount' => 'required|numeric|min:0.01',
-            'description' => 'nullable|string',
-
-        ]);
-    }
 
     public function getReservationById($id)
     {
@@ -81,7 +63,7 @@ class GuestWalletService
 
         try {
             // Validate the credit transaction data
-            $validatedData = $this->validateCreditTransaction($request);
+            $validatedData = $this->validateData($request);
 
             // Process the payment
             $payment = $this->payment_service->processPayment($request);
@@ -112,7 +94,7 @@ class GuestWalletService
 
     public function recordDebitTransaction(Request $request)
     {
-        $validatedData = $this->validateDebitTransaction($request);
+        $validatedData = $this->validateData($request);
 
         DB::beginTransaction();
         $guest = Guest::findOrFail($validatedData['guest_id']);
@@ -150,7 +132,7 @@ class GuestWalletService
     {
         // dd($request->all());
         return DB::transaction(function () use ($request) {
-            $validatedData = $this->validatePayWithGuestWallet($request);
+            $validatedData = $this->validateData($request);
 
             // Initialize guest variable
             $guest = null;

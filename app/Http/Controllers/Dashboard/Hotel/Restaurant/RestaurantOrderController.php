@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard\Hotel\Restaurant;
 
+use App\Constants\CurrencyConstants;
 use App\Services\Dashboard\Hotel\Restaurant\RestaurantOrderService;
 use App\Http\Controllers\Controller;
 use App\Models\HotelSoftware\Guest;
@@ -28,7 +29,10 @@ class RestaurantOrderController extends Controller
         return view('dashboard.hotel.restaurant-item.order.index', [
             'restaurant_orders' => RestaurantOrder::with('restaurantOrderItems', 'guest', 'walkInCustomer')
                 ->where('hotel_id', $hotel)
+                ->latest()
                 ->paginate(),
+                'payableType' => get_class(new RestaurantOrder()),
+                'currencies' => CurrencyConstants::CURRENCY_CODES,
         ]);
     }
     public function createOrder()

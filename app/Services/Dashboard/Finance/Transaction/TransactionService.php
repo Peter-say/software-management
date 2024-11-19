@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\Dashboard\Transaction;
+namespace App\Services\Dashboard\Finance\Transaction;
 
 use App\Models\Transaction;
-use App\Services\Dashboard\Payment\PaymentService;
+use App\Services\Dashboard\Finance\Payment\PaymentService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

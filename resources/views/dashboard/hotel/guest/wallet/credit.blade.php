@@ -1,6 +1,7 @@
 <!-- Button trigger modal -->
 
-<div class="modal fade" id="fund-guest-wallet-modal" tabindex="-1" role="dialog" aria-labelledby="fund-guest-wallet-modal" aria-hidden="true">
+<div class="modal fade" id="fund-guest-wallet-modal" tabindex="-1" role="dialog" aria-labelledby="fund-guest-wallet-modal"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -14,13 +15,34 @@
                     <div class="col-12 m-3">
                         <div class="form-group">
                             <label for="amount">How Much Do You Want To Fund?</label>
-                            <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter Amount" required>
+                            <input type="text" class="form-control" id="amount" name="amount"
+                                placeholder="Enter Amount" required>
+                        </div>
+                    </div>
+                    <!-- Currency Selection -->
+                    <div class="col-12 mb-3">
+                        <div class="form-group">
+                            <label for="currency" class="form-label">Currency</label>
+                            <select id="currency" name="currency"
+                                class="form-control @error('currency') is-invalid @enderror">
+                                <option value="">Select Currency</option>
+                                @foreach (\App\Constants\CurrencyConstants::CURRENCY_CODES as $currency)
+                                    <option value="{{ $currency }}"
+                                        {{ old('currency', $currency ?? '') == $currency ? 'selected' : '' }}>
+                                        {{ $currency }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('currency')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                     <div class="col-12 m-3">
                         <div class="form-group">
                             <label for="description">Comment</label>
-                            <textarea class="form-control" name="description" id="description" cols="5" rows="2" placeholder="Enter comment if any"></textarea>
+                            <textarea class="form-control" name="description" id="description" cols="5" rows="2"
+                                placeholder="Enter comment if any"></textarea>
                         </div>
                     </div>
 
@@ -39,7 +61,7 @@
                         <input type="hidden" name="payment_method" id="fund-wallet-method" value="CARD">
                         <input type="hidden" name="hotel_id" value="{{ auth()->user()->id }}">
                         <input type="hidden" name="guest_id" value="{{ $guest->id }}">
-                        <input type="hidden" name="payable_id" value="{{$guest->id }}">
+                        <input type="hidden" name="payable_id" value="{{ $guest->id }}">
                         <input type="hidden" name="payable_type" value="{{ get_class($guest) }}">
 
                         <button type="submit" class="btn btn-primary">Fund Now</button>
@@ -83,7 +105,7 @@
 </script>
 <script src="https://js.stripe.com/v3/"></script>
 <script>
-    var stripe = Stripe('{{config('app.stripe_key')}}');
+    var stripe = Stripe('{{ config('app.stripe_key') }}');
     var elements = stripe.elements();
     var card = elements.create('card');
     card.mount('#card-element'); // Create a div with this id in your modal

@@ -167,11 +167,12 @@
                                                                     </div>
                                                                 </td>
                                                             </tr>
-
-                                                            @include(
-                                                                'dashboard.hotel.restaurant-item.order.choose-paymet-method-modal',
-                                                                ['order' => $order]
-                                                            )
+                                                            @include('dashboard.hotel.restaurant-item.order.choose-paymet-method-modal',[
+                                                                'order' => $order,
+                                                                'payableType' => $payableType,
+                                                                'payableModel' => $order,
+                                                                'currencies' => $currencies,
+                                                                ])                           
                                                         @endforeach
                                                     @else
                                                         <tr>

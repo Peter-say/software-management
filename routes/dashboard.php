@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\Finance\PaymentController;
 use App\Http\Controllers\Dashboard\Hotel\ExpenseController;
 use App\Http\Controllers\Dashboard\Hotel\Guest\GuestController;
 use App\Http\Controllers\Dashboard\Hotel\Guest\GuestWalletController;
@@ -80,6 +81,9 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::get('notifications/fetch-all', [NotificationController::class, 'fetchAll'])->name('notifications.fetch-all');
             Route::delete('/notifications/{id}/delete', [NotificationController::class, 'deleteNotification'])->name('notifications.delete');
             Route::delete('/notifications/delete-bulk', [NotificationController::class, 'deleteBulk'])->name('notifications.delete-bulk');
+        });
+        Route::prefix('payments')->as('payments.')->group(function () {
+            Route::post('pay-with-card', [PaymentController::class, 'payWithCard'])->name('pay-with-card');
         });
     });
     Route::get('/get-states-by-country', [OnboardingController::class, 'getStatesByCountry'])->name('get-states-by-country');

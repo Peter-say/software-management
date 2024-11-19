@@ -1,5 +1,6 @@
 <!-- Payment Modal -->
-<div class="modal fade" id="paymentModal{{$order->id}}" tabindex="-1" aria-labelledby="paymentModalLabel{{$order->id}}" aria-hidden="true">
+<div class="modal fade" id="paymentModal{{ $payableModel->id }}" tabindex="-1"
+    aria-labelledby="paymentModalLabel{{ $payableModel->id }}" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -16,7 +17,8 @@
                 @endif
 
                 <!-- Pay with Card Button -->
-                <button type="button" class="btn btn-outline-success m-2">
+                <button type="button" class="btn btn-outline-success m-2" data-bs-toggle="modal"
+                    data-bs-target="#payment-modal-{{ $order->id }}">
                     <i class="fas fa-credit-card"></i> Pay with Card
                 </button>
 
@@ -36,3 +38,8 @@
 
 <!-- Include Guest Wallet Modal -->
 @include('dashboard.hotel.restaurant-item.order.guest-wallet-modal', ['order' => $order])
+@include('dashboard.general.payment.modal', [
+    'payableType' => $payableType,
+    'payableModel' => $order,
+    'currencies' => $currencies,
+])

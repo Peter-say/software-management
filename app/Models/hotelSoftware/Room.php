@@ -31,7 +31,7 @@ class Room extends Model
 
     public function reservations()
     {
-        return $this->hasMany(RoomReservation::class);
+        return $this->hasMany(RoomReservation::class, 'room_id');
     }
 
     public function RoomImage()
@@ -51,4 +51,6 @@ class Room extends Model
         }
         return null;
     }
+
+    
 }

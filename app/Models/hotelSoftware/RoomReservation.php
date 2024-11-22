@@ -51,7 +51,7 @@ class RoomReservation extends Model
     // Define relationship with Room
     public function room()
     {
-        return $this->belongsTo(Room::class);
+        return $this->belongsTo(Room::class, 'room_id');
     }
 
     public function payments()
@@ -66,4 +66,5 @@ class RoomReservation extends Model
         $date = $from_date->diffInDays($to_date);
         return $date;
     }
+
 }

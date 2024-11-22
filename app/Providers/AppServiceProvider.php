@@ -34,6 +34,15 @@ class AppServiceProvider extends ServiceProvider
         // Register the custom route file
         Route::middleware('web')
             ->group(base_path('routes/dashboard.php'));
+
+            view()->composer([
+                "dashboards.admin.layout.includes.header"
+            ], function ($view) {
+              
+                $view->with([
+                   
+                ]);
+            });
     }
     // View::composer('*', function ($view) {
     //     $countNotification = (new Notification())->countNotification();

@@ -27,7 +27,7 @@ class DashboardController extends Controller
         $period = $request->get('period', 'day');
 
         $booking_period = $request->get('booking_period', 'week');
-      
+
         if (!in_array($period, ['day', 'week', 'month', 'year'])) {
             $period = 'month';
         }
@@ -45,9 +45,20 @@ class DashboardController extends Controller
                 'available_rooms' => $this->dashboard_service->countAvailableRoomsToday(),
                 'total_transaction' => $this->dashboard_service->calculateTotalTransaction(),
                 'reservation_data' => $this->dashboard_reservation_service->stats(['booking_period' => $booking_period]),
+                'recent_room_reservations' => $this->dashboard_service->recentBookingSchedule(),
             ]);
         } else {
             return redirect()->route('onboarding.setup-app');
         }
+    }
+
+    public function loadRecentReservation(Request $request)
+    {
+        $page = $request->input('page');
+        $recent_room_reservations = $this->dashboard_service->recentBookingSchedule();
+        $hasMore = RoomReservation::whereNull('checked_out_at')->count() > $page * 1;   
+       
+        $html = view('dashboard.fragments.dashboard.load-more-booking-schedule', compact('recent_room_reservations'))->render();
+        return response()->json(['html' => $html, 'hasMore' => $hasMore]);
     }
 }

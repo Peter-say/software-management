@@ -29,6 +29,7 @@ Route::middleware('auth', 'verified')->group(function () {
         Route::get('download.sample', [RestaurantItemsController::class, 'downloadSample'])->name('download.sample');
 
         Route::get('home', [DashboardController::class, 'dashboard'])->name('home');
+        Route::get('load-more-recent-reservation', [DashboardController::class, 'loadRecentReservation'])->name('load-more-recent-reservation');
 
         Route::prefix('hotel-users')->as('hotel-users.')->group(function () {
             Route::get('overview', [UsersController::class, 'overview'])->name('overview');

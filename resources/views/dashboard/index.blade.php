@@ -117,74 +117,7 @@
                         </div>
                         <div class="col-xl-12">
                             <div class="row">
-                                <div class="col-xl-6">
-                                    <div class="card">
-                                        <div class="card-header border-0 pb-0">
-                                            <h4 class="fs-20">Recent Booking Schedule</h4>
-                                        </div>
-                                        <div class="card-body pb-2 loadmore-content" id="BookingContent">
-                                            <div class="text-center event-calender border-bottom booking-calender">
-                                                <input type='text' class="form-control d-none " id='datetimepicker1' />
-                                            </div>
-                                            <div
-                                                class="rooms mt-3 d-flex align-items-center justify-content-between flex-wrap">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <img src="images/room/room1.jpg" alt="">
-                                                    <div class="ms-4 bed-text">
-                                                        <h4>Queen Bed A-12324</h4>
-                                                        <div class="users d-flex align-items-center">
-                                                            <img src="images/users/user1.jpg" alt="">
-                                                            <div>
-                                                                <span class="fs-16 font-w500 me-3">James Sukardi</span>
-                                                                <span>12min ago</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <span class="date bg-secondary mb-3">3</span>
-                                            </div>
-                                            <div
-                                                class="rooms mt-3 d-flex align-items-center justify-content-between flex-wrap">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <img src="images/room/room2.jpg" alt="">
-                                                    <div class="ms-4 bed-text">
-                                                        <h4>Deluxe Room B-1324</h4>
-                                                        <div class="users d-flex align-items-center">
-                                                            <img src="images/users/user2.jpg" alt="">
-                                                            <div>
-                                                                <span class="fs-16 font-w500 me-3">Angela Moss</span>
-                                                                <span>12min ago</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <span class="date2 bg-primary mb-3">16, 17, 18</span>
-                                            </div>
-                                            <div
-                                                class="rooms mt-3 d-flex align-items-center justify-content-between flex-wrap">
-                                                <div class="d-flex align-items-center mb-3">
-                                                    <img src="images/room/room3.jpg" alt="">
-                                                    <div class="ms-4 bed-text">
-                                                        <h4>King Big C-2445</h4>
-                                                        <div class="users d-flex align-items-center">
-                                                            <img src="images/users/user3.jpg" alt="">
-                                                            <div>
-                                                                <span class="fs-16 font-w500 me-3">JGeovanny</span>
-                                                                <span>12min ago</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <span class="date bg-warning mb-3">3</span>
-                                            </div>
-                                        </div>
-                                        <div class="card-footer border-0 m-auto pt-0">
-                                            <a href="javascript:void(0);"
-                                                class="btn  btn-link m-auto dlab-load-more fs-16 font-w500 text-secondary"
-                                                id="Booking" rel="ajax/booking.html">View more</a>
-                                        </div>
-                                    </div>
-                                </div>
+                                @include('dashboard.fragments.dashboard.recent-booking-schedule', ['recent_room_reservations' => $recent_room_reservations])
                                 <div class="col-xl-6">
                                     <div class="row">
                                         <div class="col-xl-12">
@@ -212,10 +145,6 @@
 										
 													</div>
                                                 </div>
-												{{-- @php
-												 $checked_ins = $reservation_data['dashboard_data']['checked_ins'];
-												 dd($checked_ins);
-												@endphp --}}
                                                 <div class="card-body pb-0">
                                                     <div class="d-flex flex-wrap">
                                                         <span class="me-sm-5 me-0 font-w500">

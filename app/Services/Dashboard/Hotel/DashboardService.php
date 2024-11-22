@@ -199,5 +199,11 @@ class DashboardService
         return $transactions;
     }
 
+    public function recentBookingSchedule()
+    {
+        $recent_room_reservation = $this->room_reservation->whereNull('checked_out_at')->latest()->limit(4)->get();
+        return $recent_room_reservation;
+
+    }
 
 }

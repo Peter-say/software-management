@@ -66,5 +66,15 @@ class RoomReservation extends Model
         $date = $from_date->diffInDays($to_date);
         return $date;
     }
+    public function calculateDaysLengthFrom()
+    {
+        $from = Carbon::parse($this->checkin_date)->format('jS, M Y');      
+        return $from;
+    }
 
+    public function calculateDaysLengthTo()
+    {
+        $to = Carbon::parse($this->checkout_date)->format('jS, M Y');
+        return $to;
+    }
 }

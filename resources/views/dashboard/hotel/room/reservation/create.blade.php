@@ -12,7 +12,10 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">{{ isset($reservation) ? 'Update Reservation' : 'Create Reservation' }}</h4>
+                        <div class="card-header d-flex justify-content-between">
+                            <h4 class="card-title">{{ isset($reservation) ? 'Update Reservation' : 'Create Reservation' }}
+                            </h4>
+                        </div>
                     </div>
                     <div class="card-body">
                         <form id="reservationForm"
@@ -139,8 +142,8 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                         <!-- Country Field -->
-                                         <div class="col-md-6 col-12 mb-3">
+                                        <!-- Country Field -->
+                                        <div class="col-md-6 col-12 mb-3">
                                             <div class="form-group">
                                                 <label for="country_id" class="form-label">Country</label>
                                                 <select id="country_id" name="country_id"
@@ -245,6 +248,14 @@
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
+                                        </div>
+                                        <div class="col-sm-6 col-xs-6">
+                                            <b>Night: </b> <span><label id="night-count">0 Night(s)</label> </span> <span>
+                                                X </span><b>Rate</b><span> <label id="rate">0.00</label></span>
+                                        </div>
+
+                                        <div class="col-sm-6 col-xs-6">
+                                            <b>Total: </b> <span> <label id="total-amount">0.0</label></span>
                                         </div>
                                     </div>
                                 </div>
@@ -439,7 +450,8 @@
                                 let option = document.createElement('option');
                                 option.value = room.id;
                                 option.textContent = room.name;
-                                option.setAttribute('data-rate', room.room_type.rate); // Attach the rate to each option
+                                option.setAttribute('data-rate', room.room_type
+                                    .rate); // Attach the rate to each option
                                 roomSelect.appendChild(option);
                             });
 
@@ -462,7 +474,7 @@
             document.getElementById('room_id').addEventListener('change', function() {
                 const selectedRoom = this.options[this.selectedIndex];
                 const rate = selectedRoom.getAttribute(
-                'data-rate'); // Get the rate from the selected option
+                    'data-rate'); // Get the rate from the selected option
 
                 if (rate) {
                     document.getElementById('rate').value = rate; // Set the rate field
@@ -501,6 +513,83 @@
             console.log("Check-out input element:", checkoutInput);
             // Initialize the guest information and room selection handling
             setGuestInformation();
+
+            // Function to calculate the number of nights and handle date validation
+            function getNights() {
+                var checkinValue = $('#checkin-date').val();
+                var checkoutValue = $('#checkout-date').val();
+
+                // Check if both dates are selected
+                if (!checkinValue || !checkoutValue) {
+                    return 0; // Default to 0 nights if any date is missing
+                }
+
+                // Parse date strings using Moment.js
+                var checkin = moment(checkinValue, "YYYY-MM-DD");
+                var checkout = moment(checkoutValue, "YYYY-MM-DD");
+
+                // Calculate the difference in days
+                var nights = checkout.diff(checkin, 'days');
+                if (nights < 0) {
+                    nights = 0; // Prevent negative nights
+                }
+
+                console.log("Nights:", nights); // Debugging
+                return nights;
+            }
+
+            // Function to format a number as money with commas
+            function formatMoney(number) {
+                return number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+            }
+
+            // Function to update the total amount
+            function updateTotalAmount() {
+                var totalAmount = 0;
+                var numberOfNights = getNights(); // Use getNights to calculate nights
+
+                // Access the rate input value
+                var rateField = $('#rate'); // jQuery selection
+                var rate = parseFloat(rateField.val()) || 0; // Default to 0 if rate is empty or invalid
+
+                console.log("Rate:", rate); // Debugging
+
+                // Calculate the room total
+                var roomTotal = rate * numberOfNights;
+                console.log("Room Total:", roomTotal); // Debugging
+
+                totalAmount += roomTotal;
+
+                // Format totalAmount as money with commas
+                var formattedTotal = formatMoney(totalAmount);
+                console.log("Formatted Total Amount:", formattedTotal); // Debugging
+
+                // Display the total amount
+                $("#total-amount").text(formattedTotal);
+                $("#rate").text(rate);
+            }
+
+            // Function to calculate the night count and update the total amount
+            function calculateNightCount() {
+                var nights = getNights(); // Calculate nights
+                $('#night-count').text(nights + ' Night(s)'); // Update night count display
+
+                // Update total amount when night count changes
+                updateTotalAmount();
+            }
+
+            // Add event listeners to check-in and check-out date inputs
+            $('#checkin-date').change(calculateNightCount);
+            $('#checkout-date').change(calculateNightCount);
+
+            // Add event listener to the rate input to recalculate the total amount
+            $('#rate').on('input', updateTotalAmount);
+
+            // Call the functions initially to set the default values
+            $('#night-count').text('0 Night(s)'); // Set default night count display
+            $('#total-amount').text('0.00'); // Set default total amount display
+
+
         });
     </script>
 @endsection

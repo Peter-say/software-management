@@ -43,8 +43,10 @@
 
         </div>
         <div class="card-footer border-0 m-auto pt-0">
-            <a href="javascript:void(0);" class="btn  btn-link m-auto dlab-load-more fs-16 font-w500 text-secondary"
-                id="load-more-btn" rel="ajax/booking.html">View more</a>
+            <a href="javascript:void(0);" class="btn btn-link m-auto dlab-load-more fs-16 font-w500 text-secondary"
+               id="load-more-btn" style="{{ count($recent_room_reservations) < 1 ? 'display: none;' : '' }}">
+                View more
+            </a>
         </div>
     </div>
 </div>

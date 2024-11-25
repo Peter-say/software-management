@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 
 class GuestService
@@ -71,6 +72,7 @@ class GuestService
         // Assign hotel ID to the guest data    
         $hotel = User::getAuthenticatedUser()->hotel->id;
         $validatedData['hotel_id'] = $hotel;
+        $validatedData['uuid'] = Str::uuid();
 
         // Handle birthday date conversion if present
         if (isset($validatedData['birthday'])) {
@@ -106,6 +108,9 @@ class GuestService
         if ($guest_id) {
             // Update existing guest
             $guest = Guest::findOrFail($guest_id);
+            if (empty($guest->uuid)) {
+                $validatedData['uuid'] = Str::uuid();
+            }
             $guest->update($validatedData);
         } else {
             // Create new guest
@@ -137,7 +142,10 @@ class GuestService
 
     public function delete($id)
     {
-      $guest = $this->getById($id);
-      $guest->delete();
+        $guest = $this->getById($id);
+        $guest->delete();
     }
+
+    
 }
+    

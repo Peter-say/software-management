@@ -61,7 +61,16 @@ class GuestController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            return view('dashboard.hotel.guest.details', [
+                'guest' => $this->guest_service->getById($id),
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return redirect()->back()->with('error_message', 'Guest not found');
+        } catch (\Throwable $th) {
+            throw $th;
+            return redirect()->back()->with('error_message', 'Something went wrong');
+        }
     }
 
     /**

@@ -54,11 +54,23 @@ class DashboardController extends Controller
 
     public function loadRecentReservation(Request $request)
     {
-        $page = $request->input('page');
-        $recent_room_reservations = $this->dashboard_service->recentBookingSchedule();
-        $hasMore = RoomReservation::whereNull('checked_out_at')->count() > $page * 1;   
-       
-        $html = view('dashboard.fragments.dashboard.load-more-booking-schedule', compact('recent_room_reservations'))->render();
+        $page = (int) $request->input('page', 1);
+        $recent_room_reservations_ids = $this->dashboard_service->recentBookingSchedule()->pluck('id')->toArray();
+
+        // Fetch the next set of reservations, excluding already loaded ones
+        $new_reservations = RoomReservation::whereNull('checked_out_at')
+            ->whereNotIn('id', $recent_room_reservations_ids)->orderBy('created_at', 'desc')->skip(($page - 1) * 2)
+            ->take(2)
+            ->get();
+
+        // Check if there are more items to load
+        $hasMore = RoomReservation::whereNull('checked_out_at')->whereNotIn('id', $recent_room_reservations_ids)
+            ->count() > $page * 2;
+
+        if ($new_reservations->isEmpty()) {
+            return response()->json(['html' => '', 'hasMore' => false]);
+        }
+        $html = view('dashboard.fragments.dashboard.load-more-booking-schedule', ['recent_room_reservations' => $new_reservations])->render();
         return response()->json(['html' => $html, 'hasMore' => $hasMore]);
     }
 }

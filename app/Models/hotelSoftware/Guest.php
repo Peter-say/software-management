@@ -25,7 +25,7 @@ class Guest extends Model
     // Define relationship with Reservation
     public function reservations()
     {
-        return $this->hasMany(ReservationService::class);
+        return $this->hasMany(RoomReservation::class);
     }
 
     /**
@@ -75,5 +75,15 @@ class Guest extends Model
                 'currency' => 'NGN', // Default currency
             ]);
         });
+    }
+
+    public function purchaseHistory()
+    {
+        return $this->reservations()->whereNotNull('checked_in_at')
+        ->whereNotNull('checked_out_at')
+        ->latest('checked_in_at') // Order by the most recent check-in
+        ->skip(1) // Skip the most recent reservation
+        ->take(PHP_INT_MAX) // Set an arbitrarily large limit to get all remaining records
+        ->get();
     }
 }

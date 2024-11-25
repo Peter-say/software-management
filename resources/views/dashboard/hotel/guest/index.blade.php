@@ -58,6 +58,9 @@
                                             <td>{{ $guest->birthday ? $guest->birthday->format('D M, Y') : 'N/A' }}</td>
                                             <td>
                                                 <div class="d-flex">
+                                                    <a href="{{ route('dashboard.hotel.guests.show', $guest->id) }}" class="btn btn-primary shadow btn-xs sharp me-1">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
                                                     <a href="{{ route('dashboard.hotel.guests.edit', $guest->id) }}"
                                                         class="btn btn-primary shadow btn-xs sharp me-1">
                                                         <i class="fas fa-pencil-alt"></i>

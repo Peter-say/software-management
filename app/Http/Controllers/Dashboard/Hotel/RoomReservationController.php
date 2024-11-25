@@ -28,7 +28,7 @@ class RoomReservationController extends Controller
     public function index()
     {
         return view('dashboard.hotel.room.reservation.list', [
-            'reservations' => RoomReservation::with('guest.payments')->where('hotel_id', User::getAuthenticatedUser()->hotel->id)->paginate(30),
+            'reservations' => RoomReservation::with('guest.payments')->where('hotel_id', User::getAuthenticatedUser()->hotel->id)->latest()->paginate(30),
         ]);
     }
 

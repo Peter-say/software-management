@@ -31,7 +31,7 @@ class GuestWalletService
         return $request->validate([
             'guest_id' => 'nullable|exists:guests,id',
             'amount' => 'required|numeric|min:0',
-            'payment_method' => 'required|in:WALLET',
+            'payment_method' => 'required|string|in:CARD,BANK_TRANSFER,WALLET',
             'description' => 'nullable|string',
         ]);
     }

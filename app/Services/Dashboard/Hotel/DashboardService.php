@@ -132,7 +132,7 @@ class DashboardService
             $startOfInterval = $startDate->copy()->add($i, $interval);
             $endOfInterval = $startOfInterval->copy()->endOf($interval);
 
-            $room_reservation = RoomReservation::whereHas('room')->get();
+            $room_reservation = RoomReservation::whereHas('room')->where('hotel_id', User::getAuthenticatedUser()->hotel->id)->get();
 
             $new_ongoing_reservations[$i] = $room_reservation->whereNull('checked_out_at')
                 ->whereBetween('created_at', [$startOfInterval, $endOfInterval])
@@ -179,12 +179,13 @@ class DashboardService
     {
         $expected_Occupied_rooms = 50;
         $today = Carbon::today();
-        $occupied_rooms = Room::with('roomType')->where('hotel_id', User::getAuthenticatedUser()->hotel->id)->whereDoesntHave('reservations', function ($query) use ($today) {
-            $query->where(function ($subQuery) use ($today) {
-                $subQuery->where('checked_in_at', $today);
-            });
-        })->count();
-        $status_bar = ($occupied_rooms/$expected_Occupied_rooms) * 100;
+        $occupied_rooms = Room::with('roomType')->where('hotel_id', User::getAuthenticatedUser()->hotel->id)
+            ->whereHas('reservations', function ($query) use ($today) {
+                $query->where(function ($subQuery) use ($today) {
+                    $subQuery->whereDate('checked_in_at', $today);
+                });
+            })->count();
+        $status_bar = ($occupied_rooms / $expected_Occupied_rooms) * 100;
         return [
             'occupiedRooms' => $occupied_rooms,
             'statusBar' => $status_bar,
@@ -201,9 +202,9 @@ class DashboardService
 
     public function recentBookingSchedule()
     {
-        $recent_room_reservation = $this->room_reservation->whereNull('checked_out_at')->latest()->limit(4)->get();
+        $recent_room_reservation = $this->room_reservation->where('hotel_id', User::getAuthenticatedUser()->hotel->id)
+        ->where('created_at', '>=', Carbon::now()->subDays(7))
+        ->latest('created_at')->limit(4)->get();
         return $recent_room_reservation;
-
     }
-
 }

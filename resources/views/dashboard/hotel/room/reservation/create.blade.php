@@ -25,6 +25,7 @@
                             @if (isset($reservation))
                                 @method('PUT')
                                 <input type="hidden" name="reservation_id" value="{{ $reservation->id }}">
+                                <input type="hidden" id="guest_id" name="guest_id" value="{{ $reservation->guest->id }}">
                             @endif
 
                             <div class="row">
@@ -34,7 +35,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <label for="phone">Search Existing Guest</label>
-                                            <input type="hidden" id="guest_id" name="guest_id" value="">
+                                            {{-- <input type="hidden" id="guest_id" name="guest_id" value=""> --}}
                                             <input id="guest_name" autofocus name="guest_name" type="text" list="guests"
                                                 class="form-control" placeholder="Search Guest by Name">
                                         </div>
@@ -187,27 +188,29 @@
                                                 <label for="checkin_date" class="text-label form-label">Check-in
                                                     Date*</label>
                                                 <input type="date" id="checkin-date" name="checkin_date"
-                                                    class="form-control  @error('checkin_date') is-invalid @enderror"
-                                                    value="{{ old('checkin_date', isset($reservation) ? $reservation->checkin_date->format('d F, Y') : '') }}"
+                                                    class="form-control @error('checkin_date') is-invalid @enderror"
+                                                    value="{{ old('checkin_date', isset($reservation) ? $reservation->checkin_date->format('Y-m-d') : '') }}"
                                                     required>
                                                 @error('checkin_date')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
+
                                         <div class="col-md-6 col-12 mb-3">
                                             <div class="form-group">
                                                 <label for="checkout_date" class="text-label form-label">Check-out
                                                     Date*</label>
                                                 <input type="date" id="checkout-date" name="checkout_date"
-                                                    class="form-control  @error('checkout_date') is-invalid @enderror"
-                                                    value="{{ old('checkout_date', isset($reservation) ? $reservation->checkout_date->format('d F, Y') : '') }}"
+                                                    class="form-control @error('checkout_date') is-invalid @enderror"
+                                                    value="{{ old('checkout_date', isset($reservation) ? $reservation->checkout_date->format('Y-m-d') : '') }}"
                                                     required>
                                                 @error('checkout_date')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
+
                                         <div class="col-md-6 col-12 mb-3">
                                             <div class="form-group">
                                                 <label for="room_id" class="text-label form-label">Room*</label>
@@ -282,6 +285,7 @@
                 const guestInput = document.getElementById('guest_name');
                 const guestsDataList = document.getElementById('guests');
                 const guestIdField = document.getElementById('guest_id');
+                console.log(guestIdField.value);
 
                 // Handle guest selection and autofill guest details
                 guestInput.addEventListener('input', function() {

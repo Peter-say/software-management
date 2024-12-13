@@ -63,6 +63,7 @@ class Hotel extends Model
         static::created(function ($hotel) {
            Store::create([
                 'hotel_id' => $hotel->id,
+                'name' => $hotel->hotel_name ."'s" . ' Store',
             ]);
         });
     }

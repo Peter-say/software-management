@@ -38,6 +38,8 @@ class DashboardController extends Controller
         $hotelUser = HotelUser::where('user_id', $user->id)->first();
         // $reservation_analytics = $this->dashboard_reservation_service->stats(['booking_period' => $booking_period]);
         // dd( [$reservation_analytics]);
+        // $recent_room_reservations = $this->dashboard_service->recentBookingSchedule();
+        // dd($recent_room_reservations);
         if ($hotelUser) {
             return view('dashboard.index', [
                 'room_reservation_stats' =>  $this->dashboard_service->stats(['period' => $period]),
@@ -58,13 +60,14 @@ class DashboardController extends Controller
         $recent_room_reservations_ids = $this->dashboard_service->recentBookingSchedule()->pluck('id')->toArray();
 
         // Fetch the next set of reservations, excluding already loaded ones
-        $new_reservations = RoomReservation::whereNull('checked_out_at')
-            ->whereNotIn('id', $recent_room_reservations_ids)->orderBy('created_at', 'desc')->skip(($page - 1) * 2)
+        $new_reservations = RoomReservation::where('hotel_id', User::getAuthenticatedUser()->hotel->id)
+        ->whereNotIn('id', $recent_room_reservations_ids)
+            ->where('created_at', '>=', Carbon::now()->subDays(7))
+            ->latest('created_at')->skip(($page - 1) * 2)
             ->take(2)
             ->get();
-
         // Check if there are more items to load
-        $hasMore = RoomReservation::whereNull('checked_out_at')->whereNotIn('id', $recent_room_reservations_ids)
+        $hasMore = RoomReservation::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->whereNotIn('id', $recent_room_reservations_ids)
             ->count() > $page * 2;
 
         if ($new_reservations->isEmpty()) {

@@ -20,7 +20,6 @@ class GuestService
 {
     public function validatedData($data, $guest_id = null)
     {
-
         $validator = Validator::make($data, [
             'title' => 'required|string|max:255',
             'first_name' => 'required|string|max:255',
@@ -145,7 +144,4 @@ class GuestService
         $guest = $this->getById($id);
         $guest->delete();
     }
-
-    
 }
-    

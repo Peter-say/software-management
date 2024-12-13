@@ -55,7 +55,7 @@ class OnboardingController extends Controller
             $this->onboarding->saveHotelInfo($request);
             return redirect()->route('dashboard.home')->with('success_message', "App set-up completed successfully");
         } catch (Exception $e) {
-
+             throw $e;
             return back()->with('error_message', 'An error occurred while submitting your request. Please try again.');
         }
     }

@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.app')
-<style>
+{{-- <style>
     .guest-carousel .item {
         display: flex;
         justify-content: center;
@@ -28,7 +28,7 @@
         object-fit: cover;
         /* Ensures the image covers the container */
     }
-</style>
+</style> --}}
 @section('contents')
     <div class="content-body">
         <div class="container-fluid">
@@ -219,7 +219,7 @@
                                                     <div class="rooms">
                                                         <img src="{{ $room->RoomImage() }}"
                                                             alt="{{ basename($room->RoomImage()) }}"
-                                                            style="width: 100%; height: auto; object-fit: cover;">
+                                                            style="">
                                                         <div class="booked">
                                                             @if (isset($latest_reservation) && $latest_reservation->room->id === $room->id)
                                                                 <p class="fs-20 font-w500">BOOKED</p>

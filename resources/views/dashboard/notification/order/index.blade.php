@@ -79,12 +79,12 @@
                                                                     </a>
                                                                 </td>
                                                             </tr>
-                                                            {{-- <script>
+                                                            <script>
                                                                 const routes = {
                                                                     deleteSingle: "{{ route('dashboard.hotel.notifications.delete', $notification->id) }}", // Route URL without ID
                                                                     deleteBulk: "{{ route('dashboard.hotel.notifications.delete-bulk') }}"
                                                                 };
-                                                            </script> --}}
+                                                            </script>
                                                         @endforeach
                                                     @endif
                                                 </tbody>

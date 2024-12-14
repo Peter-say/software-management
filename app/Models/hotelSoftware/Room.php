@@ -2,7 +2,7 @@
 
 namespace App\Models\HotelSoftware;
 
-use App\Models\hotelSoftware\Hotel;
+use App\Models\HotelSoftware\Hotel;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

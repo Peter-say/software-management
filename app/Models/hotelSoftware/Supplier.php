@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\hotelSoftware;
+namespace App\Models\HotelSoftware;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,20 +28,20 @@ class Supplier extends Model
         return $amount;
     }
 
-    public function getTotalPaymentsAmount(){
-        $amount = ExpensePayment::join('expenses', 'expenses.id', '=', 'expense_payments.expense_id')
-        ->where('expenses.supplier_id', $this->id)
-        ->select('expense_payments.amount')->sum('expense_payments.amount');
-        return $amount;
-    }
+    // public function getTotalPaymentsAmount(){
+    //     $amount = ExpensePayment::join('expenses', 'expenses.id', '=', 'expense_payments.expense_id')
+    //     ->where('expenses.supplier_id', $this->id)
+    //     ->select('expense_payments.amount')->sum('expense_payments.amount');
+    //     return $amount;
+    // }
 
-    public function payments(){
-        $payments = ExpensePayment::join('expenses', 'expenses.id', '=', 'expense_payments.expense_id')
-        ->where('expenses.supplier_id',$this->id)
-        ->select('expense_payments.*')
-        ->orderBy('created_at', 'desc')->get();
-        return $payments;
-    }
+    // public function payments(){
+    //     $payments = ExpensePayment::join('expenses', 'expenses.id', '=', 'expense_payments.expense_id')
+    //     ->where('expenses.supplier_id',$this->id)
+    //     ->select('expense_payments.*')
+    //     ->orderBy('created_at', 'desc')->get();
+    //     return $payments;
+    // }
 
     public function getSumOfNewBillsByMonth($month){
         //get all expenses related to supplier

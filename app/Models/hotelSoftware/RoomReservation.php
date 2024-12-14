@@ -4,7 +4,6 @@ namespace App\Models\HotelSoftware;
 
 use App\Models\Payment;
 use Carbon\Carbon;
-use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

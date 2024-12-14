@@ -1,10 +1,8 @@
 <?php
 
 namespace Database\Seeders;
-use App\Models\Hotel;
 use App\Models\hotelSoftware\Hotel as HotelSoftwareHotel;
 use App\Models\HotelSoftware\HotelUser;
-use App\Models\HotelSoftware\Store;
 use App\Models\User;
 use FontLib\Table\Type\name;
 use Illuminate\Database\Seeder;

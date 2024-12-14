@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Models\HotelSoftware;
-
-use App\Models\HotelSoftware\Hotel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

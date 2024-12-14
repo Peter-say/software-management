@@ -3,10 +3,8 @@
 namespace App\Models\HotelSoftware;
 
 use App\Models\Country;
-use App\Models\hotelSoftware\GuestPayment;
 use App\Models\Payment;
 use App\Models\State;
-use App\Models\User;
 use App\Models\Wallet;
 use App\Services\Dashboard\Hotel\Room\ReservationService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

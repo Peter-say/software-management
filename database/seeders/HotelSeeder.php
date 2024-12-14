@@ -1,7 +1,8 @@
 <?php
 
 namespace Database\Seeders;
-use App\Models\hotelSoftware\Hotel as HotelSoftwareHotel;
+
+use App\Models\HotelSoftware\Hotel;
 use App\Models\HotelSoftware\HotelUser;
 use App\Models\User;
 use FontLib\Table\Type\name;
@@ -20,7 +21,7 @@ class HotelSeeder extends Seeder
         }
 
         // Seed the hotels table with some example data
-        $hotel = HotelSoftwareHotel::create([
+        $hotel = Hotel::create([
             'uuid' => Str::uuid(),
             'user_id' => $adminUser->id,
             'hotel_name' => 'Hotel Grand',

@@ -24,7 +24,7 @@
 
     <!-- Favicon Icon -->
     <link rel="shortcut icon" type="image/png" href="{{ asset('dashboard/images/favicon.png') }}" />
-    @vite(['resources/js/app.js', 'resources/js/echo.js'])
+    {{-- @vite(['resources/js/app.js', 'resources/js/echo.js']) --}}
 
 
     <!-- Google Material Icons -->

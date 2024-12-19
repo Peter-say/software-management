@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\HotelSoftware\Hotel;
 use App\Models\HotelSoftware\HotelUser;
 use App\Models\User;
-use FontLib\Table\Type\name;
+use Exception;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str; 
 
@@ -13,11 +13,10 @@ class HotelSeeder extends Seeder
 {
     public function run(): void
     {
-        // Fetch the admin user to get their ID
         $adminUser = User::where('role', 'Admin')->first();
 
         if (!$adminUser) {
-            throw new \Exception('Admin user not found. Make sure the UserSeeder has run successfully.');
+            throw new Exception('Admin user not found. Make sure the UserSeeder has run successfully.');
         }
 
         // Seed the hotels table with some example data
@@ -27,7 +26,7 @@ class HotelSeeder extends Seeder
             'hotel_name' => 'Hotel Grand',
             'address' => '123 Main St, Grand City',
             'phone' => '09088556677',
-            'state_id' => 1, // Adjust these IDs according to your states and countries
+            'state_id' => 1,
             'country_id' => 1,
             'logo' => null,
             'website' => 'http://hotelgrand.com',
@@ -42,7 +41,7 @@ class HotelSeeder extends Seeder
             'address' => '123 Main St, Grand City',
             'role' => 'Hotel_Owner',
             'status' => 'Active',
-            'user_account_id' => $adminUser->id, // Adjust if needed
+            'user_account_id' => $adminUser->id,
         ]);
 
     }

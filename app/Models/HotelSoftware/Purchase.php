@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Models\HotelSoftware;
+
+use App\Models\Store;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -33,9 +35,9 @@ class Purchase extends Model
         return $this->belongsTo(Store::class);
     }
 
-    // public function purchasestoreItem(){
-    //     return $this->hasMany(purchasestoreItem::class);
-    // }
+    public function purchasestoreItem(){
+        return $this->hasMany(purchasestoreItem::class);
+    }
     public function status()
     {
         $status = "";

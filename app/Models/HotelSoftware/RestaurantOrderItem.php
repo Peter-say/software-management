@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Models\HotelSoftware;
+
+use App\Models\HotelSoftware\RestaurantItem;
+use App\Models\HotelSoftware\RestaurantOrder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

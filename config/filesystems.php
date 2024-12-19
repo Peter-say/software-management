@@ -36,25 +36,13 @@ return [
             'throw' => false,
         ],
 
-        // 'public' => [
-        //     'driver' => 'local',
-        //     'root' => storage_path('app/public'),
-        //     'url' => env('APP_URL') . '/storage',
-        //     'visibility' => 'public',
-        //     'throw' => false,
-        // ],
         'public' => [
             'driver' => 'local',
-            'root' => config('app.env') === 'local'
-                ? storage_path('app/public')
-                : base_path('software-management/storage/app/public'),
-            'url' => config('app.env') === 'local'
-                ? config('app.url') . '/storage'
-                : config('app.url') . '/software-management/storage',
+            'root' => storage_path('app/public'),
+            'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,
         ],
-
 
         's3' => [
             'driver' => 's3',

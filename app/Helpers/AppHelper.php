@@ -93,7 +93,8 @@ function getStatuses()
     ];
 }
 
-function formatNumber($number) {
+function formatNumber($number)
+{
     if ($number >= 1000000) {
         return number_format($number / 1000000, 1) . 'M';
     } elseif ($number >= 1000) {
@@ -101,4 +102,15 @@ function formatNumber($number) {
     } else {
         return number_format($number);
     }
-  }
+
+    function getStoragePath($relativePath)
+    {
+        if (app()->environment('local')) {
+            // Local environment
+            return storage_path("app/public/{$relativePath}");
+        } else {
+            // Live environment
+            return base_path("software-management/storage/app/public/{$relativePath}");
+        }
+    }
+}

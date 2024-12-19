@@ -5,7 +5,7 @@ namespace App\Services\Dashboard\Hotel\Guest;
 use App\Models\Payment;
 use App\Models\Transaction;
 use App\Models\HotelSoftware\Guest;
-use App\Models\hotelSoftware\GuestPayment;
+use App\Models\HotelSoftware\GuestPayment;
 use App\Models\HotelSoftware\RestaurantOrder;
 use App\Models\HotelSoftware\RoomReservation;
 use App\Services\Dashboard\Finance\Payment\PaymentService;

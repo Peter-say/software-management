@@ -2,9 +2,9 @@
 
 namespace App\Services\Dashboard\Hotel\Expenses;
 
-use App\Models\hotelSoftware\Expense;
-use App\Models\hotelSoftware\ExpenseExpenseItem;
-use App\Models\hotelSoftware\ExpenseItem;
+use App\Models\HotelSoftware\Expense;
+use App\Models\HotelSoftware\ExpenseExpenseItem;
+use App\Models\HotelSoftware\ExpenseItem;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;

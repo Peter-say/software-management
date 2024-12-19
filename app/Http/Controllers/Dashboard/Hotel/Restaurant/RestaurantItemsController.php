@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Dashboard\Hotel\Restaurant;
 
 use App\Services\Dashboard\Hotel\Restaurant\RestaurantItemsService;
 use App\Http\Controllers\Controller;
-use App\Models\hotelSoftware\Hotel;
 use App\Models\HotelSoftware\RestaurantItem;
 use App\Models\User;
 use Exception;

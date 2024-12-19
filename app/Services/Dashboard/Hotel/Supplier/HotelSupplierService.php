@@ -2,7 +2,7 @@
 
 namespace App\Services\Dashboard\Hotel\Supplier;
 
-use App\Models\hotelSoftware\Supplier;
+use App\Models\HotelSoftware\Supplier;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;

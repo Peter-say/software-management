@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\hotelSoftware\Hotel;
 use App\Models\HotelSoftware\HotelUser;
 use App\Models\User;
 use App\Services\Dashboard\Onboarding;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class OnboardingController extends Controller
 {

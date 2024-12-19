@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Dashboard\Hotel;
 
 use App\Constants\CurrencyConstants;
 use App\Http\Controllers\Controller;
-use App\Models\hotelSoftware\Expense;
+use App\Models\HotelSoftware\Expense;
 use App\Models\User;
 use App\Services\Dashboard\Hotel\Expenses\ExpensesService;
 use Exception;

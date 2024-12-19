@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Services\Dashboard\Hotel\DashboardService;
 use App\Http\Controllers\Controller;
-use App\Models\hotelSoftware\Hotel;
 use App\Models\HotelSoftware\HotelUser;
 use App\Models\HotelSoftware\Room;
 use App\Models\HotelSoftware\RoomReservation;

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Dashboard\Hotel;
 use App\Constants\AppConstants;
 use App\Constants\StatusConstants;
 use App\Http\Controllers\Controller;
-use App\Models\hotelSoftware\Hotel;
+use App\Models\HotelSoftware\Hotel;
 use App\Models\HotelSoftware\HotelUser;
 use App\Models\User;
 use App\Services\Dashboard\Hotel\Users\RegistrationService;

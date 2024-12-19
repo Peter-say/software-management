@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Dashboard\Notification;
 
 use App\Http\Controllers\Controller;
-use App\Models\hotelSoftware\Hotel;
 use App\Models\HotelSoftware\HotelUser;
-use App\Models\hotelSoftware\Notification;
+use App\Models\HotelSoftware\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

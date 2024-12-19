@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Dashboard\Hotel;
 
 use App\Http\Controllers\Controller;
-use App\Models\hotelSoftware\Supplier;
+use App\Models\HotelSoftware\Supplier;
 use App\Models\User;
 use App\Services\Dashboard\Hotel\Supplier\HotelSupplierService;
 use Exception;

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Dashboard\Hotel\Kitchen;
 
 use App\Http\Controllers\Controller;
-use App\Models\hotelSoftware\Hotel;
-use App\Models\hotelSoftware\KitchenOrder;
+use App\Models\HotelSoftware\Hotel;
+use App\Models\HotelSoftware\KitchenOrder;
 use App\Models\HotelSoftware\RestaurantOrder;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

@@ -4,7 +4,7 @@ namespace App\Services\Dashboard\Hotel\Restaurant;
 
 use App\Constants\StatusConstants;
 use App\Models\HotelSoftware\HotelUser;
-use App\Models\hotelSoftware\KitchenOrder;
+use App\Models\HotelSoftware\KitchenOrder;
 use App\Models\HotelSoftware\RestaurantOrder;
 use App\Models\HotelSoftware\RestaurantOrderItem;
 use App\Models\HotelSoftware\WalkInCustomer;

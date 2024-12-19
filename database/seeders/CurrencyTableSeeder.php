@@ -15,21 +15,28 @@ class CurrencyTableSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
-        $currencies = [];
+{
+    $currencies = [];
 
-        foreach (CurrencyConstants::CURRENCY_CODES as $code) {
-            $currencies[] = [
-                "name" => CurrencyConstants::CURRENCY_NAMES[$code],
-                'short_name' => $code,
-                "type" => $code, 
-                "symbol" => CurrencyConstants::CURRENCY_SYMBOLS[$code],
-                "status" => StatusConstants::ACTIVE,
-            ];
-        }
+    foreach (CurrencyConstants::CURRENCY_CODES as $code) {
+        $currencies[] = [
+            "name" => CurrencyConstants::CURRENCY_NAMES[$code],
+            "short_name" => $code,
+            "type" => $code, 
+            "symbol" => CurrencyConstants::CURRENCY_SYMBOLS[$code],
+            "status" => StatusConstants::ACTIVE,
+        ];
+    }
 
-        foreach ($currencies as $currency) {
+    foreach ($currencies as $currency) {
+        // Check for an existing record based on the unique 'symbol'
+        $existingCurrency = Currency::where('symbol', $currency['symbol'])->first();
+
+        if (!$existingCurrency) {
             Currency::create($currency);
         }
     }
+}
+
+    
 }

@@ -1,0 +1,25 @@
+[14-Dec-2024 01:07:14 UTC] PHP Fatal error:  Uncaught BadMethodCallException: Method Illuminate\Foundation\Application::handleRequest does not exist. in /home/swifbayo/public_html/vendor/laravel/framework/src/Illuminate/Macroable/Traits/Macroable.php:112
+Stack trace:
+#0 /home/swifbayo/public_html/software-management/index.php(17): Illuminate\Foundation\Application->__call()
+#1 {main}
+  thrown in /home/swifbayo/public_html/vendor/laravel/framework/src/Illuminate/Macroable/Traits/Macroable.php on line 112
+[14-Dec-2024 01:07:26 UTC] PHP Fatal error:  Uncaught BadMethodCallException: Method Illuminate\Foundation\Application::handleRequest does not exist. in /home/swifbayo/public_html/vendor/laravel/framework/src/Illuminate/Macroable/Traits/Macroable.php:112
+Stack trace:
+#0 /home/swifbayo/public_html/software-management/index.php(17): Illuminate\Foundation\Application->__call()
+#1 {main}
+  thrown in /home/swifbayo/public_html/vendor/laravel/framework/src/Illuminate/Macroable/Traits/Macroable.php on line 112
+[14-Dec-2024 01:07:28 UTC] PHP Fatal error:  Uncaught BadMethodCallException: Method Illuminate\Foundation\Application::handleRequest does not exist. in /home/swifbayo/public_html/vendor/laravel/framework/src/Illuminate/Macroable/Traits/Macroable.php:112
+Stack trace:
+#0 /home/swifbayo/public_html/software-management/index.php(17): Illuminate\Foundation\Application->__call()
+#1 {main}
+  thrown in /home/swifbayo/public_html/vendor/laravel/framework/src/Illuminate/Macroable/Traits/Macroable.php on line 112
+[14-Dec-2024 01:07:30 UTC] PHP Fatal error:  Uncaught BadMethodCallException: Method Illuminate\Foundation\Application::handleRequest does not exist. in /home/swifbayo/public_html/vendor/laravel/framework/src/Illuminate/Macroable/Traits/Macroable.php:112
+Stack trace:
+#0 /home/swifbayo/public_html/software-management/index.php(17): Illuminate\Foundation\Application->__call()
+#1 {main}
+  thrown in /home/swifbayo/public_html/vendor/laravel/framework/src/Illuminate/Macroable/Traits/Macroable.php on line 112
+[14-Dec-2024 07:00:47 UTC] PHP Fatal error:  Uncaught BadMethodCallException: Method Illuminate\Foundation\Application::handleRequest does not exist. in /home/swifbayo/public_html/vendor/laravel/framework/src/Illuminate/Macroable/Traits/Macroable.php:112
+Stack trace:
+#0 /home/swifbayo/public_html/software-management/index.php(17): Illuminate\Foundation\Application->__call()
+#1 {main}
+  thrown in /home/swifbayo/public_html/vendor/laravel/framework/src/Illuminate/Macroable/Traits/Macroable.php on line 112

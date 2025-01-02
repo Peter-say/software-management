@@ -55,7 +55,7 @@ class RoomReservationController extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => $message,
-                    'redirectUrl' => route('dashboard.hotel.reservations.index')
+                    // 'redirectUrl' => route('dashboard.hotel.reservations.index')
                 ]);
             }
             // Handle other cases where the message indicates a problem
@@ -112,7 +112,7 @@ class RoomReservationController extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => $message,
-                    'redirectUrl' => route('dashboard.hotel.reservations.index')
+                    // 'redirectUrl' => route('dashboard.hotel.reservations.index')
                 ]);
             }
             // Handle other cases where the message indicates a problem

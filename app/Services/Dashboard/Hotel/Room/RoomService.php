@@ -49,7 +49,6 @@ class RoomService
         if ($request->hasFile('file_upload')) {
             foreach ($request->file('file_upload') as $file) {
                 $fileDirectory = 'hotel/room/files';
-                $fileDirectory = 'hotel/room/files';
                 $fileId = FileHelpers::saveFileRequest($file, $fileDirectory);
                 RoomFile::create([
                     'room_id' => $room->id,

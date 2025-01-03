@@ -52,7 +52,6 @@ class RestaurantItemsService
         // Handle file upload
         if ($request->hasFile('image')) {
             $imageDirectory = 'hotel/restaurant/items/';
-            Storage::disk('public')->makeDirectory($imageDirectory);
             $imagePath = basename(FileHelpers::saveImageRequest($request->file('image'), $imageDirectory));
             $validatedData['image'] = $imagePath;
         }
@@ -105,7 +104,7 @@ class RestaurantItemsService
             // Define base directory dynamically
             $basePublicPath = app()->environment('local')
                 ? public_path('dashboard/samples/restaurant_menu_sample_with_ingredients.csv')
-                : base_path('software-management/public/dashboard/samples/restaurant_menu_sample_with_ingredients.csv');
+                : public_path('public/dashboard/samples/restaurant_menu_sample_with_ingredients.csv');
 
             $filePath = $basePublicPath;
         }
@@ -123,19 +122,18 @@ class RestaurantItemsService
 
         foreach ($items as $item) {
             $imageDirectory = 'hotel/restaurant/items/';
-            Storage::disk('public')->makeDirectory($imageDirectory);
-
+            
             // Check if the item image is missing or the file doesn't exist
-            if (is_null($item->image) || !Storage::disk('public')->exists($imageDirectory . $item->image)) {
+            if (is_null($item->image) || !public_path($imageDirectory . $item->image)) {
 
                 // Get a random image filename
-                $randomImagePath = $this->getRandomImages(); // This should return the full path to the random image file
+                $randomImagePath = $this->getRandomImages();
 
                 // Verify the random image exists on the filesystem
                 if (file_exists($randomImagePath) && is_readable($randomImagePath)) {
                     // Save the random image to the specified directory
                     $fileName = basename($randomImagePath);
-                    $storageSuccess = Storage::disk('public')->put($imageDirectory . $fileName, file_get_contents($randomImagePath));
+                    $storageSuccess = public_path($imageDirectory . $fileName, file_get_contents($randomImagePath));
 
                     // Check if the image was successfully stored
                     if ($storageSuccess) {

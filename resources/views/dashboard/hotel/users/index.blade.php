@@ -35,7 +35,7 @@
                                         <tr>
                                             @if ($hotel_user->photo)
                                                 <td><img class="" width="35"
-                                                        src="{{ asset('hotel/users/photos/' . $hotel_user->photo) }}"
+                                                        src="{{ getStorageUrl('hotel/users/photos/' . $hotel_user->photo) }}"
                                                         alt="photo"></td>
                                             @else
                                                 <td><img class="" width="35"

@@ -17,21 +17,22 @@ class FileHelpers
             throw new \Exception('File upload failed');
         }
         $file_name = uniqid() . '_' . $file->getClientOriginalName();
-
+        $fileSize = $file->getSize(); 
+        $fileMimeType = $file->getMimeType();
         $destinationPath = public_path($directory);
+        $file->move($destinationPath, $file_name);
         if (!file_exists($destinationPath)) {
             mkdir($destinationPath, 0755, true);
         }
         $fileType = self::fileType($file->getClientOriginalExtension());
         $fileRecord = File::create([
             'file_name' => $file_name,
-            'file_path' =>   $destinationPath,
-            'file_size' => $file->getSize(),
-            'mime_type' => $file->getMimeType(),
+            'file_path' =>   $directory . '/' . $file_name,
+            'file_size' =>  $fileSize,
+            'mime_type' => $fileMimeType,
             'type' =>  $fileType,
             'description' => $description,
         ]);
-
         return $fileRecord->id;
     }
 

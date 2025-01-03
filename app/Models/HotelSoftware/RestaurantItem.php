@@ -31,7 +31,7 @@ class RestaurantItem extends Model
     {
         $image = $this->image;
         if ($image) {
-            return asset('storage/hotel/restaurant/items/' . $image);
+            return getStorageUrl('hotel/restaurant/items/' . $image);
         }
         return null;
     }

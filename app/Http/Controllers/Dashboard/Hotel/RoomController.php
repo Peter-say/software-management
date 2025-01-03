@@ -52,6 +52,7 @@ class RoomController extends Controller
         } catch (ValidationException $e) {
             return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
+            throw $e;
             return redirect()->back()->with('error_message', 'An error occurred while creating the room.');
         }
     }
@@ -84,10 +85,11 @@ class RoomController extends Controller
         $data = $request->all();
         try {
           $this->room_service->save($request, $data);
-            return redirect()->route('dashboard.hotel.rooms.index')->with('success_message', 'Room updated successfully and login details sent.');
+            return redirect()->route('dashboard.hotel.rooms.index')->with('success_message', 'Room updated successfully');
         } catch (ValidationException $e) {
             return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
+            throw $e;
             return redirect()->back()->with('error_message', 'An error occurred while creating the room.');
         }
     }
@@ -97,6 +99,8 @@ class RoomController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $room = Room::find($id);
+        $room->delete();
+        return redirect()->route('dashboard.hotel.rooms.index')->with('success_message', 'Room deleted successfully');
     }
 }

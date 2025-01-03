@@ -15,12 +15,6 @@ class FileHelpers
     {
         // Check if the file was uploaded successfully
         if (!$file->isValid()) {
-            Log::error('File upload failed', [
-                'file_name' => $file->getClientOriginalName(),
-                'mime_type' => $file->getMimeType(),
-                'size' => $file->getSize(),
-                'directory' => $directory,
-            ]);
             throw new \Exception('File upload failed');
         }
 
@@ -48,20 +42,18 @@ class FileHelpers
 
     public static function saveImageRequest($file, $directory)
     {
-        // Check if the file was uploaded successfully
         if (!$file->isValid()) {
             throw new \Exception('File upload failed');
         }
-
-        // Generate a unique file name
         $file_name = uniqid() . '_' . $file->getClientOriginalName();
-
-        // Store the file in the specified directory within the storage folder
-        $path = $file->storeAs($directory, $file_name, 'public');
-
-        // Return the path to the saved file
-        return $path; 
+        $destinationPath = public_path($directory);
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0755, true);
+        }
+        $file->move($destinationPath, $file_name);
+        return $directory . '/' . $file_name;
     }
+
 
     public static function deleteFiles(array $imagePaths)
     {

@@ -34,11 +34,11 @@
                                     @foreach ($hotel_users as $hotel_user)
                                         <tr>
                                             @if ($hotel_user->photo)
-                                                <td><img class="rounded-circle" width="35"
-                                                        src="{{ asset('storage/hotel/users/photos/' . $hotel_user->photo) }}"
+                                                <td><img class="" width="35"
+                                                        src="{{ asset('hotel/users/photos/' . $hotel_user->photo) }}"
                                                         alt="photo"></td>
                                             @else
-                                                <td><img class="rounded-circle" width="35"
+                                                <td><img class="" width="35"
                                                         src="{{ asset('dashboard/images/profile/small/pic1.jpg') }}"
                                                         alt="photo"></td>
                                             @endif

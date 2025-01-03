@@ -49,7 +49,7 @@
                                             <div class="guest-profile">
                                                 <div class="d-flex">
                                                     @if ($guest->id_picture_location)
-                                                        <img src="{{ asset('storage/hotel/guest/id/' . $guest->id_picture_location) }}"
+                                                        <img src="{{ getStorageUrl('hotel/guest/id/' . $guest->id_picture_location) }}"
                                                             alt="{{ $guest->name }}">
                                                     @else
                                                         <img src="#" alt="No Image">
@@ -60,8 +60,8 @@
                                                         <div class="call d-flex align-items-center">
                                                             <a href="javascript:void(0);"><i
                                                                     class="fas fa-phone-alt text-secondary"></i>
-                                                                
-                                                                </a>
+
+                                                            </a>
                                                             <button class="btn btn-secondary ms-3">
                                                                 <svg class="me-2" xmlns="http://www.w3.org/2000/svg"
                                                                     width="24" height="24.18" viewBox="0 0 24 24.18">
@@ -110,48 +110,59 @@
                                                     $latest_reservation = $guest
                                                         ->reservations()
                                                         ->whereNotNull('checked_in_at')
-                                                        ->latest('checked_in_at')
+                                                        ->latest('created_at')
                                                         ->first(); // Get the most recent record
                                                 @endphp
-
-                                                <div class="d-flex">
-                                                    <div class="mt-4 check-status">
-                                                        <span class="d-block mb-2">Check In</span>
-                                                        <span class="font-w500 fs-16">
-                                                            @if ($latest_reservation->checked_in_at)
-                                                                {{ $latest_reservation->checked_in_at->format(' M jS, Y | h:i A') }}
-                                                            @else
-                                                                {{ '  Not yet checked in' }}
-                                                            @endif
-                                                        </span>
+                                                @if (isset($latest_reservation))
+                                                    <div class="d-flex">
+                                                        <div class="mt-4 check-status">
+                                                            <span class="d-block mb-2">Check In</span>
+                                                            <span class="font-w500 fs-16">
+                                                                @if (isset($latest_reservation) && $latest_reservation->checked_in_at)
+                                                                    {{ $latest_reservation->checked_in_at->format(' M jS, Y | h:i A') }}
+                                                                @else
+                                                                    {{ '  Not yet checked in' }}
+                                                                @endif
+                                                            </span>
+                                                        </div>
+                                                        <div class="mt-4">
+                                                            <span class="d-block mb-2">Check Out</span>
+                                                            <span class="font-w500 fs-16">
+                                                                @if (isset($latest_reservation) && $latest_reservation->checked_in_at)
+                                                                    {{ $latest_reservation->checked_out_at->format(' M jS, Y | h:i A') }}
+                                                                @else
+                                                                    {{ 'Onging' }}
+                                                                @endif
+                                                            </span>
+                                                        </div>
                                                     </div>
-                                                    <div class="mt-4">
-                                                        <span class="d-block mb-2">Check Out</span>
-                                                        <span class="font-w500 fs-16">
-                                                            @if ($latest_reservation->checked_in_at)
-                                                                {{ $latest_reservation->checked_out_at->format(' M jS, Y | h:i A') }}
-                                                            @else
-                                                                {{ 'Onging' }}
-                                                            @endif
-                                                        </span>
+                                                @else
+                                                    <div class="d-flex justify-content-center">
+                                                        <h6>No data available</h6>
                                                     </div>
-                                                </div>
+                                                @endif
                                             </div>
                                             <div class="d-flex flex-wrap">
                                                 <div class="mt-4 check-status">
                                                     <span class="d-block mb-2">Room Info</span>
                                                     <h4 class="font-w500 fs-24">
-                                                        {{ $latest_reservation->room->roomType->name . ' - ' . $latest_reservation->room->name }}
+                                                        @if (isset($latest_reservation) && $latest_reservation->room)
+                                                            {{ $latest_reservation->room->roomType->name . ' - ' . $latest_reservation->room->name }}
+                                                        @endif
                                                     </h4>
                                                 </div>
                                                 <div class="mt-4 ms-3">
                                                     <span class="d-block mb-2 text-black">Price</span>
-                                                    <span
-                                                        class="font-w500 fs-24 text-black">{{ $latest_reservation->room->roomType->currency->symbol }}{{ $latest_reservation->room->roomType->rate }}<small
-                                                            class="fs-14 ms-2 text-secondary">/night</small></span>
+                                                    @if (isset($latest_reservation) && $latest_reservation->room)
+                                                        <span
+                                                            class="font-w500 fs-24 text-black">{{ $latest_reservation->room->roomType->currency->symbol }}{{ $latest_reservation->room->roomType->rate }}<small
+                                                                class="fs-14 ms-2 text-secondary">/night</small></span>
+                                                    @endif
                                                 </div>
                                             </div>
-                                            <p class="mt-2">{{ $latest_reservation->room->description }}</p>
+                                            @if (isset($latest_reservation) && $latest_reservation->room)
+                                                <p class="mt-2">{{ $latest_reservation->room->description }}</p>
+                                            @endif
                                             <div class="facilities">
                                                 <div class="mb-3 ">
                                                     <span class="d-block mb-3">Facilities</span>
@@ -214,25 +225,30 @@
                                     </div>
                                     <div class="col-xl-6 p-0">
                                         <div class="guest-carousel owl-carousel owl-loaded owl-drag owl-dot">
-                                            @foreach (getModelItems('rooms') as $room)
-                                                <div class="item">
-                                                    <div class="rooms">
-                                                        <img src="{{ $room->RoomImage() }}"
-                                                            alt="{{ basename($room->RoomImage()) }}"
-                                                            style="">
-                                                        <div class="booked">
-                                                            @if (isset($latest_reservation) && $latest_reservation->room->id === $room->id)
-                                                                <p class="fs-20 font-w500">BOOKED</p>
-                                                            @endif
-                                                        </div>
-                                                        <div class="img-content">
-                                                            <h4 class="fs-24 font-w600 text-white">{{ $room->name }}
-                                                            </h4>
-                                                            <p class="text-white">{{ $room->description }}</p>
+                                            @if (getModelItems('rooms'))
+                                                @foreach (getModelItems('rooms') as $room)
+                                                    <div class="item">
+                                                        <div class="rooms">
+                                                            <img src="{{ $room->RoomImage() }}"
+                                                                alt="{{ basename($room->RoomImage()) }}" style="">
+                                                            <div class="booked">
+                                                                @if (isset($latest_reservation) && $latest_reservation->room->id === $room->id)
+                                                                    <p class="fs-20 font-w500">BOOKED</p>
+                                                                @endif
+                                                            </div>
+                                                            <div class="img-content">
+                                                                <h4 class="fs-24 font-w600 text-white">{{ $room->name }}
+                                                                </h4>
+                                                                <p class="text-white">{{ $room->description }}</p>
+                                                            </div>
                                                         </div>
                                                     </div>
+                                                @endforeach
+                                            @else
+                                                <div class="d-flex justify-content-center">
+                                                    <h6>No data available</h6>
                                                 </div>
-                                            @endforeach
+                                            @endif
                                         </div>
                                     </div>
 
@@ -264,11 +280,11 @@
                                                                 alt="{{ basename($purchase_history->room->RoomImage()) }}">
                                                         </a>
                                                         @foreach ($purchase_history->room->RoomImages()->skip(1) as $key => $image)
-                                                            <a href="{{ asset('storage/' . $image->file_path) }}"
+                                                            <a href="{{ getStorageUrl($image->file_path) }}"
                                                                 data-fancybox="gallery_{{ $room->id }}"
                                                                 data-caption="{{ $room->name }}">
                                                                 <img class="me-3 rounded img-thumbnail"
-                                                                    src="{{ asset('storage/' . $image->file_path) }}"
+                                                                    src="{{ getStorageUrl($image->file_path) }}"
                                                                     alt="{{ basename($image->file_path) }}"
                                                                     style="display: none">
                                                             </a>
@@ -314,10 +330,13 @@
                                                     <div class="d-flex align-items-center mt-sm-0 mt-3">
                                                         <!-- View Notes Button -->
                                                         <a href="javascript:void(0);" class="btn btn-secondary light"
-                                                            data-bs-toggle="modal" data-bs-target="#viewNotesModal-{{$purchase_history->id}}">
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#viewNotesModal-{{ $purchase_history->id }}">
                                                             View Notes
                                                         </a>
-                                                        @include('dashboard.hotel.guest.modal.note', ['purchase_history' => $purchase_history])
+                                                        @include('dashboard.hotel.guest.modal.note', [
+                                                            'purchase_history' => $purchase_history,
+                                                        ])
                                                         <div class="dropdown dropend ms-auto">
                                                             <a href="javascript:void(0);" class="btn-link"
                                                                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -364,7 +383,6 @@
             </div>
         </div>
     </div>
- 
 @endsection
 
 <script>

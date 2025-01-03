@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('room_types', function (Blueprint $table) {
             if (!Schema::hasColumn('room_types', 'currency_id')) {
-                $table->foreignId('currency_id')->nullable()->after('id'); // Add the column if not exists
+                $table->foreignId('currency_id')->nullable()->after('id')->constrained('currencies'); // Add the column if not exists
             }
         });
     }

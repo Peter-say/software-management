@@ -71,7 +71,7 @@
                                                     @foreach ($reservation->room->RoomImages() as $image)
                                                         <div class="me-3 mb-3">
                                                             <img class="rounded"
-                                                                src="{{ asset('storage/' . $image->file_path) }}"
+                                                                src="{{ getStorageUrl($image->file_path) }}"
                                                                 alt="Room Image"
                                                                 style="width: 150px; height: 100px; object-fit: cover;">
                                                         </div>

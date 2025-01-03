@@ -102,15 +102,15 @@ function formatNumber($number)
     } else {
         return number_format($number);
     }
+}
 
-    function getStoragePath($relativePath)
+if (!function_exists('getStorageUrl')) {
+    function getStorageUrl($relativePath)
     {
         if (app()->environment('local')) {
-            // Local environment
-            return storage_path("app/public/{$relativePath}");
+            return url($relativePath);
         } else {
-            // Live environment
-            return base_path("software-management/storage/app/public/{$relativePath}");
+            return url("public/{$relativePath}");
         }
     }
 }

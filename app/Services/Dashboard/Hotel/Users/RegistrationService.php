@@ -98,18 +98,16 @@ class RegistrationService
             $isNewUser = true;
         }
     
-        // Handle file upload
         if ($request->hasFile('photo')) {
             $photoDirectory = 'hotel/users/photos';
-            Storage::disk('public')->makeDirectory($photoDirectory);
-            $photoPath = basename(FileHelpers::saveImageRequest($request->file('photo'), $photoDirectory));
-            $validatedData['photo'] = $photoPath;
-    
+            $photoPath = FileHelpers::saveImageRequest($request->file('photo'), $photoDirectory);
+            $validatedData['photo'] = basename($photoPath);
             // Delete the old photo if it exists
-            if ($oldPhotoPath) {
-                FileHelpers::deleteFiles([$photoDirectory . '/' . $oldPhotoPath]);
+            if (!empty($oldPhotoPath)) {
+                FileHelpers::deleteFiles([public_path($photoDirectory . '/' . $oldPhotoPath)]);
             }
         }
+        
     
         if ($hotelUser) {
             // Update the HotelUser with the new data

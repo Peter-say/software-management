@@ -13,27 +13,22 @@ class FileHelpers
 
     public static function saveFileRequest($file, $directory, $description = null)
     {
-        // Check if the file was uploaded successfully
         if (!$file->isValid()) {
             throw new \Exception('File upload failed');
         }
-
-        // Generate a unique file name
         $file_name = uniqid() . '_' . $file->getClientOriginalName();
 
-        // Store the file in the specified directory within the storage folder
-        Storage::disk('public')->put($directory . '/' . $file_name, file_get_contents($file));
-
-        // Determine the file type using the file extension
+        $destinationPath = public_path($directory);
+        if (!file_exists($destinationPath)) {
+            mkdir($destinationPath, 0755, true);
+        }
         $fileType = self::fileType($file->getClientOriginalExtension());
-
-        // Create a record in the files table with additional information
         $fileRecord = File::create([
             'file_name' => $file_name,
-            'file_path' => $directory . '/' . $file_name,
+            'file_path' =>   $destinationPath,
             'file_size' => $file->getSize(),
             'mime_type' => $file->getMimeType(),
-            'type' =>  $fileType, // you can change this based on context
+            'type' =>  $fileType,
             'description' => $description,
         ]);
 

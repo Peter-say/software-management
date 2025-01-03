@@ -72,11 +72,11 @@
                                                                             alt="{{ basename($room->RoomImage()) }}">
                                                                     </a>
                                                                     @foreach ($room->RoomImages()->skip(1) as $key => $image)
-                                                                        <a href="{{ asset('storage/' . $image->file_path) }}"
+                                                                        <a href="{{getStorageUrl($image->file_path) }}"
                                                                             data-fancybox="gallery_{{ $room->id }}"
                                                                             data-caption="{{ $room->name }}">
                                                                             <img class="me-3 rounded img-thumbnail"
-                                                                                src="{{ asset('storage/' . $image->file_path) }}"
+                                                                                src="{{ getStorageUrl( $image->file_path) }}"
                                                                                 alt="{{ basename($image->file_path) }}"
                                                                                 style="display: none">
                                                                         </a>

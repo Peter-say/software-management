@@ -222,7 +222,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <a href="#">
-                                                                        <img src="{{ asset('storage/hotel/restaurant/items/' . $item->image) }}"
+                                                                        <img src="{{ $item->itemImage() }}"
                                                                             class="card-img-top rounded-2" />
                                                                     </a>
                                                                     <div

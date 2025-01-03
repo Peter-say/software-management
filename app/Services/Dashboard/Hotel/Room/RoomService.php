@@ -16,7 +16,7 @@ class RoomService
 {
     public function validated($data)
     {
-       
+
         $validator = Validator::make($data, [
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
@@ -32,43 +32,32 @@ class RoomService
 
     public function save(Request $request, $data)
     {
-        // Validate the incoming data
         $validatedData = $this->validated($data);
-        
         if (isset($data['id'])) {
             $validatedData['id'] = $data['id'];
         }
-        
         $validatedData['hotel_id'] = User::getAuthenticatedUser()->hotel->id;
-        
-        // Check if this is an update or create request
         if (isset($validatedData['id'])) {
-            // Update existing room
             $room = Room::find($validatedData['id']);
             if (!$room) {
                 throw new Exception('Room not found');
             }
             $room->update($validatedData);
         } else {
-            // Create a new room
             $room = Room::create($validatedData);
         }
-    
-        // Handle file uploads
         if ($request->hasFile('file_upload')) {
             foreach ($request->file('file_upload') as $file) {
                 $fileDirectory = 'hotel/room/files';
-                Storage::disk('public')->makeDirectory($fileDirectory);
+                $fileDirectory = 'hotel/room/files';
                 $fileId = FileHelpers::saveFileRequest($file, $fileDirectory);
-                // Associate file with the room
                 RoomFile::create([
                     'room_id' => $room->id,
                     'file_id' => $fileId,
                 ]);
             }
         }
-    
+
         return $room;
     }
-    
 }

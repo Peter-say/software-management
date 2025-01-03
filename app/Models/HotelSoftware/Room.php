@@ -38,7 +38,7 @@ class Room extends Model
     {
         $firstFile = $this->files()->first();
         if ($firstFile) {
-            return asset('storage/' . $firstFile->file_path);
+            return getStorageUrl($firstFile->file_path);
         }
         return null;
     }

@@ -24,6 +24,7 @@ class HotelRoomTypeSeeder extends Seeder
             [
                 'name' => 'Single',
                 'hotel_id' => 1,
+                'currency_id' => 1,
                 'description' => 'Category description',
                 'rate' => 35000,
                 'discounted_rate' => 0,
@@ -31,6 +32,7 @@ class HotelRoomTypeSeeder extends Seeder
             [
                 'name' => 'Double',
                 'hotel_id' => 1,
+                'currency_id' => 1,
                 'description' => 'Category description',
                 'rate' => 65000,
                 'discounted_rate' => 5000,

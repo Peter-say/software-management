@@ -39,15 +39,15 @@ class SendUserLoginDetailsMail extends Mailable
     /**
      * Get the message content definition.
      */
-    public function content(): array //Content
+    public function content(): Content //Content
     {
         $data = $this->buildData();
-        return   $data;
-        Log::info($data);
-        // return new Content(
-          
-        //     // view: 'emails.account-created',
-        // );
+        return new Content(
+            view: 'emails.account-created',
+            with: [
+                $data,
+            ],
+        );
     }
 
     /**

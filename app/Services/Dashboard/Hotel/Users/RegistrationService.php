@@ -81,7 +81,6 @@ class RegistrationService
         } else {
             // Create a new User
             $randomPassword = Str::random(12);
-            Log::info($randomPassword);
             $user = User::create([
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
@@ -157,19 +156,13 @@ class RegistrationService
     {
         try {
             $hotel_user = User::findOrFail($hotel_userId);
-
             // Generate a random password
             $randomPassword = Str::random(12);
-           Log::info( $randomPassword );
             $hotel_user->password = Hash::make($randomPassword);
             $hotel_user->save();
-
-            // Send login details email
             Mail::to($hotel_user->email)->send(new SendUserLoginDetailsMail($hotel_user, $randomPassword));
-
             return $hotel_user->toArray();
         } catch (\Exception $e) {
-            // Handle exception
             return ['error_message' => 'An error occurred while sending login details to user.'];
         }
     }

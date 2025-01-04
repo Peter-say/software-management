@@ -1,13 +1,29 @@
 {
+  "_pusher-DxtW_XPu.js": {
+    "file": "assets/pusher-DxtW_XPu.js",
+    "name": "pusher"
+  },
   "resources/css/app.css": {
     "file": "assets/app-DEWt6qa_.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-DwK8toHN.js",
+    "file": "assets/app-qpc41TLv.js",
     "name": "app",
     "src": "resources/js/app.js",
-    "isEntry": true
+    "isEntry": true,
+    "imports": [
+      "_pusher-DxtW_XPu.js"
+    ]
+  },
+  "resources/js/echo.js": {
+    "file": "assets/echo-B0LFXY2n.js",
+    "name": "echo",
+    "src": "resources/js/echo.js",
+    "isEntry": true,
+    "imports": [
+      "_pusher-DxtW_XPu.js"
+    ]
   }
 }

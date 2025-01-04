@@ -26,6 +26,8 @@
                                 @method('PUT')
                                 <input type="hidden" name="reservation_id" value="{{ $reservation->id }}">
                                 <input type="hidden" id="guest_id" name="guest_id" value="{{ $reservation->guest->id }}">
+                            @else
+                                <input type="hidden" id="guest_id" name="guest_id" value="">
                             @endif
 
                             <div class="row">
@@ -336,6 +338,7 @@
                 }
 
 
+
                 // Handle room selection and update rate field
                 const roomSelect = document.getElementById('room_id');
                 const rateField = document.getElementById('rate');
@@ -511,10 +514,6 @@
             // Add event listeners to both inputs to handle changes
             checkinInput.addEventListener('change', handleDateChange);
             checkoutInput.addEventListener('change', handleDateChange);
-
-            // Debug logging to check if elements are found correctly
-            console.log("Check-in input element:", checkinInput);
-            console.log("Check-out input element:", checkoutInput);
             // Initialize the guest information and room selection handling
             setGuestInformation();
 

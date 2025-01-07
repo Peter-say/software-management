@@ -80,6 +80,24 @@
                                         @enderror
                                     </div>
                                 </div>
+                                <div class="col-lg-6 col-12 mb-3">
+                                    <div class="form-group">
+                                        <label for="gender" class="text-label form-label">Gender</label>
+                                        <select id="gender" name="gender"
+                                            class="form-control @error('gender') is-invalid @enderror" required>
+                                            <option value="" disabled>Select Role</option>
+                                            @foreach (['Male', 'Female'] as $gender)
+                                                <option value="{{ $gender }}"
+                                                    {{ old('gender', $hotel_user->gender ?? '') == $gender ? 'selected' : '' }}>{{$gender}}</option>
+                                            @endforeach
+                                        </select>
+                                        @error('gender')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                </div>
 
                                 <div class="col-lg-6 col-12 mb-3">
                                     <div class="form-group">

@@ -1,34 +1,5 @@
 @extends('dashboard.layouts.app')
-{{-- <style>
-    .guest-carousel .item {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: auto;
-        /* Automatically adjusts to the image's height */
-        margin: 0;
-        /* Remove any additional spacing */
-    }
 
-    .rooms {
-        position: relative;
-        overflow: hidden;
-        /* Ensures no extra space beyond the image */
-        height: 100%;
-        /* Matches the height of the container */
-        max-height: 100%;
-        /* Prevents content from overflowing */
-    }
-
-    .rooms img {
-        display: block;
-        width: 100%;
-        height: auto;
-        /* Maintains aspect ratio */
-        object-fit: cover;
-        /* Ensures the image covers the container */
-    }
-</style> --}}
 @section('contents')
     <div class="content-body">
         <div class="container-fluid">
@@ -101,38 +72,41 @@
 
                                                         </a>
                                                         <div class="dropdown-menu">
-                                                            <a class="dropdown-item" href="javascript:void(0);">Edit</a>
-                                                            <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('dashboard.hotel.guests.edit', $guest->id) }}">Edit</a>
+                                                            <a class="dropdown-item" href="javascript:void(0);"
+                                                                onclick="confirmDelete('{{ route('dashboard.hotel.guests.destroy', $guest->id) }}')">Delete</a>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 @php
+                                                    // Get the most recent reservation with a check-in date
                                                     $latest_reservation = $guest
                                                         ->reservations()
                                                         ->whereNotNull('checked_in_at')
                                                         ->latest('created_at')
-                                                        ->first(); // Get the most recent record
+                                                        ->first();
+                                                    $room = $latest_reservation->room ?? null;
+                                                    $roomType = $room?->roomType ?? null;
+                                                    $currency = $roomType?->currency ?? null;
                                                 @endphp
-                                                @if (isset($latest_reservation))
+
+                                                @if ($latest_reservation)
                                                     <div class="d-flex">
                                                         <div class="mt-4 check-status">
                                                             <span class="d-block mb-2">Check In</span>
                                                             <span class="font-w500 fs-16">
-                                                                @if (isset($latest_reservation) && $latest_reservation->checked_in_at)
-                                                                    {{ $latest_reservation->checked_in_at->format(' M jS, Y | h:i A') }}
-                                                                @else
-                                                                    {{ '  Not yet checked in' }}
-                                                                @endif
+                                                                {{ $latest_reservation->checked_in_at
+                                                                    ? $latest_reservation->checked_in_at->format('M jS, Y | h:i A')
+                                                                    : 'Not yet checked in' }}
                                                             </span>
                                                         </div>
                                                         <div class="mt-4">
                                                             <span class="d-block mb-2">Check Out</span>
                                                             <span class="font-w500 fs-16">
-                                                                @if (isset($latest_reservation) && $latest_reservation->checked_in_at)
-                                                                    {{ $latest_reservation->checked_out_at->format(' M jS, Y | h:i A') }}
-                                                                @else
-                                                                    {{ 'Onging' }}
-                                                                @endif
+                                                                {{ $latest_reservation->checked_out_at
+                                                                    ? $latest_reservation->checked_out_at->format('M jS, Y | h:i A')
+                                                                    : 'Ongoing' }}
                                                             </span>
                                                         </div>
                                                     </div>
@@ -141,28 +115,35 @@
                                                         <h6>No data available</h6>
                                                     </div>
                                                 @endif
+
                                             </div>
-                                            <div class="d-flex flex-wrap">
-                                                <div class="mt-4 check-status">
-                                                    <span class="d-block mb-2">Room Info</span>
-                                                    <h4 class="font-w500 fs-24">
-                                                        @if (isset($latest_reservation) && $latest_reservation->room)
-                                                            {{ $latest_reservation->room->roomType->name . ' - ' . $latest_reservation->room->name }}
-                                                        @endif
-                                                    </h4>
+
+                                            @if ($room)
+                                                <div class="d-flex flex-wrap">
+                                                    <!-- Room Info -->
+                                                    <div class="mt-4 check-status">
+                                                        <span class="d-block mb-2">Room Info</span>
+                                                        <h4 class="font-w500 fs-24">
+                                                            {{ $roomType->name . ' - ' . $room->name }}
+                                                        </h4>
+                                                    </div>
+
+                                                    <!-- Room Price -->
+                                                    <div class="mt-4 ms-3">
+                                                        <span class="d-block mb-2 text-black">Price</span>
+                                                        <span class="font-w500 fs-24 text-black">
+                                                            {{ $currency->symbol ?? '' }}{{ $roomType->rate ?? 'N/A' }}
+                                                            <small class="fs-14 ms-2 text-secondary">/night</small>
+                                                        </span>
+                                                    </div>
                                                 </div>
-                                                <div class="mt-4 ms-3">
-                                                    <span class="d-block mb-2 text-black">Price</span>
-                                                    @if (isset($latest_reservation) && $latest_reservation->room)
-                                                        <span
-                                                            class="font-w500 fs-24 text-black">{{ $latest_reservation->room->roomType->currency->symbol }}{{ $latest_reservation->room->roomType->rate }}<small
-                                                                class="fs-14 ms-2 text-secondary">/night</small></span>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                            @if (isset($latest_reservation) && $latest_reservation->room)
-                                                <p class="mt-2">{{ $latest_reservation->room->description }}</p>
+
+                                                <!-- Room Description -->
+                                                <p class="mt-2">{{ $room->description }}</p>
+                                            @else
+                                                <p class="mt-2">No room information available.</p>
                                             @endif
+
                                             <div class="facilities">
                                                 <div class="mb-3 ">
                                                     <span class="d-block mb-3">Facilities</span>
@@ -383,52 +364,52 @@
             </div>
         </div>
     </div>
+    @include('dashboard.hotel.guest.delete-modal')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function TravlCarousel() {
+
+                /*  testimonial one function by = owl.carousel.js */
+                jQuery('.guest-carousel').owlCarousel({
+                    loop: false,
+                    margin: 15,
+                    nav: true,
+                    autoplaySpeed: 3000,
+                    navSpeed: 3000,
+                    paginationSpeed: 3000,
+                    slideSpeed: 3000,
+                    smartSpeed: 3000,
+                    autoplay: false,
+                    animateOut: 'fadeOut',
+                    dots: true,
+                    navText: ['<i class="fas fa-arrow-left"></i>', '<i class="fas fa-arrow-right"></i>'],
+                    responsive: {
+                        0: {
+                            items: 1
+                        },
+
+                        480: {
+                            items: 1
+                        },
+
+                        767: {
+                            items: 1
+                        },
+                        1750: {
+                            items: 1
+                        },
+                        1920: {
+                            items: 1
+                        },
+                    }
+                })
+            }
+
+            jQuery(window).on('load', function() {
+                setTimeout(function() {
+                    TravlCarousel();
+                }, 1000);
+            });
+        })
+    </script>
 @endsection
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        function TravlCarousel() {
-
-            /*  testimonial one function by = owl.carousel.js */
-            jQuery('.guest-carousel').owlCarousel({
-                loop: false,
-                margin: 15,
-                nav: true,
-                autoplaySpeed: 3000,
-                navSpeed: 3000,
-                paginationSpeed: 3000,
-                slideSpeed: 3000,
-                smartSpeed: 3000,
-                autoplay: false,
-                animateOut: 'fadeOut',
-                dots: true,
-                navText: ['<i class="fas fa-arrow-left"></i>', '<i class="fas fa-arrow-right"></i>'],
-                responsive: {
-                    0: {
-                        items: 1
-                    },
-
-                    480: {
-                        items: 1
-                    },
-
-                    767: {
-                        items: 1
-                    },
-                    1750: {
-                        items: 1
-                    },
-                    1920: {
-                        items: 1
-                    },
-                }
-            })
-        }
-
-        jQuery(window).on('load', function() {
-            setTimeout(function() {
-                TravlCarousel();
-            }, 1000);
-        });
-    })
-</script>

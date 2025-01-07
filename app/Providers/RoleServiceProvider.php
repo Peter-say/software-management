@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\HotelSoftware\HotelUser;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -38,11 +39,7 @@ class RoleServiceProvider extends ServiceProvider
 
     public function userCanAccessSalesRole($user)
     {
-        $hotelUser = HotelUser::where('user_id', $user->id)->first();
-        if ($hotelUser && in_array($hotelUser->role, ['Hotel_Owner', 'Manager', 'Sales'])) {
-            return $hotelUser->role;
-        }
-        return null;
+            return ['Hotel_Owner', 'Manager', 'Sales'];
     }
     
 }

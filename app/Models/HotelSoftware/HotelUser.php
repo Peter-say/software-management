@@ -12,7 +12,7 @@ class HotelUser extends Model
 {
     use HasFactory, Notifiable;
 
-    protected $fillable = ['user_id', 'user_account_id', 'hotel_id', 'role', 'phone', 'photo', 'address'];
+    protected $fillable = ['user_id', 'user_account_id', 'hotel_id', 'role', 'phone', 'photo', 'address', 'gender'];
 
     public function hotel()
     {

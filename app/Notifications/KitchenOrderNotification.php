@@ -95,7 +95,7 @@ class KitchenOrderNotification extends Notification implements ShouldBroadcast
                 return [
                     'name' => $item->restaurantItem ? $item->restaurantItem->name : 'Unknown Item',
                     'quantity' => $item->qty,
-                    'image' => $item->restaurantItem ? asset('storage/hotel/restaurant/items/' . $item->restaurantItem->image) : null
+                    'image' => $item->restaurantItem ? getStorageUrl('hotel/restaurant/items/' . $item->restaurantItem->image) : null
                 ];
             }),
         ];

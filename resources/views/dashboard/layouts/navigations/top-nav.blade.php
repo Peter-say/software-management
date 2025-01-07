@@ -13,8 +13,8 @@
             $hotel = auth()->user()->hotel;
             $logoFileName = $hotel ? $hotel->logo : 'dashboard/images/gallery/hotel1.jpg';
             $logoUrl =
-                $hotel && $hotel->logo && file_exists(public_path('storage/hotel/logos/' . $logoFileName))
-                    ? asset('storage/hotel/logos/' . $logoFileName)
+                $hotel && $hotel->logo && file_exists(public_path('hotel/logos/' . $logoFileName))
+                    ? asset('hotel/logos/' . $logoFileName)
                     : asset('dashboard/images/gallery/hotel1.jpg');
         @endphp
 

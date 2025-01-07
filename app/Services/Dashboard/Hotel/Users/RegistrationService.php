@@ -37,6 +37,7 @@ class RegistrationService
             'address' => 'required|string|max:255',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'role' => 'required|string|max:50',
+            'gender' => 'nullable|string|max:50',
         ]);
 
         if ($validator->fails()) {

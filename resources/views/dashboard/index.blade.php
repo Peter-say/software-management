@@ -2,8 +2,8 @@
 
 @section('contents')
     <!--**********************************
-                                       Content body start
-                                      ***********************************-->
+                                               Content body start
+                                              ***********************************-->
     <div class="content-body">
         <!-- row -->
         <div class="container-fluid">
@@ -117,33 +117,44 @@
                         </div>
                         <div class="col-xl-12">
                             <div class="row">
-                                @include('dashboard.fragments.dashboard.recent-booking-schedule', ['recent_room_reservations' => $recent_room_reservations])
+                                @include('dashboard.fragments.dashboard.recent-booking-schedule', [
+                                    'recent_room_reservations' => $recent_room_reservations,
+                                ])
                                 <div class="col-xl-6">
                                     <div class="row">
                                         <div class="col-xl-12">
                                             <div class="card">
                                                 <div class="card-header border-0 flex-wrap">
                                                     <h4 class="fs-20">Reservation Stats</h4>
-													<div class="d-md-flex d-block align-items-center justify-content-end my-4">
-														
-														<form method="GET" action="{{ route('dashboard.home') }}" class="d-inline">
-															<div class="dropdown">
-																<button type="button" class="btn btn-primary btn-sm btn-wave waves-effect waves-light"
-																	data-bs-toggle="dropdown" aria-expanded="false">
-																	Sort By {{request()->booking_period ?? 'week'}}<i
-																		class="ri-arrow-down-s-line align-middle ms-1 d-inline-block"></i>
-																</button>
-																<ul class="dropdown-menu" role="menu">
-																	<li><a class="dropdown-item dropdown-item-booking-stats" href="javascript:void(0);" data-booking-period="week">Week</a></li>
-																	<li><a class="dropdown-item dropdown-item-booking-stats" href="javascript:void(0);" data-booking-period="year">Year</a></li>
-																</ul>
-															</div>
-										
-															<!-- Hidden input to capture selected period -->
-															<input type="hidden" name="booking_period" id="booking-selected-period" value="{{ request('booking_period', 'week') }}">
-														</form>
-										
-													</div>
+                                                    <div
+                                                        class="d-md-flex d-block align-items-center justify-content-end my-4">
+
+                                                        <form method="GET" action="{{ route('dashboard.home') }}"
+                                                            class="d-inline">
+                                                            <div class="dropdown">
+                                                                <button type="button"
+                                                                    class="btn btn-primary btn-sm btn-wave waves-effect waves-light"
+                                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    Sort By {{ request()->booking_period ?? 'week' }}<i
+                                                                        class="ri-arrow-down-s-line align-middle ms-1 d-inline-block"></i>
+                                                                </button>
+                                                                <ul class="dropdown-menu" role="menu">
+                                                                    <li><a class="dropdown-item dropdown-item-booking-stats"
+                                                                            href="javascript:void(0);"
+                                                                            data-booking-period="week">Week</a></li>
+                                                                    <li><a class="dropdown-item dropdown-item-booking-stats"
+                                                                            href="javascript:void(0);"
+                                                                            data-booking-period="year">Year</a></li>
+                                                                </ul>
+                                                            </div>
+
+                                                            <!-- Hidden input to capture selected period -->
+                                                            <input type="hidden" name="booking_period"
+                                                                id="booking-selected-period"
+                                                                value="{{ request('booking_period', 'week') }}">
+                                                        </form>
+
+                                                    </div>
                                                 </div>
                                                 <div class="card-body pb-0">
                                                     <div class="d-flex flex-wrap">
@@ -155,8 +166,10 @@
 
                                                             Check In
                                                         </span>
-                                                        <span class="fs-16 font-w600 me-4">{{ $reservation_data['dashboard_data']['checkedins_count']}} <small
-                                                                class="text-success fs-12 font-w400">{{ $reservation_data['dashboard_data']['room_reservation_checkin_percentage']}}%</small></span>
+                                                        <span
+                                                            class="fs-16 font-w600 me-4">{{ $reservation_data['dashboard_data']['checkedins_count'] }}
+                                                            <small
+                                                                class="text-success fs-12 font-w400">{{ $reservation_data['dashboard_data']['room_reservation_checkin_percentage'] }}%</small></span>
                                                         <span class="me-sm-5 ms-0 font-w500">
                                                             <svg class="me-1" xmlns="http://www.w3.org/2000/svg"
                                                                 width="13" height="13" viewBox="0 0 13 13">
@@ -164,7 +177,8 @@
                                                             </svg>
                                                             Check Out
                                                         </span>
-                                                        <span class="fs-16 font-w600">{{ $reservation_data['dashboard_data']['checkedouts_count']}}</span>
+                                                        <span
+                                                            class="fs-16 font-w600">{{ $reservation_data['dashboard_data']['checkedouts_count'] }}</span>
                                                     </div>
                                                     <div class="tab-content">
                                                         <div class="tab-pane fade show active" id="Daily1">
@@ -380,30 +394,30 @@
         </div>
     </div>
     <!--**********************************
-                                       Content body end
-                                      ***********************************-->
-@endsection
-@include('dashboard.chart.reservation', ['reservation_data' => $reservation_data])
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Handle dropdown item click
-        document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(item => {
-            item.addEventListener('click', function() {
-                const period = this.getAttribute('data-period');
-                const form = this.closest('form');
-                form.querySelector('#selected-period').value = period;
-                form.submit(); // Submit the form automatically
+                                               Content body end
+                                              ***********************************-->
+    @include('dashboard.chart.reservation', ['reservation_data' => $reservation_data])
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle dropdown item click
+            document.querySelectorAll('.dropdown-menu .dropdown-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const period = this.getAttribute('data-period');
+                    const form = this.closest('form');
+                    form.querySelector('#selected-period').value = period;
+                    form.submit(); // Submit the form automatically
+                });
             });
-        });
 
-		document.querySelectorAll('.dropdown-menu .dropdown-item-booking-stats').forEach(item => {
-            item.addEventListener('click', function() {
-                const period = this.getAttribute('data-booking-period');
-                const form = this.closest('form');
-                form.querySelector('#booking-selected-period').value = period;
-                form.submit(); // Submit the form automatically
+            document.querySelectorAll('.dropdown-menu .dropdown-item-booking-stats').forEach(item => {
+                item.addEventListener('click', function() {
+                    const period = this.getAttribute('data-booking-period');
+                    const form = this.closest('form');
+                    form.querySelector('#booking-selected-period').value = period;
+                    form.submit(); // Submit the form automatically
+                });
             });
         });
-    });
-</script>
-{{-- @endsection --}}
+    </script>
+    {{-- @endsection --}}
+@endsection

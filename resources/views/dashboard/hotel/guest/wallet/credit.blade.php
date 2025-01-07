@@ -1,4 +1,59 @@
 <!-- Button trigger modal -->
+<style>
+    #form-preloader {
+        display: none;
+        /* Hidden by default */
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        align-items: center;
+        justify-content: center;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+        /* background: rgba(255, 255, 255, 0.8); */
+        /* Optional: semi-transparent background */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    #form-preloader .lds-ripple {
+        display: inline-block;
+        position: relative;
+        width: 64px;
+        height: 64px;
+    }
+
+    #form-preloader .form-lds-ripple div {
+        position: absolute;
+        border: 4px solid var(--primary);
+        opacity: 1;
+        border-radius: 50%;
+        animation: form-lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+    }
+
+    #form-preloader .form-lds-ripple div:nth-child(2) {
+        animation-delay: -0.5s;
+    }
+
+    @keyframes form-lds-ripple {
+        0% {
+            top: 28px;
+            left: 28px;
+            width: 0;
+            height: 0;
+            opacity: 1;
+        }
+
+        100% {
+            top: 0;
+            left: 0;
+            width: 56px;
+            height: 56px;
+            opacity: 0;
+        }
+    }
+</style>
 
 <div class="modal fade" id="fund-guest-wallet-modal" tabindex="-1" role="dialog" aria-labelledby="fund-guest-wallet-modal"
     aria-hidden="true">
@@ -12,67 +67,87 @@
             <form action="{{ route('dashboard.hotel.fund-guest-wallet') }}" id="fundGuestWallet" method="post">
                 @csrf
                 <div class="modal-body">
-                    <div class="col-12 m-3">
-                        <div class="form-group">
-                            <label for="amount">How Much Do You Want To Fund?</label>
-                            <input type="text" class="form-control" id="amount" name="amount"
-                                placeholder="Enter Amount" required>
+                    <!-- Amount Field -->
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="amount">How Much Do You Want To Fund?</label>
+                                <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter Amount" required>
+                            </div>
                         </div>
                     </div>
+            
                     <!-- Currency Selection -->
-                    <div class="col-12 mb-3">
-                        <div class="form-group">
-                            <label for="currency" class="form-label">Currency</label>
-                            <select id="currency" name="currency"
-                                class="form-control @error('currency') is-invalid @enderror">
-                                <option value="">Select Currency</option>
-                                @foreach (\App\Constants\CurrencyConstants::CURRENCY_CODES as $currency)
-                                    <option value="{{ $currency }}"
-                                        {{ old('currency', $currency ?? '') == $currency ? 'selected' : '' }}>
-                                        {{ $currency }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('currency')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="currency" class="form-label">Currency</label>
+                                <select id="currency" name="currency" class="form-control @error('currency') is-invalid @enderror">
+                                    <option value="">Select Currency</option>
+                                    @foreach (\App\Constants\CurrencyConstants::CURRENCY_CODES as $currency)
+                                        <option value="{{ $currency }}"
+                                            {{ old('currency', $currency ?? '') == $currency ? 'selected' : '' }}>
+                                            {{ $currency }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('currency')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
                     </div>
-                    <div class="col-12 m-3">
-                        <div class="form-group">
-                            <label for="description">Comment</label>
-                            <textarea class="form-control" name="description" id="description" cols="5" rows="2"
-                                placeholder="Enter comment if any"></textarea>
+            
+                    <!-- Comment Field -->
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="description">Comment</label>
+                                <textarea class="form-control" name="description" id="description" cols="30" rows="2"
+                                    placeholder="Enter comment if any"></textarea>
+                            </div>
                         </div>
                     </div>
-
+            
                     <!-- Stripe Card Element -->
-                    <div class="col-12 m-3">
-                        <label for="card-element">Credit or debit card</label>
-                        <div id="card-element" class="form-control"></div>
-                        <div id="card-errors" role="alert"></div>
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label for="card-element">Credit or Debit Card</label>
+                            <div id="card-element" class="form-control"></div>
+                            <div id="card-errors" role="alert"></div>
+                        </div>
                     </div>
-
-                    <!-- Hidden field to store Stripe token -->
+            
+                    <!-- Preloader -->
+                    <div id="form-preloader" class="row mb-3 text-center">
+                        <div class="col-12">
+                            <div class="form-lds-ripple">
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Hidden Fields -->
                     <input type="hidden" name="stripeToken" id="stripe-token">
-
+                    <input type="hidden" name="stripe_payment" id="fund-wallet-method" value="Stripe">
+                    <input type="hidden" name="payment_method" id="fund-wallet-method" value="CARD">
+                    <input type="hidden" name="hotel_id" value="{{ auth()->user()->id }}">
+                    <input type="hidden" name="guest_id" value="{{ $guest->id }}">
+                    <input type="hidden" name="payable_id" value="{{ $guest->id }}">
+                    <input type="hidden" name="payable_type" value="{{ get_class($guest) }}">
+            
+                    <!-- Modal Footer -->
                     <div class="modal-footer">
-                        <input type="hidden" name="stripe_payment" id="fund-wallet-method" value="Stripe">
-                        <input type="hidden" name="payment_method" id="fund-wallet-method" value="CARD">
-                        <input type="hidden" name="hotel_id" value="{{ auth()->user()->id }}">
-                        <input type="hidden" name="guest_id" value="{{ $guest->id }}">
-                        <input type="hidden" name="payable_id" value="{{ $guest->id }}">
-                        <input type="hidden" name="payable_type" value="{{ get_class($guest) }}">
-
                         <button type="submit" class="btn btn-primary">Fund Now</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </form>
+            
         </div>
     </div>
 </div>
-
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -103,22 +178,30 @@
         });
     });
 </script>
+@include('dashboard.general.form-preloader')
 <script src="https://js.stripe.com/v3/"></script>
 <script>
     var stripe = Stripe('{{ config('app.stripe_key') }}');
     var elements = stripe.elements();
     var card = elements.create('card');
     card.mount('#card-element'); // Create a div with this id in your modal
-
+    // document.getElementById('form-preloader').style.display = 'flex';
     document.getElementById('fund-guest-wallet-modal').addEventListener('submit', function(event) {
         event.preventDefault();
+        // Show the preloader
+        document.getElementById('form-preloader').style.display = 'flex';
+        console.log('running');
+
         stripe.createToken(card).then(function(result) {
             if (result.error) {
-                // Show error in payment form
                 console.error(result.error.message);
+                // Hide the preloader if an error occurs
+                document.getElementById('form-preloader').style.display = 'none';
             } else {
                 // Send token to your server
                 document.getElementById('stripe-token').value = result.token.id;
+                // Hide the preloader and submit the form
+                // document.getElementById('form-preloader').style.display = 'none';
                 event.target.submit();
             }
         });

@@ -5,33 +5,22 @@ namespace App\Services\Dashboard\Finance\Payment;
 use App\Models\HotelSoftware\Guest;
 use App\Models\HotelSoftware\HotelUser;
 use App\Models\HotelSoftware\WalkInCustomer;
-use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use App\Services\Dashboard\Payment\PaymentService;
+use Stripe\Stripe;
 
 class StripeService
 {
     public function charge(Request $request)
     {
         try {
-            // Set the secret key for Stripe
-         $key =   \Stripe\Stripe::setApiKey(config('app.stripe_secret'));
-  
-            // Ensure you have the correct token
+            Stripe::setApiKey(config('app.stripe_secret'));
             if (!$request->stripeToken) {
                 throw new Exception('Stripe token is missing');
             }
-    
-            // Get the amount and currency from the request
             $amount = $request->input('amount') * 100; // Stripe uses cents
-            $currency = strtolower($request->input('currency', 'usd')); 
-    
-            // Get the billing address
+            $currency = strtolower($request->input('currency', 'usd'));
             $address = $this->getAddress($request);
-    
-            // Create the Stripe charge
             $stripeCharge = \Stripe\Charge::create([
                 'amount' => $amount,
                 'currency' => $currency,
@@ -44,13 +33,13 @@ class StripeService
                     'postal_code' => $address['postal_code'],
                 ],
             ]);
-    
-            return $stripeCharge; // Return the charge object
+
+            return $stripeCharge;
         } catch (\Exception $e) {
             throw new Exception('Stripe payment error: ' . $e->getMessage());
         }
     }
-    
+
 
     public function getAddress(Request $request)
     {

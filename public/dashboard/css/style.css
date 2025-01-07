@@ -9272,7 +9272,7 @@ label {
     margin-bottom: 1.5rem !important; } }
 /* Editable */
 #preloader {
-  background-color: #fff;
+  /* background-color: #fff; */
   padding: 0;
   margin: 0;
   height: 100%;

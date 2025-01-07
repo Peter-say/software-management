@@ -12,73 +12,196 @@
             <div class="row mt-4">
                 <div class="col-xl-12">
                     <div class="row">
+                        <div class="row guest-profile">
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex mb-4">
+                                            @if ($guest->id_picture_location)
+                                                <img src="{{ getStorageUrl('hotel/guests/id_picture_locations/' . $guest->id_picture_location) }}"
+                                                    alt="{{ $guest->name }}">
+                                            @else
+                                                <img src="#" alt="No Image">
+                                            @endif
+                                            <div>
+                                                <h2 class="font-w600">{{ $guest->full_name }}</h2>
+                                                <span class="text-secondary">ID {{ $guest->uuid }}</span>
+                                                <div class="call d-flex align-items-center">
+                                                    <a href="javascript:void(0);"><i
+                                                            class="fas fa-phone-alt text-secondary"></i>
+
+                                                    </a>
+                                                    <button class="btn btn-secondary ms-3">
+                                                        <svg class="me-2" xmlns="http://www.w3.org/2000/svg"
+                                                            width="24" height="24.18" viewBox="0 0 24 24.18">
+                                                            <g id="_032-speech-bubble" data-name="032-speech-bubble"
+                                                                transform="translate(-1.63 0)">
+                                                                <g id="Group_9" data-name="Group 9"
+                                                                    transform="translate(1.63 0)">
+                                                                    <path id="Path_118" data-name="Path 118"
+                                                                        d="M22.193,3.6A12,12,0,0,0,1.636,12.361a11.434,11.434,0,0,0,.82,4.015,11.885,11.885,0,0,0,1.7,2.969l-.99,2.347a1.778,1.778,0,0,0,1.951,2.46l4.581-.792A12.013,12.013,0,0,0,22.193,3.6ZM12.749,16.8H9.61a.9.9,0,1,1,0-1.81h3.139a.911.911,0,0,1,.9.9A.893.893,0,0,1,12.749,16.8Zm4.892-3.676H9.61a.911.911,0,0,1-.9-.9.893.893,0,0,1,.9-.9h8.031a.9.9,0,1,1,0,1.81Zm0-3.7H9.61a.9.9,0,1,1,0-1.81h8.031a.911.911,0,0,1,.9.9A.93.93,0,0,1,17.641,9.421Z"
+                                                                        transform="translate(-1.63 0)" fill="#fff" />
+                                                                </g>
+                                                            </g>
+                                                        </svg>
+                                                        Send Message
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="dropdown dropend ms-auto mb-3">
+                                                <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z"
+                                                            stroke="#575757" stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round"></path>
+                                                        <path
+                                                            d="M12 6C12.5523 6 13 5.55228 13 5C13 4.44772 12.5523 4 12 4C11.4477 4 11 4.44772 11 5C11 5.55228 11.4477 6 12 6Z"
+                                                            stroke="#575757" stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round"></path>
+                                                        <path
+                                                            d="M12 20C12.5523 20 13 19.5523 13 19C13 18.4477 12.5523 18 12 18C11.4477 18 11 18.4477 11 19C11 19.5523 11.4477 20 12 20Z"
+                                                            stroke="#575757" stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round"></path>
+                                                    </svg>
+
+                                                </a>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('dashboard.hotel.guests.edit', $guest->id) }}">Edit</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);"
+                                                        onclick="confirmDelete('{{ route('dashboard.hotel.guests.destroy', $guest->id) }}')">Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-column align-items-center text-center mt-3">
+                                            <div class="mt-1">
+                                                <div class="wallet-icon me-3">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        fill="currentColor" class="bi bi-wallet" viewBox="0 0 16 16">
+                                                        <path d="M0 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2H0z" />
+                                                        <path
+                                                            d="M16 6H0v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6zm-2 3.5a.5.5 0 0 1-1 0v-1a.5.5 0 0 1 1 0v1z" />
+                                                    </svg>
+
+                                                </div>
+                                                <!-- Wallet Details -->
+                                                <div>
+                                                    <h5 class="card-subtitle mb-2 text-muted">
+                                                        Wallet Balance: ₦{{ number_format($guest->wallet->balance) }}
+                                                    </h5>
+                                                    <!-- Action Buttons -->
+                                                    <div class="d-flex">
+                                                        <!-- Button to Add Funds -->
+                                                        <button type="button" data-bs-toggle="modal"
+                                                            data-bs-target="#fund-guest-wallet-modal"
+                                                            class="btn btn-sm btn-primary me-2">Add
+                                                            Funds</button>
+                                                        <!-- Button to Deduct Funds -->
+                                                        <button type="button" data-bs-toggle="modal"
+                                                            data-bs-target="#deduct-guest-wallet-modal"
+                                                            class="btn btn-sm btn-danger">Deduct Funds</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="tab-content">
+                                            <div class="tab-pane fade active show" id="AllRooms">
+                                                <div class="table-responsive">
+                                                    <table
+                                                        class="table card-table display mb-4 shadow-hover table-responsive-lg"
+                                                        id="guestTable-all3">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="bg-none">
+                                                                    <div class="form-check style-1">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            value="" id="checkAll3">
+                                                                    </div>
+                                                                </th>
+                                                                <th>Amount</th>
+                                                                <th>Payment Method</th>
+                                                                <th>Type</th>
+                                                                <th>Currency</th>
+                                                                <th>Description</th>
+                                                                <th>Status</th>
+                                                                <th class="bg-none">Date</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {{-- @php
+                                                                dd($guest->transactionHistory());
+                                                            @endphp --}}
+                                                            @foreach ($guest->transactionHistory() as $payment)
+                                                                @foreach ($payment->transactions as $transaction)
+                                                                    <tr>
+                                                                        <td>
+                                                                            <div class="form-check style-1">
+                                                                                <input class="form-check-input"
+                                                                                    type="checkbox" value="">
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <div
+                                                                                class="room-list-bx d-flex align-items-center">
+                                                                                <div>
+                                                                                    <span
+                                                                                        class="fs-16 font-w500 text-nowrap">
+                                                                                        {{ number_format(optional($transaction)->amount) }}
+                                                                                    </span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <span class="fs-16 font-w500 text-nowrap">
+                                                                                {{ optional($transaction->payment)->payment_method }}
+                                                                            </span>
+                                                                        </td>
+                                                                        <td>
+                                                                            <span
+                                                                                class="fs-16 font-w500 text-nowrap">{{ $transaction->transaction_type }}</span>
+                                                                        </td>
+                                                                        <td>{{ optional($transaction)->currency }}</td>
+                                                                        <!-- Use optional() here to avoid errors -->
+                                                                        <td>
+                                                                            <span
+                                                                                class="fs-16 font-w500 text-nowrap">{{ $transaction->description }}</span>
+                                                                        </td>
+                                                                        <td>{{ $transaction->status }}</td>
+                                                                        <td>
+                                                                            <span
+                                                                                class="fs-16 font-w500 text-nowrap">{{ $transaction->created_at }}</span>
+                                                                        </td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            @endforeach
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                @include('dashboard.hotel.guest.wallet.credit', ['guest' => $guest])
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-xl-12">
                             <div class="card overflow-hidden">
                                 <div class="row m-0">
                                     <div class="col-xl-6 p-0">
                                         <div class="card-body">
+
                                             <div class="guest-profile">
-                                                <div class="d-flex">
-                                                    @if ($guest->id_picture_location)
-                                                        <img src="{{ getStorageUrl('hotel/guest/id/' . $guest->id_picture_location) }}"
-                                                            alt="{{ $guest->name }}">
-                                                    @else
-                                                        <img src="#" alt="No Image">
-                                                    @endif
-                                                    <div>
-                                                        <h2 class="font-w600">{{ $guest->full_name }}</h2>
-                                                        <span class="text-secondary">ID {{ $guest->uuid }}</span>
-                                                        <div class="call d-flex align-items-center">
-                                                            <a href="javascript:void(0);"><i
-                                                                    class="fas fa-phone-alt text-secondary"></i>
-
-                                                            </a>
-                                                            <button class="btn btn-secondary ms-3">
-                                                                <svg class="me-2" xmlns="http://www.w3.org/2000/svg"
-                                                                    width="24" height="24.18" viewBox="0 0 24 24.18">
-                                                                    <g id="_032-speech-bubble" data-name="032-speech-bubble"
-                                                                        transform="translate(-1.63 0)">
-                                                                        <g id="Group_9" data-name="Group 9"
-                                                                            transform="translate(1.63 0)">
-                                                                            <path id="Path_118" data-name="Path 118"
-                                                                                d="M22.193,3.6A12,12,0,0,0,1.636,12.361a11.434,11.434,0,0,0,.82,4.015,11.885,11.885,0,0,0,1.7,2.969l-.99,2.347a1.778,1.778,0,0,0,1.951,2.46l4.581-.792A12.013,12.013,0,0,0,22.193,3.6ZM12.749,16.8H9.61a.9.9,0,1,1,0-1.81h3.139a.911.911,0,0,1,.9.9A.893.893,0,0,1,12.749,16.8Zm4.892-3.676H9.61a.911.911,0,0,1-.9-.9.893.893,0,0,1,.9-.9h8.031a.9.9,0,1,1,0,1.81Zm0-3.7H9.61a.9.9,0,1,1,0-1.81h8.031a.911.911,0,0,1,.9.9A.93.93,0,0,1,17.641,9.421Z"
-                                                                                transform="translate(-1.63 0)"
-                                                                                fill="#fff" />
-                                                                        </g>
-                                                                    </g>
-                                                                </svg>
-                                                                Send Message
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="dropdown dropend ms-auto">
-                                                        <a href="javascript:void(0);" class="btn-link"
-                                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <svg width="24" height="24" viewBox="0 0 24 24"
-                                                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path
-                                                                    d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z"
-                                                                    stroke="#575757" stroke-width="2" stroke-linecap="round"
-                                                                    stroke-linejoin="round"></path>
-                                                                <path
-                                                                    d="M12 6C12.5523 6 13 5.55228 13 5C13 4.44772 12.5523 4 12 4C11.4477 4 11 4.44772 11 5C11 5.55228 11.4477 6 12 6Z"
-                                                                    stroke="#575757" stroke-width="2" stroke-linecap="round"
-                                                                    stroke-linejoin="round"></path>
-                                                                <path
-                                                                    d="M12 20C12.5523 20 13 19.5523 13 19C13 18.4477 12.5523 18 12 18C11.4477 18 11 18.4477 11 19C11 19.5523 11.4477 20 12 20Z"
-                                                                    stroke="#575757" stroke-width="2" stroke-linecap="round"
-                                                                    stroke-linejoin="round"></path>
-                                                            </svg>
-
-                                                        </a>
-                                                        <div class="dropdown-menu">
-                                                            <a class="dropdown-item"
-                                                                href="{{ route('dashboard.hotel.guests.edit', $guest->id) }}">Edit</a>
-                                                            <a class="dropdown-item" href="javascript:void(0);"
-                                                                onclick="confirmDelete('{{ route('dashboard.hotel.guests.destroy', $guest->id) }}')">Delete</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                                 @php
                                                     // Get the most recent reservation
                                                     $latest_reservation = $guest->latestReservation();
@@ -88,7 +211,7 @@
                                                 @endphp
 
                                                 @if ($latest_reservation)
-                                                    <div class="d-flex">
+                                                    <div class="d-flex mt-5">
                                                         <div class="mt-4 check-status">
                                                             <span class="d-block mb-2">Check In</span>
                                                             <span class="font-w500 fs-16">

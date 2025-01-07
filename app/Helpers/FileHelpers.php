@@ -23,7 +23,7 @@ class FileHelpers
         $file->move($destinationPath, $file_name);
         if (!file_exists($destinationPath)) {
             mkdir($destinationPath, 0755, true);
-        }
+        }   
         $fileType = self::fileType($file->getClientOriginalExtension());
         $fileRecord = File::create([
             'file_name' => $file_name,

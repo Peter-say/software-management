@@ -72,9 +72,9 @@ function getItemAvailability(int $status): string
         return 'Not Available';
     }
 }
-function getStatuses()
+function getStatuses($status = null)
 {
-    return [
+    $statuses = [
         'pending' => [
             'icon' => 'fas fa-hourglass-start',
             'color' => 'text-warning',
@@ -91,7 +91,10 @@ function getStatuses()
             'label' => 'Ready'
         ],
     ];
+
+    return $status && isset($statuses[$status]) ? $statuses[$status] : null;
 }
+
 
 function formatNumber($number)
 {

@@ -23,12 +23,12 @@ class DatabaseSeeder extends Seeder
             StateSeeder::class,
             CountrySeeder::class,
             HotelSeeder::class,
+            CurrencyTableSeeder::class,
             HotelRoomTypeSeeder::class,
             OutletSeeder::class,
             ItemCategorySeeder::class,
             StoreItemSeeder::class,
             ExpenseCategorySeeder::class,
-             CurrencyTableSeeder::class,
         ]);
     }
 }

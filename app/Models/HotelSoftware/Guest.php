@@ -6,9 +6,11 @@ use App\Models\Country;
 use App\Models\hotelSoftware\GuestPayment;
 use App\Models\Payment;
 use App\Models\State;
+use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Wallet;
 use App\Services\Dashboard\Hotel\Room\ReservationService;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -93,5 +95,26 @@ class Guest extends Model
             ->when($latestReservation, function ($query, $latestReservation) {
                 return $query->where('id', '!=', $latestReservation->id);
             })->latest('checked_in_at')->get();
+    }
+
+    public function transactions()
+    {
+        // Retrieve transactions for wallet funding
+        $walletTransactions = $this->morphMany(Payment::class, 'payable')
+            ->where('payable_type', self::class) // App\Model\Hotelsoftware\Guest
+            ->with('transactions'); // Load transactions for payments
+
+        // Retrieve transactions for reservations
+        $reservationTransactions = Payment::whereHasMorph('payable',[RoomReservation::class],
+            function (Builder $query) {$query->where('guest_id', $this->id);
+            })->with('transactions'); 
+
+        return $walletTransactions->union($reservationTransactions);
+    }
+
+
+    public function transactionHistory()
+    {
+        return $this->transactions()->latest()->get();
     }
 }

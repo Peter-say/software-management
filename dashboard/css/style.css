@@ -9270,7 +9270,7 @@ label {
 
   .mb-xxl-4 {
     margin-bottom: 1.5rem !important; } }
-/* Editable */
+/* Editable
 #preloader {
   background-color: #fff;
   padding: 0;
@@ -9294,7 +9294,7 @@ label {
     border-radius: 50%;
     animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite; }
   #preloader .lds-ripple div:nth-child(2) {
-    animation-delay: -0.5s; }
+    animation-delay: -0.5s; } */
 @keyframes lds-ripple {
   0% {
     top: 36px;
@@ -9308,8 +9308,8 @@ label {
     width: 72px;
     height: 72px;
     opacity: 0; } }
-[data-theme-version="dark"] #preloader {
-  background-color: #171717; }
+/* [data-theme-version="dark"] #preloader {
+  background-color: #171717; } */
 
 .footer {
   padding-left: 17.1875rem;

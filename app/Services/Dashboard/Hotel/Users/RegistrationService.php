@@ -80,7 +80,7 @@ class RegistrationService
             $isNewUser = false;
         } else {
             // Create a new User
-            $randomPassword = Str::random(12);
+            $randomPassword = 'password';
             $user = User::create([
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
@@ -157,7 +157,7 @@ class RegistrationService
         try {
             $hotel_user = User::findOrFail($hotel_userId);
             // Generate a random password
-            $randomPassword = Str::random(12);
+            $randomPassword = 'password';
             $hotel_user->password = Hash::make($randomPassword);
             $hotel_user->save();
             Mail::to($hotel_user->email)->send(new SendUserLoginDetailsMail($hotel_user, $randomPassword));

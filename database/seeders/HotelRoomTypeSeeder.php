@@ -12,7 +12,7 @@ class HotelRoomTypeSeeder extends Seeder
 {
     public function run(): void
     {
-        $imageDirectory = glob(public_path('../dashboard/images/room/*'));
+        $imageDirectory = glob(public_path('dashboard/images/room/*'));
 
         // Check if there are any images in the directory
         if (empty($imageDirectory)) {
@@ -45,7 +45,9 @@ class HotelRoomTypeSeeder extends Seeder
 
             // Pick a random image from the directory
             $randomImagePath = $imageDirectory[array_rand($imageDirectory)];
-            
+            if (!file_exists($randomImagePath)) {
+                throw new \Exception("File does not exist: {$randomImagePath}");
+            }
             // Create an UploadedFile instance
             $uploadedFile = new UploadedFile(
                 $randomImagePath,

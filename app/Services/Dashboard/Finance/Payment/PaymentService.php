@@ -19,14 +19,15 @@ class PaymentService
 
     public function __construct(StripeService $stripe_service)
     {
-        $this->stripe_service = $stripe_service; // Assigning the stripe service to the property
+        $this->stripe_service = $stripe_service; 
     }
 
     public function validatePayment(array $data)
     {
         $validator = Validator::make($data, [
             'amount' => 'required|numeric|min:1', // Amount is required and must be a positive number
-            'currency' => 'nullable|string',Rule::in(CurrencyConstants::CURRENCY_CODES), // Currency is nullable and must be one of the allowed currencies if provided
+            'currency' => 'nullable|string',
+            Rule::in(CurrencyConstants::CURRENCY_CODES), // Currency is nullable and must be one of the allowed currencies if provided
             'payment_method' => 'required|string|in:CARD,BANK_TRANSFER,WALLET', // Payment method type (e.g., card, bank transfer) is required
             'description' => 'nullable|string',
         ]);
@@ -35,7 +36,6 @@ class PaymentService
             throw new ValidationException($validator);
         }
     }
-
     public function messages()
     {
         return [
@@ -54,6 +54,7 @@ class PaymentService
 
     public function processPayment(Request $request, $payment_id = null)
     {
+        // dd('ddd');
         return DB::transaction(function () use ($request, $payment_id) {
             $data = $this->validatePayment($request->all());
             $data['user_id'] = User::getAuthenticatedUser()->id;
@@ -65,25 +66,22 @@ class PaymentService
             if ($request->stripe_payment === 'Stripe') {
                 // Create the Stripe payment using the Stripe service
                 $stripeCharge = $this->stripe_service->charge($request);
-                // Handle successful charge
                 if ($stripeCharge->status == 'succeeded') {
                     $data['status'] = 'completed';
-                    $data['currency'] = strtoupper($stripeCharge->currency); // Save the currency
-                    $data['payment_method'] = strtoupper($stripeCharge->payment_method_details->type ?? 'unknown');// Save the payment method
+                    $data['payment_method_token'] = $request->input('stripeToken');
+                    $data['currency'] = strtoupper($stripeCharge->currency);
+                    $data['payment_method'] = strtoupper($stripeCharge->payment_method_details->type ?? 'unknown');
+                } elseif ($wallet = $request->input('WALLET')) {
+                    $data['payment_method'] = strtoupper($wallet);
                 } else {
                     throw new Exception('Stripe payment failed: ' . $stripeCharge->failure_message);
                 }
             }
-
-            // Create the payment record
             $payment = Payment::create($data);
-
-            // Evaluate payment status based on the paid amount and total amount
             $statusInfo = $this->evaluatePaymentStatus($data['amount'], $request->total_amount);
             $payment->status = $statusInfo['status'];
             $payment->save();
-
-            return $payment; // Return the created payment
+            return $payment;
         });
     }
 

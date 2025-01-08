@@ -59,11 +59,11 @@ class GuestController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $uuid)
     {
         try {
             return view('dashboard.hotel.guest.details', [
-                'guest' => $this->guest_service->getById($id),
+                'guest' => Guest::where('uuid', $uuid)->first(),
             ]);
         } catch (ModelNotFoundException $e) {
             return redirect()->back()->with('error_message', 'Guest not found');

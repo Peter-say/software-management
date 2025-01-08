@@ -38,11 +38,11 @@
                                     @foreach ($guests as $guest)
                                         <tr>
                                             @if ($guest->id_picture_location)
-                                                <td><img class="rounded-circle" width="35"
-                                                        src="{{ asset('storage/hotel/guest/id/' . $guest->id_picture_location) }}"
+                                                <td><img class="" width="35"
+                                                        src="{{ getStorageUrl('hotel/guests/id_picture_locations/' . $guest->id_picture_location) }}"
                                                         alt="ID Picture"></td>
                                             @else
-                                                <td><img class="rounded-circle" width="35"
+                                                <td><img class="" width="35"
                                                         src="{{ asset('dashboard/images/profile/small/pic1.jpg') }}"
                                                         alt="ID Picture"></td>
                                             @endif
@@ -58,7 +58,7 @@
                                             <td>{{ $guest->birthday ? $guest->birthday->format('D M, Y') : 'N/A' }}</td>
                                             <td>
                                                 <div class="d-flex">
-                                                    <a href="{{ route('dashboard.hotel.guests.show', $guest->id) }}" class="btn btn-primary shadow btn-xs sharp me-1">
+                                                    <a href="{{ route('dashboard.hotel.guests.show', $guest->uuid) }}" class="btn btn-primary shadow btn-xs sharp me-1">
                                                         <i class="fas fa-eye"></i>
                                                     </a>
                                                     <a href="{{ route('dashboard.hotel.guests.edit', $guest->id) }}"

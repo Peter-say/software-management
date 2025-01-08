@@ -1,12 +1,12 @@
 <?php
 
-use App\Models\hotelSoftware\ExpenseCategory;
-use App\Models\hotelSoftware\ExpenseItem;
+use App\Models\HotelSoftware\ExpenseCategory;
+use App\Models\HotelSoftware\ExpenseItem;
 use App\Models\HotelSoftware\Guest;
 use App\Models\HotelSoftware\ItemCategory;
 use App\Models\HotelSoftware\Outlet;
 use App\Models\HotelSoftware\Room;
-use App\Models\hotelSoftware\Supplier;
+use App\Models\HotelSoftware\Supplier;
 use App\Models\HotelSoftware\WalkInCustomer;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -72,9 +72,9 @@ function getItemAvailability(int $status): string
         return 'Not Available';
     }
 }
-function getStatuses()
+function getStatuses($status = null)
 {
-    return [
+    $statuses = [
         'pending' => [
             'icon' => 'fas fa-hourglass-start',
             'color' => 'text-warning',
@@ -91,7 +91,10 @@ function getStatuses()
             'label' => 'Ready'
         ],
     ];
+
+    return $status && isset($statuses[$status]) ? $statuses[$status] : null;
 }
+
 
 function formatNumber($number)
 {

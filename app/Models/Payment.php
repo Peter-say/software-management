@@ -16,6 +16,7 @@ class Payment extends Model
         'amount',
         'currency',
         'payment_method',
+        'payment_method_token',
         'transaction_id',
         'status',
         'description',
@@ -31,6 +32,7 @@ class Payment extends Model
         return $this->belongsTo(RoomReservation::class, 'payable');
     }
 
+    
     public function transactions()
     {
         return $this->hasMany(Transaction::class);

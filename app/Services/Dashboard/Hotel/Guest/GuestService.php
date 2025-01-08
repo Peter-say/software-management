@@ -80,10 +80,13 @@ class GuestService
 
         // Handle ID picture upload
         if ($request->hasFile('id_picture_location')) {
-            $imageDirectory = 'hotel/guest/id';
-            Storage::disk('public')->makeDirectory($imageDirectory);
-            $imagePath = basename(FileHelpers::saveImageRequest($request->file('id_picture_location'), $imageDirectory));
-            $validatedData['id_picture_location'] = $imagePath;
+            $id_directory = 'hotel/guests/id_picture_locations';
+            $id_path = FileHelpers::saveImageRequest($request->file('id_picture_location'), $id_directory);
+            $validatedData['id_picture_location'] = basename($id_path);
+            // Delete the old id_picture_location if it exists
+            if (!empty($oldid_picture_locationPath)) {
+                FileHelpers::deleteFiles([public_path($id_directory . '/' . $oldid_picture_locationPath)]);
+            }
         }
 
         // Check for existing guest excluding the current guest ID

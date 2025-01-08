@@ -59,7 +59,8 @@ class Guest extends Model
         return $this->morphMany(Payment::class, 'payable');
     }
 
-    public function restaurantOrder(){
+    public function restaurantOrder()
+    {
         return $this->hasMany(RestaurantOrder::class);
     }
 
@@ -77,13 +78,20 @@ class Guest extends Model
         });
     }
 
+    public function latestReservation()
+    {
+        return $this->reservations()
+            ->whereNotNull('checked_in_at')
+            ->latest('created_at')
+            ->first();
+    }
+
     public function purchaseHistory()
     {
-        return $this->reservations()->whereNotNull('checked_in_at')
-        ->whereNotNull('checked_out_at')
-        ->latest('checked_in_at') // Order by the most recent check-in
-        ->skip(1) // Skip the most recent reservation
-        ->take(PHP_INT_MAX) // Set an arbitrarily large limit to get all remaining records
-        ->get();
+        $latestReservation = $this->latestReservation();
+        return $this->reservations()->whereNotNull('checked_in_at')->whereNotNull('checked_out_at')
+            ->when($latestReservation, function ($query, $latestReservation) {
+                return $query->where('id', '!=', $latestReservation->id);
+            })->latest('checked_in_at')->get();
     }
 }

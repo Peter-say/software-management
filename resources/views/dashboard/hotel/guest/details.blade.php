@@ -80,12 +80,8 @@
                                                     </div>
                                                 </div>
                                                 @php
-                                                    // Get the most recent reservation with a check-in date
-                                                    $latest_reservation = $guest
-                                                        ->reservations()
-                                                        ->whereNotNull('checked_in_at')
-                                                        ->latest('created_at')
-                                                        ->first();
+                                                    // Get the most recent reservation
+                                                    $latest_reservation = $guest->latestReservation();
                                                     $room = $latest_reservation->room ?? null;
                                                     $roomType = $room?->roomType ?? null;
                                                     $currency = $roomType?->currency ?? null;
@@ -303,7 +299,7 @@
                                                     <div class="mt-sm-0 mt-3">
                                                         <span class="d-block mb-2 text-black">Price</span>
                                                         <span
-                                                            class="font-w500 fs-24 text-black">{{ $purchase_history->room->roomType->currency->symbol }}{{ $purchase_history->room->roomType->rate }}<small
+                                                            class="font-w500 fs-24 text-black">{{ $purchase_history->room->roomType->currency->symbol ?? '' }}{{ $purchase_history->room->roomType->rate }}<small
                                                                 class="fs-14 ms-2 text-secondary">/night</small></span>
                                                     </div>
                                                 </div>

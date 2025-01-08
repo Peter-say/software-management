@@ -4,12 +4,14 @@
     <div class="content-body">
         <div class="container-fluid">
             <div class="row page-titles">
+                @if (Auth::user()->hotelUser)
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active"><a href="{{route('dashboard.home')}}">Home</a></li>
                     <li class="breadcrumb-item active"><a href="{{route('dashboard.hotel.settings.')}}">Settings</a></li>
-                    <li class="breadcrumb-item active"><a href="{{route('dashboard.hotel.settings.hotel-info.module-preferences')}}">Hotel Info</a></li>
+                    <li class="breadcrumb-item active"><a href="{{route('dashboard.hotel.settings.hotel-info.')}}">Hotel Info</a></li>
                     <li class="breadcrumb-item"><a href="javascript:void(0)">Choose Module</a></li>
                 </ol>
+                @endif
             </div>
             <!-- row -->
             <div class="row">
@@ -24,7 +26,7 @@
                             <p class="card-text">
                                 Choose the modules you want to enable for your hotel operations. These modules define the
                                 features and tools available in your dashboard.
-                                @if (!$selected_modules)
+                                @if (isset($selected_modules))
                                     You can always modify your selection later in the settings.
                                 @endif
                             </p>

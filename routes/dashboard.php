@@ -87,7 +87,6 @@ Route::middleware('auth', 'verified')->group(function () {
                 Route::get('/', [SettingController::class, 'index']);
                 Route::prefix('hotel-info')->as('hotel-info.')->group(function () {
                     Route::get('/', [HotelSettingController::class, 'index']);
-                    Route::get('/module-preferences', [HotelSettingController::class, 'updateModulePreference'])->name('module-preferences');
                 });
             });
         });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Services\Dashboard\Hotel\DashboardService;
 use App\Http\Controllers\Controller;
+use App\Models\HotelSoftware\HotelModulePreference;
 use App\Models\HotelSoftware\HotelUser;
 use App\Models\HotelSoftware\Room;
 use App\Models\HotelSoftware\RoomReservation;
@@ -36,6 +37,11 @@ class DashboardController extends Controller
         $user = User::getAuthenticatedUser();
         $hotelUser = HotelUser::where('user_id', $user->id)->first();
         if ($hotelUser) {
+            $hasModules = HotelModulePreference::where('hotel_id', $hotelUser->hotel->id)->exists();
+            if ($hasModules) {
+                return redirect()->route('dashboard.home');
+            }
+            return redirect()->route('dashboard.hotel.module-preferences.create');
             return view('dashboard.index', [
                 'room_reservation_stats' =>  $this->dashboard_service->stats(['period' => $period]),
                 'occupiedRooms' => $this->dashboard_service->countOccupiedRoomsToday(),
@@ -56,7 +62,7 @@ class DashboardController extends Controller
 
         // Fetch the next set of reservations, excluding already loaded ones
         $new_reservations = RoomReservation::where('hotel_id', User::getAuthenticatedUser()->hotel->id)
-        ->whereNotIn('id', $recent_room_reservations_ids)
+            ->whereNotIn('id', $recent_room_reservations_ids)
             ->where('created_at', '>=', Carbon::now()->subDays(7))
             ->latest('created_at')->skip(($page - 1) * 2)
             ->take(2)

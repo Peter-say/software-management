@@ -15,7 +15,7 @@
                         <h5 class="card-header">Hotel Setings</h5>
                         <div class="card-body d-flex justify-content-between">
                             Manage Hotel details here
-                            <a href="{{ route('dashboard.hotel.settings.info.') }}" class="btn btn-primary">Proceed</a>
+                            <a href="{{ route('dashboard.hotel.settings.hotel-info.') }}" class="btn btn-primary">Proceed</a>
                         </div>
                     </div>
                 </div>

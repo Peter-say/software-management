@@ -6,7 +6,6 @@ use App\Services\Dashboard\Hotel\DashboardService;
 use App\Http\Controllers\Controller;
 use App\Models\HotelSoftware\HotelModulePreference;
 use App\Models\HotelSoftware\HotelUser;
-use App\Models\HotelSoftware\Room;
 use App\Models\HotelSoftware\RoomReservation;
 use App\Models\User;
 use App\Services\Dashboard\Hotel\Chart\DashboardReservationService;

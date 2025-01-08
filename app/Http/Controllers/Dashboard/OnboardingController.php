@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\HotelSoftware\HotelModulePreference;
 use App\Models\HotelSoftware\HotelUser;
 use App\Models\User;
 use App\Services\Dashboard\Onboarding;
@@ -25,9 +26,14 @@ class OnboardingController extends Controller
 
         // Check if the user is associated with any hotel
         $hotelUser = HotelUser::where('user_id', $user->id)->first();
-
-        if ($hotelUser) {
+        $hasModules = false;
+        if ($hotelUser && $hotelUser->hotel) {
+            $hasModules = HotelModulePreference::where('hotel_id', $hotelUser->hotel->id)->exists();
+        }
+        if ($hasModules) {
             return redirect()->route('dashboard.home');
+        } elseif (!$hasModules) {
+            return redirect()->route('dashboard.hotel.module-preferences.create');
         } else {
             return view('dashboard.onbaording.onboarding');
         }
@@ -53,7 +59,7 @@ class OnboardingController extends Controller
             $this->onboarding->saveHotelInfo($request);
             return redirect()->route('dashboard.hotel.module-preferences.create')->with('success_message', "Hotel details set up successfully");
         } catch (Exception $e) {
-             throw $e;
+            throw $e;
             return back()->with('error_message', 'An error occurred while submitting your request. Please try again.');
         }
     }

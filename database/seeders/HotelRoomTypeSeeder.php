@@ -12,7 +12,7 @@ class HotelRoomTypeSeeder extends Seeder
 {
     public function run(): void
     {
-        $imageDirectory = glob(public_path('dashboard/images/room/*'));
+        $imageDirectory = glob(getStorageUrl('dashboard/images/room/*'));
 
         // Check if there are any images in the directory
         if (empty($imageDirectory)) {

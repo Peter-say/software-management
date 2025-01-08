@@ -17,10 +17,8 @@ use App\Http\Controllers\Dashboard\Hotel\SupplierController;
 use App\Http\Controllers\Dashboard\Hotel\UsersController;
 use App\Http\Controllers\Dashboard\Notification\NotificationController;
 use App\Http\Controllers\Dashboard\OnboardingController;
-use App\Models\hotelSoftware\KitchenOrder;
-use App\Models\HotelSoftware\RestaurantOrder;
-use App\Models\User;
-use App\Notifications\KitchenOrderNotification;
+use App\Http\Controllers\Dashboard\Settings\HotelSettingController;
+use App\Http\Controllers\Dashboard\Settings\SettingController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -84,6 +82,14 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::get('notifications/fetch-all', [NotificationController::class, 'fetchAll'])->name('notifications.fetch-all');
             Route::delete('/notifications/{id}/delete', [NotificationController::class, 'deleteNotification'])->name('notifications.delete');
             Route::delete('/notifications/delete-bulk', [NotificationController::class, 'deleteBulk'])->name('notifications.delete-bulk');
+
+            Route::prefix('settings')->as('settings.')->group(function () {
+                Route::get('/', [SettingController::class, 'index']);
+                Route::prefix('hotel-info')->as('hotel-info.')->group(function () {
+                    Route::get('/', [HotelSettingController::class, 'index']);
+                    Route::get('/module-preferences', [HotelSettingController::class, 'updateModulePreference'])->name('module-preferences');
+                });
+            });
         });
         Route::prefix('payments')->as('payments.')->group(function () {
             Route::post('pay-with-card', [PaymentController::class, 'payWithCard'])->name('pay-with-card');

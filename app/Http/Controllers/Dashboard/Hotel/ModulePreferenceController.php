@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Dashboard\Hotel;
 
 use App\Constants\AppConstants;
 use App\Http\Controllers\Controller;
+use App\Models\HotelSoftware\Hotel;
 use App\Models\HotelSoftware\HotelModulePreference;
 use App\Models\HotelSoftware\ModulePreference;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -74,7 +76,15 @@ class ModulePreferenceController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $modules = AppConstants::MODULE_NAMES;
+        $hotel = User::getAuthenticatedUser()->hotel;
+        $selected_modules = $hotel->modulePreferences->pluck('name')->toArray();
+
+        // dd( $selected_modules,  $selected_modules, $hotel);
+        return view('dashboard.hotel.module-preference.create', [
+            'modules' => $modules,
+            'selected_modules' => $selected_modules
+        ]);
     }
 
     /**
@@ -85,19 +95,22 @@ class ModulePreferenceController extends Controller
         try {
             $hotel_id = User::getAuthenticatedUser()->hotel->id;
             $selected_modules = explode(',', $request->input('selected_modules'));
-            $existing_preferences = HotelModulePreference::where('hotel_id', $hotel_id)->with('modules')
+            $existing_preferences = ModulePreference::where('hotel_id', $hotel_id)
                 ->get();
             $existing_module_names = $existing_preferences->map(function ($preference) {
-                return $preference->modules->name;
+                return $preference->name;
             })->toArray();
             $modules_to_add = array_diff($selected_modules, $existing_module_names);
             $modules_to_remove = array_diff($existing_module_names, $selected_modules);
             foreach ($modules_to_remove as $module_name) {
+                if (!in_array($module_name, $existing_module_names)) {
+                    throw new Exception("Module '{$module_name}' is missing or has already been deleted.");
+                }
+            }
+            foreach ($modules_to_remove as $module_name) {
                 $module = ModulePreference::where('name', $module_name)->first();
                 if ($module) {
-                    HotelModulePreference::where('hotel_id', $hotel_id)
-                        ->where('module_preference_id', $module->id)
-                        ->delete();
+                    $module->delete();
                 }
             }
             foreach ($modules_to_add as $module_name) {
@@ -112,7 +125,7 @@ class ModulePreferenceController extends Controller
                     'module_preference_id' => $module->id,
                 ]);
             }
-            return redirect()->route('dashboard.home')->with('success_message', 'Modules updated successfully');
+            return redirect()->back()->with('success_message', 'Modules preference updated successfully');
         } catch (ValidationException $e) {
             return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {

@@ -113,6 +113,12 @@
                     <li><a href="{{ route('dashboard.hotel.restaurant.view-orders') }}">View Orders</a></li> --}}
                     </ul>
                 </li>
+                <li>
+                    <a href="{{ route('dashboard.hotel.settings.') }}" aria-expanded="false">
+                        <i class="flaticon-013-checkmark"></i>
+                        <span class="nav-text">Settings</span>
+                    </a>
+                </li>
             </ul>
             <div class="dropdown header-profile2">
                 <div class="header-info2 text-center">

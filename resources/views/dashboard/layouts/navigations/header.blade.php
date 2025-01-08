@@ -1,38 +1,84 @@
 <!--**********************************
    Header start
   ***********************************-->
-  <div class="header">
+<div class="header">
     <div class="header-content">
         <nav class="navbar navbar-expand">
             <div class="collapse navbar-collapse justify-content-between">
                 <div class="header-left">
                     <div class="dashboard_bar">
                         @if (Route::currentRouteName() == 'dashboard.home')
-                        Dashboard
-                    @elseif (in_array(Route::currentRouteName(), ['dashboard.hotel-users.overview', 'dashboard.hotel-users.create', 'dashboard.hotel-users.edit']))
-                        Hotel Users
-                    @elseif (in_array(Route::currentRouteName(), ['dashboard.hotel.expenses.index', 'dashboard.hotel.expenses.create', 'dashboard.hotel.expenses.edit']))
-                        Expenses
-                    @elseif (in_array(Route::currentRouteName(), ['dashboard.hotel.guests.index', 'dashboard.hotel.guests.create', 'dashboard.hotel.guests.edit', 'dashboard.hotel.guests.show']))
-                        Guest
-                    @elseif (Route::currentRouteName() == 'dashboard.hotel.kitchen.orders')
-                        Kitchen Order
-                    @elseif (in_array(Route::currentRouteName(), ['dashboard.hotel.notifications.view-all', 'dashboard.hotel.notifications.view']))
-                        Notification
-                    @elseif (in_array(Route::currentRouteName(), ['dashboard.hotel.outlets.index', 'dashboard.hotel.outlets.create', 'dashboard.hotel.outlets.edit']))
-                        Outlets
-                    @elseif (in_array(Route::currentRouteName(), ['dashboard.hotel.reservations.index', 'dashboard.hotel.reservations.create', 'dashboard.hotel.reservations.show', 'dashboard.hotel.reservations.edit']))
-                        Room Reservation
-                    @elseif (in_array(Route::currentRouteName(), ['dashboard.hotel.restaurant-items.index', 'dashboard.hotel.restaurant-items.create', 'dashboard.hotel.restaurant-items.edit']))
-                        Restaurant Items
-                    @elseif (in_array(Route::currentRouteName(), ['dashboard.hotel.restaurant.create-order', 'dashboard.hotel.restaurant.view-orders']))
-                        Restaurant Order
-                    @elseif (in_array(Route::currentRouteName(), ['dashboard.hotel.rooms.index', 'dashboard.hotel.rooms.create', 'dashboard.hotel.rooms.edit']))
-                        Rooms
-                    @elseif (in_array(Route::currentRouteName(), ['dashboard.hotel.suppliers.index', 'dashboard.hotel.suppliers.create', 'dashboard.hotel.suppliers.edit']))
-                        Suppliers
-                    @endif
-                    
+                            Dashboard
+                        @elseif (in_array(Route::currentRouteName(), [
+                                'dashboard.hotel-users.overview',
+                                'dashboard.hotel-users.create',
+                                'dashboard.hotel-users.edit',
+                            ]))
+                            Hotel Users
+                        @elseif (in_array(Route::currentRouteName(), [
+                                'dashboard.hotel.expenses.index',
+                                'dashboard.hotel.expenses.create',
+                                'dashboard.hotel.expenses.edit',
+                            ]))
+                            Expenses
+                        @elseif (in_array(Route::currentRouteName(), [
+                                'dashboard.hotel.guests.index',
+                                'dashboard.hotel.guests.create',
+                                'dashboard.hotel.guests.edit',
+                                'dashboard.hotel.guests.show',
+                            ]))
+                            Guest
+                        @elseif (Route::currentRouteName() == 'dashboard.hotel.kitchen.orders')
+                            Kitchen Order
+                        @elseif (in_array(Route::currentRouteName(), [
+                                'dashboard.hotel.notifications.view-all',
+                                'dashboard.hotel.notifications.view',
+                            ]))
+                            Notification
+                        @elseif (in_array(Route::currentRouteName(), [
+                                'dashboard.hotel.outlets.index',
+                                'dashboard.hotel.outlets.create',
+                                'dashboard.hotel.outlets.edit',
+                            ]))
+                            Outlets
+                        @elseif (in_array(Route::currentRouteName(), [
+                                'dashboard.hotel.reservations.index',
+                                'dashboard.hotel.reservations.create',
+                                'dashboard.hotel.reservations.show',
+                                'dashboard.hotel.reservations.edit',
+                            ]))
+                            Room Reservation
+                        @elseif (in_array(Route::currentRouteName(), [
+                                'dashboard.hotel.restaurant-items.index',
+                                'dashboard.hotel.restaurant-items.create',
+                                'dashboard.hotel.restaurant-items.edit',
+                            ]))
+                            Restaurant Items
+                        @elseif (in_array(Route::currentRouteName(), [
+                                'dashboard.hotel.restaurant.create-order',
+                                'dashboard.hotel.restaurant.view-orders',
+                            ]))
+                            Restaurant Order
+                        @elseif (in_array(Route::currentRouteName(), [
+                                'dashboard.hotel.rooms.index',
+                                'dashboard.hotel.rooms.create',
+                                'dashboard.hotel.rooms.edit',
+                            ]))
+                            Rooms
+                        @elseif (in_array(Route::currentRouteName(), [
+                                'dashboard.hotel.suppliers.index',
+                                'dashboard.hotel.suppliers.create',
+                                'dashboard.hotel.suppliers.edit',
+                            ]))
+                            Suppliers
+                        @elseif (in_array(Route::currentRouteName(), [
+                                'dashboard.hotel.settings.',
+                                'dashboard.hotel.settings.info.',
+                                'dashboard.hotel.module-preferences.edit',
+                            ]))
+                            Settings
+                        @endif
+
                     </div>
                 </div>
                 <div class="nav-item d-flex align-items-center">
@@ -78,8 +124,8 @@
                                 </g>
                             </svg>
 
-                            <span
-                                class="badge light text-white bg-primary rounded-circle " id="notificationcount"></span>
+                            <span class="badge light text-white bg-primary rounded-circle "
+                                id="notificationcount"></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
                             <div id="DZ_W_Notification1" class="widget-media dlab-scroll p-3" style="height:380px;">
@@ -87,16 +133,15 @@
                                     <!-- Existing notifications will be populated here -->
                                 </ul>
                             </div>
-                            <a class="all-notification" href="{{route('dashboard.hotel.notifications.view-all')}}">See all notifications <i
-                                    class="ti-arrow-end"></i></a>
+                            <a class="all-notification" href="{{ route('dashboard.hotel.notifications.view-all') }}">See
+                                all notifications <i class="ti-arrow-end"></i></a>
                         </div>
-                        
+
                     </li>
 
                     <li class="nav-item dropdown notification_dropdown">
                         <a class="nav-link " href="javascript:void(0);" data-bs-toggle="dropdown">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="21.6"
-                                viewBox="0 0 24 21.6">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="21.6" viewBox="0 0 24 21.6">
                                 <g id="_008-chat" data-name="008-chat" transform="translate(-250.397 -62.547)">
                                     <path id="Path_1956" data-name="Path 1956"
                                         d="M274.4,67.347a4.8,4.8,0,0,0-4.8-4.8H255.2a4.8,4.8,0,0,0-4.8,4.8v15.6a1.2,1.2,0,0,0,2.048.848l3.746-3.745a2.4,2.4,0,0,1,1.7-.7H269.6a4.8,4.8,0,0,0,4.8-4.8Zm-2.4,0a2.4,2.4,0,0,0-2.4-2.4H255.2a2.4,2.4,0,0,0-2.4,2.4v12.7l1.7-1.7a4.8,4.8,0,0,1,3.395-1.406H269.6a2.4,2.4,0,0,0,2.4-2.4Zm-15.6,7.2H266a1.2,1.2,0,1,0,0-2.4h-9.6a1.2,1.2,0,0,0,0,2.4Zm0-4.8h12a1.2,1.2,0,1,0,0-2.4h-12a1.2,1.2,0,0,0,0,2.4Z"

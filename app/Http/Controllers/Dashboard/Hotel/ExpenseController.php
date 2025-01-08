@@ -25,7 +25,7 @@ class ExpenseController extends Controller
     {
         $expense = Expense::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->latest()->paginate(50);
         return view('dashboard.hotel.expenses.index', [
-            'expenses' => $expense,
+            'expense' => $expense,
             'payableType' => get_class(new Expense()),
             'currencies' => CurrencyConstants::CURRENCY_CODES,
 

@@ -15,9 +15,9 @@ class HotelRoomTypeSeeder extends Seeder
         $imageDirectory = glob(getStorageUrl('dashboard/images/room/*'));
 
         // Check if there are any images in the directory
-        if (empty($imageDirectory)) {
-            throw new \Exception('No images found in the directory.');
-        }
+        // if (empty($imageDirectory)) {
+        //     throw new \Exception('No images found in the directory.');
+        // }
 
         // Loop through your data array and seed RoomType and associated files
         $datas = [
@@ -43,7 +43,7 @@ class HotelRoomTypeSeeder extends Seeder
             // Create RoomType record
             $roomType = RoomType::create($data);
 
-            // // Pick a random image from the directory
+            // Pick a random image from the directory
             // $randomImagePath = $imageDirectory[array_rand($imageDirectory)];
             // if (!file_exists($randomImagePath)) {
             //     throw new \Exception("File does not exist: {$randomImagePath}");
@@ -59,7 +59,7 @@ class HotelRoomTypeSeeder extends Seeder
 
             // Upload the file using FileHelpers
             $fileId = FileHelpers::saveFileRequest(
-                null, // $uploadedFile,
+                null, //$uploadedFile,
                 'hotel/room-type/images/',
                 'Room type image',
             );

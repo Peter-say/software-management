@@ -43,23 +43,23 @@ class HotelRoomTypeSeeder extends Seeder
             // Create RoomType record
             $roomType = RoomType::create($data);
 
-            // Pick a random image from the directory
-            $randomImagePath = $imageDirectory[array_rand($imageDirectory)];
-            if (!file_exists($randomImagePath)) {
-                throw new \Exception("File does not exist: {$randomImagePath}");
-            }
-            // Create an UploadedFile instance
-            $uploadedFile = new UploadedFile(
-                $randomImagePath,
-                basename($randomImagePath),
-                mime_content_type($randomImagePath),
-                null,
-                true
-            );
+            // // Pick a random image from the directory
+            // $randomImagePath = $imageDirectory[array_rand($imageDirectory)];
+            // if (!file_exists($randomImagePath)) {
+            //     throw new \Exception("File does not exist: {$randomImagePath}");
+            // }
+            // // Create an UploadedFile instance
+            // $uploadedFile = new UploadedFile(
+            //     $randomImagePath,
+            //     basename($randomImagePath),
+            //     mime_content_type($randomImagePath),
+            //     null,
+            //     true
+            // );
 
             // Upload the file using FileHelpers
             $fileId = FileHelpers::saveFileRequest(
-                $uploadedFile,
+                null, // $uploadedFile,
                 'hotel/room-type/images/',
                 'Room type image',
             );

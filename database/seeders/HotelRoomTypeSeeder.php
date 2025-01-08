@@ -58,14 +58,14 @@ class HotelRoomTypeSeeder extends Seeder
             // );
 
             // Upload the file using FileHelpers
-            $fileId = FileHelpers::saveFileRequest(
-                null, //$uploadedFile,
-                'hotel/room-type/images/',
-                'Room type image',
-            );
+            // $fileId = FileHelpers::saveFileRequest(
+            //     null, //$uploadedFile,
+            //     'hotel/room-type/images/',
+            //     'Room type image',
+            // );
 
             // Associate the file with the RoomType
-            $roomType->files()->attach($fileId);
+            // $roomType->files()->attach($fileId);
         }
     }
 }

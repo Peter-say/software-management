@@ -61,10 +61,14 @@ class Hotel extends Model
 
         // Define the created event listener
         static::created(function ($hotel) {
-           Store::create([
+            Store::create([
                 'hotel_id' => $hotel->id,
-                'name' => $hotel->hotel_name ."'s" . ' Store',
+                'name' => $hotel->hotel_name . "'s" . ' Store',
             ]);
         });
+    }
+    public function modulePreferences()
+    {
+        return $this->belongsToMany(ModulePreference::class, 'hotel_module_preferences');
     }
 }

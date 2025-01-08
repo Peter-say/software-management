@@ -35,10 +35,6 @@ class DashboardController extends Controller
         }
         $user = User::getAuthenticatedUser();
         $hotelUser = HotelUser::where('user_id', $user->id)->first();
-        // $reservation_analytics = $this->dashboard_reservation_service->stats(['booking_period' => $booking_period]);
-        // dd( [$reservation_analytics]);
-        // $recent_room_reservations = $this->dashboard_service->recentBookingSchedule();
-        // dd($recent_room_reservations);
         if ($hotelUser) {
             return view('dashboard.index', [
                 'room_reservation_stats' =>  $this->dashboard_service->stats(['period' => $period]),

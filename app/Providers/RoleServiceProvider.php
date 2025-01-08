@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\HotelSoftware\HotelModulePreference;
 use App\Models\HotelSoftware\HotelUser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -30,16 +31,21 @@ class RoleServiceProvider extends ServiceProvider
         Gate::define('access-sales', function ($user) {
             $hotelUser = HotelUser::where('user_id', $user->id)->first();
             return $hotelUser && (
-                $hotelUser->role === 'Hotel_Owner' || 
-                $hotelUser->role === 'Manager' || 
+                $hotelUser->role === 'Hotel_Owner' ||
+                $hotelUser->role === 'Manager' ||
                 $hotelUser->role === 'Sales'
             );
+        });
+        // Gate to check access to a specific module by slug
+        Gate::define('view-module', function ($user, $moduleSlug) {
+            $hotelUser = $user->hotelUser;
+            $hotel = $hotelUser ? $hotelUser->hotel : null;
+            return $hotel && $hotel->modulePreferences()->where('slug', $moduleSlug)->exists();
         });
     }
 
     public function userCanAccessSalesRole($user)
     {
-            return ['Hotel_Owner', 'Manager', 'Sales'];
+        return ['Hotel_Owner', 'Manager', 'Sales'];
     }
-    
 }

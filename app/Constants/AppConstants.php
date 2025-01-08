@@ -148,4 +148,39 @@ class AppConstants
         self::TYPE_COOKING_CLASS,
     ];
 
+    // Module Constants
+    const MODULE_ROOM_RESERVATION = 'Room Reservation';
+    const MODULE_KITCHEN_MANAGEMENT = 'Kitchen Management';
+    const MODULE_HOUSEKEEPING = 'Housekeeping';
+    const MODULE_FRONT_DESK = 'Front Desk';
+    const MODULE_GUEST_MANAGEMENT = 'Guest Management';
+    const MODULE_FOOD_AND_BEVERAGE = 'Food and Beverage';
+    const MODULE_EVENT_MANAGEMENT = 'Event Management';
+    const MODULE_SPA_AND_WELLNESS = 'Spa and Wellness';
+    const MODULE_FITNESS_CENTER = 'Fitness Center';
+    const MODULE_BUSINESS_SERVICES = 'Business Services';
+    const MODULE_INVENTORY_MANAGEMENT = 'Inventory Management';
+    const MODULE_BILLING_AND_PAYMENTS = 'Billing and Payments';
+    const MODULE_STAFF_MANAGEMENT = 'Staff Management';
+    const MODULE_MAINTENANCE = 'Maintenance';
+    const MODULE_MARKETING_AND_PROMOTIONS = 'Marketing and Promotions';
+
+    const MODULE_NAMES = [
+        self::MODULE_ROOM_RESERVATION,
+        self::MODULE_KITCHEN_MANAGEMENT,
+        self::MODULE_HOUSEKEEPING,
+        self::MODULE_FRONT_DESK,
+        self::MODULE_GUEST_MANAGEMENT,
+        self::MODULE_FOOD_AND_BEVERAGE,
+        self::MODULE_EVENT_MANAGEMENT,
+        self::MODULE_SPA_AND_WELLNESS,
+        self::MODULE_FITNESS_CENTER,
+        self::MODULE_BUSINESS_SERVICES,
+        self::MODULE_INVENTORY_MANAGEMENT,
+        self::MODULE_BILLING_AND_PAYMENTS,
+        self::MODULE_STAFF_MANAGEMENT,
+        self::MODULE_MAINTENANCE,
+        self::MODULE_MARKETING_AND_PROMOTIONS,
+    ];
+
 }

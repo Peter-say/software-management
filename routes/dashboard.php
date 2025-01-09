@@ -83,6 +83,8 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::delete('/notifications/{id}/delete', [NotificationController::class, 'deleteNotification'])->name('notifications.delete');
             Route::delete('/notifications/delete-bulk', [NotificationController::class, 'deleteBulk'])->name('notifications.delete-bulk');
 
+            Route::get('/expenses-dashbaord', [ExpenseController::class, 'dashboard'])->name('expenses-dashbaord');
+
             Route::prefix('settings')->as('settings.')->group(function () {
                 Route::get('/', [SettingController::class, 'index']);
                 Route::prefix('hotel-info')->as('hotel-info.')->group(function () {

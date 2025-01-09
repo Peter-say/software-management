@@ -96,7 +96,7 @@
                 @endif
                 @if (Gate::allows('view-module', 'staff-management'))
                     <li>
-                        <a href="{{ route('dashboard.hotel.expenses.index') }}" aria-expanded="false">
+                        <a href="{{ route('dashboard.hotel.expenses-dashbaord') }}" aria-expanded="false">
                             <i class="flaticon-013-checkmark"></i>
                             <span class="nav-text">Expenses</span>
                         </a>

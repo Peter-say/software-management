@@ -296,6 +296,10 @@
     <!-- ApexCharts -->
     <script src="{{ asset('dashboard/vendor/apexchart/apexchart.js') }}"></script>
 
+       <!-- Chart ChartJS plugin files -->
+       <script src="{{ asset('dashboard/vendor/chart.js/Chart.bundle.min.js') }}"></script>
+       <script src="{{ asset('dashboard/js/plugins-init/chartjs-init.js') }}"></script>
+
     <!-- jQuery Nice Select (only include once) -->
     <script src="{{ asset('dashboard/vendor/jquery-nice-select/js/jquery.nice-select.min.js') }}"></script>
 

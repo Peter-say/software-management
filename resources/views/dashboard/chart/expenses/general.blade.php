@@ -111,7 +111,7 @@
             jQuery(document).ready(function() {});
 
             jQuery(window).on('load', function() {
-                if (typeof dlabSparkLine !== 'undefined') {
+                if (typeof dlabSparkLine !== 'undefined' && dlabSparkLine) {
                     dlabSparkLine.load();
                 }
             });

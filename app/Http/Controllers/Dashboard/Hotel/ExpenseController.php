@@ -6,7 +6,9 @@ use App\Constants\CurrencyConstants;
 use App\Http\Controllers\Controller;
 use App\Models\HotelSoftware\Expense;
 use App\Models\User;
+use App\Services\Dashboard\Hotel\Chart\DashboardExpensesService;
 use App\Services\Dashboard\Hotel\Expenses\ExpensesService;
+use App\Services\Dashboard\Hotel\Expenses\ExpensesStatsService;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -14,18 +16,41 @@ use Illuminate\Http\Request;
 class ExpenseController extends Controller
 {
     protected $expenses_service;
+    protected $expenses_stat_service;
+    protected $expenses_chart_service;
     public function __construct(ExpensesService $expenses_service)
     {
         $this->expenses_service = $expenses_service;
+        $this->expenses_stat_service = new ExpensesStatsService();
+        $this->expenses_chart_service = new DashboardExpensesService();
+    }
+
+    public function dashboard(Request $request)
+    {
+        $period = $request->get('period', 'day');
+        $chart_period = $request->get('chart_period', 'day');
+        if (!in_array($period, ['day', 'week', 'month', 'year'])) {
+            $period = 'day';
+        }
+        if (!in_array($chart_period, ['day', 'week', 'month', 'year'])) {
+            $chart_period = 'day';
+        }
+        $top_expenses = Expense::where('hotel_id', User::getAuthenticatedUser()->hotel->id)
+            ->orderBy('amount', 'desc')->limit(5)->get();
+        return view('dashboard.hotel.expenses.dashboard', [
+            'expenses_stats' => $this->expenses_stat_service->stats(['period' => $period]),
+            'expenses_chart_data' => $this->expenses_chart_service->chartStats(['chart_period' => $chart_period]),
+            'top_expenses' => $top_expenses,
+        ]);
     }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $expense = Expense::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->latest()->paginate(50);
+        $expenses = Expense::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->latest()->paginate(50);
         return view('dashboard.hotel.expenses.index', [
-            'expense' => $expense,
+            'expenses' => $expenses,
             'payableType' => get_class(new Expense()),
             'currencies' => CurrencyConstants::CURRENCY_CODES,
 

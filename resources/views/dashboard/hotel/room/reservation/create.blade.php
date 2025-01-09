@@ -333,6 +333,8 @@
                             document.getElementById('other_names').value = data.other_names || '';
                             document.getElementById('email').value = data.email || '';
                             document.getElementById('phone').value = data.phone || '';
+                            document.getElementById('state_id').value = data.state || '';
+                            document.getElementById('country_id').value = data.country || '';
                         })
                         .catch(error => console.error('Error fetching guest data:', error));
                 }

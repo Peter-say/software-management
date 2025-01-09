@@ -13,7 +13,7 @@
 
             <!-- Action Bar -->
             <div class="container-fluid">
-                <div class="mt-4 d-flex justify-content-between align-items-center flex-wrap">
+                <div class="mt-4 d-flex justify-content-end align-items-center flex-wrap">
                     <div class="card-action coin-tabs ">
                         <ul class="nav nav-tabs" role="tablist">
                             <li class="nav-item">
@@ -21,6 +21,10 @@
                                 {{-- <a class="nav-link active" data-bs-toggle="tab" href="#AllRooms">All Rooms</a> --}}
                             </li>
                         </ul>
+                    </div>
+                    <div class="d-flex align-items-center mb-2">
+                        <a href="{{ route('dashboard.hotel.expenses-dashbaord') }}" class="btn btn-secondary me-2">
+                            View Dashboard</a>
                     </div>
                     <div class="d-flex align-items-center mb-2">
                         <a href="{{ route('dashboard.hotel.expenses.create') }}" class="btn btn-secondary me-2">+

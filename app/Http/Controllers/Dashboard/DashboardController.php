@@ -22,37 +22,36 @@ class DashboardController extends Controller
         $this->dashboard_reservation_service = new DashboardReservationService();
     }
     public function dashboard(Request $request)
-    {
-        $period = $request->get('period', 'day');
+{
+    $period = $request->get('period', 'day');
+    $booking_period = $request->get('booking_period', 'week');
 
-        $booking_period = $request->get('booking_period', 'week');
-
-        if (!in_array($period, ['day', 'week', 'month', 'year'])) {
-            $period = 'month';
-        }
-        if (!in_array($booking_period, ['week', 'year'])) {
-            $booking_period = 'week';
-        }
-        $user = User::getAuthenticatedUser();
-        $hotelUser = HotelUser::where('user_id', $user->id)->first();
-        if ($hotelUser) {
-            $hasModules = HotelModulePreference::where('hotel_id', $hotelUser->hotel->id)->exists();
-            if ($hasModules) {
-                return redirect()->route('dashboard.home');
-            }
-            return redirect()->route('dashboard.hotel.module-preferences.create');
-            return view('dashboard.index', [
-                'room_reservation_stats' =>  $this->dashboard_service->stats(['period' => $period]),
-                'occupiedRooms' => $this->dashboard_service->countOccupiedRoomsToday(),
-                'available_rooms' => $this->dashboard_service->countAvailableRoomsToday(),
-                'total_transaction' => $this->dashboard_service->calculateTotalTransaction(),
-                'reservation_data' => $this->dashboard_reservation_service->stats(['booking_period' => $booking_period]),
-                'recent_room_reservations' => $this->dashboard_service->recentBookingSchedule(),
-            ]);
-        } else {
-            return redirect()->route('onboarding.setup-app');
-        }
+    if (!in_array($period, ['day', 'week', 'month', 'year'])) {
+        $period = 'month';
     }
+    if (!in_array($booking_period, ['week', 'year'])) {
+        $booking_period = 'week';
+    }
+    $user = User::getAuthenticatedUser();
+    $hotelUser = HotelUser::where('user_id', $user->id)->first();
+
+    if ($hotelUser) {
+        $hasModules = HotelModulePreference::where('hotel_id', $hotelUser->hotel->id)->exists();
+        if (!$hasModules) {
+            return redirect()->route('dashboard.hotel.module-preferences.create');
+        }
+        return view('dashboard.index', [
+            'room_reservation_stats' => $this->dashboard_service->stats(['period' => $period]),
+            'occupiedRooms' => $this->dashboard_service->countOccupiedRoomsToday(),
+            'available_rooms' => $this->dashboard_service->countAvailableRoomsToday(),
+            'total_transaction' => $this->dashboard_service->calculateTotalTransaction(),
+            'reservation_data' => $this->dashboard_reservation_service->stats(['booking_period' => $booking_period]),
+            'recent_room_reservations' => $this->dashboard_service->recentBookingSchedule(),
+        ]);
+    }
+    return redirect()->route('onboarding.setup-app');
+}
+
 
     public function loadRecentReservation(Request $request)
     {

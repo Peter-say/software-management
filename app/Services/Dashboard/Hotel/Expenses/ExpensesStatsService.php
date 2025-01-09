@@ -120,10 +120,10 @@ class ExpensesStatsService
             $total_paid_expenses[$i] = $expenses->sum(function ($expense) {
                 return $expense->payments->sum('amount');
             });
-            $total_unpaid_expenses[$i] =    $total_expenses_amount[$i] - $total_paid_expenses[$i];
+            $total_unpaid_expenses[$i] =  $total_expenses_amount[$i] - $total_paid_expenses[$i];
         }
         return [
-            'totalExpenses' => $total_expenses_amount,
+            'totalExpenses' => $total_expenses,
             'totalExpensesAmount' => $total_expenses_amount,
             'totalPaidExpenses' => $total_paid_expenses,
             'totalUnpaidExpenses' => $total_unpaid_expenses,

@@ -6,7 +6,9 @@
             <div class="row page-titles">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active"><a href="{{ route('dashboard.home') }}">Home</a></li>
-                    <li class="breadcrumb-item active"><a href="{{ route('dashboard.hotel.expenses.index') }}">expense</a>
+                    <li class="breadcrumb-item active"><a href="{{ route('dashboard.hotel.expenses-dashbaord') }}">expense</a>
+                    <li class="breadcrumb-item "><a href="{{ route('dashboard.hotel.expenses.index') }}">List</a>
+
                     </li>
                     <li class="breadcrumb-item">{{ isset($expense) ? 'Update expense' : 'Create expense' }}</li>
                 </ol>

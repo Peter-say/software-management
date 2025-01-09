@@ -7,7 +7,8 @@
             <div class="row page-titles">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active"><a href="{{ route('dashboard.home') }}">Home</a></li>
-                    <li class="breadcrumb-item"><a href="javascript:void(0)">expenses</a></li>
+                    <li class="breadcrumb-item"><a href="{{route('dashboard.hotel.expenses-dashbaord')}}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Details</a></li>
                 </ol>
             </div>
 
@@ -89,13 +90,23 @@
                                                                     class="fs-16 font-w500 text-nowrap">{{ $expense->supplier->name ?? 'N/A' }}</span>
                                                             </td>
 
-                                                            <td>
-                                                                <a href="javascript:void(0);"
-                                                                    class="text-{{ $expense->paymentStatus() === 'pending' ? 'danger' : ($expense->paymentStatus() === 'partial' ? 'warning' : 'success') }} btn-md">
-                                                                    {{ strtoupper($expense->paymentStatus()) }}
-                                                                </a>
+                                                            <td
+                                                                class="text-{{ $expense->paymentStatus() === 'paid' ? 'success' : ($expense->paymentStatus() === 'partial' ? 'warning' : 'danger') }}">
+                                                                {{ strtoupper($expense->paymentStatus()) }}
+                                                                <span>
+                                                                    <i class="fas fa-question-circle"
+                                                                        data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                        title="
+                                                                        @if ($expense->paymentStatus() === 'paid') Paid: ₦{{ number_format($expense->payments->sum('amount'), 2, '.', ',') }} (Fully Paid)
+                                                                        @elseif ($expense->paymentStatus() === 'partial')
+                                                                            Paid: ₦{{ number_format($expense->payments->sum('amount'), 2, '.', ',') }} 
+                                                                            (Remaining: ₦{{ number_format($expense->amount - $expense->payments->sum('amount'), 2, '.', ',') }})
+                                                                        @else
+                                                                            Not Paid @endif
+                                                                   ">
+                                                                    </i>
+                                                                </span>
                                                             </td>
-
                                                             <td>
                                                                 <span
                                                                     class="fs-16 font-w500 text-nowrap">{{ number_format($expense->amount) ?? '' }}</span>
@@ -103,20 +114,17 @@
 
                                                             <td>
                                                                 <div class="d-flex">
-                                                                    @if ($expense->amount > $expense->payments()->sum('amount') || $expense->payments() === null)
-                                                                        {{-- Payment Modal Button --}}
-                                                                        <a type="button" data-bs-toggle="modal"
-                                                                            data-bs-target="#payment-modal-{{ $expense->id }}"
-                                                                            class="btn btn-primary shadow btn-xs sharp me-2">
-                                                                            <i class="fas fa-money-bill"></i>
+                                                                    <a href="{{ route('dashboard.hotel.expenses.show', $expense->id) }}"
+                                                                        class="btn btn-primary shadow btn-xs sharp me-1">
+                                                                        <i class="fas fa-eye"></i>
+                                                                    </a>
+                                                                    @if ($expense->paymentStatus() !== 'paid')
+                                                                        <!-- Edit Button -->
+                                                                        <a href="{{ route('dashboard.hotel.expenses.edit', $expense->id) }}"
+                                                                            class="btn btn-primary shadow btn-xs sharp me-1">
+                                                                            <i class="fas fa-pencil-alt"></i>
                                                                         </a>
                                                                     @endif
-                                                                    <!-- Edit Button -->
-                                                                    <a href="{{ route('dashboard.hotel.expenses.edit', $expense->id) }}"
-                                                                        class="btn btn-primary shadow btn-xs sharp me-1">
-                                                                        <i class="fas fa-pencil-alt"></i>
-                                                                    </a>
-
                                                                     <!-- Delete Button -->
                                                                     <a href="javascript:void(0);"
                                                                         class="btn btn-danger shadow btn-xs sharp"
@@ -125,11 +133,7 @@
                                                                     </a>
                                                                 </div>
                                                             </td>
-                                                            @include('dashboard.general.payment.modal', [
-                                                                'payableType' => $payableType,
-                                                                'payableModel' => $expense,
-                                                                'currencies' => $currencies,
-                                                            ])
+
                                                         </tr>
                                                     @endforeach
                                                 </tbody>

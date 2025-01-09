@@ -33,6 +33,10 @@
                         <input type="hidden" name="period" id="selected-period" value="{{ request('period', 'day') }}">
                     </form>
                     <div class="d-flex align-items-center mb-2">
+                        <a href="{{ route('dashboard.hotel.expenses.index') }}" class="btn btn-primary me-2">
+                            View List</a>
+                    </div>
+                    <div class="d-flex align-items-center mb-2">
                         <a href="{{ route('dashboard.hotel.expenses.create') }}" class="btn btn-secondary me-2">+
                             Add New</a>
                     </div>

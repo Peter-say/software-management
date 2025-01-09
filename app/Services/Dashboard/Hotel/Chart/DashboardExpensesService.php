@@ -63,7 +63,9 @@ class DashboardExpensesService
                 $interval = 'hour'; // Hourly intervals for the day
                 $labels = [];
                 for ($i = 0; $i < 24; $i++) {
-                    $labels[] = $i . ':00';
+                    $hour = $i % 12 == 0 ? 12 : $i % 12;
+                    $period = $i < 12 ? 'AM' : 'PM';
+                    $labels[] = $hour . ':00 ' . $period;
                 }
                 $dataPoints = 24;
                 break;
@@ -73,7 +75,9 @@ class DashboardExpensesService
                 $interval = 'hour'; // Hourly intervals for the day
                 $labels = [];
                 for ($i = 0; $i < 24; $i++) {
-                    $labels[] = $i . ':00';
+                    $hour = $i % 12 == 0 ? 12 : $i % 12;
+                    $period = $i < 12 ? 'AM' : 'PM';
+                    $labels[] = $hour . ':00 ' . $period;
                 }
                 $dataPoints = 24;
                 break;
@@ -99,20 +103,19 @@ class DashboardExpensesService
             $startOfInterval = $startDate->copy()->add($i, $interval);
             $endOfInterval = $startOfInterval->copy()->endOf($interval);
             $expenses = Expense::where('hotel_id', User::getAuthenticatedUser()->hotel->id)
-            ->whereBetween('created_at', [$startOfInterval, $endOfInterval])
-            ->get();
-            
+                ->whereBetween('created_at', [$startOfInterval, $endOfInterval])
+                ->get();
+
             $total_expenses_amount[$i] = $expenses->sum('amount');
-            $total_paid_expenses_amount[$i] = $expenses->sum(function($expense) {
-            return $expense->payments->sum('amount');
+            $total_paid_expenses_amount[$i] = $expenses->sum(function ($expense) {
+                return $expense->payments->sum('amount');
             });
             $total_unpaid_expenses_amount[$i] = $total_expenses_amount[$i] - $total_paid_expenses_amount[$i];
         }
-    return [
-        'total_expenses_amount' => $total_expenses_amount,
-        'total_paid_expenses_amount' => $total_paid_expenses_amount,
-        'total_unpaid_expenses_amount' => $total_unpaid_expenses_amount,
-    ];
+        return [
+            'total_expenses_amount' => $total_expenses_amount,
+            'total_paid_expenses_amount' => $total_paid_expenses_amount,
+            'total_unpaid_expenses_amount' => $total_unpaid_expenses_amount,
+        ];
     }
 }
-

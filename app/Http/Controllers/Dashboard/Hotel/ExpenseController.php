@@ -85,7 +85,13 @@ class ExpenseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id) {}
+    public function show(string $id) {
+        return view('dashboard.hotel.expenses.show', [
+            'expense' => $this->expenses_service->getById($id),
+            'payableType' => get_class(new Expense()),
+            'currencies' => CurrencyConstants::CURRENCY_CODES,
+        ]);
+    }
 
     /**
      * Show the form for editing the specified resource.

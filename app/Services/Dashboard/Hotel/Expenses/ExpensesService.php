@@ -2,6 +2,7 @@
 
 namespace App\Services\Dashboard\Hotel\Expenses;
 
+use App\Helpers\FileHelpers;
 use App\Models\HotelSoftware\Expense;
 use App\Models\HotelSoftware\ExpenseExpenseItem;
 use App\Models\HotelSoftware\ExpenseItem;
@@ -54,7 +55,21 @@ class ExpensesService
             $data['hotel_id'] = $hotel_id;
             $data['amount'] = $totalAmount; // Set the total amount
             $data['note'] = $request->note;
-            // Check if an expense ID is provided for updating
+
+            if ($request->hasFile('uploaded_file')) {
+                $file_directory = 'hotel/expense/files';
+                $file_path = FileHelpers::saveImageRequest($request->file('uploaded_file'), $file_directory);
+                $data['uploaded_file'] = basename($file_path);
+                // Delete the old file if it exists
+                if ($expense_id) {
+                    $expense = $this->getById($expense_id);
+                    $old_file_path = $expense->uploaded_file;
+
+                    if (!empty($old_file_path)) {
+                        FileHelpers::deleteFiles([public_path($file_directory . '/' . $old_file_path)]);
+                    }
+                }
+            }
             if ($expense_id) {
                 // Find the existing Expense and update it
                 $expense = $this->getById($expense_id);

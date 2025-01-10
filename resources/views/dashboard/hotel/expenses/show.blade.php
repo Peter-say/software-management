@@ -112,7 +112,7 @@
                                                 </div>
                                                 <div class="modal-body">
                                                     @if (isset($expense->uploaded_file))
-                                                        <iframe src="{{ getStorageUrl('hotel/expenses/' . $expense->uploaded_file) }}"
+                                                        <iframe src="{{ getStorageUrl('hotel/expense/files/' . $expense->uploaded_file) }}"
                                                             width="100%" height="500px"></iframe>
                                                     @else
                                                         <p>No file uploaded.</p>

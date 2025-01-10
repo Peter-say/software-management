@@ -9,10 +9,10 @@
         const chartLebels = expensesChartData.chart_data['data_labels'];
         console.log(expensesChartData);
         
-        var purchaseChart = function() {
+        var expenseChart = function() {
             //dual line chart
-            if (jQuery('#purchaseChart').length > 0) {
-                const lineChart_3 = document.getElementById("purchaseChart").getContext('2d');
+            if (jQuery('#expenseChart').length > 0) {
+                const lineChart_3 = document.getElementById("expenseChart").getContext('2d');
                 //generate gradient
                 const lineChart_3gradientStroke1 = lineChart_3.createLinearGradient(500, 0, 100, 0);
                 lineChart_3gradientStroke1.addColorStop(0, "rgba(249, 58, 11, 1)");
@@ -107,7 +107,7 @@
         };
 
         var load = function() {
-            purchaseChart();
+            expenseChart();
             jQuery(document).ready(function() {});
 
             // jQuery(window).on('load', function() {

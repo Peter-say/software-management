@@ -77,7 +77,41 @@
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
 
 </head>
+<style>
+    /* Add padding and alignment to dropdown items */
+    .dropdown-menu-custom {
+        padding: 10px;
+        /* Add padding inside the dropdown */
+        min-width: 200px;
+        /* Set a minimum width */
+    }
 
+    .dropdown-menu-custom li a {
+        display: block;
+        /* Ensure items are block-level elements */
+        padding: 8px 15px;
+        /* Add padding to the links */
+        text-align: left;
+        /* Align text to the left */
+        color: #333;
+        /* Text color */
+        text-decoration: none;
+        /* Remove underline */
+    }
+
+    .dropdown-menu-custom li a:hover {
+        background-color: #f0f0f0;
+        /* Add a hover effect */
+        color: #000;
+        /* Change text color on hover */
+    }
+
+    /* Optional: Add rounded corners to dropdown */
+    .dropdown-menu-custom {
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+</style>
 <body>
 
     <!--*******************

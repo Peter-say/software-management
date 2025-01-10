@@ -6,9 +6,9 @@
             <div class="row page-titles">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active"><a href="{{ route('dashboard.home') }}">Home</a></li>
-                    <li class="breadcrumb-item active"><a href="{{ route('dashboard.hotel.expenses-dashbaord') }}">Expense</a>
-                    <li class="breadcrumb-item active"><a href="{{ route('dashboard.hotel.expenses.index') }}">List</a>
-                    <li class="breadcrumb-item "><a href="{{ route('dashboard.hotel.expenses.index') }}">View</a>
+                    <li class="breadcrumb-item active"><a href="{{ route('dashboard.hotel.purchases-dashbaord') }}">Expense</a>
+                    <li class="breadcrumb-item active"><a href="{{ route('dashboard.hotel.purchases.index') }}">List</a>
+                    <li class="breadcrumb-item "><a href="{{ route('dashboard.hotel.purchases.index') }}">View</a>
 
                     </li>
                 </ol>
@@ -17,31 +17,31 @@
             <div class="col-12">
                 <div class="card" disabled>
                     <div class="card-header">
-                        {{-- <h4 class="card-title">{{ isset($expense) ? 'Update Expense' : 'Create Expense' }}</h4> --}}
+                        {{-- <h4 class="card-title">{{ isset($purchase) ? 'Update Expense' : 'Create Expense' }}</h4> --}}
                     </div>
 
                     <div class="card-body">
                         <div class="row">
                             <!-- expense Details -->
                             <div class="col-lg-12">
-                                <h5>Expense Details</h5>
+                                <h5>Purchase Details</h5>
                                 <div class="row">
 
                                     <!-- Name Field -->
                                     <div class="col-xl-3 col-md-4 col-12 mb-3">
                                         <div class="form-group">
-                                            <label for="name" class="form-label">Category*</label>
-                                            <select id="category" name="category_id"
-                                                class="form-control @error('country_id') is-invalid @enderror" disabled>
-                                                <option value="">Select Country</option>
-                                                @foreach (getModelItems('expense-categories') as $category)
+                                            <label for="name" class="form-label">Item Category*</label>
+                                            <select id="category" name="item_category_id"
+                                                class="form-control @error('item_category_id') is-invalid @enderror" disabled>
+                                                <option value="">Select Category</option>
+                                                @foreach (getModelItems('item-categories') as $category)
                                                     <option value="{{ $category->id }}"
-                                                        {{ old('category_id', $expense->category_id ?? '') == $category->id ? 'selected' : '' }}>
+                                                        {{ old('item_category_id', $purchase->item_category_id ?? '') == $category->id ? 'selected' : '' }}>
                                                         {{ $category->name }}
                                                     </option>
                                                 @endforeach
                                             </select>
-                                            @error('country_id')
+                                            @error('item_category_id')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>
@@ -49,12 +49,12 @@
                                     <!-- Date Field -->
                                     <div class="col-xl-3 col-md-4  col-12 mb-3">
                                         <div class="form-group">
-                                            <label for="expense_date" class="text-label form-label">
+                                            <label for="purchases_date" class="text-label form-label">
                                                 Date*</label>
-                                            <input type="date" id="expense-date" name="expense_date"
-                                                class="form-control  @error('expense_date') is-invalid @enderror"
-                                                value="{{ old('expense_date', isset($expense) && $expense->expense_date ? $expense->expense_date->format('Y-m-d') : '') }}"
-                                                required disabled>
+                                            <input type="date" id="purchase-date" name="purchase_date"
+                                                class="form-control  @error('purchases_date') is-invalid @enderror"
+                                                value="{{ old('purchase_date', isset($purchase) && $purchase->purchase_date ? $purchase->purchase_date->format('Y-m-d') : '') }}"
+                                                required>
 
                                             @error('exapense_date')
                                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -65,14 +65,13 @@
                                     <!-- Supplier Field -->
                                     <div class="col-xl-3 col-md-4  col-12 mb-3">
                                         <div class="form-group">
-                                            <label for="supplier_id" class="form-label">Supplier
-                                            </label>
+                                            <label for="supplier_id" class="form-label">Supplier</label>
                                             <select id="supplier_id" name="supplier_id"
                                                 class="form-control @error('supplier_id') is-invalid @enderror" disabled>
                                                 <option value="">Select Supplier</option>
                                                 @foreach (getModelItems('suppliers') as $supplier)
                                                     <option value="{{ $supplier->id }}"
-                                                        {{ old('supplier_id', $expense->supplier_id ?? '') == $supplier->id ? 'selected' : '' }}>
+                                                        {{ old('supplier_id', $purchase->supplier_id ?? '') == $supplier->id ? 'selected' : '' }}>
                                                         {{ $supplier->name }}
                                                     </option>
                                                 @endforeach
@@ -83,7 +82,25 @@
                                         </div>
 
                                     </div>
+                                    <div class="col-xl-3 col-md-4  col-12 mb-3">
+                                        <div class="form-group">
+                                            <label for="status" class="form-label">Status</label>
+                                            <select id="status" name="status"
+                                                class="form-control @error('status') is-invalid @enderror" disabled>
+                                                <option value="">Select Status</option>
+                                                @foreach (['pending', 'partial', 'ordered'] as $status)
+                                                    <option value="{{ $status }}"
+                                                        {{ old('status', $purchase->status ?? '') == $status ? 'selected' : '' }}>
+                                                        {{ ucfirst($status) }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('status')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
 
+                                    </div>
                                     <div class="col-xl-3 col-md-4  col-12 mb-3">
                                         <div class="form-group">
                                             <label for="expense_date" class="text-label form-label">
@@ -111,8 +128,8 @@
                                                         aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    @if (isset($expense->uploaded_file))
-                                                        <iframe src="{{ getStorageUrl('hotel/expenses/' . $expense->uploaded_file) }}"
+                                                    @if (isset($purchase->file_path))
+                                                        <iframe src="{{ getStorageUrl('hotel/purchase/files/' . $purchase->file_path) }}"
                                                             width="100%" height="500px"></iframe>
                                                     @else
                                                         <p>No file uploaded.</p>
@@ -125,13 +142,13 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <!-- note Field -->
-                                    <div class="col-12 mb-3">
+                                    <div class="col-xl-9 col-md-9  col-12 mb-3">
                                         <div class="form-group">
                                             <label for="note" class="form-label">Note</label>
-                                            <textarea type="text" id="note" name="note" cols="2" rows="2"
-                                                class="form-control @error('note') is-invalid @enderror" disabled>{{ old('note', isset($expense) && $expense->note) }}</textarea>
+                                            <input type="text" id="note" name="note"
+                                                class="form-control @error('note') is-invalid @enderror" disabled
+                                                value="{{ old('note', isset($purchase) ? $purchase->note : '') }}">
                                             @error('note')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
@@ -143,90 +160,105 @@
 
                         <div class="row no-gutters">
                             <div id="input-container" class="col-lg card-form__body card-body">
-                                @if (isset($expense) && $expense->items->isNotEmpty())
-                                    @foreach ($expense->items as $key => $expenseItem)
-                                        <div id="input-template" class="row">
-                                            <div class="col-xl-2 col-md-4 col-12 mb-3">
-                                                <div class="form-group">
-                                                    <label for="expense_date"
-                                                        class="text-label form-label">Item/Description</label>
-                                                    <input type="text" id="description_{{ $key }}"
-                                                        name="description[]"
-                                                        class="form-control @error('description') is-invalid @enderror"
-                                                        value="{{ old('description.' . $key, $expenseItem->expenseItem->name ?? '') }}"
-                                                        list="items" disabled>
-                                                    @error('description')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
-                                                    @enderror
-                                                    <datalist id="items">
-                                                        @foreach (getModelItems('expense-items') as $item)
-                                                            <option value="{{ $item->name }}">
-                                                        @endforeach
-                                                    </datalist>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-2 col-md-4 col-12 mb-3">
-                                                <div class="form-group">
-                                                    <label for="expense_date"
-                                                        class="text-label form-label">Quantity</label>
-                                                    <input id="qty_{{ $key }}" name="qty[]" type="number"
-                                                        onkeyup="updateAmount({{ $key }})" inputmode="decimal"
-                                                        min="0" step="any"
-                                                        class="form-control @error('qty') is-invalid @enderror"
-                                                        placeholder="Qty"
-                                                        value="{{ old('qty.' . $key, $expenseItem->qty) }}" disabled>
-                                                    @error('qty')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-2 col-md-4 col-12 mb-3">
-                                                <div class="form-group">
-                                                    <label for="expense_date" class="text-label form-label">Rate</label>
-                                                    <input type="number" id="rate_{{ $key }}" name="rate[]"
-                                                        onkeyup="updateAmount({{ $key }})" inputmode="decimal"
-                                                        min="0" step="any"
-                                                        class="form-control @error('rate') is-invalid @enderror"
-                                                        placeholder="Rate"
-                                                        value="{{ old('rate.' . $key, $expenseItem->rate) }}" disabled>
-                                                    @error('rate')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-2 col-md-4 col-12 mb-3">
-                                                <div class="form-group">
-                                                    <label for="expense_date" class="text-label form-label">Amount</label>
-                                                    <input type="number" id="amount_{{ $key }}"
-                                                        name="amount[]"
-                                                        class="form-control money @error('amount') is-invalid @enderror"
-                                                        placeholder="Amount"
-                                                        value="{{ old('amount.' . $key, $expenseItem->amount) }}"
-                                                        disabled>
-                                                    @error('amount')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-2 col-md-4 col-12 mb-3">
-                                                <div class="form-group">
-                                                    <label for="expense_date" class="text-label form-label">Unit
-                                                        Quantity</label>
-                                                    <input type="number" id="unitQty_{{ $key }}"
-                                                        name="unit_qty[]" inputmode="decimal" min="0"
-                                                        step="any"
-                                                        class="form-control money @error('unit_qty') is-invalid @enderror"
-                                                        placeholder="Unit Qty"
-                                                        value="{{ old('unit_qty.' . $key, $expenseItem->unit_qty) }}"
-                                                        disabled>
-                                                    @error('unit_qty')
-                                                        <div class="invalid-feedback">{{ $message }}</div>
-                                                    @enderror
-                                                </div>
-                                            </div>
-
+                                @if (isset($purchase) && $purchase->items->isNotEmpty())
+                                @foreach ($purchase->items as $key => $purchaseItem)
+                                <div id="input-template" class="row align-items-center">
+                                    <div class="col-xl-2 col-md-4 col-12 mb-3">
+                                        <div class="form-group">
+                                            <label for="store_item_id_0"
+                                                class="text-label form-label">Item/Description</label>
+                                            <select id="store_item_id_0" name="store_item_id[]"
+                                                class="form-control @error('store_item_id') is-invalid @enderror" disabled>
+                                                <option value="" disabled selected>Select an item</option>
+                                                @foreach (getModelItems('store-items') as $item)
+                                                    <option value="{{ $item->id }}"
+                                                        {{ old('store_item_id.' . $key, $purchaseItem->pivot->store_item_id) == $item->id ? 'selected' : '' }}>
+                                                        {{ $item->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('store_item_id')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                         </div>
-                                    @endforeach
+                                    </div>
+                                    <div class="col-xl-2 col-md-4 col-12 mb-3">
+                                        <div class="form-group">
+                                            <label for="purchases_date"
+                                                class="text-label form-label">Quantity</label>
+                                            <input id="qty_{{ $key }}" name="qty[]"
+                                                type="number" onkeyup="updateAmount({{ $key }})"
+                                                inputmode="decimal" min="0" step="any"
+                                                class="form-control @error('qty') is-invalid @enderror"  disabled
+                                                placeholder="Qty"
+                                                value="{{ old('qty.' . $key, $purchaseItem->pivot->qty) }}">
+                                            @error('qty')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-2 col-md-4 col-12 mb-3">
+                                        <div class="form-group">
+                                            <label for="purchases_date"
+                                                class="text-label form-label">Rate</label>
+                                            <input type="number" id="rate_{{ $key }}"
+                                                name="rate[]" onkeyup="updateAmount({{ $key }})"
+                                                inputmode="decimal" min="0" step="any"
+                                                class="form-control @error('rate') is-invalid @enderror"  disabled
+                                                placeholder="Rate"
+                                                value="{{ old('rate.' . $key, $purchaseItem->pivot->rate) }}">
+                                            @error('rate')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-2 col-md-4 col-12 mb-3">
+                                        <div class="form-group">
+                                            <label for="received_{{ $key }}"
+                                                class="text-label form-label">Received</label>
+                                            <input type="number" id="received_{{ $key }}"
+                                                name="received[]" inputmode="decimal" min="0"
+                                                step="any"
+                                                class="form-control @error('received') is-invalid @enderror"  disabled
+                                                placeholder="Received"
+                                                value="{{ old('received.' . $key, $purchaseItem->pivot->received) }}">
+                                            @error('received')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-2 col-md-4 col-12 mb-3">
+                                        <div class="form-group">
+                                            <label for="purchases_date"
+                                                class="text-label form-label">Amount</label>
+                                            <input type="number" id="amount_{{ $key }}"
+                                                name="amount[]"
+                                                class="form-control money @error('amount') is-invalid @enderror"  disabled
+                                                placeholder="Amount"
+                                                value="{{ old('amount.' . $key, $purchaseItem->pivot->amount) }}">
+                                            @error('amount')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-2 col-md-4 col-12 mb-3">
+                                        <div class="form-group">
+                                            <label for="purchases_date" class="text-label form-label">Unit
+                                                Quantity</label>
+                                            <input type="number" id="unitQty_{{ $key }}"
+                                                name="unit_qty[]" inputmode="decimal" min="0"
+                                                step="any"
+                                                class="form-control money @error('unit_qty') is-invalid @enderror"  disabled
+                                                placeholder="Unit Qty"
+                                                value="{{ old('unit_qty.' . $key, $purchaseItem->pivot->unit_qty) }}">
+                                            @error('unit_qty')
+                                                <div class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                            @endforeach
                                 @else
                                     <div class="d-flex justify-content-center">
                                         <h4>No Data</h4>
@@ -241,13 +273,13 @@
                                 <div class="card-header d-flex justify-content-between">
                                     <h4 class="card-title">Payments Made</h4>
                                     <div class="d-flex justify-content-end">
-                                        @if ($expense->paymentStatus() === 'pending')
+                                        @if ($purchase->paymentStatus() === 'pending')
                                             <div class="alert alert-danger mt-3" role="alert">
-                                                <h6 class="mb-0">No payments have been made for this expense.</h6>
+                                                <h6 class="mb-0">No payments have been made for this purchase.</h6>
                                             </div>
-                                        @elseif ($expense->paymentStatus() === 'partial')
+                                        @elseif ($purchase->paymentStatus() === 'partial')
                                             <div class="alert alert-warning mt-3" role="alert">
-                                                <h6 class="mb-0">Partial payment made. Remaining {{number_format($expense->amount - $expense->payments->sum('amount'))}}</h6>
+                                                <h6 class="mb-0">Partial payment made. Remaining {{number_format($purchase->amount - $purchase->payments->sum('amount'))}}</h6>
                                             </div>
                                         @else
                                             <div class="alert alert-success mt-3" role="alert">
@@ -257,7 +289,7 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    @if ($expense->payments()->count() > 0)
+                                    @if ($purchase->payments()->count() > 0)
                                         <div class="table-responsive">
                                             <table class="table table-bordered">
                                                 <thead>
@@ -269,12 +301,12 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    @foreach ($expense->payments as $payment)
+                                                    @foreach ($purchase->payments as $payment)
                                                         <tr>
                                                             <td>{{ $payment->created_at->format('jS, M Y') }}</td>
                                                             <td>{{ number_format($payment->amount) }}</td>
                                                             <td>{{ $payment->payment_method }}</td>
-                                                            <td>{{ $payment->note ?? 'N/A' }}</td>
+                                                            <td>{{ $payment->description ?? 'N/A' }}</td>
                                                         </tr>
                                                     @endforeach
                                                 </tbody>
@@ -287,10 +319,10 @@
                                     @endif
                                 </div>
                                 <div class="d-flex justify-content-end">
-                                    @if ($expense->amount > $expense->payments()->sum('amount') || $expense->payments() === null)
+                                    @if ($purchase->amount > $purchase->payments()->sum('amount') || $purchase->payments() === null)
                                         {{-- Payment Modal Button --}}
                                         <button type="button" data-bs-toggle="modal"
-                                            data-bs-target="#payment-modal-{{ $expense->id }}"
+                                            data-bs-target="#payment-modal-{{ $purchase->id }}"
                                             class="btn btn-primary shadow btn-xl sharp me-2">
                                             Make payment
                                         </button>
@@ -300,7 +332,7 @@
                         </div>
                         @include('dashboard.general.payment.modal', [
                             'payableType' => $payableType,
-                            'payableModel' => $expense,
+                            'payableModel' => $purchase,
                             'currencies' => $currencies,
                         ])
                     </div>

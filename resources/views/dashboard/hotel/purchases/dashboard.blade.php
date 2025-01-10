@@ -64,6 +64,9 @@
                                                 <p class="mb-0">{{ $card['title'] }}</p>
                                             </div>
                                         </div>
+                                        <div class="d-flex justify-content-end">
+                                            <p class="mb-0 ms-auto text-end text-primary rounded">this {{ $card['period'] }}</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -111,7 +114,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">Purchases Chart</h4>
-                            <div class="d-flex justify-content-end">
+                            <div class="d-flex d-md-flex d-block align-items-center justify-content-end">
                                 <form method="GET" action="{{ route('dashboard.hotel.expenses-dashbaord') }}"
                                     class="d-inline">
                                     <div>
@@ -122,7 +125,7 @@
                                                 Sort Chart By {{ ucfirst(request()->chart_period ?? 'Day') }}<i
                                                     class="ri-arrow-down-s-line align-middle ms-1 d-inline-block"></i>
                                             </button>
-                                            <ul class="dropdown-menu" role="menu">
+                                            <ul class="dropdown-menu dropdown-menu-custom" role="menu">
                                                 <li><a class="chart-dropdown-item" href="javascript:void(0);"
                                                         data-chart-period="day">Day</a></li>
                                                 <li><a class="chart-dropdown-item" href="javascript:void(0);"

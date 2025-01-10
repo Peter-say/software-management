@@ -61,12 +61,16 @@ class PurchasesService
                 }
             }
             if ($request->hasFile('file_path')) {
-                $file_directory = 'hotel/purchases/files';
+                $file_directory = 'hotel/purchase/files';
                 $file_path = FileHelpers::saveImageRequest($request->file('file_path'), $file_directory);
                 $data['file_path'] = basename($file_path);
                 // Delete the old file if it exists
-                if (!empty($old_file_path)) {
-                    FileHelpers::deleteFiles([public_path($file_directory . '/' . $old_file_path)]);
+                if ($purchase_id) {
+                    $purchase = $this->getById($purchase_id);
+                    $old_file_path = $purchase->file_path;
+                    if (!empty($old_file_path)) {
+                        FileHelpers::deleteFiles([public_path($file_directory . '/' . $old_file_path)]);
+                    }
                 }
             }
             /* tax info and discount is not set now. 

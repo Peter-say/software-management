@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard\Hotel;
 
+use App\Constants\CurrencyConstants;
 use App\Http\Controllers\Controller;
 use App\Models\HotelSoftware\Purchase;
 use App\Models\User;
@@ -65,9 +66,10 @@ class PurchaseController extends Controller
     public function show(string $id)
     {
         try {
-            $purchase = $this->purchases_service->getById($id);
             return view('dashboard.hotel.purchases.show', [
-                'purchase' => $purchase,
+                'purchase' => $this->purchases_service->getById($id),
+                'payableType' => get_class(new Purchase()),
+                'currencies' => CurrencyConstants::CURRENCY_CODES,
             ]);
         } catch (ModelNotFoundException $e) {
             return redirect()->route('dashboard.hotel.purchases.index')->with('error_message', 'Purchase not found');

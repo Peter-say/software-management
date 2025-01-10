@@ -18,7 +18,6 @@ class ExpensesStatsService
         }
 
         $expenses_data = $this->getDashboardData($period);
-
         $data = [
             "cards" => [
                 [

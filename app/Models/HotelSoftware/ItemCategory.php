@@ -14,4 +14,9 @@ class ItemCategory extends Model
     {
         return $this->hasMany(Purchase::class);
     }
+
+    public function storeItem()
+    {
+        return $this->hasMany(StoreItem::class);
+    }
 }

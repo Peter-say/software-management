@@ -14,6 +14,7 @@ use App\Http\Controllers\Dashboard\Hotel\Restaurant\RestaurantItemsController;
 use App\Http\Controllers\Dashboard\Hotel\Restaurant\RestaurantOrderController;
 use App\Http\Controllers\Dashboard\Hotel\RoomController;
 use App\Http\Controllers\Dashboard\Hotel\RoomReservationController;
+use App\Http\Controllers\Dashboard\Hotel\StoreItemController;
 use App\Http\Controllers\Dashboard\Hotel\SupplierController;
 use App\Http\Controllers\Dashboard\Hotel\UsersController;
 use App\Http\Controllers\Dashboard\Notification\NotificationController;
@@ -50,6 +51,7 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::resource('expenses', ExpenseController::class);
             Route::resource('module-preferences', ModulePreferenceController::class);
             Route::resource('purchases', PurchaseController::class);
+            Route::resource('store-items', StoreItemController::class);
 
             Route::get('set-guest-info', [GuestController::class, 'getGuestInfo'])->name('set-guest-info');
             Route::post('check-room-availability', [RoomReservationController::class, 'getRoomAvailability']);

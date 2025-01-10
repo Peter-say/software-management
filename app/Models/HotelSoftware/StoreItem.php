@@ -55,6 +55,14 @@ class StoreItem extends Model
         return $category;
     }
 
+    public function itemCategory()
+    {
+        return $this->belongsTo(ItemCategory::class);
+    }
+    public function itemSubCategory()
+    {
+        return $this->belongsTo(ItemSubCategory::class);
+    }
     public function purchase()
     {
         return $this->belongsTo(Purchase::class);

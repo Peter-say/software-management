@@ -11,8 +11,8 @@ class ItemSubCategory extends Model
 
     protected $fillable = ['item_category_id', 'hotel_id','name'];
 
-    public function itemCategory()
+    public function storeItem()
     {
-        return $this->belongsTo(ItemCategory::class);
+        return $this->hasMany(StoreItem::class);
     }
 }

@@ -1,0 +1,40 @@
+[03-Jan-2025 14:38:38 UTC] PHP Warning:  require(/home/swifbayo/public_html/software-management/public/../sotfware-management/vendor/autoload.php): Failed to open stream: No such file or directory in /home/swifbayo/public_html/software-management/public/index.php on line 13
+[03-Jan-2025 14:38:38 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/swifbayo/public_html/software-management/public/../sotfware-management/vendor/autoload.php' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/swifbayo/public_html/software-management/public/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/swifbayo/public_html/software-management/public/index.php on line 13
+[03-Jan-2025 14:38:38 UTC] PHP Warning:  require(/home/swifbayo/public_html/software-management/public/../sotfware-management/vendor/autoload.php): Failed to open stream: No such file or directory in /home/swifbayo/public_html/software-management/public/index.php on line 13
+[03-Jan-2025 14:38:38 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/swifbayo/public_html/software-management/public/../sotfware-management/vendor/autoload.php' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/swifbayo/public_html/software-management/public/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/swifbayo/public_html/software-management/public/index.php on line 13
+[03-Jan-2025 14:38:38 UTC] PHP Warning:  require(/home/swifbayo/public_html/software-management/public/../sotfware-management/vendor/autoload.php): Failed to open stream: No such file or directory in /home/swifbayo/public_html/software-management/public/index.php on line 13
+[03-Jan-2025 14:38:38 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/swifbayo/public_html/software-management/public/../sotfware-management/vendor/autoload.php' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/swifbayo/public_html/software-management/public/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/swifbayo/public_html/software-management/public/index.php on line 13
+[03-Jan-2025 14:38:38 UTC] PHP Warning:  require(/home/swifbayo/public_html/software-management/public/../sotfware-management/vendor/autoload.php): Failed to open stream: No such file or directory in /home/swifbayo/public_html/software-management/public/index.php on line 13
+[03-Jan-2025 14:38:38 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/swifbayo/public_html/software-management/public/../sotfware-management/vendor/autoload.php' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/swifbayo/public_html/software-management/public/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/swifbayo/public_html/software-management/public/index.php on line 13
+[03-Jan-2025 14:38:41 UTC] PHP Warning:  require(/home/swifbayo/public_html/software-management/public/../sotfware-management/vendor/autoload.php): Failed to open stream: No such file or directory in /home/swifbayo/public_html/software-management/public/index.php on line 13
+[03-Jan-2025 14:38:41 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/swifbayo/public_html/software-management/public/../sotfware-management/vendor/autoload.php' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/swifbayo/public_html/software-management/public/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/swifbayo/public_html/software-management/public/index.php on line 13
+[03-Jan-2025 14:38:41 UTC] PHP Warning:  require(/home/swifbayo/public_html/software-management/public/../sotfware-management/vendor/autoload.php): Failed to open stream: No such file or directory in /home/swifbayo/public_html/software-management/public/index.php on line 13
+[03-Jan-2025 14:38:41 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/swifbayo/public_html/software-management/public/../sotfware-management/vendor/autoload.php' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/swifbayo/public_html/software-management/public/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/swifbayo/public_html/software-management/public/index.php on line 13
+[03-Jan-2025 14:38:43 UTC] PHP Warning:  require(/home/swifbayo/public_html/software-management/public/../sotfware-management/vendor/autoload.php): Failed to open stream: No such file or directory in /home/swifbayo/public_html/software-management/public/index.php on line 13
+[03-Jan-2025 14:38:43 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/swifbayo/public_html/software-management/public/../sotfware-management/vendor/autoload.php' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/swifbayo/public_html/software-management/public/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/swifbayo/public_html/software-management/public/index.php on line 13
+[03-Jan-2025 14:39:08 UTC] PHP Warning:  require(/home/swifbayo/public_html/software-management/public/../sotfware-management/vendor/autoload.php): Failed to open stream: No such file or directory in /home/swifbayo/public_html/software-management/public/index.php on line 13
+[03-Jan-2025 14:39:08 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/swifbayo/public_html/software-management/public/../sotfware-management/vendor/autoload.php' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/swifbayo/public_html/software-management/public/index.php:13
+Stack trace:
+#0 {main}
+  thrown in /home/swifbayo/public_html/software-management/public/index.php on line 13

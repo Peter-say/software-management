@@ -141,7 +141,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <canvas id="lineChart_3"></canvas>
+                            <canvas id="purchaseChart"></canvas>
                         </div>
                     </div>
                 </div>

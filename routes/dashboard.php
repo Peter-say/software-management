@@ -9,6 +9,7 @@ use App\Http\Controllers\Dashboard\Hotel\Invoices\Guest\RoomReservationInvoiceCo
 use App\Http\Controllers\Dashboard\Hotel\Kitchen\KitchenOrderController;
 use App\Http\Controllers\Dashboard\Hotel\ModulePreferenceController;
 use App\Http\Controllers\Dashboard\Hotel\OutletController;
+use App\Http\Controllers\Dashboard\Hotel\PurchaseController;
 use App\Http\Controllers\Dashboard\Hotel\Restaurant\RestaurantItemsController;
 use App\Http\Controllers\Dashboard\Hotel\Restaurant\RestaurantOrderController;
 use App\Http\Controllers\Dashboard\Hotel\RoomController;
@@ -48,6 +49,7 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::resource('suppliers', SupplierController::class);
             Route::resource('expenses', ExpenseController::class);
             Route::resource('module-preferences', ModulePreferenceController::class);
+            Route::resource('purchases', PurchaseController::class);
 
             Route::get('set-guest-info', [GuestController::class, 'getGuestInfo'])->name('set-guest-info');
             Route::post('check-room-availability', [RoomReservationController::class, 'getRoomAvailability']);
@@ -84,6 +86,7 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::delete('/notifications/delete-bulk', [NotificationController::class, 'deleteBulk'])->name('notifications.delete-bulk');
 
             Route::get('/expenses-dashbaord', [ExpenseController::class, 'dashboard'])->name('expenses-dashbaord');
+            Route::get('/purchases-dashbaord', [PurchaseController::class, 'overview'])->name('purchases-dashbaord');
 
             Route::prefix('settings')->as('settings.')->group(function () {
                 Route::get('/', [SettingController::class, 'index']);

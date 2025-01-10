@@ -42,7 +42,7 @@
                                                 <label for="name" class="form-label">Category*</label>
                                                 <select id="category" name="category_id"
                                                     class="form-control @error('country_id') is-invalid @enderror">
-                                                    <option value="">Select Country</option>
+                                                    <option value="">Select Category</option>
                                                     @foreach (getModelItems('expense-categories') as $category)
                                                         <option value="{{ $category->id }}"
                                                             {{ old('category_id', $expense->category_id ?? '') == $category->id ? 'selected' : '' }}>

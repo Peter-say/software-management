@@ -71,4 +71,9 @@ class Hotel extends Model
     {
         return $this->belongsToMany(ModulePreference::class, 'hotel_module_preferences');
     }
+
+    public function store()
+    {
+        return $this->hasOne(Store::class);
+    }
 }

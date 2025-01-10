@@ -2,32 +2,70 @@
 
 namespace App\Models\HotelSoftware;
 
-use App\Models\Store;
+use App\Models\Payment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Purchase extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'supplier_id', 'item_category_id', 'description', 'purchase_date', 'amount',
-        'note', 'store_id', 'status', 'total_amount', 'tax_amount', 'tax_rate', 'discount',
+    protected $casts = [
+        'purchase_date' => 'datetime',
     ];
+    protected $guarded = [];
+
     public function supplier()
     {
-        return $this->belongsTo('App\Models\Supplier');
+        return $this->belongsTo(Supplier::class);
     }
+
     public function category()
     {
-        return $this->belongsTo('App\Models\ItemCategory', 'item_category_id');
+        return $this->belongsTo(ItemCategory::class, 'item_category_id');
     }
+
     public function items()
     {
-        return $this->hasMany('App\Models\PurchaseStoreItem', 'purchase_id');
+        return $this->belongsToMany(StoreItem::class, 'purchase_store_items')
+            ->withPivot([
+                'qty', 'rate', 'amount', 'unit_qty', 'received', 
+                'discount', 'tax_rate', 'tax_amount', 'total_amount'
+            ]);
     }
+
+    public function getItems()
+    {
+        $itemsString = '';
+        $itemNames = $this->items->map(function ($purchaseItem) {
+            return $purchaseItem->name;
+        })->toArray();
+
+        $itemsString = implode(', ', $itemNames);
+        return $itemsString;
+    }
+
+
+    public function payments()
+    {
+        return $this->morphMany(Payment::class, 'payable');
+    }
+
+    public function paymentStatus()
+    {
+        $payments = $this->payments()->get();
+        $totalPayment = $this->sum('amount');
+        if ($payments->isEmpty()) {
+            return 'pending';
+        } elseif ($payments->sum('amount') < $totalPayment) {
+            return 'partial';
+        } else {
+            return 'paid';
+        }
+    }
+
     public function storeItem()
     {
-        return $this->hasMany('App\Models\StoreItem', 'purchase_id');
+        return $this->hasMany(StoreItem::class, 'purchase_id');
     }
 
     public function store()
@@ -35,30 +73,8 @@ class Purchase extends Model
         return $this->belongsTo(Store::class);
     }
 
-    public function purchasestoreItem(){
-        return $this->hasMany(purchasestoreItem::class);
-    }
-    public function status()
+    public function purchasestoreItem()
     {
-        $status = "";
-        switch ($this->status) {
-            case 1:
-                $status = "Received";
-                break;
-            case 2:
-                $status = "Partial";
-                break;
-            case 3:
-                $status = "Ordered";
-                break;
-            case 4:
-                $status = "Pending";
-                break;
-
-            default:
-                # code...
-                break;
-        }
-        return $status;
+        return $this->hasMany(PurchaseStoreItem::class);
     }
 }

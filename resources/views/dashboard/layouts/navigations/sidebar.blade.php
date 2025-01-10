@@ -102,6 +102,14 @@
                         </a>
                     </li>
                 @endif
+                @if (Gate::allows('view-module', 'staff-management'))
+                <li>
+                    <a href="{{ route('dashboard.hotel.purchases-dashbaord') }}" aria-expanded="false">
+                        <i class="flaticon-013-checkmark"></i>
+                        <span class="nav-text">Purchase</span>
+                    </a>
+                </li>
+            @endif
                 <li><a class="has-arrow " href="javascript:void()" aria-expanded="false">
                         <i class="flaticon-045-heart"></i>
                         <span class="nav-text">Notifications</span>

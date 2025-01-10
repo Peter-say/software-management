@@ -110,20 +110,20 @@
             lineChart3();
             jQuery(document).ready(function() {});
 
-            jQuery(window).on('load', function() {
-                if (typeof dlabSparkLine !== 'undefined' && dlabSparkLine) {
-                    dlabSparkLine.load();
-                }
-            });
+            // jQuery(window).on('load', function() {
+            //     if (typeof dlabSparkLine !== 'undefined' && dlabSparkLine) {
+            //         dlabSparkLine.load();
+            //     }
+            // });
 
-            jQuery(window).on('resize', function() {
-                    if (typeof dlabSparkLine !== 'undefined') {
-                        dlabSparkLine.resize();
-                    }
-                setTimeout(function() {
-                    dlabSparkLine.resize();
-                }, 1000);
-            });
+            // jQuery(window).on('resize', function() {
+            //         if (typeof dlabSparkLine !== 'undefined') {
+            //             dlabSparkLine.resize();
+            //         }
+            //     setTimeout(function() {
+            //         dlabSparkLine.resize();
+            //     }, 1000);
+            // });
 
         };
         load();

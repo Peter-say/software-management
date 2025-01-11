@@ -104,6 +104,14 @@
                 @endif
                 @if (Gate::allows('view-module', 'staff-management'))
                     <li>
+                        <a href="{{ route('dashboard.hotel.requisitions.create') }}" aria-expanded="false">
+                            <i class="flaticon-013-checkmark"></i>
+                            <span class="nav-text">Requisitions</span>
+                        </a>
+                    </li>
+                @endif
+                @if (Gate::allows('view-module', 'staff-management'))
+                    <li>
                         <a href="{{ route('dashboard.hotel.purchases-dashbaord') }}" aria-expanded="false">
                             <i class="flaticon-013-checkmark"></i>
                             <span class="nav-text">Purchase</span>

@@ -183,4 +183,30 @@ class AppConstants
         self::MODULE_MARKETING_AND_PROMOTIONS,
     ];
 
+    // Department Names
+    const NAME_FRONT_DESK = 'Front Desk';
+    const NAME_HOUSEKEEPING = 'Housekeeping';
+    const NAME_FOOD_AND_BEVERAGE = 'Food and Beverage';
+    const NAME_MAINTENANCE = 'Maintenance';
+    const NAME_SECURITY = 'Security';
+    const NAME_HUMAN_RESOURCES = 'Human Resources';
+    const NAME_FINANCE = 'Finance';
+    const NAME_SALES_AND_MARKETING = 'Sales and Marketing';
+    const NAME_SPA_AND_WELLNESS = 'Spa and Wellness';
+    const NAME_EVENTS_MANAGEMENT = 'Events Management';
+
+    // Department List
+    const DEPARTMENTS = [
+        self::NAME_FRONT_DESK,
+        self::NAME_HOUSEKEEPING,
+        self::NAME_FOOD_AND_BEVERAGE,
+        self::NAME_MAINTENANCE,
+        self::NAME_SECURITY,
+        self::NAME_HUMAN_RESOURCES,
+        self::NAME_FINANCE,
+        self::NAME_SALES_AND_MARKETING,
+        self::NAME_SPA_AND_WELLNESS,
+        self::NAME_EVENTS_MANAGEMENT,
+    ];
+
 }

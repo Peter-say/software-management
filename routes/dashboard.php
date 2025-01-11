@@ -10,6 +10,7 @@ use App\Http\Controllers\Dashboard\Hotel\Kitchen\KitchenOrderController;
 use App\Http\Controllers\Dashboard\Hotel\ModulePreferenceController;
 use App\Http\Controllers\Dashboard\Hotel\OutletController;
 use App\Http\Controllers\Dashboard\Hotel\PurchaseController;
+use App\Http\Controllers\Dashboard\Hotel\RequisitionController;
 use App\Http\Controllers\Dashboard\Hotel\Restaurant\RestaurantItemsController;
 use App\Http\Controllers\Dashboard\Hotel\Restaurant\RestaurantOrderController;
 use App\Http\Controllers\Dashboard\Hotel\RoomController;
@@ -52,6 +53,7 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::resource('module-preferences', ModulePreferenceController::class);
             Route::resource('purchases', PurchaseController::class);
             Route::resource('store-items', StoreItemController::class);
+            Route::resource('requisitions', RequisitionController::class);
 
             Route::get('set-guest-info', [GuestController::class, 'getGuestInfo'])->name('set-guest-info');
             Route::post('check-room-availability', [RoomReservationController::class, 'getRoomAvailability']);

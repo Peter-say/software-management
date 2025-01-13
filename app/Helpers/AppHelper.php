@@ -44,7 +44,7 @@ function getModelItems($model)
         $outlet = Outlet::where('hotel_id', $hotelId)->where('type', 'restaurant')->first();
         // Get all walk-in customers associated with that restaurant outlet
         $model_list = WalkInCustomer::whereHas('restaurantOrders', function ($query) use ($outlet) {
-            $query->where('outlet_id', $outlet->id);
+            $query->where('hotel_id', User::getAuthenticatedUser()->hotel->id);
         })->get();
     }
     if ($model == 'item-categories') {

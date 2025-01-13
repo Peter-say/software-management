@@ -13,7 +13,7 @@ class NotificationController extends Controller
     protected function authorizeRole()
     {
         $user =  Auth::user();
-        $hotelUser = HotelUser::where('user_id', $user->id)->first();
+        $hotelUser = HotelUser::where('user_id', $user->id)->where('user_id', $user->hotel->id)->first();
         return $hotelUser->role === 'Hotel_Owner' || $hotelUser->role === 'Manager' || $hotelUser->role === 'Sales';
     }
 

@@ -22,6 +22,7 @@ use App\Http\Controllers\Dashboard\Notification\NotificationController;
 use App\Http\Controllers\Dashboard\OnboardingController;
 use App\Http\Controllers\Dashboard\Settings\HotelSettingController;
 use App\Http\Controllers\Dashboard\Settings\SettingController;
+use App\Http\Middleware\HotelUserMiddleware;
 use Illuminate\Support\Facades\Route;
 
 
@@ -102,11 +103,12 @@ Route::middleware('auth', 'verified')->group(function () {
         Route::prefix('payments')->as('payments.')->group(function () {
             Route::post('pay-with-card', [PaymentController::class, 'payWithCard'])->name('pay-with-card');
         });
-    });
+    })->middleware(HotelUserMiddleware::class);
     Route::get('/get-states-by-country', [OnboardingController::class, 'getStatesByCountry'])->name('get-states-by-country');
 
     Route::prefix('onboarding')->as('onboarding.')->group(function () {
         Route::get('setup-app', [OnboardingController::class, 'setupApp'])->name('setup-app');
         Route::post('save-setup-app', [OnboardingController::class, 'saveSetupApp'])->name('save-setup-app');
     });
+   
 });

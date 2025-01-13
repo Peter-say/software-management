@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Models\HotelSoftware\RestaurantOrder;
 use App\Models\User;
+use App\Providers\RoleServiceProvider;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -18,12 +19,13 @@ class KitchenOrderNotification extends Notification implements ShouldBroadcast
     use Queueable;
     public $restaurantOrder;
     public $user;
+    protected $kitchen_roles;
 
-    public function __construct(RestaurantOrder $restaurantOrder, User $user)
+    public function __construct(RestaurantOrder $restaurantOrder, User $user, $kitchen_roles)
     {
-        // Ensure to load items with restaurantItem
         $this->restaurantOrder = $restaurantOrder->load('restaurantOrderItems.restaurantItem');
         $this->user = $user;
+        $this->kitchen_roles = $kitchen_roles;
     }
 
     // Specify the channels for the notification
@@ -59,11 +61,13 @@ class KitchenOrderNotification extends Notification implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        // Only broadcast if the user has the 'Sales' role
-        return $this->user->hotelUser->role === 'Sales' || $this->user->hotelUser->role == 'Hotel_Owner'
-            ? new Channel('kitchen-orders')
-            : null;
+        // Check if the user belongs to the hotel and has the correct role
+        $hasAccess = $this->user->hotelUser->where('hotel_id', $this->user->hotel->id)
+            ->whereIn('role', $this->kitchen_roles->userCanAccessSalesRole())
+            ->exists();
+        return $hasAccess ? new Channel('kitchen-orders') : null;
     }
+
 
     public function broadcastAs()
     {

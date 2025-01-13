@@ -19,7 +19,10 @@
                     <div class="card-body">
                         <form action="{{ route('dashboard.hotel.requisitions.store') }}" method="POST">
                             @csrf
-                            <!-- Requisition Title -->
+                            @if (isset($requisition))
+                                @method('PUT')
+                                <input type="hidden" name="requisition_id" value="{{ $requisition->id }}">
+                            @endif
                            <div class="row">
                             <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 mb-3">
                                 <div class="form-group">
@@ -37,17 +40,17 @@
                             <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 mb-3">
                                 <div class="form-group">
                                     <label for="department" class="form-label">Select Department</label>
-                                    <select name="department_id" id="department"
-                                        class="form-control @error('department_id') is-invalid @enderror" required>
+                                    <select name="department" id="department"
+                                        class="form-control @error('department') is-invalid @enderror" required>
                                         <option value="">-- Select a Department --</option>
-                                        @foreach ($departments as $index => $department)
-                                            <option value="{{ $index }}"
-                                                {{ old('department_id') == $index ? 'selected' : '' }}>
+                                        @foreach ($departments as $department)
+                                            <option value="{{$department}}"
+                                                {{ old('department') == $department? 'selected' : '' }}>
                                                 {{ $department }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    @error('department_id')
+                                    @error('department')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -70,7 +73,7 @@
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <input type="text" name="items[0][name]" class="form-control"
+                                                    <input type="text" name="items[0][item_name]" class="form-control"
                                                         required>
                                                 </td>
                                                 <td>

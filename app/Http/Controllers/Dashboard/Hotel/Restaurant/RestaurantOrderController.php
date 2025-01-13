@@ -54,7 +54,7 @@ class RestaurantOrderController extends Controller
         } catch (Exception $e) {
             return response()->json(['success' => false, 'message' => $e->getMessage(),], 500); // Send a 500 response on error
         } catch (\Throwable $th) {
-            // throw $th;
+            throw $th;
             return response()->json(['success' => false, 'message' => 'Something went wrong while trying to save order',], 500);
         }
     }

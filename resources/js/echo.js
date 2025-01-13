@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     let unreadCount = 0;
 
     // Standard image fallback
-    const defaultImage = "http://127.0.0.1:7000/storage/hotel/restaurant/items/6701f36a193c3_food1.jpeg";
+    const defaultImage = "public/dashboard/food/food1.jpeg";
 
     // Helper function to format notification data
     function formatNotificationData(notification) {
@@ -96,6 +96,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Listen for new notifications via Pusher
     window.Echo.channel("kitchen-orders").listen(".OrderCreated", (event) => {
+        console.log('hello message');
         const formattedData = formatNotificationData(event);
         addNotificationToList(formattedData);
 

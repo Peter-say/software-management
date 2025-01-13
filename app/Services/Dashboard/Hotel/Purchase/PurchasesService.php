@@ -77,7 +77,7 @@ class PurchasesService
             $data['discount'] = $data['discount'] ?? 0;
             $data['tax_rate'] = $data['tax_rate'] ?? 0;
             $data['tax_amount'] = $data['tax_amount'] ?? 0;
-               this will be included when tax as been created for the hotel */
+               this will be included when tax has been created for the hotel */
             $data['hotel_id'] = $hotel->id;
             $data['store_id'] = $hotel->store->id;
             $data['amount'] = $sum_amount;
@@ -108,7 +108,7 @@ class PurchasesService
                         'discount' => $data['discount'][$key] ?? null,
                         'tax_rate' => $data['tax_rate'][$key] ?? null,
                         'tax_amount' => $data['tax_amount'][$key] ?? null,
-                          this will be included when tax as been created for the hotel */
+                          this will be included when tax has been created for the hotel */
                         'total_amount' => $sum_amount,
                     ]
                 );

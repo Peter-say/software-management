@@ -15,7 +15,9 @@ return new class extends Migration
         Schema::create('requisitions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('hotel_id')->constrained()->onDelete('cascade');
+            $table->foreignId('hotel_user_id')->constrained()->onDelete('cascade');
             $table->string('department');
+            $table->text('purpose');
             $table->string('status')->default(StatusConstants::PENDING);
             $table->timestamps();
         });

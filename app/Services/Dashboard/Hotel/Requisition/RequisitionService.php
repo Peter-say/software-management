@@ -15,9 +15,11 @@ class RequisitionService
     public function validated(array $data)
     {
         $validator = Validator::make($data, [
+            'purpose' => 'required|string',
             'department' => 'required|string',
             'items.*.item_name' => 'required|string',
             'items.*.quantity' => 'required|integer|min:1',
+            'items.*.unit' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -38,11 +40,11 @@ class RequisitionService
     public function save(Request $request, $requisition_id = null)
     {
         return DB::transaction(function () use ($request, $requisition_id) {
-            $hotel = User::getAuthenticatedUser()->hotel;
-            $data = $this->validated($request->all());
-
-            $data['hotel_id'] =  $hotel->id;
-
+            $user = User::getAuthenticatedUser();
+            $this->validated($request->all());
+            $data = $request->except(['item_name', 'quantity', 'unit', 'requisition_id', 'items', '_token']);
+            $data['hotel_id'] =  $user->hotel->id;
+            $data['hotel_user_id'] =  $user->hotelUser->id;
             if ($requisition_id) {
                 $requisition = $this->getById($requisition_id);
                 $requisition->update($data);

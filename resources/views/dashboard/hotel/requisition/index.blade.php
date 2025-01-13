@@ -6,12 +6,12 @@
             <div class="row page-titles">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active"><a href="{{ route('dashboard.home') }}">Home</a></li>
-                    <li class="breadcrumb-item"><a href="javascript:void(0)">Store Items</a></li>
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">RequisitionInfo</a></li>
                 </ol>
             </div>
-            <div class="mt-4 d-flex justify-content-between align-items-center flex-wrap">
-                <h4 class="mb-0">All Store Items</h4>
-                <a href="{{ route('dashboard.hotel.store-items.create') }}" class="btn btn-secondary">+ New Item</a>
+            <div class="mt-4 d-flex justify-content-between align-requisitions-center flex-wrap">
+                <h4 class="mb-0">All Your Requisition Items</h4>
+                <a href="{{ route('dashboard.hotel.requisitions.create') }}" class="btn btn-secondary">+ New Requisition</a>
             </div>
             <div class="row mt-4">
                 <div class="col-xl-12">
@@ -22,37 +22,27 @@
                                     <thead>
                                         <tr>
                                             <th>S/N</th>
-                                            <th>Image</th>
+                                            <th>User</th>
+                                            <th>Department</th>
                                             <th>Name</th>
-                                            <th>Code</th>
-                                            <th>Category</th>
-                                            <th>Subcategory</th>
-                                            <th>Unit</th>
                                             <th>Quantity</th>
-                                            <th>Selling Price</th>
+                                            <th>Unit</th>
+                                            <th>Purpose</th>
+                                            <th>Status</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($store_items as $item)
+                                        @foreach ($requisition_items as $requisition_item)
                                             <tr>
                                                 <td>{{ $sn++ }}</td>
-                                                <td>
-                                                    <a href="{{ getStorageUrl('hotel/store/items/files/'. $item->image) }}"
-                                                        data-fancybox="gallery_{{ $item->id }}"
-                                                        data-caption="{{ $item->name }}">
-                                                        <img class="me-3 rounded img-thumbnail" class="img-fluid" width="60"
-                                                            src="{{ getStorageUrl('hotel/store/items/files/'. $item->image) }}"
-                                                            alt="{{ basename($item->image) }}">
-                                                    </a>
-                                                </td>
-                                                <td>{{ $item->name }}</td>
-                                                <td>{{ $item->code }}</td>
-                                                <td>{{ $item->itemCategory->name ?? 'N/A' }}</td>
-                                                <td>{{ $item->itemSubCategory->name ?? 'N/A' }}</td>
-                                                <td>{{ $item->unit_measurement }}</td>
-                                                <td>{{ $item->qty }}</td>
-                                                <td>{{ number_format($item->selling_price, 2) }}</td>
+                                                <td>{{ $requisition_item->requisition->hotelUser->user->name }}</td>
+                                                <td>{{ $requisition_item->requisition->department }}</td>
+                                                <td>{{ $requisition_item->item_name}}</td>
+                                                <td>{{ $requisition_item->quantity}}</td>
+                                                <td>{{ $requisition_item->unit}}</td>
+                                                <td>{{ $requisition_item->requisition->purpose}}</td>
+                                                <td>{{ $requisition_item->requisition->status }}</td>
                                                 <td>
                                                     <div class="dropdown dropend">
                                                         <a href="javascript:void(0);" class="btn-link" data-bs-toggle="dropdown" aria-expanded="false">
@@ -63,8 +53,8 @@
                                                             </svg>
                                                         </a>
                                                         <div class="dropdown-menu">
-                                                            <a class="dropdown-item" href="{{ route('dashboard.hotel.store-items.edit', $item->id) }}">Edit</a>
-                                                            <a class="dropdown-item" href="javascript:void(0);" onclick="confirmDelete('{{ route('dashboard.hotel.store-items.destroy', $item->id) }}')">Delete</a>
+                                                            <a class="dropdown-item" href="{{ route('dashboard.hotel.requisitions.edit', $requisition_item->id) }}">Edit</a>
+                                                            <a class="dropdown-item" href="javascript:void(0);" onclick="confirmDelete('{{ route('dashboard.hotel.requisitions.destroy', $requisition_item->id) }}')">Delete</a>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -74,15 +64,15 @@
                                 </table>
                             </div>
                             <!-- Pagination -->
-                            <div class="d-flex justify-content-between align-items-center mt-3">
+                            <div class="d-flex justify-content-between align-item-center mt-3">
                                 <div class="text-muted">
-                                    Showing {{ $store_items->firstItem() }} to
-                                    {{ $store_items->lastItem() }} of {{ $store_items->total() }}
+                                    Showing {{ $requisition_items->firstItem() }} to
+                                    {{ $requisition_items->firstItem() }} of {{ $requisition_items->total() }}
                                     entries
                                 </div>
                                 <nav aria-label="Page navigation">
                                     <ul class="pagination">
-                                        {{ $store_items->links('pagination::bootstrap-4') }}
+                                        {{ $requisition_items->links('pagination::bootstrap-4') }}
                                     </ul>
                                 </nav>
                             </div>
@@ -104,7 +94,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete this item?
+                    Are you sure you want to delete this requisition_item?
                 </div>
                 <div class="modal-footer">
                     <form method="POST" id="deleteForm">

@@ -44,7 +44,7 @@ class RoleServiceProvider extends ServiceProvider
         });
     }
 
-    public function userCanAccessSalesRole($user)
+    public function userCanAccessSalesRole()
     {
         return ['Hotel_Owner', 'Manager', 'Sales'];
     }

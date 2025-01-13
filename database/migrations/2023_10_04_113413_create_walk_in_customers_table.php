@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('walk_in_customers', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable(); // Customer's name
-            $table->string('email')->nullable(); // Customer's email
-            $table->string('phone')->nullable(); // Customer's phone number
-            $table->text('notes')->nullable(); // Additional notes (e.g., preferences)
+            $table->string('name')->nullable(); 
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable(); 
+            $table->text('notes')->nullable(); 
             $table->timestamps();
         });
     }

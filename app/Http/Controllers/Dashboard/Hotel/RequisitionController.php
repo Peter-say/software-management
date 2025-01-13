@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard\Hotel;
 use App\Constants\AppConstants;
 use App\Http\Controllers\Controller;
 use App\Models\Requisition;
+use App\Models\RequisitionItem;
 use App\Models\User;
 use App\Services\Dashboard\Hotel\Requisition\RequisitionService;
 use Exception;
@@ -26,11 +27,12 @@ class RequisitionController extends Controller
      */
     public function index()
     {
-        $requisitions = Requisition::whereHas('hotel',  User::getAuthenticatedUser()->hotel->id)
-        ->latest()->paginate(30);
+        $requisition_items = RequisitionItem::with('requisition')->whereHas('requisition', function($query){
+            $query->where('hotel_id',  User::getAuthenticatedUser()->hotel->id);
+        })->latest()->paginate(30);
         return view('dashboard.hotel.requisition.index', [
-            'requisitions' => $requisitions,
-            'sn' => $requisitions->firstItem(),
+            'requisition_items' => $requisition_items,
+            'sn' => $requisition_items->firstItem(),
         ]);
     }
 

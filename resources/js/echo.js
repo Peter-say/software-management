@@ -10,7 +10,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
         forceTLS: true,
     });
-
+    pusher.connection.bind("connected", () => {
+        console.log("Pusher connected:", pusher.connection.socket_id);
+    });
     const badge = document.getElementById("notificationcount");
     const notificationList = document.querySelector("#DZ_W_Notification1 .timeline");
     const maxNotifications = 5; // Limit to 5 notifications

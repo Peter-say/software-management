@@ -60,7 +60,7 @@ class KitchenOrderNotification extends Notification implements ShouldBroadcast
     }
 
     public function broadcastOn()
-    {
+    
         // Check if the user belongs to the hotel and has the correct role
         $hasAccess = $this->user->hotelUser->where('hotel_id', $this->user->hotel->id)
             ->whereIn('role', $this->kitchen_roles->userCanAccessSalesRole())

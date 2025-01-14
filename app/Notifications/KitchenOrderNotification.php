@@ -19,14 +19,15 @@ class KitchenOrderNotification extends Notification implements ShouldBroadcast
     use Queueable;
     public $restaurantOrder;
     public $user;
-    protected $kitchen_roles;
+    protected $roleProvider;
 
-    public function __construct(RestaurantOrder $restaurantOrder, User $user, $kitchen_roles)
+    public function __construct(RestaurantOrder $restaurantOrder, User $user, RoleServiceProvider $roleProvider)
     {
         $this->restaurantOrder = $restaurantOrder->load('restaurantOrderItems.restaurantItem');
         $this->user = $user;
-        $this->kitchen_roles = $kitchen_roles;
+        $this->roleProvider = $roleProvider;
     }
+
 
     // Specify the channels for the notification
     public function via($notifiable)
@@ -62,8 +63,11 @@ class KitchenOrderNotification extends Notification implements ShouldBroadcast
     public function broadcastOn()
     {
         // Check if the user belongs to the hotel and has the correct role
-        $hasAccess = $this->user->hotelUser->where('hotel_id', $this->user->hotel->id)
-            ->whereIn('role', $this->kitchen_roles->userCanAccessSalesRole())
+        $roles = $this->roleProvider->userCanAccessSalesRole(); // Retrieve roles from the provider
+
+        $hasAccess = $this->user->hotelUser
+            ->where('hotel_id', $this->user->hotel->id)
+            ->whereIn('role', $roles)
             ->exists();
         return $hasAccess ? new Channel('kitchen-orders') : null;
     }

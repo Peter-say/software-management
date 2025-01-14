@@ -135,7 +135,7 @@ class RestaurantOrderService
         $kitchenStaff = HotelUser::where('role', $role)->get();
         foreach ($kitchenStaff as $staff) {
             if ($staff->user && $staff->user->email) {
-                $staff->user->notify(new KitchenOrderNotification($restaurantOrder, $staff->user, null));
+                $staff->user->notify(new KitchenOrderNotification($restaurantOrder, $staff->user, $role));
             }
         }
 

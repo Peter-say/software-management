@@ -1,11 +1,16 @@
 <?php
 
 namespace App\Services\Dashboard\Hotel\Requisition;
+
+use App\Models\HotelSoftware\HotelUser;
 use App\Models\Requisition;
 use App\Models\RequisitionItem;
 use App\Models\User;
+use App\Notifications\StoreItemRequisitionNotification;
+use App\Services\RoleService\HotelServiceRole;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -52,12 +57,21 @@ class RequisitionService
                 $requisition = Requisition::create($data);
             }
             foreach ($request->items as $item) {
-                RequisitionItem::create([
+              $requisitionItem =  RequisitionItem::create([
                     'requisition_id' => $requisition->id,
                     'item_name' => $item['item_name'],
                     'quantity' => $item['quantity'],
                     'unit' => $item['unit'] ?? null,
                 ]);
+            }
+            // Notify store staff
+            $user = Auth::user();
+            $roleService = new HotelServiceRole();
+            $storeStaff = HotelUser::whereIn('role', $roleService->userCanAccessStoreRole())->get();
+            foreach ($storeStaff as $staff) {
+                if ($staff->user && $staff->user->email) {
+                    $staff->user->notify(new StoreItemRequisitionNotification($requisitionItem, $staff->user, $roleService));
+                }
             }
         });
     }

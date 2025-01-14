@@ -115,13 +115,13 @@
                 const newRow = document.createElement('tr');
                 newRow.innerHTML = `
                     <td>
-                        <input type="text" name="items[${itemIndex}][name]" class="form-control" required>
+                        <input type="text" name="items[${itemIndex}][item_name]" class="form-control" required>
                     </td>
                     <td>
                         <input type="number" name="items[${itemIndex}][quantity]" class="form-control" min="1" required>
                     </td>
                     <td>
-                        <input type="text" name="items[${itemIndex}][description]" class="form-control">
+                        <input type="text" name="items[${itemIndex}][unit]" class="form-control">
                     </td>
                     <td>
                         <button type="button" class="btn btn-danger remove-item-btn">Remove</button>

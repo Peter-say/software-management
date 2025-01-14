@@ -44,9 +44,5 @@ class AppServiceProvider extends ServiceProvider
                 ]);
             });
     }
-    // View::composer('*', function ($view) {
-    //     $countNotification = (new Notification())->countNotification();
-    //     $view->with('countNotification', $countNotification);
-    // });
 
 }

@@ -2,7 +2,7 @@ import Echo from "laravel-echo";
 import Pusher from "pusher-js";
 
 window.Pusher = Pusher;
-console.log(window.Pusher, 'hello');
+console.log(window.Pusher, "hello");
 document.addEventListener("DOMContentLoaded", async function () {
     window.Echo = new Echo({
         broadcaster: "pusher",
@@ -10,16 +10,16 @@ document.addEventListener("DOMContentLoaded", async function () {
         cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
         forceTLS: true,
     });
-    pusher.connection.bind("connected", () => {
-        console.log("Pusher connected:", pusher.connection.socket_id);
-    });
     const badge = document.getElementById("notificationcount");
-    const notificationList = document.querySelector("#DZ_W_Notification1 .timeline");
+    const notificationList = document.querySelector(
+        "#DZ_W_Notification1 .timeline"
+    );
     const maxNotifications = 5; // Limit to 5 notifications
     let unreadCount = 0;
 
     // Standard image fallback
-    const defaultImage = "public/dashboard/food/food1.jpeg";
+    const imagePath = "dashboard/food/food1.jpeg";
+    const defaultImage = getStorageUrl(imagePath);
 
     // Helper function to format notification data
     function formatNotificationData(notification) {
@@ -27,17 +27,20 @@ document.addEventListener("DOMContentLoaded", async function () {
         const imageUrl = items[0]?.image || defaultImage;
         const linkUrl = notification.data?.link || notification.link || "#";
         const itemCount = items.length;
-        const firstItemName = items[0]?.name || "Item";
-        const notificationMessage = itemCount > 1
-            ? `${firstItemName} ordered and ${itemCount - 1} more`
-            : `${firstItemName} ordered`;
+        const firstItemName = items[0]?.name || notification.data?.message;
+        const notificationMessage =
+            itemCount > 1
+                ? `${firstItemName} ordered and ${itemCount - 1} more`
+                : notification.data?.message;
 
         return {
             id: notification.id || notification.notification_id,
             imageUrl,
             linkUrl,
             message: notificationMessage,
-            createdAt: new Date(notification.created_at || new Date()).toLocaleString(),
+            createdAt: new Date(
+                notification.created_at || new Date()
+            ).toLocaleString(),
         };
     }
 
@@ -85,9 +88,10 @@ document.addEventListener("DOMContentLoaded", async function () {
         badge.classList.toggle("bg-primary", unreadCount > 0);
 
         if (data.notification.length === 0) {
-            notificationList.innerHTML = '<li><div class="timeline-panel"><div class="media-body text-center"><p>No notifications available</p></div></div></li>';
+            notificationList.innerHTML =
+                '<li><div class="timeline-panel"><div class="media-body text-center"><p>No notifications available</p></div></div></li>';
         } else {
-            data.notification.forEach(notification => {
+            data.notification.forEach((notification) => {
                 const formattedData = formatNotificationData(notification);
                 addNotificationToList(formattedData);
             });
@@ -98,7 +102,6 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Listen for new notifications via Pusher
     window.Echo.channel("kitchen-orders").listen(".OrderCreated", (event) => {
-        console.log('hello message');
         const formattedData = formatNotificationData(event);
         addNotificationToList(formattedData);
 
@@ -108,17 +111,35 @@ document.addEventListener("DOMContentLoaded", async function () {
         badge.classList.add("bg-primary");
     });
 
+    window.Echo.channel("item-requisition").listen(
+        ".RequisitionRequested",
+        (event) => {
+            const formattedData = formatNotificationData(event);
+            addNotificationToList(formattedData);
+
+            // Update badge count
+            unreadCount += 1;
+            badge.innerText = unreadCount;
+            badge.classList.add("bg-primary");
+        }
+    );
+
     // Mark notification as read and remove it from DOM
     async function markNotificationAsRead(notificationId, notificationItem) {
         try {
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
-            const response = await fetch(`/dashboard/hotel/notifications/mark-as-read/${notificationId}`, {
-                method: "POST",
-                headers: {
-                    "X-CSRF-TOKEN": csrfToken,
-                    "Content-Type": "application/json",
-                },
-            });
+            const csrfToken = document
+                .querySelector('meta[name="csrf-token"]')
+                .getAttribute("content");
+            const response = await fetch(
+                `/dashboard/hotel/notifications/mark-as-read/${notificationId}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": csrfToken,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
 
             if (response.ok) {
                 unreadCount -= 1;
@@ -126,7 +147,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                 badge.classList.toggle("bg-primary", unreadCount > 0);
                 // notificationItem.remove();
                 notificationItem.style.color = "gray";
-                
 
                 // Re-fetch unread notifications if space is available
                 if (notificationList.childElementCount < maxNotifications) {
@@ -141,14 +161,21 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Fetch additional unread notifications to fill up empty space
     async function fetchAndAddUnreadNotifications() {
         try {
-            const response = await fetch("/dashboard/hotel/notifications/unread");
+            const response = await fetch(
+                "/dashboard/hotel/notifications/unread"
+            );
             const data = await response.json();
-            data.notification.slice(0, maxNotifications - notificationList.childElementCount).forEach(notification => {
-                const formattedData = formatNotificationData(notification);
-                addNotificationToList(formattedData);
-            });
+            data.notification
+                .slice(0, maxNotifications - notificationList.childElementCount)
+                .forEach((notification) => {
+                    const formattedData = formatNotificationData(notification);
+                    addNotificationToList(formattedData);
+                });
         } catch (error) {
-            console.error("Error fetching additional unread notifications:", error);
+            console.error(
+                "Error fetching additional unread notifications:",
+                error
+            );
         }
     }
 });

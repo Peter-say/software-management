@@ -5,16 +5,20 @@ namespace App\Http\Controllers\Dashboard\Notification;
 use App\Http\Controllers\Controller;
 use App\Models\HotelSoftware\HotelUser;
 use App\Models\HotelSoftware\Notification;
+use App\Services\RoleService\HotelServiceRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
+    public $hotelServiceRole;
+    public function __construct()
+    {
+        $this->hotelServiceRole = new HotelServiceRole();
+    }
     protected function authorizeRole()
     {
-        $user =  Auth::user();
-        $hotelUser = HotelUser::where('user_id', $user->id)->where('user_id', $user->hotel->id)->first();
-        return $hotelUser->role === 'Hotel_Owner' || $hotelUser->role === 'Manager' || $hotelUser->role === 'Sales';
+      return $this->hotelServiceRole->getHotelUserRoles();
     }
 
     public function unread()
@@ -22,9 +26,12 @@ class NotificationController extends Controller
         if (!$this->authorizeRole()) {
             abort(403, 'Unauthorized');
         }
-
         $user = Auth::user();
-        $notifications = $user->unreadNotifications()->latest()->get(); // Fetch unread notifications
+        $roles = $this->hotelServiceRole->getHotelUserRoles();
+        $notifications = $user->unreadNotifications()->whereHas('notifiable.hotelUser', function ($query) use ($roles) {
+            $query->whereIn('role', $roles);
+        })->latest()->get();
+
         return response()->json([
             'unread_count' => $user->unreadNotifications->count(),
             'notification' => $notifications
@@ -38,7 +45,10 @@ class NotificationController extends Controller
         }
 
         $user = Auth::user();
-        $notifications = $user->notifications()->latest()->get(); // Fetch unread notifications
+        $roles = $this->hotelServiceRole->getHotelUserRoles();
+        $notifications = $user->notifications()->whereHas('notifiable.hotelUser', function ($query) use ($roles) {
+            $query->whereIn('role', $roles);
+        })->latest()->get();
         return response()->json([
             'notification' => $notifications
         ]);
@@ -72,7 +82,7 @@ class NotificationController extends Controller
 
         $user = Auth::user();
         $notification = $user->notifications()
-        ->where('notifiable_id', $user->hotel->id)->find($uuid);
+            ->where('notifiable_id', $user->hotel->id)->find($uuid);
 
         if ($notification) {
             // Customize this view with relevant data for display

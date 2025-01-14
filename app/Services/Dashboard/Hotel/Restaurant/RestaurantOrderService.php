@@ -11,6 +11,7 @@ use App\Models\HotelSoftware\WalkInCustomer;
 use App\Models\User;
 use App\Notifications\KitchenOrderNotification;
 use App\Providers\RoleServiceProvider;
+use App\Services\RoleService\HotelServiceRole;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -130,12 +131,11 @@ class RestaurantOrderService
 
         // Notify kitchen staff
         $user = Auth::user();
-        $role_service = new RoleServiceProvider($user);
-        $role = $role_service->userCanAccessSalesRole($user);
-        $kitchenStaff = HotelUser::where('role', $role)->get();
+        $roleService = new HotelServiceRole();
+        $kitchenStaff = HotelUser::whereIn('role', $roleService->userCanAccessSalesRole())->get();
         foreach ($kitchenStaff as $staff) {
             if ($staff->user && $staff->user->email) {
-                $staff->user->notify(new KitchenOrderNotification($restaurantOrder, $staff->user, $role_service));
+                $staff->user->notify(new KitchenOrderNotification($restaurantOrder, $staff->user, $roleService));
             }
         }
 

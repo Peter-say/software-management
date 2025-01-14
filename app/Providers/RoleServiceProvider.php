@@ -43,9 +43,4 @@ class RoleServiceProvider extends ServiceProvider
             return $hotel && $hotel->modulePreferences()->where('slug', $moduleSlug)->exists();
         });
     }
-
-    public function userCanAccessSalesRole()
-    {
-        return ['Hotel_Owner', 'Manager', 'Sales'];
-    }
 }

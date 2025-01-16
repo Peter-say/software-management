@@ -127,8 +127,7 @@
 
                 <ul aria-expanded="false">
                     <li><a href="{{ route('dashboard.hotel.store-items.index') }}">Items</a></li>
-                    {{-- <li><a href="{{ route('dashboard.hotel.restaurant.create-order') }}">Create Order</a></li>
-                <li><a href="{{ route('dashboard.hotel.restaurant.view-orders') }}">View Orders</a></li> --}}
+                    <li><a href="{{ route('dashboard.hotel.store-issues.create') }}">Issue Item</a></li>
                 </ul>
             </li>
             @endif

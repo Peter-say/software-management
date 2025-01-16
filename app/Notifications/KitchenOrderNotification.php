@@ -52,13 +52,23 @@ class KitchenOrderNotification extends Notification implements ShouldBroadcast
      * Get the mail representation of the notification.
      */
     public function toMail(object $notifiable): MailMessage
-    {
-        $data = $this->buildData($notifiable);
-        return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
-    }
+{
+    $itemsList = $this->restaurantOrder->restaurantOrderItems->map(function ($item) {
+        return $item->restaurantItem->name . ' (Quantity: ' . $item->qty . ')';
+    })->implode("\n");
+
+    return (new MailMessage)
+        ->subject('New Kitchen Order Created')
+        ->line('A new order has been created in the kitchen.')
+        ->line('Order ID: ' . $this->restaurantOrder->id)
+        ->line('Total Amount: $' . $this->restaurantOrder->total_amount)
+        ->line('Status: ' . $this->restaurantOrder->status)
+        ->line('Items in the order:')
+        ->line($itemsList)
+        ->action('View Order', url($this->buildData($notifiable)['link']))
+        ->line('Thank you for managing the kitchen orders!');
+}
+
 
     public function broadcastOn()
     {

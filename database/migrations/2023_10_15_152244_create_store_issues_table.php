@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('store_issues', function (Blueprint $table) {
             $table->id();
             $table->foreignId('store_id')->constrained('stores')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('hotel_user_id')->constrained('hotel_users')->onDelete('cascade');
             $table->foreignId('outlet_id')->constrained('outlets')->onDelete('cascade');
-            $table->string('recipient_name');
+            $table->foreignId('recipient_id')->nullable()->constrained('hotel_users')->onDelete('cascade');
+            $table->string('extenal_recipient_name')->nullable();
             $table->string('note')->nullable();
-            $table->string('type');
+            $table->string('type')->nullable();
             $table->timestamps();
         });
     }

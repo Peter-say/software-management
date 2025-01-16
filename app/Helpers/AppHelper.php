@@ -39,6 +39,8 @@ function getModelItems($model)
         $model_list = StoreItem::whereHas('store', function ($query) use ($hotelId) {
             $query->where('hotel_id', $hotelId);
         })->get();
+    } elseif ($model == 'outlets') {
+        $model_list = Outlet::where('hotel_id', $hotelId)->get();
     } elseif ($model == 'walk_in_customers') {
         // Get the outlet (restaurant) for the hotel
         $outlet = Outlet::where('hotel_id', $hotelId)->where('type', 'restaurant')->first();

@@ -15,6 +15,7 @@ use App\Http\Controllers\Dashboard\Hotel\Restaurant\RestaurantItemsController;
 use App\Http\Controllers\Dashboard\Hotel\Restaurant\RestaurantOrderController;
 use App\Http\Controllers\Dashboard\Hotel\RoomController;
 use App\Http\Controllers\Dashboard\Hotel\RoomReservationController;
+use App\Http\Controllers\Dashboard\Hotel\StoreIssueController;
 use App\Http\Controllers\Dashboard\Hotel\StoreItemController;
 use App\Http\Controllers\Dashboard\Hotel\SupplierController;
 use App\Http\Controllers\Dashboard\Hotel\UsersController;
@@ -81,6 +82,11 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::put('kitchen/orders/{id}/change-status', [KitchenOrderController::class, 'updateStatus'])->name('kitchen.orders.change-status');
             Route::put('kitchen/orders/{id}/add-note', [KitchenOrderController::class, 'addNote'])->name('kitchen.orders.add-note');
             Route::put('kitchen/orders/{id}/assign-task', [KitchenOrderController::class, 'assignTask'])->name('kitchen.orders.assign-task');
+
+            Route::get('store-issues/index', [StoreIssueController::class, 'index'])->name('store-issues.index');
+            Route::get('store-issues/create', [StoreIssueController::class, 'create'])->name('store-issues.create');
+            Route::post('store-issues/store', [StoreIssueController::class, 'store'])->name('store-issues.store');
+            Route::get('fetch-store-items', [StoreIssueController::class, 'getItemByCategory'])->name('fetch-store-items');
 
             Route::get('notifications/unread', [NotificationController::class, 'unread'])->name('notifications.unread');
             Route::post('notifications/mark-as-read/{id}', [NotificationController::class, 'makeAsRead'])->name('notifications.mark-as-read');

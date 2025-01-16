@@ -53,11 +53,23 @@ class StoreItemRequisitionNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
+        $itemsList = $this->requisitionItem->requisition->items->map(function ($item) {
+            return $item->item_name . ' (Quantity: ' . $item->quantity . ' ' . $item->unit . ')';
+        })->implode("\n");
+    
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->subject('New Requisition Submitted') 
+            ->line('A new item requisition has been submitted.')
+            ->line('Requisition ID: ' . $this->requisitionItem->requisition->id)
+            ->line('Department: ' . $this->requisitionItem->requisition->department)
+            ->line('Purpose: ' . $this->requisitionItem->requisition->purpose)
+            ->line('Status: ' . $this->requisitionItem->requisition->status)
+            ->line('Items: ')
+            ->line($itemsList) 
+            ->action('View Requisition', url('/requisitions/' . $this->requisitionItem->requisition->id)) 
+            ->line('Thank you for managing the requisition process.');
     }
+    
 
     public function broadcastOn()
     {

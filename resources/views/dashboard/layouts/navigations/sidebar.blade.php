@@ -119,18 +119,28 @@
                     </li>
                 @endif
                 @if (Gate::allows('view-module', 'staff-management'))
+                    <li><a class="has-arrow " href="javascript:void()" aria-expanded="false">
+                            <i class="flaticon-045-heart"></i>
+                            <span class="nav-text">Store</span>
+                        </a>
 
-                <li><a class="has-arrow " href="javascript:void()" aria-expanded="false">
-                    <i class="flaticon-045-heart"></i>
-                    <span class="nav-text">Store</span>
-                </a>
-
-                <ul aria-expanded="false">
-                    <li><a href="{{ route('dashboard.hotel.store-items.index') }}">Items</a></li>
-                    <li><a href="{{ route('dashboard.hotel.store-issues.create') }}">Issue Item</a></li>
-                </ul>
-            </li>
-            @endif
+                        <ul aria-expanded="false">
+                            <li><a href="{{ route('dashboard.hotel.store-items.index') }}">Items</a></li>
+                            <li><a href="{{ route('dashboard.hotel.store-issues.create') }}">Issue Item</a></li>
+                            <li><a class="has-arrow " href="javascript:void()" aria-expanded="false">
+                                    <i class="flaticon-045-heart"></i>
+                                    <span class="nav-text">Inventory</span>
+                                </a>
+                                <ul aria-expanded="false">
+                                    <li><a href="{{ route('dashboard.hotel.store.inventory.incoming') }}">Incoming</a>
+                                    </li>
+                                    <li><a href="{{ route('dashboard.hotel.store.inventory.outgoing') }}">Outgoing</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
                 <li><a class="has-arrow " href="javascript:void()" aria-expanded="false">
                         <i class="flaticon-045-heart"></i>
                         <span class="nav-text">Notifications</span>

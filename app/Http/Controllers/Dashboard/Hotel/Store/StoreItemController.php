@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard\Hotel;
+namespace App\Http\Controllers\Dashboard\Hotel\Store;
 
 use App\Constants\CurrencyConstants;
 use App\Http\Controllers\Controller;

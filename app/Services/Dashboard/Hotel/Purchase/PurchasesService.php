@@ -5,6 +5,8 @@ namespace App\Services\Dashboard\Hotel\Purchase;
 use App\Helpers\FileHelpers;
 use App\Models\HotelSoftware\Purchase;
 use App\Models\HotelSoftware\PurchaseStoreItem;
+use App\Models\HotelSoftware\StoreInventory;
+use App\Models\HotelSoftware\StoreItem;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -111,9 +113,26 @@ class PurchasesService
                           this will be included when tax has been created for the hotel */
                         'total_amount' => $sum_amount,
                     ]
-                );
-            }
 
+                );
+                // Only update inventory if items are received
+                if ($request['received'][$key] > 0) {
+                    // Increment the store item quantity based on the received quantity
+                    StoreItem::where('id', $request->store_item_id[$key])
+                        ->where('store_id', $hotel->store->id)
+                        ->increment('qty', $request['received'][$key]);
+
+                    // Log the incoming inventory movement
+                    StoreInventory::create([
+                        'item_id' => $request->store_item_id[$key],
+                        'store_id' => $hotel->store->id,
+                        'hotel_id' => $hotel->id,
+                        'movement_type' => 'incoming',
+                        'quantity' => $request['received'][$key],
+                        'date' => now(),
+                    ]);
+                }
+            }
             return $purchase;
         });
     }

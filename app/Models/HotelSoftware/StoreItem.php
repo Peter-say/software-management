@@ -93,4 +93,9 @@ class StoreItem extends Model
         } while (self::where('code', $code)->exists());
         return $code;
     }
+
+    public function storeInventory()
+    {
+        return $this->hasMany(StoreInventory::class);
+    }
 }

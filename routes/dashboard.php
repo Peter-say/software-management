@@ -15,8 +15,9 @@ use App\Http\Controllers\Dashboard\Hotel\Restaurant\RestaurantItemsController;
 use App\Http\Controllers\Dashboard\Hotel\Restaurant\RestaurantOrderController;
 use App\Http\Controllers\Dashboard\Hotel\RoomController;
 use App\Http\Controllers\Dashboard\Hotel\RoomReservationController;
-use App\Http\Controllers\Dashboard\Hotel\StoreIssueController;
-use App\Http\Controllers\Dashboard\Hotel\StoreItemController;
+use App\Http\Controllers\Dashboard\Hotel\Store\StoreInventoryController;
+use App\Http\Controllers\Dashboard\Hotel\Store\StoreIssueController;
+use App\Http\Controllers\Dashboard\Hotel\Store\StoreItemController;
 use App\Http\Controllers\Dashboard\Hotel\SupplierController;
 use App\Http\Controllers\Dashboard\Hotel\UsersController;
 use App\Http\Controllers\Dashboard\Notification\NotificationController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\Dashboard\OnboardingController;
 use App\Http\Controllers\Dashboard\Settings\HotelSettingController;
 use App\Http\Controllers\Dashboard\Settings\SettingController;
 use App\Http\Middleware\HotelUserMiddleware;
+use App\Models\HotelSoftware\StoreInventory;
 use Illuminate\Support\Facades\Route;
 
 
@@ -87,6 +89,12 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::get('store-issues/create', [StoreIssueController::class, 'create'])->name('store-issues.create');
             Route::post('store-issues/store', [StoreIssueController::class, 'store'])->name('store-issues.store');
             Route::get('fetch-store-items', [StoreIssueController::class, 'getItemByCategory'])->name('fetch-store-items');
+
+            Route::prefix('store')->as('store.')->group(function () {
+                Route::get('inventory/incoming', [StoreInventoryController::class, 'incoming'])->name('inventory.incoming');
+                Route::get('inventory/outgoing', [StoreInventoryController::class, 'outgoing'])->name('inventory.outgoing');
+            });
+
 
             Route::get('notifications/unread', [NotificationController::class, 'unread'])->name('notifications.unread');
             Route::post('notifications/mark-as-read/{id}', [NotificationController::class, 'makeAsRead'])->name('notifications.mark-as-read');

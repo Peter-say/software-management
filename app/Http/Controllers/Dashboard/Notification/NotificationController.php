@@ -30,7 +30,7 @@ class NotificationController extends Controller
         $roles = $this->hotelServiceRole->getHotelUserRoles();
         $notifications = $user->unreadNotifications()->whereHas('notifiable.hotelUser', function ($query) use ($roles) {
             $query->whereIn('role', $roles);
-        })->latest()->get();
+        })->orderBy('created_at', 'desc')->get();
 
         return response()->json([
             'unread_count' => $user->unreadNotifications->count(),

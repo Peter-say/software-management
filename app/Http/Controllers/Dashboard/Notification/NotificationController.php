@@ -83,13 +83,12 @@ class NotificationController extends Controller
         $user = Auth::user();
         $notification = $user->notifications()
             ->where('notifiable_id', $user->hotel->id)->find($uuid);
-
+// dd($notification);
         if ($notification) {
-            // Customize this view with relevant data for display
-            return view('notifications.view', ['notification' => $notification]);
+            return view('dashboard.notification.single', ['notification' => $notification]);
         }
 
-        return response()->json(['success' => false, 'message' => 'Notification not found'], 404);
+        return back()->with('error_message', 'Notification not found');
     }
 
     public function viewAll()
@@ -101,10 +100,10 @@ class NotificationController extends Controller
         $user = Auth::user();
         $notifications = $user->notifications()
             ->where('notifiable_id', $user->hotel->id)  // hotel ID associated with the user
-            ->latest()
+            ->orderBy('created_at', 'desc')->get()
             ->paginate(20);
         // Customize this view with relevant data for displaying all notifications
-        return view('dashboard.notification.order.index', ['notifications' => $notifications]);
+        return view('dashboard.notification.index', ['notifications' => $notifications]);
     }
 
     public function deleteNotification($id)

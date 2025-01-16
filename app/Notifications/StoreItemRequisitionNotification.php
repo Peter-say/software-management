@@ -109,12 +109,12 @@ class StoreItemRequisitionNotification extends Notification
             'department' => $this->requisitionItem->requisition->department,
             'purpose' => $this->requisitionItem->requisition->purpose,
             'status' => $this->requisitionItem->requisition->status,
+            'link' => route('dashboard.hotel.notifications.view', $this->id),
             'items' => $this->requisitionItem->requisition->items->map(function ($item) {
                 return [
                     'item_name' => $item->item_name ?? 'Unknown Item',
                     'quantity' => $item->quantity,
                     'unit' => $item->unit,
-                    // 'image' => $item->restaurantItem ? getStorageUrl('hotel/restaurant/items/' . $item->restaurantItem->image) : null
                 ];
             }),
         ];

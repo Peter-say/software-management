@@ -107,7 +107,7 @@ class KitchenOrderNotification extends Notification implements ShouldBroadcast
             'message' => "A new order was created",
             'order_id' => $this->restaurantOrder->id,
             'total_amount' => $this->restaurantOrder->total_amount,
-            'link' => route('dashboard.hotel.notifications.view', $this->restaurantOrder->id),
+            'link' => route('dashboard.hotel.notifications.view', $this->id),
             'status' => $this->restaurantOrder->status,
             'items' => $this->restaurantOrder->restaurantOrderItems->map(function ($item) {
                 return [

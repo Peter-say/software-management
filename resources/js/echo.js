@@ -159,23 +159,23 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     // Fetch additional unread notifications to fill up empty space
-    async function fetchAndAddUnreadNotifications() {
-        try {
-            const response = await fetch(
-                "/dashboard/hotel/notifications/unread"
-            );
-            const data = await response.json();
-            data.notification
-                .slice(0, maxNotifications - notificationList.childElementCount)
-                .forEach((notification) => {
-                    const formattedData = formatNotificationData(notification);
-                    addNotificationToList(formattedData);
-                });
-        } catch (error) {
-            console.error(
-                "Error fetching additional unread notifications:",
-                error
-            );
-        }
-    }
+    // async function fetchAndAddUnreadNotifications() {
+    //     try {
+    //         const response = await fetch(
+    //             "/dashboard/hotel/notifications/unread"
+    //         );
+    //         const data = await response.json();
+    //         data.notification
+    //             .slice(0, maxNotifications - notificationList.childElementCount)
+    //             .forEach((notification) => {
+    //                 const formattedData = formatNotificationData(notification);
+    //                 addNotificationToList(formattedData);
+    //             });
+    //     } catch (error) {
+    //         console.error(
+    //             "Error fetching additional unread notifications:",
+    //             error
+    //         );
+    //     }
+    // }
 });

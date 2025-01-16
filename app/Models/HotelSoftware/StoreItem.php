@@ -96,6 +96,16 @@ class StoreItem extends Model
 
     public function storeInventory()
     {
-        return $this->hasMany(StoreInventory::class);
+        return $this->hasMany(StoreInventory::class, 'item_id');
+    }
+
+    public function incomingInventory()
+    {
+        return $this->storeInventory()->where('movement_type', 'incoming');
+    }
+
+    public function outgoingInventory()
+    {
+        return $this->storeInventory()->where('movement_type', 'outgoing');
     }
 }

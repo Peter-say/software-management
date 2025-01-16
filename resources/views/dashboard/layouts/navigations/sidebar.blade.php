@@ -125,6 +125,7 @@
                         </a>
 
                         <ul aria-expanded="false">
+                            <li><a href="{{ route('dashboard.hotel.store-dashboard') }}">Overview</a></li>
                             <li><a href="{{ route('dashboard.hotel.store-items.index') }}">Items</a></li>
                             <li><a href="{{ route('dashboard.hotel.store-issues.create') }}">Issue Item</a></li>
                             <li><a class="has-arrow " href="javascript:void()" aria-expanded="false">

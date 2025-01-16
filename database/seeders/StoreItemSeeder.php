@@ -139,7 +139,7 @@ class StoreItemSeeder extends Seeder
         ];
 
         foreach ($storeItems as $item) {
-            DB::table('store_items')->insert($item);
+            StoreItem::create($item);
         }
     }
 }

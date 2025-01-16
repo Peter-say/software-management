@@ -15,6 +15,7 @@ use App\Http\Controllers\Dashboard\Hotel\Restaurant\RestaurantItemsController;
 use App\Http\Controllers\Dashboard\Hotel\Restaurant\RestaurantOrderController;
 use App\Http\Controllers\Dashboard\Hotel\RoomController;
 use App\Http\Controllers\Dashboard\Hotel\RoomReservationController;
+use App\Http\Controllers\Dashboard\Hotel\Store\StoreController;
 use App\Http\Controllers\Dashboard\Hotel\Store\StoreInventoryController;
 use App\Http\Controllers\Dashboard\Hotel\Store\StoreIssueController;
 use App\Http\Controllers\Dashboard\Hotel\Store\StoreItemController;
@@ -106,6 +107,7 @@ Route::middleware('auth', 'verified')->group(function () {
 
             Route::get('/expenses-dashbaord', [ExpenseController::class, 'dashboard'])->name('expenses-dashbaord');
             Route::get('/purchases-dashbaord', [PurchaseController::class, 'overview'])->name('purchases-dashbaord');
+            Route::get('store-dashboard', [StoreController::class, 'overview'])->name('store-dashboard');
 
             Route::prefix('settings')->as('settings.')->group(function () {
                 Route::get('/', [SettingController::class, 'index']);

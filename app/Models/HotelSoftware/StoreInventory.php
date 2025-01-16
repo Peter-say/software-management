@@ -15,4 +15,19 @@ class StoreInventory extends Model
     {
         return $this->belongsTo(StoreItem::class, 'item_id');
     }
+
+    public function store()
+    {
+        return $this->belongsTo(Store::class);
+    }
+
+    public function scopeIncomingInventory($query)
+    {
+        return $query->where('movement_type', 'incoming');
+    }
+
+    public function scopeOutgoingInventory($query)
+    {
+        return $query->where('movement_type', 'outgoing');
+    }
 }

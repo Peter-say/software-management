@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         const linkUrl = notification.data?.link || notification.link || "#";
         // const itemCount = items.length;
         // const firstItemName = items[0]?.name || notification.data?.message;
-        const notificationMessage = notification.data?.message;
+        const notificationMessage = notification.data?.title || notification.title;
             // itemCount > 1
             //     ? `${firstItemName} ordered and ${itemCount - 1} more`
             //     : notification.data?.message;
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             imageUrl,
             linkUrl,
             message: notificationMessage,
-            description: (notification.data?.description || "").slice(0, 30) + '...',
+            description: (notification.data?.message || "").slice(0, 30) + '...',
             createdAt: new Date(
             notification.created_at || new Date()
             ).toLocaleString(),

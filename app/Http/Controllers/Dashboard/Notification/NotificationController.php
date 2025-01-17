@@ -83,7 +83,6 @@ class NotificationController extends Controller
         $user = Auth::user();
         $notification = $user->notifications()
             ->where('notifiable_id', $user->hotel->id)->find($uuid);
-// dd($notification);
         if ($notification) {
             return view('dashboard.notification.single', ['notification' => $notification]);
         }

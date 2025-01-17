@@ -32,7 +32,7 @@ class StoreController extends Controller
         $user = User::getAuthenticatedUser();
         $top_store_items = StoreItem::whereHas('store', function ($query) use ($user) {
             $query->where('hotel_id', $user->hotel->id);
-        })->limit(5)->get();
+        })->orderBy('cost_price', 'desc')->limit(5)->get();
         return view('dashboard.hotel.store.dashboard', [
             'store_item_stats' => $this->store_stat_service->stats(['period' => $period]),
             'store_item_chart_data' => $this->store_item_chart_service->chartStats(['chart_period' => $chart_period]),

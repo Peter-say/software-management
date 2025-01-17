@@ -26,20 +26,21 @@ document.addEventListener("DOMContentLoaded", async function () {
         const items = notification.data?.items || notification.items || [];
         const imageUrl = items[0]?.image || defaultImage;
         const linkUrl = notification.data?.link || notification.link || "#";
-        const itemCount = items.length;
-        const firstItemName = items[0]?.name || notification.data?.message;
-        const notificationMessage =
-            itemCount > 1
-                ? `${firstItemName} ordered and ${itemCount - 1} more`
-                : notification.data?.message;
+        // const itemCount = items.length;
+        // const firstItemName = items[0]?.name || notification.data?.message;
+        const notificationMessage = notification.data?.message;
+            // itemCount > 1
+            //     ? `${firstItemName} ordered and ${itemCount - 1} more`
+            //     : notification.data?.message;
 
         return {
             id: notification.id || notification.notification_id,
             imageUrl,
             linkUrl,
             message: notificationMessage,
+            description: (notification.data?.description || "").slice(0, 30) + '...',
             createdAt: new Date(
-                notification.created_at || new Date()
+            notification.created_at || new Date()
             ).toLocaleString(),
         };
     }
@@ -55,6 +56,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <div class="media-body">
                     <a href="${notificationData.linkUrl}" class="notification-link" target="_blank">
                         <h6 class="mb-1">${notificationData.message}</h6>
+                         <small class="d-block">${notificationData.description}</small>
                         <small class="d-block">${notificationData.createdAt}</small>
                     </a>
                 </div>
@@ -113,6 +115,19 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     window.Echo.channel("item-requisition").listen(
         ".RequisitionRequested",
+        (event) => {
+            const formattedData = formatNotificationData(event);
+            addNotificationToList(formattedData);
+
+            // Update badge count
+            unreadCount += 1;
+            badge.innerText = unreadCount;
+            badge.classList.add("bg-primary");
+        }
+    );
+
+    window.Echo.channel("low_stock-alert").listen(
+        ".LowStockAlert",
         (event) => {
             const formattedData = formatNotificationData(event);
             addNotificationToList(formattedData);

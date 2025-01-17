@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // Define your scheduled tasks here
+        $schedule->command('app:low-stockcount-reminder-command')->everyTwoMinutes();
     }
 
     /**
@@ -33,4 +33,5 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         \App\Console\Commands\HotelSoftwareMakeModel::class,
     ];
+    
 }

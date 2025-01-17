@@ -11,7 +11,7 @@ class Store extends Model
     protected $fillable = ['name', 'hotel_id'];
     public function hotel()
     {
-        $this->belongsTo(Hotel::class);
+       return $this->belongsTo(Hotel::class);
     }
 
     public function purchases()
@@ -23,5 +23,7 @@ class Store extends Model
     {
         return $this->hasMany(StoreItem::class, 'store_id');
     }
+
+    
     
 }

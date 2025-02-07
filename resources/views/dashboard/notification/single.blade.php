@@ -78,6 +78,30 @@
                                                     @endforeach
                                                 </ul>
                                             </div>
+                                            @elseif($notification->type === 'App\Notifications\BarOrderNotification')
+                                            <!-- Store Item Requisition Details -->
+                                            <div class="p-3">
+                                                <h5 class="font-weight-bold">Order Details:</h5>
+                                                <p><strong>Order ID:</strong> {{ $notification->data['order_id'] }}</p>
+                                                <p><strong>Total Amount:</strong> ${{ $notification->data['total_amount'] }}</p>
+                                                <p><strong>Status:</strong> {{ $notification->data['status'] }}</p>
+
+                                                <h6 class="font-weight-bold">Items in the Order:</h6>
+                                                <ul class="list-group">
+                                                    @foreach ($notification->data['items'] as $item)
+                                                        <li class="list-group-item">
+                                                            <div class="d-flex justify-content-between">
+                                                                <div>
+                                                                    <strong>{{ $item['name'] }}</strong>
+                                                                </div>
+                                                                <div class="text-muted">
+                                                                    Quantity: {{ $item['quantity'] }}
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
                                         @else
                                             <!-- Handle other notification types or show an error message -->
                                             <div class="alert alert-warning">Unknown notification type.</div>

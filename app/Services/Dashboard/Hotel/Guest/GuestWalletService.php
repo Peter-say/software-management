@@ -159,8 +159,10 @@ class GuestWalletService
             if ($validatedData['amount'] > $guest->wallet->balance) {
                 throw new \Exception('Insufficient balance to deduct from.');
             }
-
             // Process the payment
+            if ($request->has('payables')) {
+                $payment = $this->payment_service->processReservationPayment($request, $request->payables);
+            }
             $payment = $this->payment_service->processPayment($request);
             // Process the transaction using the existing payment
             $transaction = $this->transaction_service->processTransaction($request, $payment);

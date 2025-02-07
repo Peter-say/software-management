@@ -57,7 +57,16 @@
 
                                         <div class="col-lg-6 col-12 mb-3">
                                             <div class="form-group">
-                                                <label for="image" class="text-label form-label">File Upload</label>
+                                                <div class="d-flex justify-content-between">
+                                                    <label for="image" class="text-label form-label">File Upload</label>
+                                                    <span>
+                                                        @if (isset($item) && $item->image)
+                                                        <a href="#" class="" type="button" data-bs-toggle="modal" data-bs-target="#item-modal">
+                                                           {{'View existing image'}} 
+                                                        </a>
+                                                    @endif
+                                                    </span>
+                                                </div>
                                                 <input type="file" id="image" name="image" class="form-control @error('image') is-invalid @enderror">
                                                 @error('image')
                                                     <div class="invalid-feedback">
@@ -140,6 +149,27 @@
                         </form>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="item-modal" tabindex="-1" role="dialog" aria-labelledby="item-modal"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    {{-- <h5 class="modal-title">Upload Restaurant Items</h5> --}}
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+               <div class="d-flex justify-content-center">
+                @if (isset($item) && $item->image)
+                <a href="{{ $item->itemImage() }}"
+                    data-fancybox="gallery_{{ $item->id }}"
+                    data-caption="{{ $item->name }}">
+                    <img src="{{ $item->itemImage() }}"
+                        alt="Image" class="img-thumbnail">
+                </a>
+            @endif
+               </div>
             </div>
         </div>
     </div>

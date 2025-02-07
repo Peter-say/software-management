@@ -1,35 +1,42 @@
-import { P as E, E as v } from "./pusher-DxtW_XPu.js";
-window.Pusher = E;
+import { P as b, E as k } from "./pusher-DxtW_XPu.js";
+window.Pusher = b;
+console.log(window.Pusher, "hello");
 document.addEventListener("DOMContentLoaded", async function () {
-    window.Echo = new v({
+    window.Echo = new k({
         broadcaster: "pusher",
         key: "adadb8e8c491818d6a8f",
         cluster: "eu",
         forceTLS: !0,
     });
-    const o = document.getElementById("notificationcount"),
-        r = document.querySelector("#DZ_W_Notification1 .timeline"),
-        s = 5;
+    const i = document.getElementById("notificationcount"),
+        o = document.querySelector("#DZ_W_Notification1 .timeline"),
+        d = 5;
     let a = 0;
-    const p =
-        "http://127.0.0.1:7000/storage/hotel/restaurant/items/6701f36a193c3_food1.jpeg";
-    function c(e) {
-        var f, h, u, g;
-        const t = ((f = e.data) == null ? void 0 : f.items) || e.items || [],
-            n = ((h = t[0]) == null ? void 0 : h.image) || p,
-            i = ((u = e.data) == null ? void 0 : u.link) || e.link || "#",
-            l = t.length,
-            m = ((g = t[0]) == null ? void 0 : g.name) || "Item",
-            w = l > 1 ? `${m} ordered and ${l - 1} more` : `${m} ordered`;
+    // const u = getStorageUrl("dashboard/food/food1.jpeg");
+    function s(e) {
+        var l, m, h, g, f;
+        const n =
+                ((m = (((l = e.data) == null ? void 0 : l.items) ||
+                    e.items ||
+                    [])[0]) == null
+                    ? void 0
+                    : m.image) || u,
+            c = ((h = e.data) == null ? void 0 : h.link) || e.link || "#",
+            y = ((g = e.data) == null ? void 0 : g.title) || e.title;
         return {
             id: e.id || e.notification_id,
             imageUrl: n,
-            linkUrl: i,
-            message: w,
+            linkUrl: c,
+            message: y,
+            description:
+                (((f = e.data) == null ? void 0 : f.message) || "").slice(
+                    0,
+                    30
+                ) + "...",
             createdAt: new Date(e.created_at || new Date()).toLocaleString(),
         };
     }
-    function d(e) {
+    function r(e) {
         const t = document.createElement("li");
         (t.innerHTML = `
             <div class="timeline-panel" data-notification-id="${e.id}">
@@ -39,43 +46,58 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <div class="media-body">
                     <a href="${e.linkUrl}" class="notification-link" target="_blank">
                         <h6 class="mb-1">${e.message}</h6>
+                         <small class="d-block">${e.description}</small>
                         <small class="d-block">${e.createdAt}</small>
                     </a>
                 </div>
             </div>
         `),
             t.addEventListener("click", async () => {
-                await b(e.id, t);
+                await w(e.id, t);
             }),
-            r.prepend(t),
-            y(r);
+            o.prepend(t),
+            p(o);
     }
-    function y(e) {
+    function p(e) {
         const t = e.querySelectorAll("li");
-        t.length > s && t[t.length - 1].remove();
+        t.length > d && t[t.length - 1].remove();
     }
     try {
         const t = await (
             await fetch("/dashboard/hotel/notifications/unread")
         ).json();
         (a = t.unread_count),
-            (o.innerText = a),
-            o.classList.toggle("bg-primary", a > 0),
+            (i.innerText = a),
+            i.classList.toggle("bg-primary", a > 0),
             t.notification.length === 0
-                ? (r.innerHTML =
+                ? (o.innerHTML =
                       '<li><div class="timeline-panel"><div class="media-body text-center"><p>No notifications available</p></div></div></li>')
                 : t.notification.forEach((n) => {
-                      const i = c(n);
-                      d(i);
+                      const c = s(n);
+                      r(c);
                   });
     } catch (e) {
         console.error("Error fetching unread notifications:", e);
     }
     window.Echo.channel("kitchen-orders").listen(".OrderCreated", (e) => {
-        const t = c(e);
-        d(t), (a += 1), (o.innerText = a), o.classList.add("bg-primary");
-    });
-    async function b(e, t) {
+        const t = s(e);
+        r(t), (a += 1), (i.innerText = a), i.classList.add("bg-primary");
+    }),
+        window.Echo.channel("item-requisition").listen(
+            ".RequisitionRequested",
+            (e) => {
+                const t = s(e);
+                r(t),
+                    (a += 1),
+                    (i.innerText = a),
+                    i.classList.add("bg-primary");
+            }
+        ),
+        window.Echo.channel("low_stock-alert").listen(".LowStockAlert", (e) => {
+            const t = s(e);
+            r(t), (a += 1), (i.innerText = a), i.classList.add("bg-primary");
+        });
+    async function w(e, t) {
         try {
             const n = document
                 .querySelector('meta[name="csrf-token"]')
@@ -93,28 +115,12 @@ document.addEventListener("DOMContentLoaded", async function () {
                 )
             ).ok &&
                 ((a -= 1),
-                (o.innerText = a),
-                o.classList.toggle("bg-primary", a > 0),
+                (i.innerText = a),
+                i.classList.toggle("bg-primary", a > 0),
                 (t.style.color = "gray"),
-                r.childElementCount < s && k());
+                o.childElementCount < d && fetchAndAddUnreadNotifications());
         } catch (n) {
             console.error("Error marking notification as read:", n);
-        }
-    }
-    async function k() {
-        try {
-            (
-                await (
-                    await fetch("/dashboard/hotel/notifications/unread")
-                ).json()
-            ).notification
-                .slice(0, s - r.childElementCount)
-                .forEach((n) => {
-                    const i = c(n);
-                    d(i);
-                });
-        } catch (e) {
-            console.error("Error fetching additional unread notifications:", e);
         }
     }
 });

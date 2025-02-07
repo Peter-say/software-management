@@ -29,7 +29,7 @@ class RestaurantItemsController extends Controller
         // Get all outlets associated with the hotel
         $outlets = $hotel->outlet->where('type', 'restaurant');
         // Get all restaurant items that belong to these outlets
-        $restaurant_items = RestaurantItem::whereIn('outlet_id', $outlets->pluck('id'))->paginate(30);
+        $restaurant_items = RestaurantItem::whereIn('outlet_id', $outlets->pluck('id'))->latest()->paginate(30);
         return view('dashboard.hotel.restaurant-item.index', [
             'restaurant_items' => $restaurant_items,
         ]);
@@ -143,7 +143,9 @@ class RestaurantItemsController extends Controller
         if ($request->current_url === url(route('dashboard.hotel.restaurant-items.index'))) {
             $filePath = public_path('dashboard/samples/restaurant_menu_sample_with_ingredients.xlsx'); // Use forward slashes
         }
-
+        if ($request->current_url === url(route('dashboard.hotel.bar-items.index'))) {
+            $filePath = public_path('dashboard/samples/restaurant_menu_sample_with_ingredients.xlsx'); // Use forward slashes
+        }
         // Check if the file exists
         if (!file_exists($filePath)) {
             return response()->json(['success' => false, 'message' => 'Sample file not found.'], 404);

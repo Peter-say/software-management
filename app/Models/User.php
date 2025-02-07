@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str; 
 
 class User extends Authenticatable
 {
@@ -76,13 +77,23 @@ class User extends Authenticatable
     protected static function boot()
     {
         parent::boot();
-
-        // Define the created event listener
         static::created(function ($guest) {
             Wallet::create([
                 'user_id' => $guest->id,
                 'balance' => 0, // Set initial balance
                 'currency' => 'NG', // Default currency
+            ]);
+        });
+
+        static::created(function ($user) {
+        $hotel =  Hotel::create([
+                'user_id' => $user->id,
+                'uuid' => Str::uuid(), 
+            ]);
+            HotelUser::create([
+                'user_id' => $user->id,
+                'hotel_id' => $hotel->id, 
+                'user_account_id' => $user->id, 
             ]);
         });
     }

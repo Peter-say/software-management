@@ -61,9 +61,41 @@ class Guest extends Model
         return $this->morphMany(Payment::class, 'payable');
     }
 
-    public function restaurantOrder()
+    public function restaurantOrders()
     {
         return $this->hasMany(RestaurantOrder::class);
+    }
+
+    public function barOrders()
+    {
+        return $this->hasMany(BarOrder::class);
+    }
+
+    // public function guestOrders()
+    // {
+    //     return $this->restaurantOrders->concat($this->barOrders);
+    // }
+
+    // public function orderItem()
+    // {
+    //     return $this->restaurantOrder()->exists()
+    //         ? $this->restaurantOrder()->restaurantOrderItems()
+    //         : $this->barOrder()->barOrderItems();
+    // }
+
+    // public function items()
+    // {
+    //     return $this->restaurantOrder->exists()
+    //         ? $this->restaurantOrder->items()
+    //         : $this->barOrder->items();
+    // }
+
+    public function calculateOrderNetTotal()
+    {
+        $restaurantTotal = $this->restaurantOrders->sum('total_amount');
+        $barTotal = $this->barOrders->sum('total_amount');
+
+        return $restaurantTotal + $barTotal;
     }
 
     protected static function boot()
@@ -105,9 +137,13 @@ class Guest extends Model
             ->with('transactions'); // Load transactions for payments
 
         // Retrieve transactions for reservations
-        $reservationTransactions = Payment::whereHasMorph('payable',[RoomReservation::class],
-            function (Builder $query) {$query->where('guest_id', $this->id);
-            })->with('transactions'); 
+        $reservationTransactions = Payment::whereHasMorph(
+            'payable',
+            [RoomReservation::class],
+            function (Builder $query) {
+                $query->where('guest_id', $this->id);
+            }
+        )->with('transactions');
 
         return $walletTransactions->union($reservationTransactions);
     }

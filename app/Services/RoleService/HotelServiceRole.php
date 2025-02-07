@@ -21,11 +21,10 @@ class HotelServiceRole
 
     public function getHotelUserRoles()
     {
-        $user =  User::getAuthenticatedUser();
+        $user = Auth::user();
         $roles = ['Hotel_Owner', 'Manager'];
         $hotelUser = HotelUser::where('user_id', $user->id)
             ->where('hotel_id', $user->hotel->id)->first();
-            Log::info($user);
         if ($hotelUser) {
             if (in_array($hotelUser->role, $this->userCanAccessSalesRole())) {
                 $roles[] = 'Sales';

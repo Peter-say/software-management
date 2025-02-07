@@ -30,4 +30,5 @@ class StoreInventory extends Model
     {
         return $query->where('movement_type', 'outgoing');
     }
+
 }

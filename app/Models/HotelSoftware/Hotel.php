@@ -51,8 +51,13 @@ class Hotel extends Model
 
     public function defaultRestaurant()
     {
-        //return the first outlet that is a bar belonging to this hotel
         return $this->outlet()->where('type', 'restaurant')->first();
+    }
+
+    public function defaultBar()
+    {
+        //return the first outlet that is a bar belonging to this hotel
+        return $this->outlet()->where('type', 'bar')->first();
     }
 
     protected static function boot()
@@ -75,5 +80,10 @@ class Hotel extends Model
     public function store()
     {
         return $this->hasOne(Store::class);
+    }
+
+    public function bar()
+    {
+        return $this->hasMany(Bar::class);
     }
 }

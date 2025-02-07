@@ -29,6 +29,8 @@ function getModelItems($model)
         $model_list = Guest::where('hotel_id', $hotelId)->get();
     } elseif ($model == 'restaurant-outlets') {
         $model_list = Outlet::where('hotel_id', $hotelId)->where('type', 'restaurant')->get();
+    } elseif ($model == 'bar-outlets') {
+        $model_list = Outlet::where('hotel_id', $hotelId)->where('type', 'bar')->get();
     } elseif ($model == 'suppliers') {
         $model_list = Supplier::where('hotel_id', $hotelId)->get();
     } elseif ($model == 'expense-categories') {
@@ -47,7 +49,7 @@ function getModelItems($model)
         // Get all walk-in customers associated with that restaurant outlet
         $model_list = WalkInCustomer::whereHas('restaurantOrders', function ($query) use ($outlet) {
             $query->where('hotel_id', User::getAuthenticatedUser()->hotel->id);
-        })->get();
+        })->distinct()->get();
     }
     if ($model == 'item-categories') {
         $model_list = ItemCategory::all();

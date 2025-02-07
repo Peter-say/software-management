@@ -167,7 +167,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    Are you sure you want to delete this room?
+                    Are you sure you want to delete this item?
                 </div>
                 <div class="modal-footer">
                     <form method="POST" id="deleteForm">

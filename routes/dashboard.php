@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\Finance\PaymentController;
+use App\Http\Controllers\Dashboard\Hotel\Bar\BarItemsController;
+use App\Http\Controllers\Dashboard\Hotel\Bar\BarOrderController;
 use App\Http\Controllers\Dashboard\Hotel\ExpenseController;
 use App\Http\Controllers\Dashboard\Hotel\Guest\GuestController;
 use App\Http\Controllers\Dashboard\Hotel\Guest\GuestWalletController;
@@ -59,6 +61,7 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::resource('purchases', PurchaseController::class);
             Route::resource('store-items', StoreItemController::class);
             Route::resource('requisitions', RequisitionController::class);
+            Route::resource('bar-items', BarItemsController::class);
 
             Route::get('set-guest-info', [GuestController::class, 'getGuestInfo'])->name('set-guest-info');
             Route::post('check-room-availability', [RoomReservationController::class, 'getRoomAvailability']);
@@ -80,6 +83,15 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::get('restaurant/edit-order', [RestaurantOrderController::class, 'editOrder'])->name('restaurant.edit-order');
             Route::delete('restaurant/destroy-order', [RestaurantOrderController::class, 'destroyOrder'])->name('restaurant.destroy-order');
             Route::post('restaurant/{id}/cancel-order', [RestaurantOrderController::class, 'cancelOrder'])->name('restaurant.cancel-order');
+
+            Route::post('bar-items/upload', [BarItemsController::class, 'importItems'])->name('bar-items.upload');
+            Route::delete('bar-items/truncate', [BarItemsController::class, 'truncateItems'])->name('bar-items.truncate');
+            Route::get('bar/create-order', [BarOrderController::class, 'createOrder'])->name('bar.create-order');
+            Route::post('bar/save-order', [BarOrderController::class, 'saveOrder'])->name('bar.save-order');
+            Route::get('bar/view-orders', [BarOrderController::class, 'viewOrders'])->name('bar.view-orders');
+            Route::get('bar/edit-order', [BarOrderController::class, 'editOrder'])->name('bar.edit-order');
+            Route::delete('bar/destroy-order', [BarOrderController::class, 'destroyOrder'])->name('bar.destroy-order');
+            Route::post('bar/{id}/cancel-order', [BarOrderController::class, 'cancelOrder'])->name('bar.cancel-order');
 
             Route::get('kitchen/orders', [KitchenOrderController::class, 'viewOrders'])->name('kitchen.orders');
             Route::put('kitchen/orders/{id}/change-status', [KitchenOrderController::class, 'updateStatus'])->name('kitchen.orders.change-status');

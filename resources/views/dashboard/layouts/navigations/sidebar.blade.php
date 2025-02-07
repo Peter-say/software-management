@@ -60,6 +60,18 @@
                         </ul>
                     </li>
                 @endif
+                @if (Gate::allows('view-module', 'food-and-beverage'))
+                <li><a class="has-arrow " href="javascript:void()" aria-expanded="false">
+                        <i class="flaticon-045-heart"></i>
+                        <span class="nav-text">Bar</span>
+                    </a>
+                    <ul aria-expanded="false">
+                        <li><a href="{{ route('dashboard.hotel.bar-items.index') }}">Menu Items</a></li>
+                        <li><a href="{{ route('dashboard.hotel.bar.create-order') }}">Create Order</a></li>
+                        <li><a href="{{ route('dashboard.hotel.bar.view-orders') }}">View Orders</a></li> 
+                    </ul>
+                </li>
+            @endif
                 @if (Gate::allows('view-module', 'kitchen-management'))
                     <li><a class="has-arrow " href="javascript:void()" aria-expanded="false">
                             <i class="flaticon-045-heart"></i>

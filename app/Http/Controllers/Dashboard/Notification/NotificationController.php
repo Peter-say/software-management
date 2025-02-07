@@ -27,10 +27,8 @@ class NotificationController extends Controller
             abort(403, 'Unauthorized');
         }
         $user = Auth::user();
-        $roles = $this->hotelServiceRole->getHotelUserRoles();
-        $notifications = $user->unreadNotifications()->whereHas('notifiable.hotelUser', function ($query) use ($roles) {
-            $query->whereIn('role', $roles);
-        })->orderBy('created_at', 'desc')->get();
+        // $roles = $this->hotelServiceRole->getHotelUserRoles();
+        $notifications = $user->unreadNotifications()->orderBy('created_at', 'desc')->get();
 
         return response()->json([
             'unread_count' => $user->unreadNotifications->count(),
@@ -46,9 +44,7 @@ class NotificationController extends Controller
 
         $user = Auth::user();
         $roles = $this->hotelServiceRole->getHotelUserRoles();
-        $notifications = $user->notifications()->whereHas('notifiable.hotelUser', function ($query) use ($roles) {
-            $query->whereIn('role', $roles);
-        })->latest()->get();
+        $notifications = $user->notifications()->latest()->get();
         return response()->json([
             'notification' => $notifications
         ]);

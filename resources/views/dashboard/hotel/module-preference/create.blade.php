@@ -26,7 +26,7 @@
                             <p class="card-text">
                                 Choose the modules you want to enable for your hotel operations. These modules define the
                                 features and tools available in your dashboard.
-                                @if (isset($selected_modules))
+                                @if (!isset($selected_modules))
                                     You can always modify your selection later in the settings.
                                 @endif
                             </p>

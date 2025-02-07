@@ -20,7 +20,8 @@
                                             <th>S/N</th>
                                             <th>Name</th>
                                             <th>Code</th>
-                                            <th>Quantity</th>
+                                            <th>Given Out</th>
+                                            <th>Balance</th>
                                             <th>Selling Price</th>
                                             <th>Date</th>
                                         </tr>
@@ -32,9 +33,10 @@
                                                     <td>{{ $sn++ }}</td>
                                                     <td>{{ $inventory->storeItem->name }}</td>
                                                     <td>{{ $inventory->storeItem->code }}</td>
-                                                    <td>{{ number_format($inventory->quantity) }}</td> 
+                                                    <td>{{ number_format($inventory->quantity) }}</td>
+                                                    <td>{{ number_format($inventory->storeItem->qty) }}</td> 
                                                     <td>{{ number_format($inventory->storeItem->selling_price, 2) }}</td>
-                                                    <td>{{ $inventory->date->format('M d, Y') }}</td>
+                                                    <td>{{ $inventory->created_at->format('d-m-y H:i:s') }}</td>
                                                 </tr>
                                             @endforeach
                                         @else

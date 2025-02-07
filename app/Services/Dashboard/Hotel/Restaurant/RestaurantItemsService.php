@@ -156,7 +156,7 @@ class RestaurantItemsService
     public function getRandomImages()
     {
         // Get a list of all images in the specified directory
-        $images = glob(public_path('dashboard/food/*'));
+        $images = glob(getStorageUrl('dashboard/food/*'));
         $randomImage =  $images[array_rand($images)];
         // Check if any images are found
         if (empty($images)) {

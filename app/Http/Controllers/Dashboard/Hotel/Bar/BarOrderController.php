@@ -6,7 +6,7 @@ use App\Constants\CurrencyConstants;
 use App\Services\Dashboard\Hotel\Bar\BarOrderService;
 use App\Http\Controllers\Controller;
 use App\Models\HotelSoftware\barItem;
-use App\Models\HotelSoftware\barOrder;
+use App\Models\HotelSoftware\BarOrder;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -24,7 +24,7 @@ class BarOrderController extends Controller
     {
         $hotel = User::getAuthenticatedUser()->hotel->id;
         return view('dashboard.hotel.bar-items.order.index', [
-            'bar_orders' => barOrder::with('barOrderItems', 'guest', 'walkInCustomer')
+            'bar_orders' => BarOrder::with('barOrderItems', 'guest', 'walkInCustomer')
                 ->where('hotel_id', $hotel)
                 ->latest()
                 ->paginate(),
@@ -37,9 +37,9 @@ class BarOrderController extends Controller
         $hotel = User::getAuthenticatedUser()->hotel;
         $outlets = $hotel->outlet->where('type', 'bar')->pluck('id'); // Get outlet IDs
         // Fetch all distinct categories
-        $categories = barItem::select('category')->whereIn('outlet_id', $outlets)->distinct()->get();
+        $categories = BarItem::select('category')->whereIn('outlet_id', $outlets)->distinct()->get();
         // Fetch all items and group them by category after retrieving the data
-        $items = barItem::whereIn('outlet_id', $outlets)->get();
+        $items = BarItem::whereIn('outlet_id', $outlets)->get();
         // Group items by category
         $itemsByCategory = $items->groupBy('category');
         return view('dashboard.hotel.bar-items.order.create', compact('categories', 'itemsByCategory'));

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Dashboard\Hotel\Bar;
 
 use App\Services\Dashboard\Hotel\Bar\BarItemsService;
 use App\Http\Controllers\Controller;
-use App\Models\HotelSoftware\barItem;
+use App\Models\HotelSoftware\BarItem;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -29,7 +29,7 @@ class BarItemsController extends Controller
         // Get all outlets associated with the hotel
         $outlets = $hotel->outlet->where('type', 'bar');
         // Get all bar items that belong to these outlets
-        $bar_items = barItem::whereIn('outlet_id', $outlets->pluck('id'))->latest()->paginate(30);
+        $bar_items = BarItem::whereIn('outlet_id', $outlets->pluck('id'))->latest()->paginate(30);
         return view('dashboard.hotel.bar-items.index', [
             'bar_items' => $bar_items,
         ]);

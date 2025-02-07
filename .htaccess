@@ -16,10 +16,3 @@
     RewriteRule ^ index.php [L]
 </IfModule>
 
-# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION BEGIN
-PassengerAppRoot "/home/swifbayo/home/swibayo/public_html/software-management"
-PassengerBaseURI "/"
-PassengerNodejs "/home/swifbayo/nodevenv/home/swibayo/public_html/software-management/14/bin/node"
-PassengerAppType node
-PassengerStartupFile app.js
-# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION END

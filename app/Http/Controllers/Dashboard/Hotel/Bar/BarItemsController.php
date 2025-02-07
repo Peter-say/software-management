@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard\Hotel\Bar;
 
-use App\Services\Dashboard\Hotel\bar\barItemsService;
+use App\Services\Dashboard\Hotel\Bar\BarItemsService;
 use App\Http\Controllers\Controller;
 use App\Models\HotelSoftware\barItem;
 use App\Models\User;

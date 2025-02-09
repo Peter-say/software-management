@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             ItemCategorySeeder::class,
             StoreItemSeeder::class,
             ExpenseCategorySeeder::class,
+            HotelModulePreferenceTableSeeder::class,
         ]);
     }
 }

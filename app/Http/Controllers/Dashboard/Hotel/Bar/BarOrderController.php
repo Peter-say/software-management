@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Dashboard\Hotel\Bar;
 use App\Constants\CurrencyConstants;
 use App\Services\Dashboard\Hotel\Bar\BarOrderService;
 use App\Http\Controllers\Controller;
-use App\Models\HotelSoftware\barItem;
+use App\Models\HotelSoftware\BarItem;
 use App\Models\HotelSoftware\BarOrder;
 use App\Models\User;
 use Exception;

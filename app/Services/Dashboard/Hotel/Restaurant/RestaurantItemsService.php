@@ -122,13 +122,13 @@ class RestaurantItemsService
 
         foreach ($items as $item) {
             $imageDirectory = 'hotel/restaurant/items/';
-            
+
             // Check if the item image is missing or the file doesn't exist
             if (is_null($item->image) || !public_path($imageDirectory . $item->image)) {
 
                 // Get a random image filename
                 $randomImagePath = $this->getRandomImages();
-
+                dd($randomImagePath);
                 // Verify the random image exists on the filesystem
                 if (file_exists($randomImagePath) && is_readable($randomImagePath)) {
                     // Save the random image to the specified directory
@@ -158,6 +158,7 @@ class RestaurantItemsService
         // Get a list of all images in the specified directory
         $images = glob(getStorageUrl('dashboard/food/*'));
         $randomImage =  $images[array_rand($images)];
+        dd($randomImage);
         // Check if any images are found
         if (empty($images)) {
             throw new \Exception('No images found in the specified directory.');

@@ -3,7 +3,6 @@
 namespace App\Imports;
 
 use App\Models\HotelSoftware\BarItem;
-use App\Models\HotelSoftware\BarOrderItem;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
@@ -47,7 +46,7 @@ class BarItemImport implements ToModel, WithStartRow
     public function model(array $row)
     {
         // Check if the item already exists
-        $existingItem = BarOrderItem::where('name', $row[0])
+        $existingItem = BarItem::where('name', $row[0])
             ->where('outlet_id', $this->outlet_id)
             ->first();
 

@@ -74,7 +74,7 @@ class StoreItemRequisitionNotification extends Notification
     public function broadcastOn()
     {
         // Check if the user belongs to the hotel and has the correct role
-        $roles = $this->HotelRoleService->userCanAccessSalesRole();
+        $roles = $this->HotelRoleService->userCanAccessStoreRole();
 
         $hasAccess = $this->user->hotelUser
             ->where('hotel_id', $this->user->hotel->id)

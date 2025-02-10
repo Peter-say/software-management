@@ -27,11 +27,9 @@
                             New Item</a>
                         <a type="button" data-bs-toggle="modal" data-bs-target="#upload-bar-items-modal"
                             class="btn btn-primary me-2">Upload Items</a>
-                            <a type="button" data-bs-toggle="modal" data-bs-target="#truncate-items-modal"
-                            class="btn btn-primary me-2">Truncate Items <i class="fas fa-question-circle" 
-                            data-bs-toggle="tooltip" 
-                            data-bs-placement="top" 
-                            title="Delete all the bar items"></i></a>
+                        <a type="button" data-bs-toggle="modal" data-bs-target="#truncate-items-modal"
+                            class="btn btn-primary me-2">Truncate Items <i class="fas fa-question-circle"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Delete all the bar items"></i></a>
                     </div>
                 </div>
 
@@ -153,8 +151,8 @@
             </div>
         </div>
     </div>
-    @include('dashboard.hotel.bar-items.truncate-modal',[ 'items' => $bar_items]);
-    @include('dashboard.hotel.bar-items.upload-modal')
+    {{-- @include('dashboard.hotel.bar-items.truncate-modal'); --}}
+    {{-- @include('dashboard.hotel.bar-items.upload-modal') --}}
     <!-- Delete Confirmation Modal -->
     <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
         aria-hidden="true">

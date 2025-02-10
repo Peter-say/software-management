@@ -114,6 +114,7 @@
         border: 1px solid #ddd;
     }
 </style>
+
 <body>
 
     <!--*******************
@@ -139,6 +140,9 @@
         @include('notifications.flash-messages')
         @include('dashboard.general.modal.item-description-modal')
         @include('dashboard.hotel.restaurant-item.upload-modal')
+        @include('dashboard.hotel.bar-items.upload-modal')
+        @include('dashboard.hotel.bar-items.truncate-modal');
+
         @yield('contents')
 
 
@@ -166,74 +170,69 @@
 
                 return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
             }
-           
-            document.getElementById('downloadSample').addEventListener('click', function(event) {
-                event.preventDefault(); // Prevent the default link behavior
 
-                var currentUrl = document.getElementById('currentUrl').value;
+            $(document).ready(function() {
+                $('#downloadSample').on('click', function(event) {
+                    event.preventDefault(); // Prevent default link behavior
+                    console.log('clicked');
 
-                // AJAX request to initiate the download
-                $.ajax({
-                    url: "{{ route('dashboard.download.sample') }}", // Correct route reference
-                    type: 'GET', // Ensure this is a GET request
-                    data: {
-                        current_url: currentUrl
-                    },
-                    xhrFields: {
-                        responseType: 'blob' // Important for handling binary data
-                    },
-                    success: function(response, status, xhr) {
-                        // Create a link element to download the file
-                        var filename = ""; // Default filename
+                    var currentUrl = $('#currentUrl').val();
+                    console.log(currentUrl);
 
-                        // Get the filename from the content-disposition header
-                        var disposition = xhr.getResponseHeader('Content-Disposition');
-                        if (disposition && disposition.indexOf('attachment') !== -1) {
-                            var matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(disposition);
-                            if (matches != null && matches[1]) {
-                                filename = matches[1].replace(/['"]/g, '');
+                    $.ajax({
+                        url: "{{ route('dashboard.download.sample') }}", // Ensure this is a valid route
+                        type: 'GET',
+                        data: {
+                            current_url: currentUrl
+                        },
+                        xhrFields: {
+                            responseType: 'blob'
+                        }, // Important for handling binary data
+                        success: function(response, status, xhr) {
+                            var filename = "restaurant_item_sample.csv"; // Default filename
+
+                            var disposition = xhr.getResponseHeader('Content-Disposition');
+                            if (disposition && disposition.indexOf('attachment') !== -1) {
+                                var matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(
+                                    disposition);
+                                if (matches != null && matches[1]) {
+                                    filename = matches[1].replace(/['"]/g, '');
+                                }
                             }
+
+                            var blob = new Blob([response], {
+                                type: xhr.getResponseHeader('Content-Type')
+                            });
+                            var url = window.URL.createObjectURL(blob);
+                            var link = document.createElement('a');
+                            link.href = url;
+                            link.download = filename;
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                            window.URL.revokeObjectURL(url);
+
+                            Toastify({
+                                text: 'Download started.',
+                                duration: 5000,
+                                gravity: 'top',
+                                position: 'right',
+                                backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
+                            }).showToast();
+                        },
+                        error: function(xhr) {
+                            var errorMessage = (xhr.responseJSON && xhr.responseJSON.message) ||
+                                'An error occurred while downloading the file.';
+                            Toastify({
+                                text: errorMessage,
+                                duration: 5000,
+                                gravity: 'top',
+                                position: 'right',
+                                backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
+                            }).showToast();
                         }
-
-                        // Create a blob URL and initiate download
-                        var blob = new Blob([response], {
-                            type: xhr.getResponseHeader('Content-Type')
-                        });
-                        var url = window.URL.createObjectURL(blob);
-                        var link = document.createElement('a');
-                        link.href = url;
-                        link.download = filename ||
-                            'restaurant_item_sample.csv'; // Use the filename from the response or a default one
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                        window.URL.revokeObjectURL(url); // Clean up the blob URL
-
-                        // Show success message
-                        Toastify({
-                            text: 'Download started.',
-                            duration: 5000,
-                            gravity: 'top',
-                            position: 'right',
-                            backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
-                        }).showToast();
-                    },
-                    error: function(xhr) {
-                        // Check if xhr.responseJSON is defined and has a message property
-                        var errorMessage = (xhr.responseJSON && xhr.responseJSON.message) ||
-                            'An error occurred while downloading the file.';
-
-                        Toastify({
-                            text: errorMessage,
-                            duration: 5000,
-                            gravity: 'top',
-                            position: 'right',
-                            backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
-                        }).showToast();
-                    }
-
+                    });
                 });
-
             });
         </script>
         <script>
@@ -332,9 +331,9 @@
     <!-- ApexCharts -->
     <script src="{{ asset('dashboard/vendor/apexchart/apexchart.js') }}"></script>
 
-       <!-- Chart ChartJS plugin files -->
-       <script src="{{ asset('dashboard/vendor/chart.js/Chart.bundle.min.js') }}"></script>
-       <script src="{{ asset('dashboard/js/plugins-init/chartjs-init.js') }}"></script>
+    <!-- Chart ChartJS plugin files -->
+    <script src="{{ asset('dashboard/vendor/chart.js/Chart.bundle.min.js') }}"></script>
+    <script src="{{ asset('dashboard/js/plugins-init/chartjs-init.js') }}"></script>
 
     <!-- jQuery Nice Select (only include once) -->
     <script src="{{ asset('dashboard/vendor/jquery-nice-select/js/jquery.nice-select.min.js') }}"></script>

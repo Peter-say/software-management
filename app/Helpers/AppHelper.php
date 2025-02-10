@@ -17,39 +17,42 @@ function getModelItems($model)
 {
     $model_list = null;
 
-    $hotelId = User::getAuthenticatedUser()->hotel->id;
+    $hotel_id = User::getAuthenticatedUser()->hotel->id;
 
     if ($model == 'countries') {
         $model_list = DB::table('countries')->select('id', 'name')->orderBy('name', 'asc')->get();
     } elseif ($model == 'states') {
         $model_list = DB::table('states')->select('id', 'name')->orderBy('name', 'asc')->get();
     } elseif ($model == 'rooms') {
-        $model_list = Room::where('hotel_id', $hotelId)->get();
+        $model_list = Room::where('hotel_id', $hotel_id)->get();
     } elseif ($model == 'guests') {
-        $model_list = Guest::where('hotel_id', $hotelId)->get();
+        $model_list = Guest::where('hotel_id', $hotel_id)->get();
     } elseif ($model == 'restaurant-outlets') {
-        $model_list = Outlet::where('hotel_id', $hotelId)->where('type', 'restaurant')->get();
+        $model_list = Outlet::where('hotel_id', $hotel_id)->where('type', 'restaurant')->get();
     } elseif ($model == 'bar-outlets') {
-        $model_list = Outlet::where('hotel_id', $hotelId)->where('type', 'bar')->get();
+        $model_list = Outlet::where('hotel_id', $hotel_id)->where('type', 'bar')->get();
     } elseif ($model == 'suppliers') {
-        $model_list = Supplier::where('hotel_id', $hotelId)->get();
+        $model_list = Supplier::where('hotel_id', $hotel_id)->get();
     } elseif ($model == 'expense-categories') {
-        $model_list = ExpenseCategory::where('hotel_id', $hotelId)->get();
+        $model_list = ExpenseCategory::where('hotel_id', $hotel_id)->get();
     } elseif ($model == 'expense-items') {
-        $model_list = ExpenseItem::where('hotel_id', $hotelId)->get();
+        $model_list = ExpenseItem::where('hotel_id', $hotel_id)->get();
     } elseif ($model == 'store-items') {
-        $model_list = StoreItem::whereHas('store', function ($query) use ($hotelId) {
-            $query->where('hotel_id', $hotelId);
+        $model_list = StoreItem::whereHas('store', function ($query) use ($hotel_id) {
+            $query->where('hotel_id', $hotel_id);
         })->get();
     } elseif ($model == 'outlets') {
-        $model_list = Outlet::where('hotel_id', $hotelId)->get();
+        $model_list = Outlet::where('hotel_id', $hotel_id)->get();
     } elseif ($model == 'walk_in_customers') {
         // Get the outlet (restaurant) for the hotel
-        $outlet = Outlet::where('hotel_id', $hotelId)->where('type', 'restaurant')->first();
-        // Get all walk-in customers associated with that restaurant outlet
-        $model_list = WalkInCustomer::whereHas('restaurantOrders', function ($query) use ($outlet) {
-            $query->where('hotel_id', User::getAuthenticatedUser()->hotel->id);
+        $model_list = Outlet::where('hotel_id', $hotel_id)->where('type', 'restaurant')->first();
+        
+        $model_list = WalkInCustomer::whereHas('restaurantOrders', function ($query) use ($hotel_id) {
+            $query->where('hotel_id', $hotel_id);
+        })->orWhereHas('barOrders', function ($query) use ($hotel_id) {
+            $query->where('hotel_id', $hotel_id);
         })->distinct()->get();
+        
     }
     if ($model == 'item-categories') {
         $model_list = ItemCategory::all();
@@ -121,3 +124,16 @@ if (!function_exists('getStorageUrl')) {
         }
     }
 }
+
+if (!function_exists('getStoragePath')) {
+    function getStoragePath($relativePath)
+    {
+        if (app()->environment('local')) {
+            return public_path($relativePath);
+        } else {
+            return public_path("public/{$relativePath}");
+        }
+    }
+}
+
+

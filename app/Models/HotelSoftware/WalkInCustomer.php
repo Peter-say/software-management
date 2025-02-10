@@ -14,6 +14,10 @@ class WalkInCustomer extends Model
     {
         return $this->hasMany(RestaurantOrder::class, 'walk_in_customer_id');
     }
+    public function barOrders()
+    {
+        return $this->hasMany(BarOrder::class, 'walk_in_customer_id');
+    }
     public function walkInCustomerInfo()
     {
         return trim($this->name . ' - ' . $this->phone);

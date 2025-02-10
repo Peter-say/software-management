@@ -103,7 +103,7 @@ class KitchenOrderNotification extends Notification implements ShouldBroadcast
     protected function buildData($notifiable): array
     {
         return [
-            'title' => 'Order Created!',
+            'title' => 'Restaurant Order Created!',
             'message' => "A new order was created",
             'order_id' => $this->restaurantOrder->id,
             'total_amount' => $this->restaurantOrder->total_amount,

@@ -1,44 +1,44 @@
-<!-- Button trigger modal -->
-
-<div class="modal fade" id="truncate-items-modal" tabindex="-1" role="dialog" aria-labelledby="truncate-items-modal"
-    aria-hidden="true">
+<!-- Modal -->
+<div class="modal fade" id="truncate-items-modal" tabindex="-1" role="dialog" aria-labelledby="truncate-items-modal" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Truncate Restaurant Items</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="truncateItemsForm" method="post">
-                @csrf @method('DELETE')
-                <input type="hidden" name="items" value="{{$items}}">
+
+            <form id="truncateItemsForm" method="POST">
+                @csrf
+                @method('DELETE')
+
+                {{-- <input type="hidden" name="items" id="items" value="{{ $items }}"> --}}
+
                 <div class="modal-body">
-                    Are you sure you want to delete all the items? Be certain. Deleted items can not be undo
+                    Are you sure you want to delete all the items? Be certain. Deleted items cannot be undone.
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Proceed</button>
+                    <button type="submit" class="btn btn-primary" id="truncateItemsBtn">Proceed</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-</div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function() {
-       
-        $('#truncateItemsForm').on('submit', function(event) {
+    $(document).ready(function () {
+        $('#truncateItemsForm').on('submit', function (event) {
             event.preventDefault(); // Prevent default form submission
-
+            
             $.ajax({
-                url: '{{ route('dashboard.hotel.restaurant-items.truncate') }}',
+                url: '{{ route('dashboard.hotel.bar-items.truncate') }}',
                 type: 'DELETE',
-                // data: {
-                //     _token: '{{ csrf_token() }}', 
-                // },
-                success: function(response) {
-                    console.log(response);
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    _method: 'DELETE',
+                    items: $('#items').val()
+                },
+                success: function (response) {
                     Toastify({
                         text: response.message,
                         duration: 5000,
@@ -49,9 +49,8 @@
 
                     $('#truncate-items-modal').modal('hide'); // Close modal on success
                 },
-                error: function(xhr) {
-                    var errorMessage = xhr.responseJSON ? xhr.responseJSON.message :
-                        'An error occurred';
+                error: function (xhr) {
+                    var errorMessage = xhr.responseJSON ? xhr.responseJSON.message : 'An error occurred';
                     Toastify({
                         text: errorMessage,
                         duration: 5000,

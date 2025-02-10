@@ -16,7 +16,7 @@
                     <input type="hidden" name="current_url" value="{{ request()->url() }}" id="currentUrl">
                 </div>
             </div>
-            <form id="uploadItemsForm" method="post" enctype="multipart/form-data">
+            <form id="uploadIBartemsForm" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="col-12 m-3">
@@ -47,7 +47,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
-        $('#uploadItemsForm').on('submit', function(event) {
+        $('#uploadIBartemsForm').on('submit', function(event) {
             event.preventDefault(); // Prevent default form submission
 
             // Create a FormData object to hold the form data

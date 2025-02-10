@@ -119,25 +119,22 @@ class BarItemsService
     public function generateImageForItems()
     {
         $items = BarItem::all();
-
+    
         foreach ($items as $item) {
-            $imageDirectory = 'hotel/restaurant/items/';
+            $imageDirectory = 'hotel/bar/items';
             
-            // Check if the item image is missing or the file doesn't exist
-            if (is_null($item->image) || !public_path($imageDirectory . $item->image)) {
-
-                // Get a random image filename
+            if (is_null($item->image) || !file_exists(public_path($imageDirectory . '/' . $item->image))) {
                 $randomImagePath = $this->getRandomImages();
-
-                // Verify the random image exists on the filesystem
+                
                 if (file_exists($randomImagePath) && is_readable($randomImagePath)) {
-                    // Save the random image to the specified directory
+                    if (!file_exists(public_path($imageDirectory))) {
+                        mkdir(public_path($imageDirectory), 0755, true);
+                    }
+    
                     $fileName = basename($randomImagePath);
-                    $storageSuccess = public_path($imageDirectory . $fileName, file_get_contents($randomImagePath));
-
-                    // Check if the image was successfully stored
-                    if ($storageSuccess) {
-                        // Update the item record with the new image filename
+                    $destinationPath = public_path($imageDirectory . '/' . $fileName);
+    
+                    if (copy($randomImagePath, $destinationPath)) {
                         $item->update([
                             'image' => $fileName,
                         ]);
@@ -150,19 +147,17 @@ class BarItemsService
             }
         }
     }
+    
 
 
 
     public function getRandomImages()
     {
-        // Get a list of all images in the specified directory
-        $images = glob(getStorageUrl('dashboard/drink/*'));
+        $images = glob(getStoragePath('dashboard/drink/*'));
         $randomImage =  $images[array_rand($images)];
-        // Check if any images are found
         if (empty($images)) {
             throw new \Exception('No images found in the specified directory.');
         }
-        // Return a random image's basename
         return $randomImage;
     }
 

@@ -3,19 +3,23 @@ import Pusher from "pusher-js";
 
 window.Pusher = Pusher;
 console.log(window.Pusher, "hello");
+
 document.addEventListener("DOMContentLoaded", async function () {
+    // Initialize Echo instance
     window.Echo = new Echo({
         broadcaster: "pusher",
         key: import.meta.env.VITE_PUSHER_APP_KEY,
         cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
         forceTLS: true,
     });
+
     const badge = document.getElementById("notificationcount");
-    const notificationList = document.querySelector(
-        "#DZ_W_Notification1 .timeline"
-    );
+    const notificationList = document.querySelector("#DZ_W_Notification1 .timeline");
     const maxNotifications = 5; // Limit to 5 notifications
     let unreadCount = 0;
+
+    // Track notification IDs to prevent duplicates
+    const addedNotificationIds = new Set(); // A set to track already added notification IDs
 
     // Standard image fallback
     const imagePath = "dashboard/food/food1.jpeg";
@@ -26,12 +30,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         const items = notification.data?.items || notification.items || [];
         const imageUrl = items[0]?.image || defaultImage;
         const linkUrl = notification.data?.link || notification.link || "#";
-        // const itemCount = items.length;
-        // const firstItemName = items[0]?.name || notification.data?.message;
         const notificationMessage = notification.data?.title || notification.title;
-            // itemCount > 1
-            //     ? `${firstItemName} ordered and ${itemCount - 1} more`
-            //     : notification.data?.message;
 
         return {
             id: notification.id || notification.notification_id,
@@ -39,14 +38,20 @@ document.addEventListener("DOMContentLoaded", async function () {
             linkUrl,
             message: notificationMessage,
             description: (notification.data?.message || "").slice(0, 30) + '...',
-            createdAt: new Date(
-            notification.created_at || new Date()
-            ).toLocaleString(),
+            createdAt: new Date(notification.created_at || new Date()).toLocaleString(),
         };
     }
 
     // Function to add a notification to the DOM
     function addNotificationToList(notificationData) {
+        // Check if the notification has already been added
+        if (addedNotificationIds.has(notificationData.id)) {
+            return; // Skip adding duplicate notification
+        }
+
+        // Add the notification ID to the set
+        addedNotificationIds.add(notificationData.id);
+
         const notificationItem = document.createElement("li");
         notificationItem.innerHTML = `
             <div class="timeline-panel" data-notification-id="${notificationData.id}">
@@ -56,7 +61,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 <div class="media-body">
                     <a href="${notificationData.linkUrl}" class="notification-link" target="_blank">
                         <h6 class="mb-1">${notificationData.message}</h6>
-                         <small class="d-block">${notificationData.description}</small>
+                        <small class="d-block">${notificationData.description}</small>
                         <small class="d-block">${notificationData.createdAt}</small>
                     </a>
                 </div>
@@ -95,7 +100,12 @@ document.addEventListener("DOMContentLoaded", async function () {
         } else {
             data.notification.forEach((notification) => {
                 const formattedData = formatNotificationData(notification);
-                addNotificationToList(formattedData);
+
+                // Only add the notification if it hasn't been added already
+                if (!addedNotificationIds.has(formattedData.id)) {
+                    addedNotificationIds.add(formattedData.id);
+                    addNotificationToList(formattedData);
+                }
             });
         }
     } catch (error) {
@@ -104,19 +114,28 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // Listen for new notifications via Pusher
     window.Echo.channel("kitchen-orders").listen(".OrderCreated", (event) => {
+        alert("Received Requisition Requested:", event);
         const formattedData = formatNotificationData(event);
-        addNotificationToList(formattedData);
 
-        // Update badge count
-        unreadCount += 1;
-        badge.innerText = unreadCount;
-        badge.classList.add("bg-primary");
+        // Only add the notification if it hasn't been added already
+        if (!addedNotificationIds.has(formattedData.id)) {
+            addedNotificationIds.add(formattedData.id);
+            addNotificationToList(formattedData);
+
+            // Update badge count
+            unreadCount += 1;
+            badge.innerText = unreadCount;
+            badge.classList.add("bg-primary");
+        }
     });
 
-    window.Echo.channel("item-requisition").listen(
-        ".RequisitionRequested",
-        (event) => {
-            const formattedData = formatNotificationData(event);
+    window.Echo.channel("item-requisition").listen(".RequisitionRequested", (event) => {
+        alert("Received Requisition Requested:", event);
+        const formattedData = formatNotificationData(event);
+        console.log("Received Requisition Requested:", event);
+        // Only add the notification if it hasn't been added already
+        if (!addedNotificationIds.has(formattedData.id)) {
+            addedNotificationIds.add(formattedData.id);
             addNotificationToList(formattedData);
 
             // Update badge count
@@ -124,12 +143,14 @@ document.addEventListener("DOMContentLoaded", async function () {
             badge.innerText = unreadCount;
             badge.classList.add("bg-primary");
         }
-    );
+    });
 
-    window.Echo.channel("low_stock-alert").listen(
-        ".LowStockAlert",
-        (event) => {
-            const formattedData = formatNotificationData(event);
+    window.Echo.channel("low_stock-alert").listen(".LowStockAlert", (event) => {
+        const formattedData = formatNotificationData(event);
+
+        // Only add the notification if it hasn't been added already
+        if (!addedNotificationIds.has(formattedData.id)) {
+            addedNotificationIds.add(formattedData.id);
             addNotificationToList(formattedData);
 
             // Update badge count
@@ -137,7 +158,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             badge.innerText = unreadCount;
             badge.classList.add("bg-primary");
         }
-    );
+    });
 
     // Mark notification as read and remove it from DOM
     async function markNotificationAsRead(notificationId, notificationItem) {
@@ -160,8 +181,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 unreadCount -= 1;
                 badge.innerText = unreadCount;
                 badge.classList.toggle("bg-primary", unreadCount > 0);
-                // notificationItem.remove();
-                notificationItem.style.color = "gray";
+                notificationItem.style.color = "gray"; // Mark it as read
 
                 // Re-fetch unread notifications if space is available
                 if (notificationList.childElementCount < maxNotifications) {
@@ -174,23 +194,23 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     // Fetch additional unread notifications to fill up empty space
-    // async function fetchAndAddUnreadNotifications() {
-    //     try {
-    //         const response = await fetch(
-    //             "/dashboard/hotel/notifications/unread"
-    //         );
-    //         const data = await response.json();
-    //         data.notification
-    //             .slice(0, maxNotifications - notificationList.childElementCount)
-    //             .forEach((notification) => {
-    //                 const formattedData = formatNotificationData(notification);
-    //                 addNotificationToList(formattedData);
-    //             });
-    //     } catch (error) {
-    //         console.error(
-    //             "Error fetching additional unread notifications:",
-    //             error
-    //         );
-    //     }
-    // }
+    async function fetchAndAddUnreadNotifications() {
+        try {
+            const response = await fetch("/dashboard/hotel/notifications/unread");
+            const data = await response.json();
+            data.notification
+                .slice(0, maxNotifications - notificationList.childElementCount)
+                .forEach((notification) => {
+                    const formattedData = formatNotificationData(notification);
+
+                    // Only add the notification if it hasn't been added already
+                    if (!addedNotificationIds.has(formattedData.id)) {
+                        addedNotificationIds.add(formattedData.id);
+                        addNotificationToList(formattedData);
+                    }
+                });
+        } catch (error) {
+            console.error("Error fetching additional unread notifications:", error);
+        }
+    }
 });

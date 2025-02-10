@@ -8,7 +8,7 @@ use App\Models\HotelSoftware\BarOrderItem;
 use App\Models\HotelSoftware\HotelUser;;
 use App\Models\HotelSoftware\WalkInCustomer;
 use App\Models\User;
-use App\Notifications\barOrderNotification;
+use App\Notifications\BarOrderNotification;
 use App\Providers\RoleServiceProvider;
 use App\Services\RoleService\HotelServiceRole;
 use Carbon\Carbon;

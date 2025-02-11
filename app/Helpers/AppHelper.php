@@ -131,7 +131,7 @@ if (!function_exists('getStoragePath')) {
         if (app()->environment('local')) {
             return public_path($relativePath);
         } else {
-            return public_path("public/{$relativePath}");
+            return public_path($relativePath);
         }
     }
 }

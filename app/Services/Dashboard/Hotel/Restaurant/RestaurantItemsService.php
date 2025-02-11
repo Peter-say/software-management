@@ -152,7 +152,6 @@ class RestaurantItemsService
 
     public function getRandomImages()
     {
-        dd(getStoragePath('dashboard/food/*'));
         $images = glob(getStoragePath('dashboard/food/*'));
         $randomImage =  $images[array_rand($images)];
         if (empty($images)) {

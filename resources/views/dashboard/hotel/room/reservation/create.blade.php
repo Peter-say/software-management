@@ -333,8 +333,8 @@
                             document.getElementById('other_names').value = data.other_names || '';
                             document.getElementById('email').value = data.email || '';
                             document.getElementById('phone').value = data.phone || '';
-                            document.getElementById('state_id').value = data.state || '';
-                            document.getElementById('country_id').value = data.country || '';
+                            document.getElementById('state_id').value = data.state.name || '';
+                            document.getElementById('country_id').value = data.country.name || '';
                         })
                         .catch(error => console.error('Error fetching guest data:', error));
                 }
@@ -374,14 +374,14 @@
                         if (data.success) {
                             Toastify({
                                 text: data.message || 'Operation successful.',
-                                duration: 5000,
+                                duration: 1000,
                                 gravity: 'top',
                                 position: 'right',
                                 backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
                             }).showToast();
                             setTimeout(() => {
                                 window.location.href = data.redirectUrl;
-                            }, 5000);
+                            }, 1000);
                         } else {
                             handleErrorMessages(data.errors);
                         }

@@ -37,7 +37,7 @@
             }
 
             $.ajax({
-                url: '/dashboard/hotel/restaurant/' + orderId + '/cancel-order',
+                url: '/dashboard/hotel/bar/' + orderId + '/cancel-order',
                 type: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}', // Send CSRF token

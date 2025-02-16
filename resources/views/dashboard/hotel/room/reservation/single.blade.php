@@ -92,7 +92,7 @@
                                     </tr>
                             
                                     <!-- Orders Section -->
-                                    @if ($reservation->guest && ($reservation->guest->restaurantOrders->isNotEmpty() || $reservation->guest->barOrders->isNotEmpty()))
+                                    @if ($reservation->guest && ($reservation->guest->restaurantOrders->where('status', 'Open')->count() > 0 || $reservation->guest->barOrders->where('status', 'Open')))
                                         <tr>
                                             <td colspan="4">
                                                 <table class="table table-bordered">

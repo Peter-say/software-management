@@ -7,12 +7,14 @@ use App\Models\User;
 use App\Services\RoleService\HotelServiceRole;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Log;
 
-class StoreItemRequisitionNotification extends Notification
+class StoreItemRequisitionNotification extends Notification implements ShouldBroadcast
 {
     use Queueable;
     public $requisitionItem;
@@ -56,24 +58,23 @@ class StoreItemRequisitionNotification extends Notification
         $itemsList = $this->requisitionItem->requisition->items->map(function ($item) {
             return $item->item_name . ' (Quantity: ' . $item->quantity . ' ' . $item->unit . ')';
         })->implode("\n");
-    
+
         return (new MailMessage)
-            ->subject('New Requisition Submitted') 
+            ->subject('New Requisition Submitted')
             ->line('A new item requisition has been submitted.')
             ->line('Requisition ID: ' . $this->requisitionItem->requisition->id)
             ->line('Department: ' . $this->requisitionItem->requisition->department)
             ->line('Purpose: ' . $this->requisitionItem->requisition->purpose)
             ->line('Status: ' . $this->requisitionItem->requisition->status)
             ->line('Items: ')
-            ->line($itemsList) 
-            ->action('View Requisition', url('/requisitions/' . $this->requisitionItem->requisition->id)) 
+            ->line($itemsList)
+            ->action('View Requisition', route('dashboard.hotel.requisitions.show', $this->requisitionItem->requisition->id))
             ->line('Thank you for managing the requisition process.');
     }
-    
+
 
     public function broadcastOn()
     {
-        // Check if the user belongs to the hotel and has the correct role
         $roles = $this->HotelRoleService->userCanAccessStoreRole();
 
         $hasAccess = $this->user->hotelUser
@@ -102,9 +103,14 @@ class StoreItemRequisitionNotification extends Notification
 
     protected function buildData($notifiable): array
     {
+        $items = $this->requisitionItem->requisition->items;
+        $itemCount = $items->count();
+        $title = $itemCount === 1 ? 'Requisition Submitted!' : 'Requisitions Submitted!';
+        $message = $itemCount === 1 ? "A new item requisition was submitted" : "$itemCount item requisitions were submitted";
+
         return [
-            'title' => 'Requisition Submitted!',
-            'message' => "A new item requisition was submitted",
+            'title' => $title,
+            'message' => $message,
             'requisition_id' => $this->requisitionItem->requisition->id,
             'department' => $this->requisitionItem->requisition->department,
             'purpose' => $this->requisitionItem->requisition->purpose,
@@ -115,6 +121,10 @@ class StoreItemRequisitionNotification extends Notification
                     'item_name' => $item->item_name ?? 'Unknown Item',
                     'quantity' => $item->quantity,
                     'unit' => $item->unit,
+                    // this is a default image for this notification
+                    // you can replace it with the actual image of the item
+                    // if there is an image field in the item model
+                    'image' => asset('dashboard/drink/wiskey.jpeg'),
                 ];
             }),
         ];

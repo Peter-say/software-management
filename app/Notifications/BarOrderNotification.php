@@ -100,21 +100,28 @@ class BarOrderNotification extends Notification implements ShouldBroadcast
     }
 
     protected function buildData($notifiable): array
-    {
-        return [
-            'title' => 'Bar Order Created!',
-            'message' => "A new order was created in the bar",
-            'order_id' => $this->barOrder->id,
-            'total_amount' => $this->barOrder->total_amount,
-            'link' => route('dashboard.hotel.notifications.view', $this->id),
-            'status' => $this->barOrder->status,
-            'items' => $this->barOrder->barOrderItems->map(function ($item) {
-                return [
-                    'name' => $item->barItem ? $item->barItem->name : 'Unknown Item',
-                    'quantity' => $item->qty,
-                    'image' => $item->barItem ? getStorageUrl('hotel/bar/items/' . $item->barItem->image) : null
-                ];
-            }),
-        ];
-    }
+{
+    $items = $this->barOrder->barOrderItems;
+    $itemCount = $items->count();
+    
+    $title = $itemCount === 1 ? 'Bar Order Created!' : 'Bar Orders Created!';
+    $message = $itemCount === 1 ? "A new order was created in the bar" : "$itemCount bar orders were created";
+
+    return [
+        'title' => $title,
+        'message' => $message,
+        'order_id' => $this->barOrder->id,
+        'total_amount' => $this->barOrder->total_amount,
+        'link' => route('dashboard.hotel.notifications.view', $this->id),
+        'status' => $this->barOrder->status,
+        'items' => $items->map(function ($item) {
+            return [
+                'name' => $item->barItem ? $item->barItem->name : 'Unknown Item',
+                'quantity' => $item->qty,
+                'image' => $item->barItem ? getStorageUrl('hotel/bar/items/' . $item->barItem->image) : null
+            ];
+        }),
+    ];
+}
+
 }

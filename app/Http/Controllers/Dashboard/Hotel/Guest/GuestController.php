@@ -124,7 +124,7 @@ class GuestController extends Controller
     public function getGuestInfo(Request $request)
     {
         $id = $request->id;
-        $guest = Guest::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->find($id);
+        $guest = Guest::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->with(['country', 'state'])->find($id);
         return response()->json($guest);
     }
 }

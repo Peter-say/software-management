@@ -100,8 +100,7 @@
                                                                         View Items
                                                                     </button>
 
-                                                                    @include(
-                                                                        'dashboard.hotel.bar-items.order.order-items-modal',
+                                                                    @include('dashboard.hotel.bar-items.order.order-items-modal',
                                                                         ['order' => $order]
                                                                     )
                                                                 </td>

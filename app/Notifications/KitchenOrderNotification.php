@@ -101,21 +101,28 @@ class KitchenOrderNotification extends Notification implements ShouldBroadcast
     }
 
     protected function buildData($notifiable): array
-    {
-        return [
-            'title' => 'Restaurant Order Created!',
-            'message' => "A new order was created",
-            'order_id' => $this->restaurantOrder->id,
-            'total_amount' => $this->restaurantOrder->total_amount,
-            'link' => route('dashboard.hotel.notifications.view', $this->id),
-            'status' => $this->restaurantOrder->status,
-            'items' => $this->restaurantOrder->restaurantOrderItems->map(function ($item) {
-                return [
-                    'name' => $item->restaurantItem ? $item->restaurantItem->name : 'Unknown Item',
-                    'quantity' => $item->qty,
-                    'image' => $item->restaurantItem ? getStorageUrl('hotel/restaurant/items/' . $item->restaurantItem->image) : null
-                ];
-            }),
-        ];
-    }
+{
+    $items = $this->restaurantOrder->restaurantOrderItems;
+    $itemCount = $items->count();
+    
+    $title = $itemCount === 1 ? 'Restaurant Order Created!' : 'Restaurant Orders Created!';
+    $message = $itemCount === 1 ? "A new order was created" : "$itemCount restaurant orders were created";
+
+    return [
+        'title' => $title,
+        'message' => $message,
+        'order_id' => $this->restaurantOrder->id,
+        'total_amount' => $this->restaurantOrder->total_amount,
+        'link' => route('dashboard.hotel.notifications.view', $this->id),
+        'status' => $this->restaurantOrder->status,
+        'items' => $items->map(function ($item) {
+            return [
+                'name' => $item->restaurantItem ? $item->restaurantItem->name : 'Unknown Item',
+                'quantity' => $item->qty,
+                'image' => $item->restaurantItem ? getStorageUrl('hotel/restaurant/items/' . $item->restaurantItem->image) : null
+            ];
+        }),
+    ];
+}
+
 }

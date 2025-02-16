@@ -57,6 +57,7 @@ class RequisitionController extends Controller
         } catch (Exception $e) {
             return redirect()->back()->withInput($request->all())->with('error_message', $e->getMessage());
         } catch (\Throwable $th) {
+            throw $th;
             return redirect()->back()->with('error_message', 'Something went wrong');
         }
     }

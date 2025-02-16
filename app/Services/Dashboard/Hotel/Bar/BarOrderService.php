@@ -137,7 +137,7 @@ class BarOrderService
 
     public function getById($id)
     {
-        $order = barOrder::find($id);
+        $order = BarOrder::find($id);
         if (empty($order)) {
             throw new ModelNotFoundException("Order not found");
         }

@@ -32,6 +32,7 @@ class GuestWalletController extends Controller
             return redirect()->back()->with('error_message', 'Guest Wallet not found');
         } catch (Exception $e) {
             return redirect()->back()->withInput($request->all())->with('error_message', $e->getMessage());
+            throw $th;
         } catch (\Throwable $th) {
             throw $th;
             return redirect()->back()->with('error_message', 'Something went wrong');

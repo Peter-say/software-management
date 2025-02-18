@@ -63,7 +63,7 @@
                                         <td>{{ number_format($reservation->calculateNight()) }}</td>
                                         <td>{{ number_format($reservation->total_amount) }}</td>
                                     </tr>
-                            
+
                                     <!-- Room Images -->
                                     <tr>
                                         <td colspan="4">
@@ -73,10 +73,10 @@
                                                     <div class="d-flex flex-wrap">
                                                         @foreach ($reservation->room->RoomImages() as $image)
                                                             <div class="me-3 mb-3">
-                                                                <img class="rounded" 
-                                                                     src="{{ getStorageUrl($image->file_path) }}" 
-                                                                     alt="Room Image" 
-                                                                     style="width: 150px; height: 100px; object-fit: cover;">
+                                                                <img class="rounded"
+                                                                    src="{{ getStorageUrl($image->file_path) }}"
+                                                                    alt="Room Image"
+                                                                    style="width: 150px; height: 100px; object-fit: cover;">
                                                             </div>
                                                         @endforeach
                                                     </div>
@@ -84,15 +84,18 @@
                                             </div>
                                         </td>
                                     </tr>
-                            
+
                                     <!-- Net Total -->
                                     <tr>
                                         <td colspan="3" class="text-end">Net Total</td>
                                         <td>{{ number_format($reservation->total_amount) }}</td>
                                     </tr>
-                            
+
                                     <!-- Orders Section -->
-                                    @if ($reservation->guest && ($reservation->guest->restaurantOrders->where('status', 'Open')->count() > 0 || $reservation->guest->barOrders->where('status', 'Open')))
+                                    @if (
+                                        $reservation->guest &&
+                                            ($reservation->guest->restaurantOrders->where('status', 'Open')->count() > 0 ||
+                                                $reservation->guest->barOrders->where('status', 'Open')->count() > 0))
                                         <tr>
                                             <td colspan="4">
                                                 <table class="table table-bordered">
@@ -104,14 +107,15 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @foreach ($reservation->guest->restaurantOrders as $order)
+                                                        @foreach ($reservation->guest->restaurantOrders->where('status', 'Open') as $order)
                                                             <tr>
                                                                 <td>Restaurant Order</td>
                                                                 <td>{{ $order->order_date }}</td>
                                                                 <td>{{ number_format($order->total_amount, 2) }}</td>
                                                             </tr>
                                                         @endforeach
-                                                        @foreach ($reservation->guest->barOrders as $order)
+
+                                                        @foreach ($reservation->guest->barOrders->where('status', 'Open') as $order)
                                                             <tr>
                                                                 <td>Bar Order</td>
                                                                 <td>{{ $order->order_date }}</td>
@@ -121,15 +125,18 @@
                                                     </tbody>
                                                     <tfoot>
                                                         <tr>
-                                                            <td colspan="2" class="text-end"><strong>Net Total</strong></td>
-                                                            <td><strong>{{ number_format($reservation->guest->calculateOrderNetTotal(), 2) }}</strong></td>
+                                                            <td colspan="2" class="text-end"><strong>Net Total</strong>
+                                                            </td>
+                                                            <td><strong>{{ number_format($reservation->guest->calculateOrderNetTotal(), 2) }}</strong>
+                                                            </td>
                                                         </tr>
                                                     </tfoot>
                                                 </table>
                                             </td>
                                         </tr>
                                     @endif
-                            
+
+
                                     <!-- Payments Section -->
                                     @if ($reservation->payments->count())
                                         <tr>
@@ -150,20 +157,42 @@
                                                     </thead>
                                                     <tbody>
                                                         @php
-                                                            $payments = $reservation->payments->where('payable_id', $reservation->id);
-                                                            $paymentChunks = $payments->chunk(3);
+                                                            // Collect all payments for reservation, restaurant orders, and bar orders
+                                                            $reservationPayments = $reservation->payments->where(
+                                                                'payable_id',
+                                                                $reservation->id,
+                                                            );
+                                                            $restaurantPayments = $reservation->guest->restaurantOrders->flatMap(
+                                                                function ($order) {
+                                                                    return $order->payments;
+                                                                },
+                                                            );
+                                                            $barPayments = $reservation->guest->barOrders->flatMap(
+                                                                function ($order) {
+                                                                    return $order->payments;
+                                                                },
+                                                            );
+
+                                                            // Merge all the payments together
+                                                            $allPayments = $reservationPayments
+                                                                ->merge($restaurantPayments)
+                                                                ->merge($barPayments);
+
+                                                            // Chunk payments for the table display
+                                                            $paymentChunks = $allPayments->chunk(3);
                                                         @endphp
-                            
+
                                                         @foreach ($paymentChunks as $chunk)
                                                             <tr>
                                                                 @foreach ($chunk as $payment)
                                                                     <td>{{ $payment->created_at }}</td>
-                                                                    <td>{{ number_format($payment->amount) }}</td>
+                                                                    <td>{{ number_format($payment->amount, 2) }}</td>
                                                                     <td>
-                                                                        <button class="btn btn-sm btn-primary">Delete</button>
+                                                                        <button
+                                                                            class="btn btn-sm btn-primary">Delete</button>
                                                                     </td>
                                                                 @endforeach
-                            
+
                                                                 <!-- Fill in empty cells for incomplete chunks -->
                                                                 @for ($i = $chunk->count(); $i < 3; $i++)
                                                                     <td></td>
@@ -173,14 +202,22 @@
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
+
                                                 </table>
                                             </td>
                                         </tr>
                                     @endif
                                 </tbody>
                             </table>
-                            
+
                             <!-- Payment Information -->
+                            @php
+                                $payableAmount =
+                                    $reservation->total_amount +
+                                    $reservation->guest->calculateOrderNetTotal() -
+                                    (($reservation->payments() ?? collect())->sum('amount') +
+                                        $reservation->guest->paidTotalOrders());
+                            @endphp
                             <div class="row mt-4">
                                 <div class="col-sm-6">
                                     <h6>Notes:</h6>
@@ -191,20 +228,23 @@
                                     <p>Bill Number: {{ $reservation->bill_number }}</p>
                                     <p>
                                         <span>Due </span>
-                                        <b>₦{{ number_format($reservation->total_amount + $reservation->guest->calculateOrderNetTotal() - ($reservation->payments() ?? collect())->sum('amount')) }}</b>
+                                        <b>
+                                            ₦{{number_format($payableAmount, 2)}}
+                                        </b>
+
                                     </p>
+                                    @if ($payableAmount > 0)
                                     <div class="mt-3">
-                                        <label for="payment-method">Select Payment Method:</label>
-                                        <select id="payment-method" class="form-select">
-                                            @foreach (['BANK TRANSFER', 'CREDIT-CARD', 'CASH', 'POS', 'WALLET'] as $method)
-                                                <option value="{{ $method }}">{{ $method }}</option>
-                                            @endforeach
-                                        </select>
-                                        <button class="btn btn-success mt-2">Pay Now</button>
+                                        <button data-bs-toggle="modal" data-bs-target="#paymentMethodModal"
+                                            class="btn btn-dark mt-2">Make Payment</button>
                                     </div>
+                                    @else
+                                    <div class="mt-3">
+                                        <button class="btn text-success mt-2">All Paid</button>
+                                    @endif
                                 </div>
                             </div>
-                            
+
 
                         </div>
                         <div class="card-footer text-end d-flex flex-column align-items-end pr-2">
@@ -294,8 +334,12 @@
         </div>
     </div>
     @if ($reservation)
+        @include('dashboard.hotel.room.reservation.payment-methods')
         @include('dashboard.hotel.room.reservation.pay-with-wallet-modal')
-        @include('dashboard.hotel.guest.wallet.credit', ['guest' => $reservation->guest])
+        @include('dashboard.hotel.guest.wallet.credit', [
+            'guest' => $reservation->guest,
+            'payment_platform' => $payment_platform,
+        ])
     @endif
 
     <script>

@@ -92,123 +92,160 @@ class PaymentService
     {
         return DB::transaction(function () use ($request, $payment_id) {
             $this->validatePayment($request->all());
+
             $data = $request->all();
-            $paymentDetails = $request->has('payables')
-                ? $this->processReservationPayment($request)
-                : null;
-            $data['user_id'] = Auth::user()->id;
-            if (!empty($paymentDetails['processed_payables'][0])) {
-                $data['payable_id'] = $paymentDetails['processed_payables'][0]['payable_id'];
-                $data['payable_type'] = $paymentDetails['processed_payables'][0]['payable_type'];
-                $data['amount'] = $paymentDetails['processed_payables'][0]['allocated_amount'];
+            $data['user_id'] = Auth::id();
+            $payables = $request->input('payables');
+            // Use a regular array to hold payments
+            $payments = [];
+            if (!empty($payables)) {
+                foreach ($payables as $payable) {
+                    $payable_type = $payable['payable_type'];
+                    $payable_id = $payable['payable_id'];
+                    $payable_amount = $payable['payable_amount'];
+
+                    if (in_array($payable_type, [
+                        'App\Models\HotelSoftware\RoomReservation',
+                        'App\Models\HotelSoftware\BarOrder',
+                        'App\Models\HotelSoftware\RestaurantOrder'
+                    ])) {
+                        $payments[] = new Payment([
+                            'payable_id' => $payable_id,
+                            'payable_type' => $payable_type,
+                            'amount' => $payable_amount,
+                            'transaction_id' => 'TXN' . strtoupper(uniqid()),
+                            'user_id' => $data['user_id'],
+                        ]);
+                    }
+                }
             } else {
-                $data['payable_id'] = $request->input('payable_id');
-                $data['payable_type'] = $request->input('payable_type');
-                $data['amount'] = $request->input('amount');
+                // Handle single payment case
+                $payments[] = new Payment([
+                    'payable_id' => $request->input('payable_id'),
+                    'payable_type' => $request->input('payable_type'),
+                    'amount' => $request->input('amount'),
+                    'transaction_id' => 'TXN' . strtoupper(uniqid()),
+                    'user_id' => $data['user_id'],
+                ]);
+                // dd($data, $payments );
             }
-            
-            // dd($data);
+
+            // Handle Stripe Payment
             if ($request->stripe_payment === 'Stripe') {
                 $stripeCharge = $this->stripe_service->charge($request);
-                if ($stripeCharge->status == 'succeeded') {
-                    $data['status'] = 'completed';
-                    $data['payment_method_token'] = $request->input('stripeToken');
-                    $data['currency'] = strtoupper($stripeCharge->currency);
-                    $data['payment_method'] = strtoupper($stripeCharge->payment_method_details->type ?? 'unknown');
+
+                if ($stripeCharge->status === 'succeeded') {
+                    foreach ($payments as &$payment) {
+                        $payment->status = 'completed';
+                        $payment->payment_method_token = $request->input('stripeToken');
+                        $payment->currency = strtoupper($stripeCharge->currency);
+                        $payment->payment_method = strtoupper($stripeCharge->payment_method_details->type ?? 'unknown');
+                    }
                 } else {
-                    throw new Exception('Stripe payment failed: ' . $stripeCharge->failure_message);
+                    throw new Exception('Stripe payment failed: ' . ($stripeCharge->failure_message ?? 'Unknown error'));
                 }
             }
-            $payment = Payment::create($data);
-            // dd($data,  $payment->toArray(), $payment->get());
-            $statusInfo = $this->evaluatePaymentStatus($data['amount'], $request->total_amount);
-            $payment->status = $statusInfo['status'];
-            $payment->save();
 
-            return [
-                'payment' => $payment,
-                'reservation_details' => $paymentDetails,
-            ];
+            // Save payments using Eloquent
+            foreach ($payments as $payment) {
+                $payment->save();
+            }
+            $payments = Payment::whereIn('transaction_id', collect($payments)->pluck('transaction_id'))->get();
+
+            if ($payments->count() === 1) {
+                $payment = $payments->first(); // Extract single model
+                $statusInfo = $this->evaluatePaymentStatus($payment->amount, $request->total_amount);
+                $payment->status = $statusInfo['status'];
+                $payment->save();
+            } else {
+                $payments->each(function ($payment) use ($request) {
+                    $statusInfo = $this->evaluatePaymentStatus($payment->amount, $request->total_amount);
+                    $payment->status = $statusInfo['status'];
+                    $payment->save();
+                });
+            }
+            
+            return $payments;
+            
         });
     }
 
+    // public function processReservationPayment(Request $request)
+    // {
+    //     $payables = $request->input('payables', []);
+    //     $submittedAmount = $request->input('amount', 0);
 
-    public function processReservationPayment(Request $request)
-    {
-        $payables = $request->input('payables', []);
-        $submittedAmount = $request->input('amount', 0);
+    //     if (empty($payables) || $submittedAmount <= 0) {
+    //         throw new Exception('Invalid payment request');
+    //     }
 
-        if (empty($payables) || $submittedAmount <= 0) {
-            throw new Exception('Invalid payment request');
-        }
+    //     $remainingAmount = $submittedAmount;
+    //     $processedPayables = [];
+    //     $totalOtherPayableAmount = 0;
 
-        $remainingAmount = $submittedAmount;
-        $processedPayables = [];
-        $totalOtherPayableAmount = 0;
+    //     // First pass: allocate amounts sequentially for reservations
+    //     foreach ($payables as $payable) {
+    //         $payable = collect($payable);
+    //         $payable_amount = $payable->get('payable_amount', 0);
 
-        // First pass: allocate amounts sequentially for reservations
-        foreach ($payables as $payable) {
-            $payable = collect($payable);
-            $payableAmount = $payable->get('payable_amount', 0);
+    //         if ($payable->get('payable_type') === 'App\Models\HotelSoftware\RoomReservation') {
+    //             $allocatedAmount = min($payable_amount, $remainingAmount);
+    //             $processedPayables[] = [
+    //                 'payable_id' => $payable->get('payable_id'),
+    //                 'payable_type' => $payable->get('payable_type'),
+    //                 'allocated_amount' => $allocatedAmount,
+    //             ];
+    //             $remainingAmount -= $allocatedAmount;
+    //         } else {
+    //             // Track other payable types for proportional allocation
+    //             $totalOtherPayableAmount += $payable_amount;
+    //         }
 
-            if ($payable->get('payable_type') === 'App\Models\HotelSoftware\RoomReservation') {
-                $allocatedAmount = min($payableAmount, $remainingAmount);
-                $processedPayables[] = [
-                    'payable_id' => $payable->get('payable_id'),
-                    'payable_type' => $payable->get('payable_type'),
-                    'allocated_amount' => $allocatedAmount,
-                ];
-                $remainingAmount -= $allocatedAmount;
-            } else {
-                // Track other payable types for proportional allocation
-                $totalOtherPayableAmount += $payableAmount;
-            }
+    //         if ($remainingAmount <= 0) {
+    //             break; // No more funds to allocate
+    //         }
+    //     }
 
-            if ($remainingAmount <= 0) {
-                break; // No more funds to allocate
-            }
-        }
+    //     // Second pass: allocate proportionally for other payables if funds remain
+    //     if ($remainingAmount > 0 && $totalOtherPayableAmount > 0) {
+    //         $processedOtherPayables = [];
+    //         foreach ($payables as $payable) {
+    //             $payable = collect($payable);
+    //             $payable_amount = $payable->get('payable_amount', 0);
 
-        // Second pass: allocate proportionally for other payables if funds remain
-        if ($remainingAmount > 0 && $totalOtherPayableAmount > 0) {
-            $processedOtherPayables = [];
-            foreach ($payables as $payable) {
-                $payable = collect($payable);
-                $payableAmount = $payable->get('payable_amount', 0);
+    //             if ($payable->get('payable_type') !== 'App\Models\HotelSoftware\RoomReservation') {
+    //                 $proportionalShare = ($payable_amount / $totalOtherPayableAmount) * $remainingAmount;
+    //                 $allocatedAmount = round($proportionalShare, 2); // Round to 2 decimal places
 
-                if ($payable->get('payable_type') !== 'App\Models\HotelSoftware\RoomReservation') {
-                    $proportionalShare = ($payableAmount / $totalOtherPayableAmount) * $remainingAmount;
-                    $allocatedAmount = round($proportionalShare, 2); // Round to 2 decimal places
+    //                 $processedOtherPayables[] = [
+    //                     'payable_id' => $payable->get('payable_id'),
+    //                     'payable_type' => $payable->get('payable_type'),
+    //                     'allocated_amount' => $allocatedAmount,
+    //                 ];
 
-                    $processedOtherPayables[] = [
-                        'payable_id' => $payable->get('payable_id'),
-                        'payable_type' => $payable->get('payable_type'),
-                        'allocated_amount' => $allocatedAmount,
-                    ];
+    //                 $remainingAmount -= $allocatedAmount;
 
-                    $remainingAmount -= $allocatedAmount;
+    //                 if ($remainingAmount <= 0) {
+    //                     break; // Fully allocated
+    //                 }
+    //             }
+    //         }
 
-                    if ($remainingAmount <= 0) {
-                        break; // Fully allocated
-                    }
-                }
-            }
+    //         // Adjust the last allocated item to use up any remaining amount
+    //         if ($remainingAmount > 0 && !empty($processedOtherPayables)) {
+    //             $lastIndex = count($processedOtherPayables) - 1;
+    //             $processedOtherPayables[$lastIndex]['allocated_amount'] += $remainingAmount;
+    //             $remainingAmount = 0;
+    //         }
 
-            // Adjust the last allocated item to use up any remaining amount
-            if ($remainingAmount > 0 && !empty($processedOtherPayables)) {
-                $lastIndex = count($processedOtherPayables) - 1;
-                $processedOtherPayables[$lastIndex]['allocated_amount'] += $remainingAmount;
-                $remainingAmount = 0;
-            }
+    //         $processedPayables = array_merge($processedPayables, $processedOtherPayables);
+    //     }
 
-            $processedPayables = array_merge($processedPayables, $processedOtherPayables);
-        }
-
-        return [
-            'processed_payables' => $processedPayables,
-            'remaining_amount' => $remainingAmount, // This should now always be 0
-        ];
-    }
+    //     return [
+    //         'processed_payables' => $processedPayables,
+    //         'remaining_amount' => $remainingAmount, // This should now always be 0
+    //     ];
+    // }
 
 
     /**

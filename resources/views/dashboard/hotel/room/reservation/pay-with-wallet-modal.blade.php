@@ -18,17 +18,23 @@
                             <div>
                                 <p>Current balance</p>
                                 <p>
-                                    <span><b>₦{{ number_format($reservation->guest->wallet->balance) }}</b></span>
+                                    <span><b>₦{{ number_format($reservation->guest->wallet->balance, 2) }}</b></span>
                                 </p>
                             </div>
 
                             <div>
                                 <p>Payment Due</p>
                                 <p>
-                                    <b>₦{{ number_format($reservation->total_amount + $reservation->guest->calculateOrderNetTotal() - ($reservation->payments()?->sum('amount') ?? 0), 3) }}
+                                    <b>₦{{ number_format(
+                                        $reservation->total_amount +
+                                            $reservation->guest->calculateOrderNetTotal() -
+                                            (($reservation->payments() ?? collect())->sum('amount') + $reservation->guest->paidTotalOrders()), 2
+                                    ) }}
                                     </b>
                                     <input type="hidden" id="payable-amount" name="payable-amount"
-                                        value="{{ $reservation->total_amount + $reservation->guest->calculateOrderNetTotal() - ($reservation->payments() ?? collect())->sum('amount') }}">
+                                        value="{{ $reservation->total_amount +
+                                                    $reservation->guest->calculateOrderNetTotal() -
+                                                    (($reservation->payments() ?? collect())->sum('amount') + $reservation->guest->paidTotalOrders()) }}">
                                 </p>
                             </div>
                         </div>
@@ -37,7 +43,7 @@
                             <div class="form-group">
                                 <label for="amount">How Much Do You Want To Pay?</label>
                                 <input type="text" class="form-control @error('amount') is-invalid @enderror"
-                                    id="amount" name="amount" placeholder="Enter Amount">
+                                    id="amount" name="amount" placeholder="Enter Amount" required>
                                 @error('amount')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -72,7 +78,7 @@
 
                         @if ($reservation->guest->restaurantOrders || $reservation->guest->barOrders)
                             @php $index = 1; @endphp
-                            @foreach ($reservation->guest->restaurantOrders as $restaurant_order)
+                            @foreach ($reservation->guest->restaurantOrders->where('status', 'Open') as $restaurant_order)
                                 <input type="hidden" name="payables[{{ $index }}][payable_id]"
                                     value="{{ $restaurant_order->id }}">
                                 <input type="hidden" name="payables[{{ $index }}][payable_type]"
@@ -81,7 +87,7 @@
                                     value="{{ $restaurant_order->total_amount }}">
                                 @php $index++; @endphp
                             @endforeach
-                            @foreach ($reservation->guest->barOrders as $bar_order)
+                            @foreach ($reservation->guest->barOrders->where('status', 'Open') as $bar_order)
                                 <input type="hidden" name="payables[{{ $index }}][payable_id]"
                                     value="{{ $bar_order->id }}">
                                 <input type="hidden" name="payables[{{ $index }}][payable_type]"

@@ -2,9 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\HotelSoftware\HotelPaymentPlatform;
 use App\Models\hotelSoftware\Notification;
+use App\Models\HotelSoftware\PaymentPlatform;
+use App\Models\User;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 
@@ -35,13 +39,19 @@ class AppServiceProvider extends ServiceProvider
         Route::middleware('web')
             ->group(base_path('routes/dashboard.php'));
 
-            view()->composer([
-                "dashboards.admin.layout.includes.header"
-            ], function ($view) {
+            view()->composer('*', function ($view) {
               
-                $view->with([
-                   
-                ]);
+                $user = Auth::user(); 
+
+                if ($user && $user->hotel) {
+                    $paymentPlatform = HotelPaymentPlatform::where('hotel_id', $user->hotel->id)
+                    ->with('paymentPlatform')
+                    ->first();
+                } else {
+                    $paymentPlatform = null; 
+                }
+        
+                $view->with('payment_platform', $paymentPlatform);
             });
     }
 

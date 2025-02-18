@@ -3,19 +3,32 @@
 namespace App\Services\Dashboard\Finance\Payment;
 
 use App\Models\HotelSoftware\Guest;
+use App\Models\HotelSoftware\HotelPaymentPlatform;
 use App\Models\HotelSoftware\HotelUser;
 use App\Models\HotelSoftware\WalkInCustomer;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
 
 class StripeService
 {
+    protected $payment_platform;
+    public function __construct()
+    {
+        $this->payment_platform = HotelPaymentPlatform::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->first();
+    }
+
+    public function getSecreteKey()
+    {
+        return $this->payment_platform->secret_key;
+    }
+
     public function charge(Request $request)
     {
         try {
-            Stripe::setApiKey(config('app.stripe_secret'));
-            if (!$request->stripeToken) {
+          Stripe::setApiKey($this->getSecreteKey());
+            if (!$request->stripeToken ?? null) {
                 throw new Exception('Stripe token is missing');
             }
             $amount = $request->input('amount') * 100; // Stripe uses cents
@@ -39,7 +52,6 @@ class StripeService
             throw new Exception('Stripe payment error: ' . $e->getMessage());
         }
     }
-
 
     public function getAddress(Request $request)
     {

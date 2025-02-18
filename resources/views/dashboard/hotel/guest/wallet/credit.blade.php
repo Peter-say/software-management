@@ -72,17 +72,19 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label for="amount">How Much Do You Want To Fund?</label>
-                                <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter Amount" required>
+                                <input type="text" class="form-control" id="amount" name="amount"
+                                    placeholder="Enter Amount" required>
                             </div>
                         </div>
                     </div>
-            
+
                     <!-- Currency Selection -->
                     <div class="row mb-3">
                         <div class="col-12">
                             <div class="form-group">
                                 <label for="currency" class="form-label">Currency</label>
-                                <select id="currency" name="currency" class="form-control @error('currency') is-invalid @enderror">
+                                <select id="currency" name="currency"
+                                    class="form-control @error('currency') is-invalid @enderror">
                                     <option value="">Select Currency</option>
                                     @foreach (\App\Constants\CurrencyConstants::CURRENCY_CODES as $currency)
                                         <option value="{{ $currency }}"
@@ -97,7 +99,7 @@
                             </div>
                         </div>
                     </div>
-            
+
                     <!-- Comment Field -->
                     <div class="row mb-3">
                         <div class="col-12">
@@ -108,7 +110,7 @@
                             </div>
                         </div>
                     </div>
-            
+
                     <!-- Stripe Card Element -->
                     <div class="row mb-3">
                         <div class="col-12">
@@ -117,7 +119,7 @@
                             <div id="card-errors" role="alert"></div>
                         </div>
                     </div>
-            
+
                     <!-- Preloader -->
                     <div id="form-preloader" class="row mb-3 text-center">
                         <div class="col-12">
@@ -127,7 +129,7 @@
                             </div>
                         </div>
                     </div>
-            
+
                     <!-- Hidden Fields -->
                     <input type="hidden" name="stripeToken" id="stripe-token">
                     <input type="hidden" name="stripe_payment" id="fund-wallet-method" value="Stripe">
@@ -136,7 +138,7 @@
                     <input type="hidden" name="guest_id" value="{{ $guest->id }}">
                     <input type="hidden" name="payable_id" value="{{ $guest->id }}">
                     <input type="hidden" name="payable_type" value="{{ get_class($guest) }}">
-            
+
                     <!-- Modal Footer -->
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Fund Now</button>
@@ -144,7 +146,7 @@
                     </div>
                 </div>
             </form>
-            
+
         </div>
     </div>
 </div>
@@ -181,29 +183,38 @@
 @include('dashboard.general.form-preloader')
 <script src="https://js.stripe.com/v3/"></script>
 <script>
-    var stripe = Stripe('{{ config('app.stripe_key') }}');
-    var elements = stripe.elements();
-    var card = elements.create('card');
-    card.mount('#card-element'); // Create a div with this id in your modal
-    // document.getElementById('form-preloader').style.display = 'flex';
-    document.getElementById('fund-guest-wallet-modal').addEventListener('submit', function(event) {
-        event.preventDefault();
-        // Show the preloader
-        document.getElementById('form-preloader').style.display = 'flex';
-        console.log('running');
+    var paymentPlatform = @json($payment_platform);
+    if (paymentPlatform) {
+        if (paymentPlatform.payment_platform.slug === 'stripe') {
+            var stripe = Stripe(paymentPlatform.public_key);
+            var elements = stripe.elements();
+            var card = elements.create('card');
+            card.mount('#card-element');
 
-        stripe.createToken(card).then(function(result) {
-            if (result.error) {
-                console.error(result.error.message);
-                // Hide the preloader if an error occurs
-                document.getElementById('form-preloader').style.display = 'none';
-            } else {
-                // Send token to your server
-                document.getElementById('stripe-token').value = result.token.id;
-                // Hide the preloader and submit the form
-                // document.getElementById('form-preloader').style.display = 'none';
-                event.target.submit();
-            }
-        });
-    });
+            document.getElementById('fund-guest-wallet-modal').addEventListener('submit', function(event) {
+                event.preventDefault();
+                document.getElementById('form-preloader').style.display = 'flex';
+
+                stripe.createToken(card).then(function(result) {
+                    if (result.error) {
+                        console.error(result.error.message);
+                        document.getElementById('form-preloader').style.display = 'none';
+                    } else {
+                        document.getElementById('stripe-token').value = result.token.id;
+                        event.target.submit();
+                    }
+                });
+            });
+        } else if (paymentPlatform.name === 'flutterwave') {
+            // Initialize Flutterwave payment logic
+            console.log('Flutterwave selected');
+        } else if (paymentPlatform.name === 'paystack') {
+            // Initialize Paystack payment logic
+            console.log('Paystack selected');
+        } else {
+            console.warn('No valid payment platform selected');
+        }
+    } else {
+        console.error('No payment platform found');
+    }
 </script>

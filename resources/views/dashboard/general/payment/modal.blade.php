@@ -2,7 +2,8 @@
 
 <!-- Payment Modal -->
 
-<div class="modal fade" id="payment-modal-{{ $payableModel->id }}" tabindex="-1" role="dialog" aria-labelledby="payment-modal-{{ $payableModel->id }}" aria-hidden="true">
+<div class="modal fade" id="payment-modal-{{ $payableModel->id }}" tabindex="-1" role="dialog"
+    aria-labelledby="payment-modal-{{ $payableModel->id }}" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -16,22 +17,25 @@
                     <!-- Amount Input -->
                     <div class="mb-3">
                         <label for="amount" class="form-label">How Much Do You Want To Fund?</label>
-                        <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter Amount" required>
+                        <input type="text" class="form-control" id="amount" name="amount"
+                            placeholder="Enter Amount" required>
                     </div>
 
                     <!-- Currency Selection -->
                     <div class="mb-3">
                         <label for="currency" class="form-label">Currency</label>
-                        <select id="currency" name="currency" class="form-control @error('currency') is-invalid @enderror">
+                        <select id="currency" name="currency"
+                            class="form-control @error('currency') is-invalid @enderror">
                             <option value="">Select Currency</option>
                             @foreach ($currencies as $currency)
-                                <option value="{{ $currency }}" {{ old('currency', $currency ?? '') == $currency ? 'selected' : '' }}>
+                                <option value="{{ $currency }}"
+                                    {{ old('currency', $currency ?? '') == $currency ? 'selected' : '' }}>
                                     {{ $currency }}
                                 </option>
                             @endforeach
                         </select>
                         @error('currency')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                            <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
 
@@ -96,29 +100,44 @@
 </script>
 <script src="https://js.stripe.com/v3/"></script>
 <script>
-    var stripe = Stripe('{{ config('app.stripe_key') }}');
-    var elements = stripe.elements();
-    var card = elements.create('card');
-    card.mount('#card-element'); // Create a div with this id in your modal
+    var paymentPlatform = @json($payment_platform);
+    if (paymentPlatform) {
+        if (paymentPlatform.payment_platform.slug === 'stripe') {
+            var stripe = Stripe(paymentPlatform.public_key);
+            var elements = stripe.elements();
+            var card = elements.create('card');
+            card.mount('#card-element');
 
-    document.getElementById('payWithCard').addEventListener('submit', function(event) {
-        event.preventDefault();
-        stripe.createToken(card).then(function(result) {
-            if (result.error) {
-                // Show error in payment form
-                console.error(result.error.message);
-                Toastify({
-                text: result.error.message,
-                duration: 5000,
-                gravity: 'top',
-                position: 'right',
-                backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
-            }).showToast();
-            } else {
-                // Send token to your server
-                document.getElementById('stripe-token').value = result.token.id;
-                event.target.submit();
-            }
-        });
-    });
+            document.getElementById('payWithCard').addEventListener('submit', function(event) {
+                event.preventDefault();
+                stripe.createToken(card).then(function(result) {
+                    if (result.error) {
+                        // Show error in payment form
+                        console.error(result.error.message);
+                        Toastify({
+                            text: result.error.message,
+                            duration: 5000,
+                            gravity: 'top',
+                            position: 'right',
+                            backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
+                        }).showToast();
+                    } else {
+                        // Send token to your server
+                        document.getElementById('stripe-token').value = result.token.id;
+                        event.target.submit();
+                    }
+                });
+            });
+        } else if (paymentPlatform.name === 'flutterwave') {
+            // Initialize Flutterwave payment logic
+            console.log('Flutterwave selected');
+        } else if (paymentPlatform.name === 'paystack') {
+            // Initialize Paystack payment logic
+            console.log('Paystack selected');
+        } else {
+            console.warn('No valid payment platform selected');
+        }
+    } else {
+        console.error('No payment platform found');
+    }
 </script>

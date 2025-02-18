@@ -26,6 +26,7 @@ class PaymentController extends Controller
                 ->with('error_message', 'The specified resource was not found.');
         } catch (Exception $e) {
             return redirect()->back()->withInput($request->all())->with('error_message', $e->getMessage());
+            throw $th;
         } catch (\Throwable $th) {
             Log::info($th);
             throw $th;

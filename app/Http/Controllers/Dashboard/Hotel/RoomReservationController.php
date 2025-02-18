@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard\Hotel;
 use App\Constants\AppConstants;
 use App\Constants\StatusConstants;
 use App\Http\Controllers\Controller;
+use App\Models\HotelSoftware\HotelPaymentPlatform;
 use App\Models\HotelSoftware\RoomReservation;
 use App\Models\User;
 use App\Services\Dashboard\Hotel\Room\ReservationService;
@@ -85,6 +86,7 @@ class RoomReservationController extends Controller
         }
         return view('dashboard.hotel.room.reservation.single', [
             'reservation' => $reservation,
+            'payment_platform' => HotelPaymentPlatform::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->first(),
         ]);
     }
 

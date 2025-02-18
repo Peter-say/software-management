@@ -30,6 +30,15 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                    <div class="card">
+                        <h5 class="card-header">Payment Plaform</h5>
+                        <div class="card-body d-flex justify-content-between">
+                            Set up your payment platform here if you would like to receive payments online / have not done so
+                            <a href="{{route('dashboard.hotel.settings.hotel-info.choose-payment-platform')}}" class="btn btn-primary">Proceed</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

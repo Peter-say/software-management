@@ -71,24 +71,7 @@ class Guest extends Model
         return $this->hasMany(BarOrder::class);
     }
 
-    // public function guestOrders()
-    // {
-    //     return $this->restaurantOrders->concat($this->barOrders);
-    // }
-
-    // public function orderItem()
-    // {
-    //     return $this->restaurantOrder()->exists()
-    //         ? $this->restaurantOrder()->restaurantOrderItems()
-    //         : $this->barOrder()->barOrderItems();
-    // }
-
-    // public function items()
-    // {
-    //     return $this->restaurantOrder->exists()
-    //         ? $this->restaurantOrder->items()
-    //         : $this->barOrder->items();
-    // }
+   
 
     public function calculateOrderNetTotal()
     {
@@ -97,6 +80,20 @@ class Guest extends Model
 
         return $restaurantTotal + $barTotal;
     }
+
+    public function paidTotalOrders()
+    {
+        $paidRestaurantTotal = $this->restaurantOrders->map(function ($order) {
+            return $order->payments()->sum('amount');
+        })->sum();
+    
+        $paidBarTotal = $this->barOrders->map(function ($order) {
+            return $order->payments()->sum('amount');
+        })->sum();
+
+        return $paidRestaurantTotal + $paidBarTotal;
+    }
+    
 
     protected static function boot()
     {

@@ -2,8 +2,6 @@ import Echo from "laravel-echo";
 import Pusher from "pusher-js";
 
 window.Pusher = Pusher;
-console.log(window.Pusher, "hello");
-
 document.addEventListener("DOMContentLoaded", async function () {
     // Initialize Echo instance
     window.Echo = new Echo({

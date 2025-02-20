@@ -118,7 +118,7 @@ class BarOrderNotification extends Notification implements ShouldBroadcast
             return [
                 'name' => $item->barItem ? $item->barItem->name : 'Unknown Item',
                 'quantity' => $item->qty,
-                'image' => $item->barItem ? getStorageUrl('hotel/bar/items/' . $item->barItem->image) : null
+                'image' => $item->barItem ? getStorageUrl('hotel/bar/items/' . $item->barItem->image) : asset('dashboard/drink/wiskey.jpeg')
             ];
         }),
     ];

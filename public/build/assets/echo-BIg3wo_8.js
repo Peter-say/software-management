@@ -1,7 +1,7 @@
-import { P as E, E as L } from "./pusher-DxtW_XPu.js";
-window.Pusher = E;
+import { P as k, E } from "./pusher-DxtW_XPu.js";
+window.Pusher = k;
 document.addEventListener("DOMContentLoaded", async function () {
-    window.Echo = new L({
+    window.Echo = new E({
         broadcaster: "pusher",
         key: "adadb8e8c491818d6a8f",
         cluster: "eu",
@@ -11,8 +11,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         d = document.querySelector("#DZ_W_Notification1 .timeline"),
         l = 5;
     let i = 0;
-    const a = new Set(),
-        p = getStorageUrl("dashboard/food/food1.jpeg");
+    const a = new Set();
     function r(e) {
         var m, h, f, u, g;
         const s =
@@ -20,14 +19,14 @@ document.addEventListener("DOMContentLoaded", async function () {
                     e.items ||
                     [])[0]) == null
                     ? void 0
-                    : h.image) || p,
+                    : h.image) || "",
             o = ((f = e.data) == null ? void 0 : f.link) || e.link || "#",
-            k = ((u = e.data) == null ? void 0 : u.title) || e.title;
+            b = ((u = e.data) == null ? void 0 : u.title) || e.title;
         return {
             id: e.id || e.notification_id,
             imageUrl: s,
             linkUrl: o,
-            message: k,
+            message: b,
             description:
                 (((g = e.data) == null ? void 0 : g.message) || "").slice(
                     0,
@@ -37,7 +36,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         };
     }
     function c(e) {
-        if (a.has(e.id)) return;
+        if ((console.log("Adding notification:", e), a.has(e.id))) return;
         a.add(e.id);
         const t = document.createElement("li");
         (t.innerHTML = `
@@ -55,12 +54,12 @@ document.addEventListener("DOMContentLoaded", async function () {
             </div>
         `),
             t.addEventListener("click", async () => {
-                await y(e.id, t);
+                await w(e.id, t);
             }),
             d.prepend(t),
-            w(d);
+            p(d);
     }
-    function w(e) {
+    function p(e) {
         const t = e.querySelectorAll("li");
         t.length > l && t[t.length - 1].remove();
     }
@@ -82,7 +81,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         console.error("Error fetching unread notifications:", e);
     }
     window.Echo.channel("kitchen-orders").listen(".OrderCreated", (e) => {
-        alert("Received Requisition Requested:", e);
         const t = r(e);
         a.has(t.id) ||
             (a.add(t.id),
@@ -94,15 +92,13 @@ document.addEventListener("DOMContentLoaded", async function () {
         window.Echo.channel("item-requisition").listen(
             ".RequisitionRequested",
             (e) => {
-                alert("Received Requisition Requested:", e);
                 const t = r(e);
-                console.log("Received Requisition Requested:", e),
-                    a.has(t.id) ||
-                        (a.add(t.id),
-                        c(t),
-                        (i += 1),
-                        (n.innerText = i),
-                        n.classList.add("bg-primary"));
+                a.has(t.id) ||
+                    (a.add(t.id),
+                    c(t),
+                    (i += 1),
+                    (n.innerText = i),
+                    n.classList.add("bg-primary"));
             }
         ),
         window.Echo.channel("low_stock-alert").listen(".LowStockAlert", (e) => {
@@ -114,7 +110,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 (n.innerText = i),
                 n.classList.add("bg-primary"));
         });
-    async function y(e, t) {
+    async function w(e, t) {
         try {
             const s = document
                 .querySelector('meta[name="csrf-token"]')
@@ -135,12 +131,12 @@ document.addEventListener("DOMContentLoaded", async function () {
                 (n.innerText = i),
                 n.classList.toggle("bg-primary", i > 0),
                 (t.style.color = "gray"),
-                d.childElementCount < l && b());
+                d.childElementCount < l && y());
         } catch (s) {
             console.error("Error marking notification as read:", s);
         }
     }
-    async function b() {
+    async function y() {
         try {
             (
                 await (

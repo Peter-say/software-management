@@ -95,7 +95,7 @@ class NotificationController extends Controller
         $user = Auth::user();
         $notifications = $user->notifications()
             ->where('notifiable_id', $user->hotel->id)  // hotel ID associated with the user
-            ->orderBy('created_at', 'desc')->get()
+            ->orderBy('created_at', 'desc')
             ->paginate(20);
         // Customize this view with relevant data for displaying all notifications
         return view('dashboard.notification.index', ['notifications' => $notifications]);

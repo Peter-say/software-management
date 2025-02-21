@@ -31,26 +31,32 @@
                                 </a>
                             @endforeach
                             <div class="ms-4 bed-text">
-                                <h4>{{ $recent->room->roomType->name . ' ' . $recent->room->name }}</h4>
+                                <h4>{{ $recent->room->roomType->name . ' - ' . $recent->room->name }}</h4>
                                 <span><small>({{ 'From: ' . $recent->calculateDaysLengthFrom() . ' To: ' . $recent->calculateDaysLengthTo() }})</small></span>
                                 <div class="users d-flex align-items-center">
-                                    <img src="images/users/user1.jpg" alt="">
+                                    @if ($recent->guest->id_picture_location)
+                                        <img src="{{ getStorageUrl('hotel/guests/id_picture_locations/' . $guest->id_picture_location) }}"
+                                            alt="{{ $recent->guest->full_name }}">
+                                    @else
+                                        <img src="{{ getStorageUrl('dashboard/images/users/user1.jpg') }}"
+                                            alt="{{ $recent->guest->full_name }}">
+                                    @endif
                                     <div>
                                         <span
-                                            class="fs-16 font-w500 me-3">{{ Str::limit($recent->guest->full_name, 15) }}</span>
+                                            class="fs-16 font-w500 me-3">{{ Str::limit($recent->guest->short_name, 15) }}</span>
                                         <span>{{ $recent->created_at->diffForHumans() }}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <span class="date bg-sm bg-secondary mb-3">{{ $recent->calculateNight() }}</span>
+                        <span class="date bg-sm bg-secondary">{{ $recent->calculateNight() }}</span>
                     </div>
                 @endforeach
             @endif
         </div>
         <div class="card-footer border-0 m-auto pt-0">
             <a href="javascript:void(0);" class="btn btn-link m-auto dlab-load-more fs-16 font-w500 text-secondary"
-                id="load-more-btn" style="{{ count($recent_room_reservations) < 1 ? 'display: none;' : '' }}">
+                id="load-more-btn" style="{{ count($recent_room_reservations) > 1 ? 'display: none;' : '' }}">
                 View more
             </a>
         </div>

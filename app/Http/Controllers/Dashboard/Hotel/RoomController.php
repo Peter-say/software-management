@@ -25,7 +25,7 @@ class RoomController extends Controller
     public function index()
     {
         return view('dashboard.hotel.room.index', [
-            'rooms' => Room::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->paginate(30),
+            'rooms' => Room::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->latest()->paginate(30),
         ]);
     }
 

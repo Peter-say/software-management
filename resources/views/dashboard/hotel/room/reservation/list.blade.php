@@ -19,6 +19,8 @@
                         </ul>
                     </div>
                     <div class="d-flex align-items-center mb-2">
+                        <a href="{{ route('dashboard.hotel.reservation-dashboard') }}" class="btn btn-secondary me-2">
+                            View Dashboard</a>
                         <a href="{{ route('dashboard.hotel.reservations.create') }}" class="btn btn-secondary">+ New
                             Reservation</a>
                         <div class="newest ms-3">

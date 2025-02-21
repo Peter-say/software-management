@@ -40,7 +40,7 @@ Route::middleware('auth', 'verified')->group(function () {
         Route::get('download.sample', [RestaurantItemsController::class, 'downloadSample'])->name('download.sample');
 
         Route::get('home', [DashboardController::class, 'dashboard'])->name('home');
-        Route::get('load-more-recent-reservation', [DashboardController::class, 'loadRecentReservation'])->name('load-more-recent-reservation');
+        Route::get('load-more-recent-reservation', [RoomReservationController::class, 'loadRecentReservation'])->name('load-more-recent-reservation');
 
         Route::prefix('hotel-users')->as('hotel-users.')->group(function () {
             Route::get('overview', [UsersController::class, 'overview'])->name('overview');
@@ -95,7 +95,7 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::post('bar/save-order', [BarOrderController::class, 'saveOrder'])->name('bar.save-order');
             Route::get('bar/view-orders', [BarOrderController::class, 'viewOrders'])->name('bar.view-orders');
             Route::get('bar/edit-order', [BarOrderController::class, 'editOrder'])->name('bar.edit-order');
-            Route::delete('bar/destroy-order', [BarOrderController::class, 'destroyOrder'])->name('bar.destroy-order');
+            Route::delete('bar/destroy-order/{order}', [BarOrderController::class, 'deleteOrder'])->name('bar.destroy-order');
             Route::post('bar/{id}/cancel-order', [BarOrderController::class, 'cancelOrder'])->name('bar.cancel-order');
 
             Route::get('kitchen/orders', [KitchenOrderController::class, 'viewOrders'])->name('kitchen.orders');
@@ -125,6 +125,7 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::get('/expenses-dashbaord', [ExpenseController::class, 'dashboard'])->name('expenses-dashbaord');
             Route::get('/purchases-dashbaord', [PurchaseController::class, 'overview'])->name('purchases-dashbaord');
             Route::get('store-dashboard', [StoreController::class, 'overview'])->name('store-dashboard');
+            Route::get('reservation-dashboard', [RoomReservationController::class, 'overview'])->name('reservation-dashboard');
 
             Route::prefix('settings')->as('settings.')->group(function () {
                 Route::get('/', [SettingController::class, 'index']);

@@ -21,20 +21,20 @@
                                     <span><b>₦{{ number_format($reservation->guest->wallet->balance, 2) }}</b></span>
                                 </p>
                             </div>
-
                             <div>
                                 <p>Payment Due</p>
                                 <p>
                                     <b>₦{{ number_format(
                                         $reservation->total_amount +
                                             $reservation->guest->calculateOrderNetTotal() -
-                                            (($reservation->payments() ?? collect())->sum('amount') + $reservation->guest->paidTotalOrders()), 2
+                                            (($reservation->payments() ?? collect())->sum('amount') + $reservation->guest->paidTotalOrders()),
+                                        2,
                                     ) }}
                                     </b>
                                     <input type="hidden" id="payable-amount" name="payable-amount"
                                         value="{{ $reservation->total_amount +
-                                                    $reservation->guest->calculateOrderNetTotal() -
-                                                    (($reservation->payments() ?? collect())->sum('amount') + $reservation->guest->paidTotalOrders()) }}">
+                                            $reservation->guest->calculateOrderNetTotal() -
+                                            (($reservation->payments() ?? collect())->sum('amount') + $reservation->guest->paidTotalOrders()) }}">
                                 </p>
                             </div>
                         </div>
@@ -79,22 +79,26 @@
                         @if ($reservation->guest->restaurantOrders || $reservation->guest->barOrders)
                             @php $index = 1; @endphp
                             @foreach ($reservation->guest->restaurantOrders->where('status', 'Open') as $restaurant_order)
-                                <input type="hidden" name="payables[{{ $index }}][payable_id]"
-                                    value="{{ $restaurant_order->id }}">
-                                <input type="hidden" name="payables[{{ $index }}][payable_type]"
-                                    value="{{ get_class($restaurant_order) }}">
-                                <input type="hidden" name="payables[{{ $index }}][payable_amount]"
-                                    value="{{ $restaurant_order->total_amount }}">
-                                @php $index++; @endphp
+                                @if ($restaurant_order->paymentStatus('pending'))
+                                    <input type="hidden" name="payables[{{ $index }}][payable_id]"
+                                        value="{{ $restaurant_order->id }}">
+                                    <input type="hidden" name="payables[{{ $index }}][payable_type]"
+                                        value="{{ get_class($restaurant_order) }}">
+                                    <input type="hidden" name="payables[{{ $index }}][payable_amount]"
+                                        value="{{ $restaurant_order->total_amount }}">
+                                    @php $index++; @endphp
+                                @endif
                             @endforeach
                             @foreach ($reservation->guest->barOrders->where('status', 'Open') as $bar_order)
-                                <input type="hidden" name="payables[{{ $index }}][payable_id]"
-                                    value="{{ $bar_order->id }}">
-                                <input type="hidden" name="payables[{{ $index }}][payable_type]"
-                                    value="{{ get_class($bar_order) }}">
-                                <input type="hidden" name="payables[{{ $index }}][payable_amount]"
-                                    value="{{ $bar_order->total_amount }}">
-                                @php $index++; @endphp
+                                @if ($bar_order->paymentStatus('pending'))
+                                    <input type="hidden" name="payables[{{ $index }}][payable_id]"
+                                        value="{{ $bar_order->id }}">
+                                    <input type="hidden" name="payables[{{ $index }}][payable_type]"
+                                        value="{{ get_class($bar_order) }}">
+                                    <input type="hidden" name="payables[{{ $index }}][payable_amount]"
+                                        value="{{ $bar_order->total_amount }}">
+                                    @php $index++; @endphp
+                                @endif
                             @endforeach
                         @endif
                         <input type="hidden" name="amount_due"
@@ -110,13 +114,13 @@
     </div>
 </div>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const amountInputJQ = $('#amount'); // jQuery version
         const amountInputJS = document.getElementById('amount'); // Plain JavaScript version
         const payableAmount = parseFloat($('#payable-amount').val());
 
         // Handle input event with jQuery
-        amountInputJQ.on('input', function () {
+        amountInputJQ.on('input', function() {
             let enteredAmount = parseFloat(this.value.replace(/,/g, '') || 0);
 
             if (enteredAmount > payableAmount) {
@@ -134,7 +138,7 @@
         });
 
         // Handle input formatting with plain JavaScript
-        amountInputJS.addEventListener('input', function () {
+        amountInputJS.addEventListener('input', function() {
             let inputVal = this.value.replace(/[^0-9.]/g, '');
             const parts = inputVal.split('.');
             if (parts[0]) {
@@ -144,9 +148,8 @@
         });
 
         // Ensure proper format before form submission
-        document.getElementById('payWithWallet').addEventListener('submit', function () {
+        document.getElementById('payWithWallet').addEventListener('submit', function() {
             amountInputJQ.val(amountInputJQ.val().replace(/,/g, ''));
         });
     });
 </script>
-

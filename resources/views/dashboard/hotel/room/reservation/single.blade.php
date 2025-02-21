@@ -108,19 +108,27 @@
                                                     </thead>
                                                     <tbody>
                                                         @foreach ($reservation->guest->restaurantOrders->where('status', 'Open') as $order)
-                                                            <tr>
-                                                                <td>Restaurant Order</td>
-                                                                <td>{{ $order->order_date }}</td>
-                                                                <td>{{ number_format($order->total_amount, 2) }}</td>
-                                                            </tr>
+                                                            @if ($order->paymentStatus('pending'))
+                                                                <tr>
+                                                                    <td>Restaurant Order</td>
+                                                                    <td>{{ $order->order_date }}</td>
+                                                                    <td>{{ number_format($order->total_amount, 2) }}</td>
+                                                                </tr>
+                                                                @else
+                                                                <tr></tr>
+                                                            @endif
                                                         @endforeach
 
                                                         @foreach ($reservation->guest->barOrders->where('status', 'Open') as $order)
-                                                            <tr>
-                                                                <td>Bar Order</td>
-                                                                <td>{{ $order->order_date }}</td>
-                                                                <td>{{ number_format($order->total_amount, 2) }}</td>
-                                                            </tr>
+                                                            @if ($order->paymentStatus() == 'pending')
+                                                                <tr>
+                                                                    <td>Bar Order</td>
+                                                                    <td>{{ $order->order_date }}</td>
+                                                                    <td>{{ number_format($order->total_amount, 2) }}</td>
+                                                                </tr>
+                                                                @else
+                                                                <tr></tr>
+                                                            @endif
                                                         @endforeach
                                                     </tbody>
                                                     <tfoot>
@@ -229,18 +237,18 @@
                                     <p>
                                         <span>Due </span>
                                         <b>
-                                            ₦{{number_format($payableAmount, 2)}}
+                                            ₦{{ number_format($payableAmount, 2) }}
                                         </b>
 
                                     </p>
                                     @if ($payableAmount > 0)
-                                    <div class="mt-3">
-                                        <button data-bs-toggle="modal" data-bs-target="#paymentMethodModal"
-                                            class="btn btn-dark mt-2">Make Payment</button>
-                                    </div>
+                                        <div class="mt-3">
+                                            <button data-bs-toggle="modal" data-bs-target="#paymentMethodModal"
+                                                class="btn btn-dark mt-2">Make Payment</button>
+                                        </div>
                                     @else
-                                    <div class="mt-3">
-                                        <button class="btn text-success mt-2">All Paid</button>
+                                        <div class="mt-3">
+                                            <button class="btn text-success mt-2">All Paid</button>
                                     @endif
                                 </div>
                             </div>

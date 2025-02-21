@@ -37,7 +37,6 @@ class ReservationService
 
     public function validatedData($data)
     {
-        // Assuming the incoming dates are in the format "19 August, 2024"
         $validator = Validator::make($data, [
             'room_id' => 'required|exists:rooms,id',
             'rate' => 'required|numeric|min:0',
@@ -52,7 +51,6 @@ class ReservationService
             throw new ValidationException($validator);
         }
 
-        // Convert the validated dates to 'Y-m-d' for storage in the database
         $validated = $validator->validated();
         return $validated;
     }
@@ -60,9 +58,7 @@ class ReservationService
     public function save(Request $request, $reservation_id = null)
     {
         return DB::transaction(function () use ($request, $reservation_id) {
-            // Validate the incoming data
             $validatedData = $this->validatedData($request->all(), $reservation_id);
-
 
             // Calculate the total price
             $checkinDate = new DateTime($validatedData['checkin_date']);
@@ -71,7 +67,6 @@ class ReservationService
             $rate = $validatedData['rate'];
             $validatedData['total_amount'] = $rate * $duration;
 
-            // Retrieve the authenticated user
             $user = User::getAuthenticatedUser();
             $validatedData['hotel_id'] = $user->hotel->id;
             $validatedData['user_id'] = $user->id;
@@ -178,7 +173,7 @@ class ReservationService
             if ($checkinDate && $checkoutDate) {
                 // Filter rooms that are not reserved within the given date range
                 $availableRooms = Room::with('roomType')->where('hotel_id', User::getAuthenticatedUser()->hotel->id)->whereDoesntHave('reservations', function ($query) use ($checkinDate, $checkoutDate) {
-                    $query->where(function ($subQuery) use ($checkinDate, $checkoutDate) {
+                    $query->whereNull('checked_out_at')->where(function ($subQuery) use ($checkinDate, $checkoutDate) {
                         $subQuery->where('checkin_date', '<', $checkoutDate)
                             ->where('checkout_date', '>', $checkinDate);
                     });
@@ -187,8 +182,6 @@ class ReservationService
                 // Return all rooms if no check-in and check-out dates are provided
                 $availableRooms = Room::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->get();;
             }
-
-            // Return the rooms
             return response()->json(['rooms' => $availableRooms]);
         } catch (\Exception $e) {
             Log::error('Error in room availability check: ' . $e->getMessage());

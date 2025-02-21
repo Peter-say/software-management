@@ -46,6 +46,7 @@
                                 'dashboard.hotel.reservations.create',
                                 'dashboard.hotel.reservations.show',
                                 'dashboard.hotel.reservations.edit',
+                                'dashboard.hotel.reservation-dashboard',
                             ]))
                             Room Reservation
                         @elseif (in_array(Route::currentRouteName(), [
@@ -57,6 +58,17 @@
                         @elseif (in_array(Route::currentRouteName(), [
                                 'dashboard.hotel.restaurant.create-order',
                                 'dashboard.hotel.restaurant.view-orders',
+                            ]))
+                            Restaurant Order
+                        @elseif (in_array(Route::currentRouteName(), [
+                                'dashboard.hotel.bar-items.index',
+                                'dashboard.hotel.bar-items.create',
+                                'dashboard.hotel.bar-items.edit',
+                            ]))
+                            Bar Items
+                        @elseif (in_array(Route::currentRouteName(), [
+                            'dashboard.hotel.bar.create-order', 
+                            'dashboard.hotel.bar.view-orders'
                             ]))
                             Restaurant Order
                         @elseif (in_array(Route::currentRouteName(), [

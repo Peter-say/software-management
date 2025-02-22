@@ -21,39 +21,57 @@
                     <div class="d-flex align-items-center mb-2">
                         <a href="{{ route('dashboard.hotel.rooms.create') }}" class="btn btn-secondary">+ New Room</a>
                         <div class="newest ms-3">
-                            <select class="default-select">
-                                <option>Newest</option>
-                                <option>Oldest</option>
-                            </select>
+                            <form id="filter-form" class="d-flex justify-content-between gap-3">
+                                <div class="form-group me-2">
+                                    <input class="form-control" type="text" placeholder="Search...." name="search"
+                                        value="{{ request()->search }}" id="search-input">
+                                </div>
+                                <select class="default-select room-selection" id="room-selection">
+                                    <option name="select_room" value="Newest"
+                                        {{ request()->selection == 'Newest' ? 'selected' : '' }}>Newest
+                                    </option>
+                                    <option name="select_room" value="Oldest"
+                                        {{ request()->selection == 'Oldest' ? 'selected' : '' }}>Oldest
+                                    </option>
+                                    <option name="select_room" value="Available"
+                                        {{ request()->selection == 'Available' ? 'selected' : '' }}>
+                                        Available</option>
+                                    <option name="select_room" value="Occupied"
+                                        {{ request()->selection == 'Occupied' ? 'selected' : '' }}>
+                                        Occupied</option>
+                                </select>
+                            </form>
                         </div>
                     </div>
                 </div>
-                <div class="row mt-4">
-                    <div class="col-xl-12">
-                        <div class="card">
-                            <div class="card-body p-0">
-                                <div class="tab-content">
-                                    <div class="tab-pane fade active show" id="AllRooms">
-                                        <div class="table-responsive">
-                                            <table class="table card-table display mb-4 shadow-hover table-responsive-lg"
-                                                id="guestTable-all3">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="bg-none">
-                                                            <div class="form-check style-1">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                    value="" id="checkAll3">
-                                                            </div>
-                                                        </th>
-                                                        <th>Room Name</th>
-                                                        <th>Room Type</th>
-                                                        <th>Rate</th>
-                                                        <th>Description</th>
-                                                        <th>Status</th>
-                                                        <th class="bg-none"></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
+            </div>
+            <div class="row mt-4">
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-body p-0">
+                            <div class="tab-content">
+                                <div class="tab-pane fade active show" id="AllRooms">
+                                    <div class="table-responsive">
+                                        <table class="table card-table display mb-4 shadow-hover table-responsive-lg"
+                                            id="guestTable-all3">
+                                            <thead>
+                                                <tr>
+                                                    <th class="bg-none">
+                                                        <div class="form-check style-1">
+                                                            <input class="form-check-input" type="checkbox" value=""
+                                                                id="checkAll3">
+                                                        </div>
+                                                    </th>
+                                                    <th>Room Name</th>
+                                                    <th>Room Type</th>
+                                                    <th>Rate</th>
+                                                    <th>Description</th>
+                                                    <th>Status</th>
+                                                    <th class="bg-none"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (count($rooms) > 0)
                                                     @foreach ($rooms as $room)
                                                         <tr>
                                                             <td>
@@ -72,11 +90,11 @@
                                                                             alt="{{ basename($room->RoomImage()) }}">
                                                                     </a>
                                                                     @foreach ($room->RoomImages()->skip(1) as $key => $image)
-                                                                        <a href="{{getStorageUrl($image->file_path) }}"
+                                                                        <a href="{{ getStorageUrl($image->file_path) }}"
                                                                             data-fancybox="gallery_{{ $room->id }}"
                                                                             data-caption="{{ $room->name }}">
                                                                             <img class="me-3 rounded img-thumbnail"
-                                                                                src="{{ getStorageUrl( $image->file_path) }}"
+                                                                                src="{{ getStorageUrl($image->file_path) }}"
                                                                                 alt="{{ basename($image->file_path) }}"
                                                                                 style="display: none">
                                                                         </a>
@@ -115,46 +133,80 @@
                                                                 </a>
                                                             </td>
                                                             <td>
-                                                                <div class="dropdown dropend">
-                                                                    <a href="javascript:void(0);" class="btn-link"
-                                                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                                                        <svg width="24" height="24"
-                                                                            viewBox="0 0 24 24" fill="none"
-                                                                            xmlns="http://www.w3.org/2000/svg">
-                                                                            <path
-                                                                                d="M11 12C11 12.5523 11.4477 13 12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12Z"
-                                                                                stroke="#262626" stroke-width="2"
-                                                                                stroke-linecap="round"
-                                                                                stroke-linejoin="round" />
-                                                                            <path
-                                                                                d="M18 12C18 12.5523 18.4477 13 19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12Z"
-                                                                                stroke="#262626" stroke-width="2"
-                                                                                stroke-linecap="round"
-                                                                                stroke-linejoin="round" />
-                                                                            <path
-                                                                                d="M4 12C4 12.5523 4.44772 13 5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12Z"
-                                                                                stroke="#262626" stroke-width="2"
-                                                                                stroke-linecap="round"
-                                                                                stroke-linejoin="round" />
-                                                                        </svg>
-                                                                    </a>
-                                                                    <div class="dropdown-menu">
-                                                                        <a class="dropdown-item"
-                                                                            href="{{ route('dashboard.hotel.rooms.edit', $room->id) }}">Edit</a>
-                                                                        <a class="dropdown-item" href="javascript:void(0);"
-                                                                            onclick="confirmDelete('{{ route('dashboard.hotel.rooms.destroy', $room->id) }}')">Delete</a>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <div class="dropdown dropend">
+                                                                        <a href="javascript:void(0);" class="btn-link"
+                                                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                                                            <svg width="24" height="24"
+                                                                                viewBox="0 0 24 24" fill="none"
+                                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                                <path
+                                                                                    d="M11 12C11 12.5523 11.4477 13 12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12Z"
+                                                                                    stroke="#262626" stroke-width="2"
+                                                                                    stroke-linecap="round"
+                                                                                    stroke-linejoin="round" />
+                                                                                <path
+                                                                                    d="M18 12C18 12.5523 18.4477 13 19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12Z"
+                                                                                    stroke="#262626" stroke-width="2"
+                                                                                    stroke-linecap="round"
+                                                                                    stroke-linejoin="round" />
+                                                                                <path
+                                                                                    d="M4 12C4 12.5523 4.44772 13 5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12Z"
+                                                                                    stroke="#262626" stroke-width="2"
+                                                                                    stroke-linecap="round"
+                                                                                    stroke-linejoin="round" />
+                                                                            </svg>
+                                                                        </a>
+                                                                        <div class="dropdown-menu">
+                                                                            <a class="dropdown-item"
+                                                                                href="{{ route('dashboard.hotel.rooms.edit', $room->id) }}">Edit</a>
+                                                                            <a class="dropdown-item"
+                                                                                href="javascript:void(0);"
+                                                                                onclick="confirmDelete('{{ route('dashboard.hotel.rooms.destroy', $room->id) }}')">Delete</a>
+                                                                        </div>
                                                                     </div>
+                                                                    @php
+                                                                        $hasReservations = $room->reservations->isNotEmpty();
+                                                                        $checkin_date = $hasReservations
+                                                                            ? optional(
+                                                                                $room->reservations
+                                                                                    ->pluck('checkin_date')
+                                                                                    ->first(),
+                                                                            )->format('Y-m-d')
+                                                                            : null;
+                                                                        $checkout_date = $hasReservations
+                                                                            ? optional(
+                                                                                $room->reservations
+                                                                                    ->pluck('checkout_date')
+                                                                                    ->first(),
+                                                                            )->format('Y-m-d')
+                                                                            : null;
+                                                                    @endphp
+
+                                                                    @if (!$hasReservations || ($checkin_date && $checkout_date && $room->isAvailable($checkin_date, $checkout_date)))
+                                                                        <a href="{{ route('dashboard.hotel.reservations.create') }}?requested_room_id={{ $room->id }}"
+                                                                            class="btn btn-dark btn-md">
+                                                                            Book
+                                                                        </a>
+                                                                    @endif
+
+
                                                                 </div>
                                                             </td>
                                                         </tr>
                                                     @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <!-- Pagination -->
-                                        <div class="d-flex justify-content-center">
-                                            {{ $rooms->links() }}
-                                        </div>
+                                                @else
+                                                    <tr>
+                                                        <td colspan="7" class="text-center">No data available in table
+                                                        </td>
+                                                @endif
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                    <!-- Pagination -->
+                                    <div class="d-flex justify-content-center">
+                                        {{ $rooms->links() }}
                                     </div>
                                 </div>
                             </div>
@@ -163,6 +215,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <!-- Delete Confirmation Modal -->
@@ -197,4 +250,58 @@
             $('#deleteModal').modal('show');
         }
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            $(document).ready(function() {
+                const form = document.getElementById('filter-form');
+
+                $('.room-selection').change(function() {
+                    let selectValue = $(this).val();
+
+                    $.ajax({
+                        url: "{{ route('dashboard.hotel.filter.rooms') }}",
+                        type: "GET",
+                        data: {
+                            select_room: selectValue
+                        },
+                        success: function(response) {
+                            $('#guestTable-all3 tbody').html(response.html);
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                });
+
+                $('#search-input').keyup(function() {
+                    let searchValue = $(this).val();
+
+                    $.ajax({
+                        url: "{{ route('dashboard.hotel.filter.rooms') }}",
+                        type: "GET",
+                        data: {
+                            search_term: searchValue
+                        },
+                        success: function(response) {
+                            console.log(response);
+
+                            $('#guestTable-all3 tbody').html(response.html);
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                });
+
+                form.addEventListener('submit', (event) => {
+                    const submitter = event.submitter;
+                    if (!submitter || !submitter.classList.contains('btn-success')) {
+                        event.preventDefault();
+                        console.log("Submission prevented: Not the filter button.");
+                    }
+                });
+            });
+        });
+    </script>
+
 @endsection

@@ -282,7 +282,23 @@
 
 
     <script>
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
         document.addEventListener('DOMContentLoaded', function() {
+            var requestedRoom = getUrlParameter('requested_room_id');
+            if (requestedRoom) {
+                var roomSelect = document.getElementById('room_id');
+                roomSelect.value = requestedRoom;
+                var selectedRoom = roomSelect.options[roomSelect.selectedIndex];
+                var roomRate = selectedRoom.getAttribute('data-rate');
+                if (roomRate) {
+                    document.getElementById('rate').value = roomRate;
+                }
+            }
             function setGuestInformation() {
                 const guestInput = document.getElementById('guest_name');
                 const guestsDataList = document.getElementById('guests');

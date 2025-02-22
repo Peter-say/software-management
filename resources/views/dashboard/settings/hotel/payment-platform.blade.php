@@ -41,7 +41,7 @@
                                         <img src="{{ asset($logoPath) }}" alt="{{ $platform->name }}" class="me-3"
                                             style="width: 50px;">
                                     @else
-                                        <img src="{{ asset('dashboard/icons/payment-icon-vector.jpg') }}"
+                                        <img src="{{ getStorageUrl('dashboard/icons/payment-icon-vector.jpg') }}"
                                             alt="{{ $platform->name }}" class="me-3" style="width: 50px;">
                                     @endif
 

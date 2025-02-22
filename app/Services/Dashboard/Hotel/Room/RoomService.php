@@ -5,7 +5,9 @@ namespace App\Services\Dashboard\Hotel\Room;
 use App\Helpers\FileHelpers;
 use App\Models\HotelSoftware\Room;
 use App\Models\HotelSoftware\RoomFile;
+use App\Models\HotelSoftware\RoomReservation;
 use App\Models\User;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -58,5 +60,29 @@ class RoomService
         }
 
         return $room;
+    }
+
+    public function availableRooms()
+    {
+        $hotel = User::getAuthenticatedUser()->hotel;
+        $available_rooms = Room::with('roomType')
+            ->where('hotel_id', $hotel->id)
+            ->whereDoesntHave('reservations', function ($query) {
+                $query->whereNull('checked_out_at');
+            });
+
+        return $available_rooms;
+    }
+
+    public function occupiedRooms()
+    {
+        $hotel = User::getAuthenticatedUser()->hotel;
+        $occupied_rooms = Room::with('roomType')
+            ->where('hotel_id', $hotel->id)
+            ->whereHas('reservations', function ($query) {
+                $query->whereNull('checked_out_at');
+            });
+
+        return $occupied_rooms;
     }
 }

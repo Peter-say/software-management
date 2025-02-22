@@ -78,39 +78,58 @@ class CurrencyConstants
         self::GHS => 'GH₵',
     ];
 
-   // Currency Types
-   const DOLLAR_CURRENCY = "Dollar";
-   const NAIRA_CURRENCY = "Naira";
-   const EURO_CURRENCY = "Euro";
-   const POUND_CURRENCY = "Pound";
-   const YEN_CURRENCY = "Yen";
-   const RUPEE_CURRENCY = "Rupee";
-   const RAND_CURRENCY = "Rand";
-   const DIRHAM_CURRENCY = "Dirham";
-   const REAL_CURRENCY = "Real";
-   const FRANC_CURRENCY = "Franc";
-   const SHILLING_CURRENCY = "Shilling";
-   const CEDIS_CURRENCY = "Cedis";
-   const YUAN_CURRENCY = "Yuan";
-   const DOLLAR_VARIANT = "Dollar Variant"; // For currencies like AUD, CAD, SGD
+    // Currency Types
+    const DOLLAR_CURRENCY = "Dollar";
+    const NAIRA_CURRENCY = "Naira";
+    const EURO_CURRENCY = "Euro";
+    const POUND_CURRENCY = "Pound";
+    const YEN_CURRENCY = "Yen";
+    const RUPEE_CURRENCY = "Rupee";
+    const RAND_CURRENCY = "Rand";
+    const DIRHAM_CURRENCY = "Dirham";
+    const REAL_CURRENCY = "Real";
+    const FRANC_CURRENCY = "Franc";
+    const SHILLING_CURRENCY = "Shilling";
+    const CEDIS_CURRENCY = "Cedis";
+    const YUAN_CURRENCY = "Yuan";
+    const DOLLAR_VARIANT = "Dollar Variant"; // For currencies like AUD, CAD, SGD
 
-   // Currency Type Mapping
-   const CURRENCY_TYPE = [
-       self::DOLLAR_CURRENCY,
-       self::NAIRA_CURRENCY,
-       self::EURO_CURRENCY,
-       self::POUND_CURRENCY,
-       self::YEN_CURRENCY,
-       self::RUPEE_CURRENCY,
-       self::RAND_CURRENCY,
-       self::DIRHAM_CURRENCY,
-       self::REAL_CURRENCY,
-       self::FRANC_CURRENCY,
-       self::SHILLING_CURRENCY,
-       self::CEDIS_CURRENCY,
-       self::YUAN_CURRENCY,
-       self::DOLLAR_VARIANT,
-   ];
+    // Currency Type Mapping
+    const CURRENCY_TYPE = [
+        self::DOLLAR_CURRENCY,
+        self::NAIRA_CURRENCY,
+        self::EURO_CURRENCY,
+        self::POUND_CURRENCY,
+        self::YEN_CURRENCY,
+        self::RUPEE_CURRENCY,
+        self::RAND_CURRENCY,
+        self::DIRHAM_CURRENCY,
+        self::REAL_CURRENCY,
+        self::FRANC_CURRENCY,
+        self::SHILLING_CURRENCY,
+        self::CEDIS_CURRENCY,
+        self::YUAN_CURRENCY,
+        self::DOLLAR_VARIANT,
+    ];
+
+    const CURRENCY_MAPPING = [
+        'USD' => 'United States',
+        'NGN' => 'Nigeria',
+        'EUR' => 'Eurozone',
+        'GBP' => 'United Kingdom',
+        'AUD' => 'Australia',
+        'CAD' => 'Canada',
+        'INR' => 'India',
+        'JPY' => 'Japan',
+        'CNY' => 'China',
+        'ZAR' => 'South Africa',
+        'AED' => 'United Arab Emirates',
+        'BRL' => 'Brazil',
+        'CHF' => 'Switzerland',
+        'SGD' => 'Singapore',
+        'KES' => 'Kenya',
+        'GHS' => 'Ghana',
+    ];
 
     const PROVIDER = "Provider";
     const STRIPE = "Stripe";

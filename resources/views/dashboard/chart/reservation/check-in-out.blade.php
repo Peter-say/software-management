@@ -1,12 +1,10 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const reservationData = @json($reservation_data);
-        const reservationcheckedins = reservationData.dashboard_data['checked_ins'];
-        const reservationCheckedouts = reservationData.dashboard_data['checked_outs'];
-        const reservationLebels = reservationData.dashboard_data['data_labels'];
-           console.log( reservationData);
-        
-
+        const reservationcheckedins = reservationData.data['checked_ins'];
+        const reservationCheckedouts = reservationData.data['checked_outs'];
+        const reservationLebels = reservationData.data['data_labels'];
+         
         (function($) {
             /* "use strict" */
 

@@ -65,13 +65,11 @@ class BarOrderController extends Controller
     {
         try {
             $this->bar_order_service->deleteOrder($order);
-            return response()->json(['success' => true, 'message' => "Order deleted successfully",]);
+            return back()->with('success_message', "Order deleted successfully");
         } catch (ModelNotFoundException $e) {
-            return response()->json(['success' => false, 'message' => 'Order not found',], 404);
-        } catch (Exception $e) {
-            return response()->json(['success' => false, 'message' => $e->getMessage(),], 500);
-        } catch (\Throwable $th) {
-            return response()->json(['success' => false, 'message' => 'Something went wrong while trying to save order',], 500);
+            return back()->with('success_message', 'Order not found');
+        }  catch (\Throwable $th) {
+            return back()->with('success_message', 'Something went wrong while trying to save order');
         }
     }
 
@@ -88,4 +86,6 @@ class BarOrderController extends Controller
             return response()->json(['success' => false, 'message' => 'Something went wrong while trying to save order',], 500);
         }
     }
+
+    
 }

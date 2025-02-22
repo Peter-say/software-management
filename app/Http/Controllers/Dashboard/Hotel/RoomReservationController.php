@@ -8,7 +8,10 @@ use App\Http\Controllers\Controller;
 use App\Models\HotelSoftware\HotelPaymentPlatform;
 use App\Models\HotelSoftware\RoomReservation;
 use App\Models\User;
+use App\Services\Dashboard\Hotel\Chart\DashboardReservationService;
+use App\Services\Dashboard\Hotel\Reservation\ReservationDashboardService;
 use App\Services\Dashboard\Hotel\Room\ReservationService;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -18,9 +21,39 @@ use Illuminate\Validation\ValidationException;
 class RoomReservationController extends Controller
 {
     protected $reservation_service;
+    protected $reservation_dashboard_service;
+    protected $chart_reservation_service;
     public function __construct(ReservationService $reservation_service)
     {
         $this->reservation_service = $reservation_service;
+        $this->chart_reservation_service = new DashboardReservationService();
+        $this->reservation_dashboard_service = new ReservationDashboardService();
+    }
+
+    public function overview(Request $request)
+    {
+        $period = $request->get('period', 'day');
+        $booking_period = $request->get('booking_period', 'week');
+        $analytic_period = $request->get('analytic_period', 'week');
+
+        if (!in_array($period, ['day', 'week', 'month', 'year'])) {
+            $period = 'month';
+        }
+        if (!in_array($analytic_period, ['day', 'week', 'month', 'year'])) {
+            $analytic_period = 'month';
+        }
+        if (!in_array($booking_period, ['week', 'year'])) {
+            $booking_period = 'week';
+        }
+        return view('dashboard.hotel.room.reservation.dashbaord', [
+            'room_reservation_stats' => $this->reservation_dashboard_service->stats(['period' => $period]),
+            'occupiedRooms' => $this->reservation_dashboard_service->countOccupiedRoomsToday(),
+            'available_rooms' => $this->reservation_dashboard_service->countAvailableRoomsToday(),
+            'total_transaction' => $this->reservation_dashboard_service->calculateTotalTransaction(),
+            'reservation_analytic_data' => $this->chart_reservation_service->analytics(['analytic_period' => $analytic_period]),
+            'reservation_data' => $this->chart_reservation_service->stats(['booking_period' => $booking_period]),
+            'recent_room_reservations' => $this->reservation_dashboard_service->recentBookingSchedule(),
+        ]);
     }
 
     /**
@@ -201,5 +234,28 @@ class RoomReservationController extends Controller
                 'error_message' => 'An error occurred while checking room availability.',
             ]);
         }
+    }
+
+    public function loadRecentReservation(Request $request)
+    {
+        $page = (int) $request->input('page', 1);
+        $recent_room_reservations_ids = $this->reservation_dashboard_service->recentBookingSchedule()->pluck('id')->toArray();
+
+        // Fetch the next set of reservations, excluding already loaded ones
+        $new_reservations = RoomReservation::where('hotel_id', User::getAuthenticatedUser()->hotel->id)
+            ->whereNotIn('id', $recent_room_reservations_ids)
+            ->where('created_at', '>=', Carbon::now()->subDays(7))
+            ->latest('created_at')->skip(($page - 1) * 2)
+            ->take(2)
+            ->get();
+        // Check if there are more items to load
+        $hasMore = RoomReservation::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->whereNotIn('id', $recent_room_reservations_ids)
+            ->count() > $page * 2;
+
+        if ($new_reservations->isEmpty()) {
+            return response()->json(['html' => '', 'hasMore' => false]);
+        }
+        $html = view('dashboard.fragments.dashboard.load-more-booking-schedule', ['recent_room_reservations' => $new_reservations])->render();
+        return response()->json(['html' => $html, 'hasMore' => $hasMore]);
     }
 }

@@ -37,10 +37,14 @@ class Guest extends Model
      */
     public function getFullNameAttribute()
     {
-        // Concatenate title, first name, last name, and other names
-        $fullName = trim($this->title . ' ' . $this->first_name . ' ' . $this->last_name . ' ' . $this->other_names);
-        // If the full name is empty, return a default message
-        return $fullName ?: 'No Name Provided';
+       $full_name = trim($this->title . ' ' . $this->first_name . ' ' . $this->last_name . ' ' . $this->other_names);
+        return$full_name ?: 'No Name Provided';
+    }
+
+    public function getShortNameAttribute()
+    {
+        $short_name = trim($this->title . ' ' . $this->last_name );
+        return $short_name ?: null;
     }
 
     public function wallet()

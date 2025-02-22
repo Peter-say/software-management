@@ -32,10 +32,19 @@
                 </div>
                 <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
                     <div class="card">
-                        <h5 class="card-header">Payment Plaform</h5>
-                        <div class="card-body d-flex justify-content-between">
-                            Set up your payment platform here if you would like to receive payments online / have not done so
+                        <h5 class="card-header">Payment Platform</h5>
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <span>Set up your payment platform here if you would like to receive payments online / have not done so</span>
                             <a href="{{route('dashboard.hotel.settings.hotel-info.choose-payment-platform')}}" class="btn btn-primary">Proceed</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                    <div class="card">
+                        <h5 class="card-header">Edit Hotel Currency</h5>
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <span>Edit the currency you want for your hotel for transaction. This will be used for all transactions. By default, it is set to your country's currency</span>
+                            <a href="{{route('dashboard.hotel.settings.hotel-info.edit-currency')}}" class="btn btn-primary">Proceed</a>
                         </div>
                     </div>
                 </div>

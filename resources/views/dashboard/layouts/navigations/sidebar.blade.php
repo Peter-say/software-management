@@ -84,7 +84,7 @@
                 @endif
                 @if (Gate::allows('view-module', 'room-reservation'))
                     <li>
-                        <a href="{{ route('dashboard.hotel.reservations.index') }}" aria-expanded="false">
+                        <a href="{{ route('dashboard.hotel.reservation-dashboard') }}" aria-expanded="false">
                             <i class="flaticon-013-checkmark"></i>
                             <span class="nav-text">Room Reservations</span>
                         </a>

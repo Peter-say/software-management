@@ -4,6 +4,7 @@ namespace App\Models\HotelSoftware;
 
 use App\Models\hotelSoftware\Hotel;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
@@ -52,5 +53,44 @@ class Room extends Model
         return null;
     }
 
+    public function scopeSearchRooms(Builder $query, $searchTerm)
+    {
+        return $query->where(function ($q) use ($searchTerm) {
+            $q->where('name', 'LIKE', "%{$searchTerm}%")
+                ->orWhere('status', 'LIKE', "%{$searchTerm}%")
+                ->orWhereHas('roomType', function ($q) use ($searchTerm) {
+                    $q->where('name', 'LIKE', "%{$searchTerm}%")
+                        ->orWhere('rate', 'LIKE', "%{$searchTerm}%");
+                });
+        });
+    }
+
+    public function isAvailable($checkin_date, $checkout_date)
+    {
+        // If no reservations, the room is available
+        if (!$this->reservations()->exists()) {
+            return true;
+        }
+    
+        if (!$checkin_date || !$checkout_date) {
+            return true; // If missing dates, assume available
+        }
+    
+        $checkin_date = $checkin_date;
+        $checkout_date = $checkout_date;
+    
+        return !$this->reservations()
+            ->where(function ($query) use ($checkin_date, $checkout_date) {
+                $query->where(function ($q) use ($checkin_date, $checkout_date) {
+                    $q->where('checkin_date', '<', $checkout_date)
+                      ->where('checkout_date', '>', $checkin_date);
+                })->orWhere(function ($q) use ($checkin_date, $checkout_date) {
+                    $q->where('checkin_date', '<=', $checkin_date)
+                      ->where('checkout_date', '>', $checkin_date);
+                });
+            })
+            ->whereNull('checked_out_at')
+            ->exists();
+    }
     
 }

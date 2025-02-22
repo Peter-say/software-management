@@ -72,29 +72,23 @@ class GuestWalletService
         DB::beginTransaction();
 
         try {
-            // Validate the credit transaction data
             $validatedData = $this->validateData($request);
-            // Process the payment
             $payment = $this->payment_service->processPayment($request);
-            // Process the transaction using the existing payment
             $transaction = $this->transaction_service->processTransaction($request, $payment);
             $transaction->transaction_type = 'credit';
-
-            // Link the transaction to the payment
             $payment->transactions()->save($transaction);
 
             $guest = Guest::find($request->guest_id);
-            // Update the wallet balance from the request
             $guestWallet = $guest->wallet;
             $guestWallet->balance += $validatedData['amount'];
             $guestWallet->save();
 
             DB::commit();
 
-            return $guestWallet; // Return the updated wallet
+            return $guestWallet; 
         } catch (Exception $e) {
-            DB::rollBack(); // Rollback the transaction on failure
-            throw $e; // Rethrow the exception to be handled in the controller
+            DB::rollBack(); 
+            throw $e; 
         }
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Models\HotelSoftware\HotelCurrency;
 use App\Models\HotelSoftware\HotelPaymentPlatform;
 use App\Models\HotelSoftware\PaymentPlatform;
 use App\Models\User;
@@ -23,5 +24,13 @@ class HotelSettingController extends Controller
             'payment_platforms' => $payment_platforms,
             'selected_platform' => $selected_platform,
         ]);
+    }
+
+    public function editCurrency()
+    {
+        $hotel_currency = HotelCurrency::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->first();
+        return view('dashboard.settings.hotel.edit-currency', 
+        ['hotel_currency' => $hotel_currency,
+    ]);
     }
 }

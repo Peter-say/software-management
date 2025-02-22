@@ -52,22 +52,22 @@ class KitchenOrderNotification extends Notification implements ShouldBroadcast
      * Get the mail representation of the notification.
      */
     public function toMail(object $notifiable): MailMessage
-{
-    $itemsList = $this->restaurantOrder->restaurantOrderItems->map(function ($item) {
-        return $item->restaurantItem->name . ' (Quantity: ' . $item->qty . ')';
-    })->implode("\n");
+    {
+        $itemsList = $this->restaurantOrder->restaurantOrderItems->map(function ($item) {
+            return $item->restaurantItem->name . ' (Quantity: ' . $item->qty . ')';
+        })->implode("\n");
 
-    return (new MailMessage)
-        ->subject('New Kitchen Order Created')
-        ->line('A new order has been created in the kitchen.')
-        ->line('Order ID: ' . $this->restaurantOrder->id)
-        ->line('Total Amount: $' . $this->restaurantOrder->total_amount)
-        ->line('Status: ' . $this->restaurantOrder->status)
-        ->line('Items in the order:')
-        ->line($itemsList)
-        ->action('View Order', url($this->buildData($notifiable)['link']))
-        ->line('Thank you for managing the kitchen orders!');
-}
+        return (new MailMessage)
+            ->subject('New Kitchen Order Created')
+            ->line('A new order has been created in the kitchen.')
+            ->line('Order ID: ' . $this->restaurantOrder->id)
+            ->line('Total Amount: $' . $this->restaurantOrder->total_amount)
+            ->line('Status: ' . $this->restaurantOrder->status)
+            ->line('Items in the order:')
+            ->line($itemsList)
+            ->action('View Order', url($this->buildData($notifiable)['link']))
+            ->line('Thank you for managing the kitchen orders!');
+    }
 
 
     public function broadcastOn()
@@ -101,28 +101,27 @@ class KitchenOrderNotification extends Notification implements ShouldBroadcast
     }
 
     protected function buildData($notifiable): array
-{
-    $items = $this->restaurantOrder->restaurantOrderItems;
-    $itemCount = $items->count();
-    
-    $title = $itemCount === 1 ? 'Restaurant Order Created!' : 'Restaurant Orders Created!';
-    $message = $itemCount === 1 ? "A new order was created" : "$itemCount restaurant orders were created";
+    {
+        $items = $this->restaurantOrder->restaurantOrderItems;
+        $itemCount = $items->count();
 
-    return [
-        'title' => $title,
-        'message' => $message,
-        'order_id' => $this->restaurantOrder->id,
-        'total_amount' => $this->restaurantOrder->total_amount,
-        'link' => route('dashboard.hotel.notifications.view', $this->id),
-        'status' => $this->restaurantOrder->status,
-        'items' => $items->map(function ($item) {
-            return [
-                'name' => $item->restaurantItem ? $item->restaurantItem->name : 'Unknown Item',
-                'quantity' => $item->qty,
-                'image' => $item->restaurantItem ? getStorageUrl('hotel/restaurant/items/' . $item->restaurantItem->image) : null
-            ];
-        }),
-    ];
-}
+        $title = $itemCount === 1 ? 'Restaurant Order Created!' : 'Restaurant Orders Created!';
+        $message = $itemCount === 1 ? "A new order was created" : "$itemCount restaurant orders were created";
 
+        return [
+            'title' => $title,
+            'message' => $message,
+            'order_id' => $this->restaurantOrder->id,
+            'total_amount' => $this->restaurantOrder->total_amount,
+            'link' => route('dashboard.hotel.notifications.view', $this->id),
+            'status' => $this->restaurantOrder->status,
+            'items' => $items->map(function ($item) {
+                return [
+                    'name' => $item->restaurantItem ? $item->restaurantItem->name : 'Unknown Item',
+                    'quantity' => $item->qty,
+                    'image' => $item->restaurantItem?->image ? getStorageUrl('hotel/restaurant/items/' . $item->restaurantItem->image) :  getStorageUrl('dashboard/drink/wiskey.jpeg')
+                ];
+            }),
+        ];
+    }
 }

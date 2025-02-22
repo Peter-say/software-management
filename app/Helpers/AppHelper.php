@@ -1,8 +1,10 @@
 <?php
 
+use App\Constants\CurrencyConstants;
 use App\Models\HotelSoftware\ExpenseCategory;
 use App\Models\HotelSoftware\ExpenseItem;
 use App\Models\HotelSoftware\Guest;
+use App\Models\HotelSoftware\HotelCurrency;
 use App\Models\HotelSoftware\ItemCategory;
 use App\Models\HotelSoftware\ItemSubCategory;
 use App\Models\HotelSoftware\Outlet;
@@ -12,6 +14,7 @@ use App\Models\HotelSoftware\Supplier;
 use App\Models\HotelSoftware\WalkInCustomer;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Torann\GeoIP\Facades\GeoIP;
 
 function getModelItems($model)
 {
@@ -23,6 +26,8 @@ function getModelItems($model)
         $model_list = DB::table('countries')->select('id', 'name')->orderBy('name', 'asc')->get();
     } elseif ($model == 'states') {
         $model_list = DB::table('states')->select('id', 'name')->orderBy('name', 'asc')->get();
+    }elseif ($model == 'currencies') {
+        $model_list = DB::table('currencies')->orderBy('name', 'asc')->get();
     } elseif ($model == 'rooms') {
         $model_list = Room::where('hotel_id', $hotel_id)->get();
     } elseif ($model == 'guests') {
@@ -46,13 +51,12 @@ function getModelItems($model)
     } elseif ($model == 'walk_in_customers') {
         // Get the outlet (restaurant) for the hotel
         $model_list = Outlet::where('hotel_id', $hotel_id)->where('type', 'restaurant')->first();
-        
+
         $model_list = WalkInCustomer::whereHas('restaurantOrders', function ($query) use ($hotel_id) {
             $query->where('hotel_id', $hotel_id);
         })->orWhereHas('barOrders', function ($query) use ($hotel_id) {
             $query->where('hotel_id', $hotel_id);
         })->distinct()->get();
-        
     }
     if ($model == 'item-categories') {
         $model_list = ItemCategory::all();
@@ -137,3 +141,24 @@ if (!function_exists('getStoragePath')) {
 }
 
 
+
+function getCountry()
+{
+    $ip = request()->ip();
+    if ($ip === '127.0.0.1' || $ip === '::1') {
+        return 'Nigeria';
+    }
+    $url = "http://ip-api.com/json/{$ip}";
+    $response = file_get_contents($url);
+    $location = json_decode($response, true);
+
+    return $location['status'] === 'success' ? $location['country'] : 'Unknown';
+}
+function getCountryCurrency()
+{
+    $hotel = User::getAuthenticatedUser()->hotel;
+    $country_currency = HotelCurrency::where('hotel_id', $hotel->id)->first()?->currency->short_name;
+    $location_currency = getCountry();
+    $currency_code = array_search($location_currency, CurrencyConstants::CURRENCY_MAPPING) ?: 'USD';
+    return $country_currency ?: $currency_code;
+}

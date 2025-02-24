@@ -1,6 +1,7 @@
 <?php
 
 use App\Constants\CurrencyConstants;
+use App\Models\Currency;
 use App\Models\HotelSoftware\ExpenseCategory;
 use App\Models\HotelSoftware\ExpenseItem;
 use App\Models\HotelSoftware\Guest;
@@ -26,7 +27,7 @@ function getModelItems($model)
         $model_list = DB::table('countries')->select('id', 'name')->orderBy('name', 'asc')->get();
     } elseif ($model == 'states') {
         $model_list = DB::table('states')->select('id', 'name')->orderBy('name', 'asc')->get();
-    }elseif ($model == 'currencies') {
+    } elseif ($model == 'currencies') {
         $model_list = DB::table('currencies')->orderBy('name', 'asc')->get();
     } elseif ($model == 'rooms') {
         $model_list = Room::where('hotel_id', $hotel_id)->get();
@@ -161,4 +162,19 @@ function getCountryCurrency()
     $location_currency = getCountry();
     $currency_code = array_search($location_currency, CurrencyConstants::CURRENCY_MAPPING) ?: 'USD';
     return $country_currency ?: $currency_code;
+}
+
+function getHotelCurrency()
+{
+    $hotel = User::getAuthenticatedUser()->hotel;
+    $hotel_currency = HotelCurrency::where('hotel_id', $hotel->id)->first()?->currency;
+    $location_currency = getCountry();
+    $currency_code = array_search($location_currency, CurrencyConstants::CURRENCY_MAPPING) ?: 'USD';
+    $default_currency = Currency::where('short_name', $currency_code)->first();
+    return $hotel_currency ?:  $default_currency;
+}
+
+function currencySymbol()
+{
+    return getHotelCurrency()?->symbol;
 }

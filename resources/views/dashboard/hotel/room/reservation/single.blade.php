@@ -59,9 +59,9 @@
                                     <!-- Room Details -->
                                     <tr>
                                         <td>Room: {{ $reservation->room->name }}</td>
-                                        <td>{{ number_format($reservation->rate) }}</td>
+                                        <td>{{currencySymbol()}}{{ number_format($reservation->rate) }}</td>
                                         <td>{{ number_format($reservation->calculateNight()) }}</td>
-                                        <td>{{ number_format($reservation->total_amount) }}</td>
+                                        <td>{{currencySymbol()}}{{ number_format($reservation->total_amount) }}</td>
                                     </tr>
 
                                     <!-- Room Images -->
@@ -88,7 +88,7 @@
                                     <!-- Net Total -->
                                     <tr>
                                         <td colspan="3" class="text-end">Net Total</td>
-                                        <td>{{ number_format($reservation->total_amount) }}</td>
+                                        <td>{{currencySymbol()}}{{ number_format($reservation->total_amount) }}</td>
                                     </tr>
 
                                     <!-- Orders Section -->
@@ -112,7 +112,7 @@
                                                                 <tr>
                                                                     <td>Restaurant Order</td>
                                                                     <td>{{ $order->order_date }}</td>
-                                                                    <td>{{ number_format($order->total_amount, 2) }}</td>
+                                                                    <td>{{currencySymbol()}}{{ number_format($order->total_amount, 2) }}</td>
                                                                 </tr>
                                                                 @else
                                                                 <tr></tr>
@@ -124,7 +124,7 @@
                                                                 <tr>
                                                                     <td>Bar Order</td>
                                                                     <td>{{ $order->order_date }}</td>
-                                                                    <td>{{ number_format($order->total_amount, 2) }}</td>
+                                                                    <td>{{currencySymbol()}}{{ number_format($order->total_amount, 2) }}</td>
                                                                 </tr>
                                                                 @else
                                                                 <tr></tr>
@@ -135,7 +135,7 @@
                                                         <tr>
                                                             <td colspan="2" class="text-end"><strong>Net Total</strong>
                                                             </td>
-                                                            <td><strong>{{ number_format($reservation->guest->calculateOrderNetTotal(), 2) }}</strong>
+                                                            <td><strong>{{currencySymbol()}}{{ number_format($reservation->guest->calculateOrderNetTotal(), 2) }}</strong>
                                                             </td>
                                                         </tr>
                                                     </tfoot>
@@ -194,7 +194,7 @@
                                                             <tr>
                                                                 @foreach ($chunk as $payment)
                                                                     <td>{{ $payment->created_at }}</td>
-                                                                    <td>{{ number_format($payment->amount, 2) }}</td>
+                                                                    <td>{{currencySymbol()}}{{ number_format($payment->amount, 2) }}</td>
                                                                     <td>
                                                                         <button
                                                                             class="btn btn-sm btn-primary">Delete</button>
@@ -237,7 +237,7 @@
                                     <p>
                                         <span>Due </span>
                                         <b>
-                                            ₦{{ number_format($payableAmount, 2) }}
+                                            {{currencySymbol()}}{{ number_format($payableAmount, 2) }}
                                         </b>
 
                                     </p>

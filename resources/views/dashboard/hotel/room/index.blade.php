@@ -115,7 +115,7 @@
                                                                 <div class="">
                                                                     <span class="mb-2">Price</span>
                                                                     <span
-                                                                        class="font-w500">{{ $room->roomType->rate }}<small
+                                                                        class="font-w500">{{currencySymbol()}}{{ number_format($room->roomType->rate) }}<small
                                                                             class="fs-14 ms-2">/night</small></span>
                                                                 </div>
                                                             </td>

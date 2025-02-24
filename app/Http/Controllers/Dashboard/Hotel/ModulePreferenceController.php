@@ -43,25 +43,31 @@ class ModulePreferenceController extends Controller
         try {
             $hotel_id = User::getAuthenticatedUser()->hotel->id;
             $selected_modules = explode(',', $data['selected_modules']);
+    
             foreach ($selected_modules as $module_name) {
-                $module_preference = ModulePreference::create([
-                    'hotel_id' => $hotel_id,
-                    'name' => $module_name,
-                    'slug' => Str::slug($module_name),
-                ]);
-                HotelModulePreference::create([
+                $slug = Str::slug($module_name);
+    
+                // Check if the module already exists for the hotel
+                $module_preference = ModulePreference::firstOrCreate(
+                    ['hotel_id' => $hotel_id, 'slug' => $slug], // Ensure uniqueness
+                    ['name' => $module_name]
+                );
+    
+                // Check if the relation exists before inserting
+                HotelModulePreference::firstOrCreate([
                     'hotel_id' =>  $hotel_id,
                     'module_preference_id' => $module_preference->id,
                 ]);
             }
+    
             return redirect()->route('dashboard.home')->with('success_message', 'App set-up completed successfully');
         } catch (ValidationException $e) {
             return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
-            throw $e;
             return redirect()->back()->with('error_message', 'An error occurred while creating the modules.');
         }
     }
+    
 
     /**
      * Display the specified resource.
@@ -129,7 +135,7 @@ class ModulePreferenceController extends Controller
         } catch (ValidationException $e) {
             return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
-            throw $e;
+            // throw $e;
             return redirect()->back()->with('error_message', 'An error occurred while updating the modules.');
         }
     }

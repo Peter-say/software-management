@@ -7,7 +7,7 @@
         const totalPaidPurchases = purchasesChartData.chart_data['total_paid_purchases_amount'];
         const totalUnpaidPurchases = purchasesChartData.chart_data['total_unpaid_purchases_amount'];
         const chartLebels = purchasesChartData.chart_data['data_labels'];
-        console.log(purchasesChartData);
+        const currencySymbol = @json(currencySymbol());
         
         var purchaseChart = function() {
             //dual line chart
@@ -83,7 +83,7 @@
                             yAxes: [{
                                 ticks: {
                                     callback: function(value, index, values) {
-                                        return '$' + value.toLocaleString();
+                                        return currencySymbol + value.toLocaleString();
                                     },
                                     beginAtZero: true,
                                     max: Math.max(...totalPurchases, ...totalPaidPurchases, ...totalUnpaidPurchases) + 1000,

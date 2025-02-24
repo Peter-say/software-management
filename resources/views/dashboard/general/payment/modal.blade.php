@@ -26,13 +26,14 @@
                         <label for="currency" class="form-label">Currency</label>
                         <select id="currency" name="currency"
                             class="form-control @error('currency') is-invalid @enderror">
+                            @php
+                            $currency = getHotelCurrency();
+                        @endphp
                             <option value="">Select Currency</option>
-                            @foreach ($currencies as $currency)
-                                <option value="{{ $currency }}"
-                                    {{ old('currency', $currency ?? '') == $currency ? 'selected' : '' }}>
-                                    {{ $currency }}
+                                <option value="{{ $currency->short_name }}"
+                                    {{ old('currency', $currency->short_name ?? '') == $currency->short_name ? 'selected' : '' }}>
+                                    {{ $currency->short_name }}
                                 </option>
-                            @endforeach
                         </select>
                         @error('currency')
                             <div class="invalid-feedback">{{ $message }}</div>

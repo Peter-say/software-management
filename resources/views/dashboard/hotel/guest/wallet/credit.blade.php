@@ -83,15 +83,16 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label for="currency" class="form-label">Currency</label>
-                                <select id="currency" name="currency"
+                                <select id="currency" name="currency" readonly required
                                     class="form-control @error('currency') is-invalid @enderror">
+                                    @php
+                                        $currency = getHotelCurrency();
+                                    @endphp
                                     <option value="">Select Currency</option>
-                                    @foreach (\App\Constants\CurrencyConstants::CURRENCY_CODES as $currency)
-                                        <option value="{{ $currency }}"
-                                            {{ old('currency', $currency ?? '') == $currency ? 'selected' : '' }}>
-                                            {{ $currency }}
+                                        <option value="{{ $currency->short_name }}"
+                                            {{ old('currency', $currency->short_name ?? '') == $currency->short_name ? 'selected' : '' }}>
+                                            {{ $currency->short_name }}
                                         </option>
-                                    @endforeach
                                 </select>
                                 @error('currency')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -115,7 +116,7 @@
                     <div class="row mb-3">
                         <div class="col-12">
                             <label for="card-element">Credit or Debit Card</label>
-                            <div id="card-element" class="form-control"></div>
+                            <div id="card-element"  class="form-control"></div>
                             <div id="card-errors" role="alert"></div>
                         </div>
                     </div>

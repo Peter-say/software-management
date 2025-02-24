@@ -272,7 +272,7 @@
                                                     @foreach ($expense->payments as $payment)
                                                         <tr>
                                                             <td>{{ $payment->created_at->format('jS, M Y') }}</td>
-                                                            <td>{{ number_format($payment->amount) }}</td>
+                                                            <td>{{currencySymbol()}}{{ number_format($payment->amount) }}</td>
                                                             <td>{{ $payment->payment_method }}</td>
                                                             <td>{{ $payment->note ?? 'N/A' }}</td>
                                                         </tr>

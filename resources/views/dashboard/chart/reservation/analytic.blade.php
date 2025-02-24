@@ -4,10 +4,11 @@
     document.addEventListener('DOMContentLoaded', function() {
         const reservationChartData = @json($reservation_chart_data);
         const reservationRevenue = reservationChartData.data['room_reservation_revenue'];
+        const currencySymbol = @json(currencySymbol())
         // const totalPaidPurchases = reservationChartData.chart_data['total_paid_purchases_amount'];
         // const totalUnpaidPurchases = reservationChartData.chart_data['total_unpaid_purchases_amount'];
         const chartLebels = reservationChartData.data['data_labels'];
-          
+         
         var revenueChart = function() {
             //dual line chart
             if (jQuery('#revenueChart').length > 0) {
@@ -68,7 +69,7 @@
                             yAxes: [{
                                 ticks: {
                                     callback: function(value, index, values) {
-                                        return '$' + value.toLocaleString();
+                                        return currencySymbol +  value.toLocaleString();
                                     },
                                     beginAtZero: true,
                                     max: Math.max(...reservationRevenue) + 1000,

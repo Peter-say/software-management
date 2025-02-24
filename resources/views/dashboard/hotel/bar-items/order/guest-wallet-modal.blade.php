@@ -17,9 +17,9 @@
                                 <p>Current balance</p>
                                 <p>
                                     @if ($order->guest && $order->guest->wallet)
-                                        <span><b>₦{{ number_format($order->guest->wallet->balance, 2, '.', ',') }}</b></span>
+                                        <span><b>{{ currencySymbol() }}{{ number_format($order->guest->wallet->balance, 2, '.', ',') }}</b></span>
                                     @else
-                                        <span><b>₦0.00</b></span>
+                                        <span><b>{{ currencySymbol() }}0.00</b></span>
                                     @endif
                                 </p>
                             </div>
@@ -31,7 +31,7 @@
                                     @php
                                         $totalDue = $order->total_amount - $order->payments->sum('amount');
                                     @endphp
-                                    <b>₦{{ number_format($totalDue, 2, '.', ',') }}</b>
+                                    <b>{{ currencySymbol() }}{{ number_format($totalDue, 2, '.', ',') }}</b>
                                 </p>
                             </div>
                         </div>
@@ -51,12 +51,14 @@
                             <select id="currency" name="currency"
                                 class="form-control @error('currency') is-invalid @enderror">
                                 <option value="">Select Currency</option>
-                                @foreach (\App\Constants\CurrencyConstants::CURRENCY_CODES as $currency)
-                                    <option value="{{ $currency }}"
-                                        {{ old('currency', $currency ?? '') == $currency ? 'selected' : '' }}>
-                                        {{ $currency }}
-                                    </option>
-                                @endforeach
+                                @php
+                                    $currency = getHotelCurrency();
+                                @endphp
+                                <option value="">Select Currency</option>
+                                <option value="{{ $currency->short_name }}"
+                                    {{ old('currency', $currency->short_name ?? '') == $currency->short_name ? 'selected' : '' }}>
+                                    {{ $currency->short_name }}
+                                </option>
                             </select>
                             @error('currency')
                                 <div class="invalid-feedback">{{ $message }}</div>

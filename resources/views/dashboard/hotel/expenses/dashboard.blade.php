@@ -96,7 +96,7 @@
                                                     @foreach ($top_expenses as $top_expense)
                                                         <tr>
                                                             <td>{{ $top_expense->category->name }}</td>
-                                                            <td>{{ number_format($top_expense->amount) }}</td>
+                                                            <td>{{currencySymbol()}}{{ number_format($top_expense->amount) }}</td>
                                                         </tr>
                                                     @endforeach
                                                 </tbody>

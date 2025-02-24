@@ -7,7 +7,7 @@
         const totalPaidExpenses = expensesChartData.chart_data['total_paid_expenses_amount'];
         const totalUnpaidExpenses = expensesChartData.chart_data['total_unpaid_expenses_amount'];
         const chartLebels = expensesChartData.chart_data['data_labels'];
-        console.log(expensesChartData);
+        const currencySymbol = @json(currencySymbol());
         
         var expenseChart = function() {
             //dual line chart
@@ -83,7 +83,7 @@
                             yAxes: [{
                                 ticks: {
                                     callback: function(value, index, values) {
-                                        return '$' + value.toLocaleString();
+                                        return currencySymbol + value.toLocaleString();
                                     },
                                     beginAtZero: true,
                                     max: Math.max(...totalExpenses, ...totalPaidExpenses, ...totalUnpaidExpenses) + 1000,

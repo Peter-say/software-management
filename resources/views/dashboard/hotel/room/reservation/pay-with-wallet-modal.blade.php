@@ -18,13 +18,13 @@
                             <div>
                                 <p>Current balance</p>
                                 <p>
-                                    <span><b>₦{{ number_format($reservation->guest->wallet->balance, 2) }}</b></span>
+                                    <span><b>{{currencySymbol()}}{{ number_format($reservation->guest->wallet->balance, 2) }}</b></span>
                                 </p>
                             </div>
                             <div>
                                 <p>Payment Due</p>
                                 <p>
-                                    <b>₦{{ number_format(
+                                    <b>{{currencySymbol()}}{{ number_format(
                                         $reservation->total_amount +
                                             $reservation->guest->calculateOrderNetTotal() -
                                             (($reservation->payments() ?? collect())->sum('amount') + $reservation->guest->paidTotalOrders()),

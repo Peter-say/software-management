@@ -32,7 +32,7 @@ class StripeService
                 throw new Exception('Stripe token is missing');
             }
             $amount = $request->input('amount') * 100; // Stripe uses cents
-            $currency = strtolower($request->input('currency', 'usd'));
+            $currency = strtolower(getCountryCurrency());
             $address = $this->getAddress($request);
             $stripeCharge = \Stripe\Charge::create([
                 'amount' => $amount,

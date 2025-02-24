@@ -109,7 +109,7 @@
                                                             </td>
                                                             <td>
                                                                 <span
-                                                                    class="fs-16 font-w500 text-nowrap">{{ number_format($expense->amount) ?? '' }}</span>
+                                                                    class="fs-16 font-w500 text-nowrap">{{currencySymbol()}}{{ number_format($expense->amount) ?? '' }}</span>
                                                             </td>
 
                                                             <td>

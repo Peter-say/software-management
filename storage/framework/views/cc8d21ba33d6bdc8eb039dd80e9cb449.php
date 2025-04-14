@@ -1,0 +1,1 @@
+<?php /**PATH C:\Web Development\Backend\Laravel\software-management\software-management\resources\views\auth\layouts\head.blade.php ENDPATH**/ ?>

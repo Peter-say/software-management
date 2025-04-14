@@ -16,8 +16,9 @@ class PaymentController extends Controller
     {
         $this->payment_service = $payment_service;
     }
-    public function payWithCard(Request $request)
+    public function initiatePayment(Request $request)
     {
+        dd($request->all());
         try {
             $this->payment_service->processPayment($request);
             return back()->with('success_message', "Payment made successfully");

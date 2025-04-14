@@ -1,7 +1,7 @@
 <script>
     var paymentPlatform = @json($payment_platform);
     if (paymentPlatform) {
-        if (paymentPlatform.payment_platform.slug === 'stripe') {
+        if (paymentPlatform.slug === 'stripe') {
             var stripe = Stripe(paymentPlatform.public_key);
             var elements = stripe.elements();
             var card = elements.create('card');
@@ -21,10 +21,10 @@
                     }
                 });
             });
-        } else if (paymentPlatform.name === 'flutterwave') {
+        } else if (paymentPlatform.slug === 'flutterwave') {
             // Initialize Flutterwave payment logic
             console.log('Flutterwave selected');
-        } else if (paymentPlatform.name === 'paystack') {
+        } else if (paymentPlatform.slug === 'paystack') {
             // Initialize Paystack payment logic
             console.log('Paystack selected');
         } else {
@@ -33,10 +33,53 @@
     } else {
         Toastify({
             text: 'No payment platform found. You have to set up a payment platform to use this feature. go to settings and set up a payment platform',
-             duration: 5000,
-             gravity: 'top',
-             position: 'right',
-             backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
-             }).showToast();
+            duration: 5000,
+            gravity: 'top',
+            position: 'right',
+            backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
+        }).showToast();
     }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const amountInputJQ = $('#amount'); // jQuery version
+        const amountInputJS = document.getElementById('amount'); // Plain JavaScript version
+        const payableAmount = parseFloat($('#payable-amount').val());
+
+        // Handle input event with jQuery
+        amountInputJQ.on('input', function() {
+            let enteredAmount = parseFloat(this.value.replace(/,/g, '') || 0);
+            alert(enteredAmount)
+            if (enteredAmount > payableAmount) {
+                Toastify({
+                    text: `You cannot pay more than ₦${payableAmount.toLocaleString()}.`,
+                    duration: 5000,
+                    gravity: 'top',
+                    position: 'right',
+                    backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
+                }).showToast();
+                this.value = payableAmount.toLocaleString();
+            } else {
+                this.value = enteredAmount.toLocaleString();
+            }
+        });
+
+        // Handle input formatting with plain JavaScript
+        amountInputJS.addEventListener('input', function() {
+            let inputVal = this.value.replace(/[^0-9.]/g, '');
+            const parts = inputVal.split('.');
+            if (parts[0]) {
+                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            }
+            this.value = parts.join('.');
+        });
+
+        // Ensure proper format before form submission
+        document.getElementById('payWithWallet').addEventListener('submit', function() {
+            amountInputJQ.val(amountInputJQ.val().replace(/,/g, ''));
+        });
+        document.getElementById('paymentInitiate').addEventListener('submit', function() {
+            amountInputJQ.val(amountInputJQ.val().replace(/,/g, ''));
+        });
+    });
 </script>

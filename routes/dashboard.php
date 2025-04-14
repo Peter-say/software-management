@@ -144,7 +144,7 @@ Route::middleware('auth', 'verified')->group(function () {
             });
         });
         Route::prefix('payments')->as('payments.')->group(function () {
-            Route::post('pay-with-card', [PaymentController::class, 'payWithCard'])->name('pay-with-card');
+            Route::post('initiate', [PaymentController::class, 'initiatePayment'])->name('initiate');
         });
        
     })->middleware(HotelUserMiddleware::class);

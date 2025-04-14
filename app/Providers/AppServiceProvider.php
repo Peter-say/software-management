@@ -46,11 +46,15 @@ class AppServiceProvider extends ServiceProvider
                 if ($user && $user->hotel) {
                     $paymentPlatform = HotelPaymentPlatform::where('hotel_id', $user->hotel->id)
                     ->with('paymentPlatform')
+                    
                     ->first();
                 } else {
                     $paymentPlatform = null; 
                 }
-                $view->with('payment_platform', $paymentPlatform);
+                $view->with('payment_platform', [
+                    'public_key' =>  $paymentPlatform?->public_key,
+                    'slug' => $paymentPlatform?->paymentPlatform->slug,
+                ]);
             });
     }
 

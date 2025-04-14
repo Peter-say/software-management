@@ -115,7 +115,14 @@ unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                     </div>
-
+ <!-- Stripe Card Element -->
+ <div class="row mb-3">
+                        <div class="col-12">
+                            <label for="card-element">Credit or Debit Card</label>
+                            <div id="card-element"  class="form-control"></div>
+                            <div id="card-errors" role="alert"></div>
+                        </div>
+                    </div>
                     <!-- Comment Field -->
                     <div class="row mb-3">
                         <div class="col-12">
@@ -126,16 +133,6 @@ unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Stripe Card Element -->
-                    <div class="row mb-3">
-                        <div class="col-12">
-                            <label for="card-element">Credit or Debit Card</label>
-                            <div id="card-element"  class="form-control"></div>
-                            <div id="card-errors" role="alert"></div>
-                        </div>
-                    </div>
-
                     <!-- Preloader -->
                     <div id="form-preloader" class="row mb-3 text-center">
                         <div class="col-12">

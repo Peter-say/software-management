@@ -172,7 +172,11 @@
                                                                 'payableType' => $payableType,
                                                                 'payableModel' => $order,
                                                                 'currencies' => $currencies,
-                                                                ])                           
+                                                                ])
+                                                                @include('dashboard.hotel.restaurant-item.order.cancel-modal', [
+                                                'order' => $order,
+                                            ])
+                           
                                                         @endforeach
                                                     @else
                                                         <tr>
@@ -181,10 +185,6 @@
                                                     @endif
                                                 </tbody>
                                             </table>
-                                            @include('dashboard.hotel.restaurant-item.order.cancel-modal', [
-                                                'order' => $order,
-                                            ])
-
                                         </div>
                                         <!-- Pagination -->
                                         <div class="d-flex justify-content-between align-items-center mt-3">

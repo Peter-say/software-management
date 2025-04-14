@@ -50,7 +50,6 @@ class AppServiceProvider extends ServiceProvider
                 } else {
                     $paymentPlatform = null; 
                 }
-        
                 $view->with('payment_platform', $paymentPlatform);
             });
     }

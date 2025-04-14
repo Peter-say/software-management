@@ -29,7 +29,7 @@ class PaymentService
             'amount' => 'required|numeric|min:1', // Amount is required and must be a positive number
             'currency' => 'nullable|string',
             Rule::in(CurrencyConstants::CURRENCY_CODES), // Currency is nullable and must be one of the allowed currencies if provided
-            'payment_method' => 'required|string|in:CARD,BANK_TRANSFER,WALLET', // Payment method type (e.g., card, bank transfer) is required
+            'payment_method' => 'required|string|in:CARD,BANK_TRANSFER,WALLET,CASH', // Payment method type (e.g., card, bank transfer) is required
             'description' => 'nullable|string',
         ]);
 
@@ -55,6 +55,7 @@ class PaymentService
 
     public function processPayment(Request $request, $payment_id = null)
     {
+        dd($request->all());
         return DB::transaction(function () use ($request, $payment_id) {
             $this->validatePayment($request->all());
 

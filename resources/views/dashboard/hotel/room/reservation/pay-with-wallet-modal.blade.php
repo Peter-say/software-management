@@ -7,7 +7,14 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="Pay-with-wallet-modal">Wallet Payment</h5>
+                <h5 class="modal-title mr-2" id="payment-title"></h5>
+                <div class="col-6">
+    <select class="form-select" id="payment-option" name="payment-option">
+        <option value="WALLET" selected>WALLET</option>
+        <option value="CASH">CASH</option>
+        <option value="CARD">CARD</option>
+    </select>
+     </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="{{ route('dashboard.hotel.pay-with-guest-wallet') }}" id="payWithWallet" method="post">
@@ -15,7 +22,7 @@
                 <div class="modal-body">
                     <div class="modal-body text-dark">
                         <div class="d-flex justify-content-between">
-                            <div>
+                            <div id="wallet-balance">
                                 <p>Current balance</p>
                                 <p>
                                     <span><b>{{currencySymbol()}}{{ number_format($reservation->guest->wallet->balance, 2) }}</b></span>
@@ -51,6 +58,14 @@
                                 @enderror
                             </div>
                         </div>
+                         <!-- Stripe Card Element -->
+                    <div class="col-12 m-3">
+                        <div class="form-group" id="stripe-card">
+                            <label for="card-element">Credit or Debit Card</label>
+                            <div id="card-element"  class="form-control"></div>
+                            <div id="card-errors" role="alert"></div>
+                        </div>
+                    </div>
                         <div class="col-12 m-3">
                             <div class="form-group">
                                 <label id="description" for="">Comment</label>
@@ -65,7 +80,9 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <input type="hidden" name="payment_method" id="wallet-payment-method" value="WALLET">
+                    <input type="hidden" name="stripeToken" id="stripe-token">
+                    <input type="hidden" name="stripe_payment" id="fund-wallet-method" value="Stripe">
+                        <input type="hidden" name="payment_method" id="payment-method" value="">
                         <input type="hidden" name="hotel_id" value="{{ auth()->user()->id }}">
                         <input type="hidden" name="reservation_id" value="{{ $reservation->id }}">
                         @if ($reservation->total_amount > ($reservation->payments() ?? collect())->sum('amount'))
@@ -105,7 +122,7 @@
                             value="{{ $reservation->total_amount + $reservation->guest->calculateOrderNetTotal() - ($reservation->payments() ?? collect())->sum('amount') }}">
                         <button type="submit" class="btn btn-primary">Pay now</button>
                         <button type="button" data-bs-toggle="modal" data-bs-target="#fund-guest-wallet-modal"
-                            class="btn btn-primary">Fund your wallet</button>
+                            class="btn btn-primary" id="fund-wallet">Fund your wallet</button>
                     </div>
                 </div>
             </form>
@@ -113,6 +130,7 @@
         </div>
     </div>
 </div>
+@include('dashboard.general.payment.payment-platform-script')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const amountInputJQ = $('#amount'); // jQuery version
@@ -150,6 +168,63 @@
         // Ensure proper format before form submission
         document.getElementById('payWithWallet').addEventListener('submit', function() {
             amountInputJQ.val(amountInputJQ.val().replace(/,/g, ''));
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const paymentSelect = document.getElementById('payment-option');
+        const paymentMethod = document.getElementById('payment-method');
+        const stripeField = document.getElementById('stripe-card');
+        const stripeTokenInput = document.getElementById('stripe-token');
+        const fundWalletMethodInput = document.getElementById('fund-wallet-method');
+        const walletBalance = document.getElementById('wallet-balance');
+        const paymentTitle = document.getElementById('payment-title');
+        const fundWallet = document.getElementById('fund-wallet');
+
+        function updatePaymentMethodDisplay(method) {
+            paymentSelect.value = method;
+             console.log(paymentSelect, 'hello');
+             
+            switch (method) {
+                case 'WALLET':
+                    paymentTitle.innerText = 'Wallet Payment';
+                    stripeField.style.display = 'none';
+                    walletBalance.style.display = 'block';
+                      fundWallet.style.display = 'block'
+                      paymentMethod.value = 'WALLET'
+                    stripeTokenInput.value = '';
+                    break;
+
+                case 'CASH':
+                    paymentTitle.innerText = 'Cash Payment';
+                    stripeField.style.display = 'none';
+                    walletBalance.style.display = 'none';
+                    fundWallet.style.display = 'none'
+                     paymentMethod.value = 'CASH'
+                    stripeTokenInput.value = '';
+                    break;
+
+                case 'CARD':
+                    paymentTitle.innerText = 'Card Payment';
+                    stripeField.style.display = 'block';
+                    walletBalance.style.display = 'none';
+                      fundWallet.style.display = 'none'
+                       paymentMethod.value = 'CARD'
+                    stripeTokenInput.setAttribute('value', 'step-token');
+                    break;
+
+                default:
+                paymentTitle.textContent = 'Wallet Payment';
+                    stripeField.style.display = 'none';
+                    walletBalance.style.display = 'block';
+                    stripeTokenInput.value = '';
+                    break;
+            }
+        }
+        updatePaymentMethodDisplay(paymentSelect.value);
+        paymentSelect.addEventListener('change', function () {
+            updatePaymentMethodDisplay(this.value);
         });
     });
 </script>

@@ -29,7 +29,6 @@
                             @php
                             $currency = getHotelCurrency();
                         @endphp
-                            <option value="">Select Currency</option>
                                 <option value="{{ $currency->short_name }}"
                                     {{ old('currency', $currency->short_name ?? '') == $currency->short_name ? 'selected' : '' }}>
                                     {{ $currency->short_name }}
@@ -102,6 +101,8 @@
 <script src="https://js.stripe.com/v3/"></script>
 <script>
     var paymentPlatform = @json($payment_platform);
+    console.log(paymentPlatform);
+    
     if (paymentPlatform) {
         if (paymentPlatform.payment_platform.slug === 'stripe') {
             var stripe = Stripe(paymentPlatform.public_key);
@@ -139,6 +140,12 @@
             console.warn('No valid payment platform selected');
         }
     } else {
-        console.error('No payment platform found');
+        Toastify({
+            text: 'No payment platform found. You have to set up a payment platform to use this feature. go to settings and set up a payment platform',
+             duration: 5000,
+             gravity: 'top',
+             position: 'right',
+             backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
+             }).showToast();
     }
 </script>

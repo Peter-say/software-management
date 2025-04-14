@@ -363,8 +363,6 @@
 
                 // Check if the selected option is "WALLET"
                 if (selectedOption === 'WALLET') {
-                    // Trigger the modal to show
-                    // console.log('hello');
                     $('#Pay-with-wallet-modal').modal('show');
                 }
             });

@@ -24,7 +24,7 @@
                         <h5 class="card-header">Hotel Info</h5>
                         <div class="card-body d-flex justify-content-between">
                             Manage your hotel info here
-                            <a href="" class="btn btn-primary">Proceed</a>
+                            <a href="<?php echo e(route('dashboard.hotel.settings.hotel-info.edit')); ?>" class="btn btn-primary">Proceed</a>
                         </div>
                     </div>
                 </div>

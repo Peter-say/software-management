@@ -1,13 +1,13 @@
 <!-- Button trigger modal -->
 <?php
-    $date = Date('d/m/y');
+$date = Date('d/m/y');
 ?>
 <div class="modal fade" id="Pay-with-wallet-modal" tabindex="-1" role="dialog" aria-labelledby="Pay-with-wallet-modal"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title mr-2" id="payment-title">Pay With Wallet</h5>
+                <h5 class="modal-title mr-2">Pay With Wallet</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="<?php echo e(route('dashboard.hotel.pay-with-guest-wallet')); ?>" id="payWithWallet" method="post">
@@ -57,10 +57,10 @@ $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                    <div class="invalid-feedback">
-                                        <?php echo e($message); ?>
+                                <div class="invalid-feedback">
+                                    <?php echo e($message); ?>
 
-                                    </div>
+                                </div>
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -84,10 +84,10 @@ $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                    <div class="invalid-feedback">
-                                        <?php echo e($message); ?>
+                                <div class="invalid-feedback">
+                                    <?php echo e($message); ?>
 
-                                    </div>
+                                </div>
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -96,8 +96,8 @@ unset($__errorArgs, $__bag); ?>
                         </div>
                     </div>
                     <div class="modal-footer">
-                    <input type="hidden" name="stripeToken" id="stripe-token">
-                    <input type="hidden" name="stripe_payment" id="fund-wallet-method" value="Stripe">
+                        <input type="hidden" name="stripeToken" id="stripe-token">
+                        <input type="hidden" name="stripe_payment" id="fund-wallet-method" value="Stripe">
                         <input type="hidden" name="payment_method" id="payment-method" value="">
                         <input type="hidden" name="hotel_id" value="<?php echo e(auth()->user()->id); ?>">
                         <input type="hidden" name="reservation_id" value="<?php echo e($reservation->id); ?>">
@@ -114,7 +114,4 @@ unset($__errorArgs, $__bag); ?>
         </div>
     </div>
 </div>
-<?php echo $__env->make('dashboard.general.payment.payment-platform-script', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
-
-<?php /**PATH C:\Web Development\Backend\Laravel\software-management\software-management\resources\views\dashboard\hotel\room\reservation\pay-with-wallet-modal.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('dashboard.general.payment.payment-platform-script', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Web Development\Backend\Laravel\software-management\software-management\resources\views\dashboard\hotel\room\reservation\pay-with-wallet-modal.blade.php ENDPATH**/ ?>

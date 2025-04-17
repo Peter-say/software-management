@@ -345,7 +345,10 @@
     @if ($reservation)
     @include('dashboard.hotel.room.reservation.payment-methods')
     @include('dashboard.hotel.room.reservation.pay-with-wallet-modal')
-    @include('dashboard.general.payment.modal')
+    @include('dashboard.general.payment.modal', [
+    'reservation' => $reservation,
+    'payableType' => get_class($reservation)
+    ])
 
     @include('dashboard.hotel.guest.wallet.credit', [
     'guest' => $reservation->guest,
@@ -357,7 +360,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Listen for changes in the select element in the payment method
             paymentMethod = document.getElementById('payment-method')
-            alert('hey', amountInput, payableAmount)
+
             paymentMethod.addEventListener('change', function() {
                 // Get the selected option
 

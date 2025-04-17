@@ -38,7 +38,10 @@ class Hotel extends Model
     {
         return $this->hasManyThrough(User::class, HotelUser::class);
     }
-
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     public function room()
     {
         return $this->hasMany(Room::class, 'user_id');
@@ -85,5 +88,13 @@ class Hotel extends Model
     public function bar()
     {
         return $this->hasMany(Bar::class);
+    }
+    public function hotelLogo()
+    {
+        $logo = $this->logo;
+        if ($logo) {
+            return getStorageUrl('hotel/logo/' . $logo);
+        }
+        return getStorageUrl('dashboard/images/gallery/hotel1.jpg');
     }
 }

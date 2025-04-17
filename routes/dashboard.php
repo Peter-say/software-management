@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\Developer\HotelsController;
+use App\Http\Controllers\Dashboard\Developer\UsersController as DeveloperUsersController;
 use App\Http\Controllers\Dashboard\Finance\PaymentController;
 use App\Http\Controllers\Dashboard\Hotel\Bar\BarItemsController;
 use App\Http\Controllers\Dashboard\Hotel\Bar\BarOrderController;
@@ -38,6 +40,20 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth', 'verified')->group(function () {
 
     Route::prefix('dashboard')->as('dashboard.')->group(function () {
+
+        Route::prefix('hotels')->as('hotels.')->group(function () {
+            Route::get('/', [HotelsController::class, 'index']);
+            Route::get('/show-hotel/{id}', [HotelsController::class, 'show'])->name('show-hotel');
+            Route::delete('/delete-hotel/{id}', [HotelsController::class, 'delete'])->name('delete-hotel');
+            Route::post('/login-as-hotel-owner/{id}', [HotelsController::class, 'loginAsHotelOwner'])->name('login-as-hotel-owner');
+            Route::get('/impersonate/{id}', [HotelsController::class, 'impersonate'])
+                ->name('impersonate')->middleware('signed');
+            Route::post('/switch-back-impersonator', [HotelsController::class, 'switchBackImpersonator'])->name('switch-back-impersonator');
+        });
+        Route::prefix('users')->as('userss.')->group(function () {
+            Route::get('/users', [DeveloperUsersController::class, 'index'])->name('users');
+        });
+
         Route::get('download.sample', [RestaurantItemsController::class, 'downloadSample'])->name('download.sample');
 
         Route::get('home', [DashboardController::class, 'dashboard'])->name('home');
@@ -137,6 +153,8 @@ Route::middleware('auth', 'verified')->group(function () {
                     Route::get('/', [HotelSettingController::class, 'index']);
                     Route::get('choose-payment-platform', [HotelSettingController::class, 'paymentPlaform'])->name('choose-payment-platform');
                     Route::get('edit-currency', [HotelSettingController::class, 'editCurrency'])->name('edit-currency');
+                    Route::get('edit', [HotelSettingController::class, 'edit'])->name('edit');
+                    Route::put('update', [HotelSettingController::class, 'update'])->name('update');
                 });
             });
             Route::prefix('filter')->as('filter.')->group(function () {
@@ -146,7 +164,6 @@ Route::middleware('auth', 'verified')->group(function () {
         Route::prefix('payments')->as('payments.')->group(function () {
             Route::post('initiate', [PaymentController::class, 'initiatePayment'])->name('initiate');
         });
-       
     })->middleware(HotelUserMiddleware::class);
     Route::get('/get-states-by-country', [OnboardingController::class, 'getStatesByCountry'])->name('get-states-by-country');
 
@@ -154,5 +171,4 @@ Route::middleware('auth', 'verified')->group(function () {
         Route::get('setup-app', [OnboardingController::class, 'setupApp'])->name('setup-app');
         Route::post('save-setup-app', [OnboardingController::class, 'saveSetupApp'])->name('save-setup-app');
     });
-   
 });

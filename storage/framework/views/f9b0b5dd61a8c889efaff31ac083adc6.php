@@ -108,8 +108,6 @@ unset($__errorArgs, $__bag); ?>
     </div>
 </div>
 <?php echo $__env->make('dashboard.general.payment.payment-platform-script', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-<!-- Stripe JS -->
-<script src="https://js.stripe.com/v3/"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

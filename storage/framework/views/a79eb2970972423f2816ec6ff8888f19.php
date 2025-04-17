@@ -93,21 +93,21 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>">
                                     <?php
-                                        $currency = getHotelCurrency();
+                                    $currency = getHotelCurrency();
                                     ?>
                                     <option value="">Select Currency</option>
-                                        <option value="<?php echo e($currency->short_name); ?>"
-                                            <?php echo e(old('currency', $currency->short_name ?? '') == $currency->short_name ? 'selected' : ''); ?>>
-                                            <?php echo e($currency->short_name); ?>
+                                    <option value="<?php echo e($currency->short_name); ?>"
+                                        <?php echo e(old('currency', $currency->short_name ?? '') == $currency->short_name ? 'selected' : ''); ?>>
+                                        <?php echo e($currency->short_name); ?>
 
-                                        </option>
+                                    </option>
                                 </select>
                                 <?php $__errorArgs = ['currency'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                <div class="invalid-feedback"><?php echo e($message); ?></div>
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -115,12 +115,12 @@ unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                     </div>
- <!-- Stripe Card Element -->
- <div class="row mb-3">
-                        <div class="col-12">
-                            <label for="card-element">Credit or Debit Card</label>
-                            <div id="card-element"  class="form-control"></div>
-                            <div id="card-errors" role="alert"></div>
+                    <!-- Stripe Card Element -->
+                    <div class="mb-3">
+                        <div id="stripe-card">
+                            <label for="card-element" class="form-label">Credit or Debit Card</label>
+                            <div id="card-element" class="form-control"></div>
+                            <div id="card-errors" role="alert" class="text-danger mt-2"></div>
                         </div>
                     </div>
                     <!-- Comment Field -->
@@ -163,38 +163,93 @@ unset($__errorArgs, $__bag); ?>
         </div>
     </div>
 </div>
+<?php echo $__env->make('dashboard.general.form-preloader', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    var paymentPlatform = <?php echo json_encode($payment_platform, 15, 512) ?>;
+    if (paymentPlatform) {
+        if (paymentPlatform.slug === 'stripe') {
+            var stripe = Stripe(paymentPlatform.public_key);
+            var elements = stripe.elements();
+            var card = elements.create('card');
+            card.mount('#card-element');
 
+            document.getElementById('paymentInitiate').addEventListener('submit', function(event) {
+                event.preventDefault();
+                document.getElementById('form-preloader').style.display = 'flex';
+
+                stripe.createToken(card).then(function(result) {
+                    if (result.error) {
+                        console.error(result.error.message);
+                        document.getElementById('form-preloader').style.display = 'none';
+                    } else {
+                        document.getElementById('stripe-token').value = result.token.id;
+                        event.target.submit();
+                    }
+                });
+            });
+        } else if (paymentPlatform.slug === 'flutterwave') {
+            // Initialize Flutterwave payment logic
+            console.log('Flutterwave selected');
+        } else if (paymentPlatform.slug === 'paystack') {
+            // Initialize Paystack payment logic
+            console.log('Paystack selected');
+        } else {
+            console.warn('No valid payment platform selected');
+        }
+    } else {
+        Toastify({
+            text: 'No payment platform found. You have to set up a payment platform to use this feature. go to settings and set up a payment platform',
+            duration: 5000,
+            gravity: 'top',
+            position: 'right',
+            backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
+        }).showToast();
+    }
+</script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const amountInput = document.getElementById('amount');
+        const amountInputJQ = $('#amount'); // jQuery version
+        const amountInputJS = document.getElementById('amount'); // Plain JavaScript version
+        const payableAmount = parseFloat($('#payable-amount').val());
 
-        amountInput.addEventListener('input', function() {
-            let inputVal = this.value;
+        // Handle input event with jQuery
+        amountInputJQ.on('input', function() {
+            let enteredAmount = parseFloat(this.value.replace(/,/g, '') || 0);
+            alert(enteredAmount)
+            if (enteredAmount > payableAmount) {
+                Toastify({
+                    text: `You cannot pay more than ₦${payableAmount.toLocaleString()}.`,
+                    duration: 5000,
+                    gravity: 'top',
+                    position: 'right',
+                    backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
+                }).showToast();
+                this.value = payableAmount.toLocaleString();
+            } else {
+                this.value = enteredAmount.toLocaleString();
+            }
+        });
 
-            // Remove all non-numeric characters except the decimal point
-            inputVal = inputVal.replace(/[^0-9.]/g, '');
-
-            // Split the value at the decimal point, if it exists
+        // Handle input formatting with plain JavaScript
+        amountInputJS.addEventListener('input', function() {
+            let inputVal = this.value.replace(/[^0-9.]/g, '');
             const parts = inputVal.split('.');
-
-            // Format the integer part with commas
             if (parts[0]) {
                 parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             }
-
-            // Join the integer and decimal parts, if present
             this.value = parts.join('.');
         });
 
         // Ensure proper format before form submission
+        document.getElementById('payWithWallet').addEventListener('submit', function() {
+            amountInputJQ.val(amountInputJQ.val().replace(/,/g, ''));
+        });
+        document.getElementById('paymentInitiate').addEventListener('submit', function() {
+            amountInputJQ.val(amountInputJQ.val().replace(/,/g, ''));
+        });
         document.getElementById('fundGuestWallet').addEventListener('submit', function() {
-            // Remove commas before submitting the form
             amountInput.value = amountInput.value.replace(/,/g, '');
         });
     });
-</script>
-<?php echo $__env->make('dashboard.general.form-preloader', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-<?php echo $__env->make('dashboard.general.payment.payment-platform-script', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-<script src="https://js.stripe.com/v3/"></script>
-
-<?php /**PATH C:\Web Development\Backend\Laravel\software-management\software-management\resources\views/dashboard/hotel/guest/wallet/credit.blade.php ENDPATH**/ ?>
+</script><?php /**PATH C:\Web Development\Backend\Laravel\software-management\software-management\resources\views/dashboard/hotel/guest/wallet/credit.blade.php ENDPATH**/ ?>

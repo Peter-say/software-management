@@ -92,8 +92,6 @@
     </div>
 </div>
 @include('dashboard.general.payment.payment-platform-script')
-<!-- Stripe JS -->
-<script src="https://js.stripe.com/v3/"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

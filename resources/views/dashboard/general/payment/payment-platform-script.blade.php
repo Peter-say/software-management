@@ -1,3 +1,4 @@
+<script src="https://js.stripe.com/v3/"></script>
 <script>
     var paymentPlatform = @json($payment_platform);
     if (paymentPlatform) {
@@ -7,7 +8,7 @@
             var card = elements.create('card');
             card.mount('#card-element');
 
-            document.getElementById('fund-guest-wallet-modal').addEventListener('submit', function(event) {
+            document.getElementById('paymentInitiate').addEventListener('submit', function(event) {
                 event.preventDefault();
                 document.getElementById('form-preloader').style.display = 'flex';
 
@@ -80,6 +81,9 @@
         });
         document.getElementById('paymentInitiate').addEventListener('submit', function() {
             amountInputJQ.val(amountInputJQ.val().replace(/,/g, ''));
+        });
+        document.getElementById('fundGuestWallet').addEventListener('submit', function() {
+            amountInput.value = amountInput.value.replace(/,/g, '');
         });
     });
 </script>

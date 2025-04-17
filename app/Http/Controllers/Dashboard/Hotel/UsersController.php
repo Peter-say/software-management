@@ -28,7 +28,7 @@ class UsersController extends Controller
     {
 
         $hotel = Hotel::where('uuid', User::getAuthenticatedUser()->hotel->uuid)->firstOrFail();
-        $hotel_users = $hotel->hotelUsers()->paginate(30);
+        $hotel_users = $hotel->hotelUsers()->latest()->paginate(30);
         return view('dashboard.hotel.users.index', [
             'hotel_users' => $hotel_users
         ]);
@@ -69,7 +69,6 @@ class UsersController extends Controller
 
     public function update(Request $request, $id)
     {
-        // dd($request->all());
         $data = $request->all();
         try {
             $user = HotelUser::findOrFail($id); // Fetch the user to update

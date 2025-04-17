@@ -8,89 +8,89 @@
                 <div class="header-left">
                     <div class="dashboard_bar">
                         <?php if(Route::currentRouteName() == 'dashboard.home'): ?>
-                            Dashboard
+                        Dashboard
                         <?php elseif(in_array(Route::currentRouteName(), [
-                                'dashboard.hotel-users.overview',
-                                'dashboard.hotel-users.create',
-                                'dashboard.hotel-users.edit',
-                            ])): ?>
-                            Hotel Users
+                        'dashboard.hotel-users.overview',
+                        'dashboard.hotel-users.create',
+                        'dashboard.hotel-users.edit',
+                        ])): ?>
+                        Hotel Users
                         <?php elseif(in_array(Route::currentRouteName(), [
-                                'dashboard.hotel.expenses.index',
-                                'dashboard.hotel.expenses.create',
-                                'dashboard.hotel.expenses.edit',
-                            ])): ?>
-                            Expenses
+                        'dashboard.hotel.expenses.index',
+                        'dashboard.hotel.expenses.create',
+                        'dashboard.hotel.expenses.edit',
+                        ])): ?>
+                        Expenses
                         <?php elseif(in_array(Route::currentRouteName(), [
-                                'dashboard.hotel.guests.index',
-                                'dashboard.hotel.guests.create',
-                                'dashboard.hotel.guests.edit',
-                                'dashboard.hotel.guests.show',
-                            ])): ?>
-                            Guest
+                        'dashboard.hotel.guests.index',
+                        'dashboard.hotel.guests.create',
+                        'dashboard.hotel.guests.edit',
+                        'dashboard.hotel.guests.show',
+                        ])): ?>
+                        Guest
                         <?php elseif(Route::currentRouteName() == 'dashboard.hotel.kitchen.orders'): ?>
-                            Kitchen Order
+                        Kitchen Order
                         <?php elseif(in_array(Route::currentRouteName(), [
-                                'dashboard.hotel.notifications.view-all',
-                                'dashboard.hotel.notifications.view',
-                            ])): ?>
-                            Notification
+                        'dashboard.hotel.notifications.view-all',
+                        'dashboard.hotel.notifications.view',
+                        ])): ?>
+                        Notification
                         <?php elseif(in_array(Route::currentRouteName(), [
-                                'dashboard.hotel.outlets.index',
-                                'dashboard.hotel.outlets.create',
-                                'dashboard.hotel.outlets.edit',
-                            ])): ?>
-                            Outlets
+                        'dashboard.hotel.outlets.index',
+                        'dashboard.hotel.outlets.create',
+                        'dashboard.hotel.outlets.edit',
+                        ])): ?>
+                        Outlets
                         <?php elseif(in_array(Route::currentRouteName(), [
-                                'dashboard.hotel.reservations.index',
-                                'dashboard.hotel.reservations.create',
-                                'dashboard.hotel.reservations.show',
-                                'dashboard.hotel.reservations.edit',
-                                'dashboard.hotel.reservation-dashboard',
-                            ])): ?>
-                            Room Reservation
+                        'dashboard.hotel.reservations.index',
+                        'dashboard.hotel.reservations.create',
+                        'dashboard.hotel.reservations.show',
+                        'dashboard.hotel.reservations.edit',
+                        'dashboard.hotel.reservation-dashboard',
+                        ])): ?>
+                        Room Reservation
                         <?php elseif(in_array(Route::currentRouteName(), [
-                                'dashboard.hotel.restaurant-items.index',
-                                'dashboard.hotel.restaurant-items.create',
-                                'dashboard.hotel.restaurant-items.edit',
-                            ])): ?>
-                            Restaurant Items
+                        'dashboard.hotel.restaurant-items.index',
+                        'dashboard.hotel.restaurant-items.create',
+                        'dashboard.hotel.restaurant-items.edit',
+                        ])): ?>
+                        Restaurant Items
                         <?php elseif(in_array(Route::currentRouteName(), [
-                                'dashboard.hotel.restaurant.create-order',
-                                'dashboard.hotel.restaurant.view-orders',
-                            ])): ?>
-                            Restaurant Order
+                        'dashboard.hotel.restaurant.create-order',
+                        'dashboard.hotel.restaurant.view-orders',
+                        ])): ?>
+                        Restaurant Order
                         <?php elseif(in_array(Route::currentRouteName(), [
-                                'dashboard.hotel.bar-items.index',
-                                'dashboard.hotel.bar-items.create',
-                                'dashboard.hotel.bar-items.edit',
-                            ])): ?>
-                            Bar Items
+                        'dashboard.hotel.bar-items.index',
+                        'dashboard.hotel.bar-items.create',
+                        'dashboard.hotel.bar-items.edit',
+                        ])): ?>
+                        Bar Items
                         <?php elseif(in_array(Route::currentRouteName(), [
-                            'dashboard.hotel.bar.create-order', 
-                            'dashboard.hotel.bar.view-orders'
-                            ])): ?>
-                            Restaurant Order
+                        'dashboard.hotel.bar.create-order',
+                        'dashboard.hotel.bar.view-orders'
+                        ])): ?>
+                        Restaurant Order
                         <?php elseif(in_array(Route::currentRouteName(), [
-                                'dashboard.hotel.rooms.index',
-                                'dashboard.hotel.rooms.create',
-                                'dashboard.hotel.rooms.edit',
-                            ])): ?>
-                            Rooms
+                        'dashboard.hotel.rooms.index',
+                        'dashboard.hotel.rooms.create',
+                        'dashboard.hotel.rooms.edit',
+                        ])): ?>
+                        Rooms
                         <?php elseif(in_array(Route::currentRouteName(), [
-                                'dashboard.hotel.suppliers.index',
-                                'dashboard.hotel.suppliers.create',
-                                'dashboard.hotel.suppliers.edit',
-                            ])): ?>
-                            Suppliers
+                        'dashboard.hotel.suppliers.index',
+                        'dashboard.hotel.suppliers.create',
+                        'dashboard.hotel.suppliers.edit',
+                        ])): ?>
+                        Suppliers
                         <?php elseif(in_array(Route::currentRouteName(), [
-                                'dashboard.hotel.settings.',
-                                'dashboard.hotel.settings.info.',
-                                'dashboard.hotel.module-preferences.edit',
-                            ])): ?>
-                            Settings
+                        'dashboard.hotel.settings.',
+                        'dashboard.hotel.settings.hotel-info.',
+                        'dashboard.hotel.module-preferences.edit',
+                        'dashboard.hotel.settings.hotel-info.edit',
+                        ])): ?>
+                        Settings
                         <?php endif; ?>
-
                     </div>
                 </div>
                 <div class="nav-item d-flex align-items-center">
@@ -250,7 +250,22 @@
                                 </svg>
                                 <span class="ms-2">Inbox </span>
                             </a>
-                            <a href="<?php echo e(route('logout')); ?> " class="dropdown-item ai-icon"
+                            <?php if(session()->has('impersonator_id')): ?>
+                            <a href="<?php echo e(route('dashboard.hotels.switch-back-impersonator')); ?>" class="dropdown-item ai-icon"
+                                onclick="event.preventDefault(); document.getElementById('switch-back-form').submit();">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="text-warning" width="18"
+                                    height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 12l18 0"></path>
+                                    <path d="M12 3l0 18"></path>
+                                </svg>
+                                <span class="ms-2">Switch to Developer</span>
+                            </a>
+                            <form id="switch-back-form" action="<?php echo e(route('dashboard.hotels.switch-back-impersonator')); ?>" method="POST" style="display: none;">
+                                <?php echo csrf_field(); ?>
+                            </form>
+                            <?php else: ?>
+                            <a href="<?php echo e(route('logout')); ?>" class="dropdown-item ai-icon"
                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="text-danger" width="18"
                                     height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -259,12 +274,13 @@
                                     <polyline points="16 17 21 12 16 7"></polyline>
                                     <line x1="21" y1="12" x2="9" y2="12"></line>
                                 </svg>
-                                <span class="ms-2">Logout </span>
+                                <span class="ms-2">Logout</span>
                             </a>
-                            <form id="logout-form" action="<?php echo e(route('logout')); ?>" method="POST"
-                                style="display: none;">
+                            <form id="logout-form" action="<?php echo e(route('logout')); ?>" method="POST" style="display: none;">
                                 <?php echo csrf_field(); ?>
                             </form>
+                            <?php endif; ?>
+
                         </div>
                     </li>
                 </ul>
@@ -274,5 +290,4 @@
 </div>
 <!--**********************************
    Header end ti-comment-alt
-  ***********************************-->
-<?php /**PATH C:\Web Development\Backend\Laravel\software-management\software-management\resources\views/dashboard/layouts/navigations/header.blade.php ENDPATH**/ ?>
+  ***********************************--><?php /**PATH C:\Web Development\Backend\Laravel\software-management\software-management\resources\views/dashboard/layouts/navigations/header.blade.php ENDPATH**/ ?>

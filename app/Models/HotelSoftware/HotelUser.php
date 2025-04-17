@@ -23,4 +23,13 @@ class HotelUser extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function photo()
+    {
+        $photo = $this->photo;
+        if ($photo) {
+            return getStorageUrl('hotel/users/photos/' . $photo);
+        }
+        return getStorageUrl('dashboard/images/gallery/hotel1.jpg');
+    }
 }

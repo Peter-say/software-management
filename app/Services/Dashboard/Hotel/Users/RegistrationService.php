@@ -48,9 +48,6 @@ class RegistrationService
     }
 
 
-
-
-
     // Store user and hotel user data
     public function save(Request $request, $data)
     {

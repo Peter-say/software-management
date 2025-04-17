@@ -123,7 +123,7 @@ if (!function_exists('getStorageUrl')) {
     function getStorageUrl($relativePath)
     {
         if (app()->environment('local')) {
-            return url($relativePath);
+            return url($relativePath);  
         } else {
             return url("public/{$relativePath}");
         }

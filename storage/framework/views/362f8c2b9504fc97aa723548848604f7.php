@@ -21,10 +21,10 @@
                     }
                 });
             });
-        } else if (paymentPlatform.name === 'flutterwave') {
+        } else if (paymentPlatform.slug === 'flutterwave') {
             // Initialize Flutterwave payment logic
             console.log('Flutterwave selected');
-        } else if (paymentPlatform.name === 'paystack') {
+        } else if (paymentPlatform.slug === 'paystack') {
             // Initialize Paystack payment logic
             console.log('Paystack selected');
         } else {
@@ -33,11 +33,11 @@
     } else {
         Toastify({
             text: 'No payment platform found. You have to set up a payment platform to use this feature. go to settings and set up a payment platform',
-             duration: 5000,
-             gravity: 'top',
-             position: 'right',
-             backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
-             }).showToast();
+            duration: 5000,
+            gravity: 'top',
+            position: 'right',
+            backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
+        }).showToast();
     }
 </script>
 <script>
@@ -49,7 +49,7 @@
         // Handle input event with jQuery
         amountInputJQ.on('input', function() {
             let enteredAmount = parseFloat(this.value.replace(/,/g, '') || 0);
-
+            alert(enteredAmount)
             if (enteredAmount > payableAmount) {
                 Toastify({
                     text: `You cannot pay more than ₦${payableAmount.toLocaleString()}.`,
@@ -76,6 +76,9 @@
 
         // Ensure proper format before form submission
         document.getElementById('payWithWallet').addEventListener('submit', function() {
+            amountInputJQ.val(amountInputJQ.val().replace(/,/g, ''));
+        });
+        document.getElementById('paymentInitiate').addEventListener('submit', function() {
             amountInputJQ.val(amountInputJQ.val().replace(/,/g, ''));
         });
     });

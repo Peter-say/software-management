@@ -346,7 +346,10 @@
     <?php if($reservation): ?>
     <?php echo $__env->make('dashboard.hotel.room.reservation.payment-methods', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <?php echo $__env->make('dashboard.hotel.room.reservation.pay-with-wallet-modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-    <?php echo $__env->make('dashboard.general.payment.modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    <?php echo $__env->make('dashboard.general.payment.modal', [
+    'reservation' => $reservation,
+    'payableType' => get_class($reservation)
+    ], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
     <?php echo $__env->make('dashboard.hotel.guest.wallet.credit', [
     'guest' => $reservation->guest,
@@ -358,7 +361,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Listen for changes in the select element in the payment method
             paymentMethod = document.getElementById('payment-method')
-            alert('hey', amountInput, payableAmount)
+
             paymentMethod.addEventListener('change', function() {
                 // Get the selected option
 

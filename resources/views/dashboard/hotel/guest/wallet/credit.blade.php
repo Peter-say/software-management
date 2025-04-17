@@ -86,26 +86,26 @@
                                 <select id="currency" name="currency" readonly required
                                     class="form-control @error('currency') is-invalid @enderror">
                                     @php
-                                        $currency = getHotelCurrency();
+                                    $currency = getHotelCurrency();
                                     @endphp
                                     <option value="">Select Currency</option>
-                                        <option value="{{ $currency->short_name }}"
-                                            {{ old('currency', $currency->short_name ?? '') == $currency->short_name ? 'selected' : '' }}>
-                                            {{ $currency->short_name }}
-                                        </option>
+                                    <option value="{{ $currency->short_name }}"
+                                        {{ old('currency', $currency->short_name ?? '') == $currency->short_name ? 'selected' : '' }}>
+                                        {{ $currency->short_name }}
+                                    </option>
                                 </select>
                                 @error('currency')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
                     </div>
- <!-- Stripe Card Element -->
- <div class="row mb-3">
-                        <div class="col-12">
-                            <label for="card-element">Credit or Debit Card</label>
-                            <div id="card-element"  class="form-control"></div>
-                            <div id="card-errors" role="alert"></div>
+                    <!-- Stripe Card Element -->
+                    <div class="mb-3">
+                        <div id="stripe-card">
+                            <label for="card-element" class="form-label">Credit or Debit Card</label>
+                            <div id="card-element" class="form-control"></div>
+                            <div id="card-errors" role="alert" class="text-danger mt-2"></div>
                         </div>
                     </div>
                     <!-- Comment Field -->
@@ -148,37 +148,6 @@
         </div>
     </div>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const amountInput = document.getElementById('amount');
-
-        amountInput.addEventListener('input', function() {
-            let inputVal = this.value;
-
-            // Remove all non-numeric characters except the decimal point
-            inputVal = inputVal.replace(/[^0-9.]/g, '');
-
-            // Split the value at the decimal point, if it exists
-            const parts = inputVal.split('.');
-
-            // Format the integer part with commas
-            if (parts[0]) {
-                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            }
-
-            // Join the integer and decimal parts, if present
-            this.value = parts.join('.');
-        });
-
-        // Ensure proper format before form submission
-        document.getElementById('fundGuestWallet').addEventListener('submit', function() {
-            // Remove commas before submitting the form
-            amountInput.value = amountInput.value.replace(/,/g, '');
-        });
-    });
-</script>
 @include('dashboard.general.form-preloader')
 @include('dashboard.general.payment.payment-platform-script')
-<script src="https://js.stripe.com/v3/"></script>
 

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str; 
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -64,6 +64,11 @@ class User extends Authenticatable
         return $this->hasOneThrough(Hotel::class, HotelUser::class, 'user_id', 'id', 'id', 'hotel_id');
     }
 
+    // public function hotel()
+    // {
+    //     return $this->hasOneThrough(Hotel::class, HotelUser::class, 'user_id', 'id', 'id', 'hotel_id');
+    // }
+
     public static function getAuthenticatedUser()
     {
         return Auth::user();
@@ -86,15 +91,15 @@ class User extends Authenticatable
         });
 
         static::created(function ($user) {
-        $hotel =  Hotel::create([
-                'user_id' => $user->id,
-                'uuid' => Str::uuid(), 
-            ]);
-            HotelUser::create([
-                'user_id' => $user->id,
-                'hotel_id' => $hotel->id, 
-                'user_account_id' => $user->id, 
-            ]);
+            // $hotel =  Hotel::create([
+            //     'user_id' => $user->id,
+            //     'uuid' => Str::uuid(),
+            // ]);
+            // HotelUser::create([
+            //     'user_id' => $user->id,
+            //     'hotel_id' => $hotel->id,
+            //     'user_account_id' => $user->id,
+            // ]);
         });
     }
 }

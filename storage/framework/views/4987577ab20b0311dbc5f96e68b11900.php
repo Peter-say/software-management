@@ -1,3 +1,4 @@
+<script src="https://js.stripe.com/v3/"></script>
 <script>
     var paymentPlatform = <?php echo json_encode($payment_platform, 15, 512) ?>;
     if (paymentPlatform) {
@@ -7,7 +8,7 @@
             var card = elements.create('card');
             card.mount('#card-element');
 
-            document.getElementById('fund-guest-wallet-modal').addEventListener('submit', function(event) {
+            document.getElementById('paymentInitiate').addEventListener('submit', function(event) {
                 event.preventDefault();
                 document.getElementById('form-preloader').style.display = 'flex';
 
@@ -21,10 +22,10 @@
                     }
                 });
             });
-        } else if (paymentPlatform.name === 'flutterwave') {
+        } else if (paymentPlatform.slug === 'flutterwave') {
             // Initialize Flutterwave payment logic
             console.log('Flutterwave selected');
-        } else if (paymentPlatform.name === 'paystack') {
+        } else if (paymentPlatform.slug === 'paystack') {
             // Initialize Paystack payment logic
             console.log('Paystack selected');
         } else {
@@ -41,19 +42,15 @@
     }
 </script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const amountInput = $('#amount');
+    document.addEventListener('DOMContentLoaded', function() {
+        const amountInputJQ = $('#amount'); // jQuery version
+        const amountInputJS = document.getElementById('amount'); // Plain JavaScript version
         const payableAmount = parseFloat($('#payable-amount').val());
-        amountInput.on('input', function () {
-            let enteredRaw = this.value.replace(/,/g, '');
-            let enteredAmount = parseFloat(enteredRaw || 0);
 
-            // Prevent invalid characters
-            if (isNaN(enteredAmount)) {
-                this.value = '';
-                return;
-            }
-
+        // Handle input event with jQuery
+        amountInputJQ.on('input', function() {
+            let enteredAmount = parseFloat(this.value.replace(/,/g, '') || 0);
+            alert(enteredAmount)
             if (enteredAmount > payableAmount) {
                 Toastify({
                     text: `You cannot pay more than ₦${payableAmount.toLocaleString()}.`,
@@ -62,17 +59,31 @@
                     position: 'right',
                     backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
                 }).showToast();
-                enteredAmount = payableAmount;
+                this.value = payableAmount.toLocaleString();
+            } else {
+                this.value = enteredAmount.toLocaleString();
             }
-
-            this.value = enteredAmount.toLocaleString();
         });
 
-        // Remove commas before form submission
-        $('#payWithWallet, #paymentInitiate').on('submit', function () {
-            const rawValue = amountInput.val().replace(/,/g, '');
-            amountInput.val(rawValue);
+        // Handle input formatting with plain JavaScript
+        amountInputJS.addEventListener('input', function() {
+            let inputVal = this.value.replace(/[^0-9.]/g, '');
+            const parts = inputVal.split('.');
+            if (parts[0]) {
+                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            }
+            this.value = parts.join('.');
+        });
+
+        // Ensure proper format before form submission
+        document.getElementById('payWithWallet').addEventListener('submit', function() {
+            amountInputJQ.val(amountInputJQ.val().replace(/,/g, ''));
+        });
+        document.getElementById('paymentInitiate').addEventListener('submit', function() {
+            amountInputJQ.val(amountInputJQ.val().replace(/,/g, ''));
+        });
+        document.getElementById('fundGuestWallet').addEventListener('submit', function() {
+            amountInput.value = amountInput.value.replace(/,/g, '');
         });
     });
-</script>
-<?php /**PATH C:\Web Development\Backend\Laravel\software-management\software-management\resources\views/dashboard/general/payment/payment-platform-script.blade.php ENDPATH**/ ?>
+</script><?php /**PATH C:\Web Development\Backend\Laravel\software-management\software-management\resources\views/dashboard/general/payment/payment-platform-script.blade.php ENDPATH**/ ?>

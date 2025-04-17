@@ -7,6 +7,7 @@ use App\Models\HotelSoftware\HotelModulePreference;
 use App\Models\HotelSoftware\HotelUser;
 use App\Models\HotelSoftware\RoomReservation;
 use App\Models\User;
+use App\Services\Dashboard\Developer\AppStatsServices;
 use App\Services\Dashboard\Hotel\Chart\DashboardReservationService;
 use App\Services\Dashboard\Hotel\DashboardService;
 use Carbon\Carbon;
@@ -16,10 +17,12 @@ class DashboardController extends Controller
 {
     protected $dashboard_service;
     protected $dashboard_reservation_service;
+    protected $developer_appstat_service;
     public function __construct(DashboardService $dashboard_service)
     {
         $this->dashboard_service = $dashboard_service;
         $this->dashboard_reservation_service = new DashboardReservationService();
+        $this->developer_appstat_service = new AppStatsServices();
     }
     public function dashboard(Request $request)
     {
@@ -33,8 +36,9 @@ class DashboardController extends Controller
             $booking_period = 'week';
         }
         $user = User::getAuthenticatedUser();
-        $hotelUser = HotelUser::where('user_id', $user->id)->first();
-
+        $hotelUser = HotelUser::where('user_id', $user->id)->whereHas('user', function ($query) {
+            $query->where('role', '!=', 'Developer');
+        })->first();
         if ($hotelUser) {
             $hasModules = HotelModulePreference::where('hotel_id', $hotelUser->hotel->id)->exists();
             if (!$hasModules) {
@@ -47,6 +51,11 @@ class DashboardController extends Controller
                 'total_transaction' => $this->dashboard_service->calculateTotalTransaction(),
                 'reservation_data' => $this->dashboard_reservation_service->stats(['booking_period' => $booking_period]),
                 'recent_room_reservations' => $this->dashboard_service->recentBookingSchedule(),
+            ]);
+        }else{
+            // dd($this->developer_appstat_service->appStats());
+            return view('dashboard.developer.index', [
+                'cards' => $this->developer_appstat_service->appStats(),
             ]);
         }
         return redirect()->route('onboarding.setup-app');

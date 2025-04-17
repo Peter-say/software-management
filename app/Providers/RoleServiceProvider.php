@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\HotelSoftware\HotelModulePreference;
 use App\Models\HotelSoftware\HotelUser;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -41,6 +42,10 @@ class RoleServiceProvider extends ServiceProvider
             $hotelUser = $user->hotelUser;
             $hotel = $hotelUser ? $hotelUser->hotel : null;
             return $hotel && $hotel->modulePreferences()->where('slug', $moduleSlug)->exists();
+        });
+        // Gate to check access to developer section
+        Gate::define('developer', function ($user) {
+            return $user->role === 'Developer';
         });
     }
 }

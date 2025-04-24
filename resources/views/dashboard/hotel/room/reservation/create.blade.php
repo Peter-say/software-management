@@ -300,146 +300,174 @@
                 }
             }
             function setGuestInformation() {
-                const guestInput = document.getElementById('guest_name');
-                const guestsDataList = document.getElementById('guests');
-                const guestIdField = document.getElementById('guest_id');
-                console.log(guestIdField.value);
+    const guestInput = document.getElementById('guest_name');
+    const guestsDataList = document.getElementById('guests');
+    const guestIdField = document.getElementById('guest_id');
+    console.log(guestIdField.value);
 
-                // Handle guest selection and autofill guest details
-                guestInput.addEventListener('input', function() {
-                    const inputValue = guestInput.value;
-                    let selectedOption = null;
+    // Handle guest selection and autofill guest details
+    guestInput.addEventListener('input', function () {
+        const inputValue = guestInput.value;
+        let selectedOption = null;
 
-                    for (let i = 0; i < guestsDataList.options.length; i++) {
-                        if (guestsDataList.options[i].value === inputValue) {
-                            selectedOption = guestsDataList.options[i];
-                            break;
-                        }
-                    }
+        for (let i = 0; i < guestsDataList.options.length; i++) {
+            if (guestsDataList.options[i].value === inputValue) {
+                selectedOption = guestsDataList.options[i];
+                break;
+            }
+        }
 
-                    if (selectedOption) {
-                        guestIdField.value = selectedOption.getAttribute('data-id');
-                        fetchGuestInfo(selectedOption.getAttribute('data-id'));
-                    }
-                });
+        if (selectedOption) {
+            guestIdField.value = selectedOption.getAttribute('data-id');
+            fetchGuestInfo(selectedOption.getAttribute('data-id'));
+        }
+    });
 
-                function fetchGuestInfo(guestId) {
-                    fetch(`/dashboard/hotel/set-guest-info?id=${guestId}`)
-                        .then(response => {
-                            // Log the status and content-type of the response for debugging
-                            console.log('Response status:', response.status);
-                            console.log('Response content-type:', response.headers.get('content-type'));
+    function fetchGuestInfo(guestId) {
+        fetch(`/dashboard/hotel/set-guest-info?id=${guestId}`)
+            .then(response => {
+                // Log the status and content-type of the response for debugging
+                console.log('Response status:', response.status);
+                console.log('Response content-type:', response.headers.get('content-type'));
 
-                            // Check if the response is not a 404 or another error
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok: ' + response.statusText);
-                            }
-
-                            // Check if the response is JSON
-                            if (response.headers.get('content-type')?.includes('application/json')) {
-                                return response.json();
-                            } else {
-                                throw new Error('Expected JSON, received something else');
-                            }
-                        })
-                        .then(data => {
-                            document.getElementById('title').value = data.title || '';
-                            document.getElementById('first_name').value = data.first_name || '';
-                            document.getElementById('last_name').value = data.last_name || '';
-                            document.getElementById('other_names').value = data.other_names || '';
-                            document.getElementById('email').value = data.email || '';
-                            document.getElementById('phone').value = data.phone || '';
-                            document.getElementById('state_id').value = data.state.name || '';
-                            document.getElementById('country_id').value = data.country.name || '';
-                        })
-                        .catch(error => console.error('Error fetching guest data:', error));
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
                 }
 
+                if (response.headers.get('content-type')?.includes('application/json')) {
+                    return response.json();
+                } else {
+                    throw new Error('Expected JSON, received something else');
+                }
+            })
+            .then(data => {
+                document.getElementById('title').value = data.title || '';
+                document.getElementById('first_name').value = data.first_name || '';
+                document.getElementById('last_name').value = data.last_name || '';
+                document.getElementById('other_names').value = data.other_names || '';
+                document.getElementById('email').value = data.email || '';
+                document.getElementById('phone').value = data.phone || '';
 
+                // Populate country field
+                document.getElementById('country_id').value = data.country.id || '';
+                
+                // Populate state field based on the country
+                if (data.country && data.country.id) {
+                    updateStates(data.country.id, data.state.id); // Update states
+                }
+            })
+            .catch(error => console.error('Error fetching guest data:', error));
+    }
 
-                // Handle room selection and update rate field
-                const roomSelect = document.getElementById('room_id');
-                const rateField = document.getElementById('rate');
+    // Function to update states based on country selection
+    function updateStates(countryId, selectedStateId) {
+        const stateSelect = document.getElementById('state_id');
+        
+        // Clear existing options
+        stateSelect.innerHTML = '<option value="">Select State</option>';
 
-                roomSelect.addEventListener('change', function() {
-                    const selectedRoom = roomSelect.options[roomSelect.selectedIndex];
-                    const roomRate = selectedRoom.getAttribute('data-rate');
+        // Fetch states for the selected country
+        fetch(`/dashboard/hotel/get-states-by-country/${countryId}`)
+            .then(response => response.json())
+            .then(states => {
+                states.forEach(state => {
+                    const option = document.createElement('option');
+                    option.value = state.id;
+                    option.textContent = state.name;
 
-                    if (roomRate) {
-                        rateField.value = roomRate; // Set the value of the rate field
-                    } else {
-                        rateField.value = ''; // Clear rate if no rate is available
+                    // If this is the selected state, set it
+                    if (state.id === selectedStateId) {
+                        option.selected = true;
                     }
+
+                    stateSelect.appendChild(option);
                 });
+            })
+            .catch(error => console.error('Error fetching states:', error));
+    }
 
-                const reservationForm = document.getElementById('reservationForm');
-                reservationForm.addEventListener('submit', async function(event) {
-                    event.preventDefault();
+    // Room selection logic remains unchanged
+    const roomSelect = document.getElementById('room_id');
+    const rateField = document.getElementById('rate');
 
-                    try {
-                        const formData = new FormData(reservationForm);
-                        const response = await fetch(reservationForm.action, {
-                            method: reservationForm.method,
-                            body: formData,
-                            headers: {
-                                'X-Requested-With': 'XMLHttpRequest',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            }
-                        });
-                        const data = await response.json();
-                        if (data.success) {
+    roomSelect.addEventListener('change', function () {
+        const selectedRoom = roomSelect.options[roomSelect.selectedIndex];
+        const roomRate = selectedRoom.getAttribute('data-rate');
+
+        if (roomRate) {
+            rateField.value = roomRate; // Set the value of the rate field
+        } else {
+            rateField.value = ''; // Clear rate if no rate is available
+        }
+    });
+
+    const reservationForm = document.getElementById('reservationForm');
+    reservationForm.addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        try {
+            const formData = new FormData(reservationForm);
+            const response = await fetch(reservationForm.action, {
+                method: reservationForm.method,
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            });
+            const data = await response.json();
+            if (data.success) {
+                Toastify({
+                    text: data.message || 'Operation successful.',
+                    duration: 1000,
+                    gravity: 'top',
+                    position: 'right',
+                    backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
+                }).showToast();
+                setTimeout(() => {
+                    window.location.href = data.redirectUrl;
+                }, 1000);
+            } else {
+                handleErrorMessages(data.errors);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            Toastify({
+                text: message || 'An unexpected error occurred.',
+                duration: 5000,
+                gravity: 'top',
+                position: 'right',
+                backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
+            }).showToast();
+        }
+
+        function handleErrorMessages(errors) {
+            if (typeof errors === 'string') {
+                Toastify({
+                    text: errors,
+                    duration: 5000,
+                    gravity: 'top',
+                    position: 'right',
+                    backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
+                }).showToast();
+            } else if (typeof errors === 'object') {
+                for (let key in errors) {
+                    if (errors.hasOwnProperty(key)) {
+                        errors[key].forEach(error => {
                             Toastify({
-                                text: data.message || 'Operation successful.',
-                                duration: 1000,
-                                gravity: 'top',
-                                position: 'right',
-                                backgroundColor: 'linear-gradient(to right, #00b09b, #96c93d)',
-                            }).showToast();
-                            setTimeout(() => {
-                                window.location.href = data.redirectUrl;
-                            }, 1000);
-                        } else {
-                            handleErrorMessages(data.errors);
-                        }
-                    } catch (error) {
-                        console.error('Error:', error);
-                        Toastify({
-                            text: message || 'An unexpected error occurred.',
-                            duration: 5000,
-                            gravity: 'top',
-                            position: 'right',
-                            backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
-                        }).showToast();
-                    }
-
-                    function handleErrorMessages(errors) {
-                        if (typeof errors === 'string') {
-                            Toastify({
-                                text: errors,
+                                text: error,
                                 duration: 5000,
                                 gravity: 'top',
                                 position: 'right',
                                 backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
                             }).showToast();
-                        } else if (typeof errors === 'object') {
-                            for (let key in errors) {
-                                if (errors.hasOwnProperty(key)) {
-                                    errors[key].forEach(error => {
-                                        Toastify({
-                                            text: error,
-                                            duration: 5000,
-                                            gravity: 'top',
-                                            position: 'right',
-                                            backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
-                                        }).showToast();
-                                    });
-                                }
-                            }
-                        }
+                        });
                     }
-
-                });
+                }
             }
+        }
+    });
+}
 
             // Function to check room availability
             function checkRoomAvailability(checkinDate, checkoutDate) {

@@ -1,56 +1,77 @@
+<!-- Stripe JS -->
 <script src="https://js.stripe.com/v3/"></script>
 <script>
-    var paymentPlatform = @json($payment_platform);
-    if (paymentPlatform) {
-        if (paymentPlatform.slug === 'stripe') {
-            var stripe = Stripe(paymentPlatform.public_key);
-            var elements = stripe.elements();
-            var card = elements.create('card');
-            card.mount('#card-element');
-
-            document.getElementById('paymentInitiate').addEventListener('submit', function(event) {
-                event.preventDefault();
-                document.getElementById('form-preloader').style.display = 'flex';
-
-                stripe.createToken(card).then(function(result) {
-                    if (result.error) {
-                        console.error(result.error.message);
-                        document.getElementById('form-preloader').style.display = 'none';
-                    } else {
-                        document.getElementById('stripe-token').value = result.token.id;
-                        event.target.submit();
-                    }
-                });
-            });
-        } else if (paymentPlatform.slug === 'flutterwave') {
-            // Initialize Flutterwave payment logic
-            console.log('Flutterwave selected');
-        } else if (paymentPlatform.slug === 'paystack') {
-            // Initialize Paystack payment logic
-            console.log('Paystack selected');
-        } else {
-            console.warn('No valid payment platform selected');
+    document.addEventListener('DOMContentLoaded', function () {
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
         }
-    } else {
-        Toastify({
-            text: 'No payment platform found. You have to set up a payment platform to use this feature. go to settings and set up a payment platform',
-            duration: 5000,
-            gravity: 'top',
-            position: 'right',
-            backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
-        }).showToast();
-    }
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const amountInputJQ = $('#amount'); // jQuery version
-        const amountInputJS = document.getElementById('amount'); // Plain JavaScript version
-        const payableAmount = parseFloat($('#payable-amount').val());
+        const paymentSelect = document.getElementById('payment-option');
+        const stripePayment = document.getElementById('stripe-payment');
+        const paymentMethod = document.getElementById('payment-method');
+        const stripeCardContainer = document.getElementById('stripe-card');
+        const stripeTokenInput = document.getElementById('stripe-token');
+        const paymentTitle = document.getElementById('payment-title');
+        const form = document.getElementById('paymentInitiate');
+        const amountInputJQ = $('#amount');
+        const amountInputJS = document.getElementById('amount');
+        const payableAmount = parseFloat(document.getElementById('payable-amount')?.value?.replace(/,/g, '') || 0);
+        const paymentPlatform = @json($payment_platform);
+        const requestedRoom = getUrlParameter('requested_payment_id');
+        let stripe = null;
+        let elements = null;
+        let card = null;
 
-        // Handle input event with jQuery
-        amountInputJQ.on('input', function() {
+        // ================================
+        // Initialize Stripe (Only Once)
+        // ================================
+        function initializeStripe() {
+            if (stripe || !paymentPlatform || paymentPlatform.slug !== 'stripe') return;
+
+            stripe = Stripe(paymentPlatform.public_key);
+            elements = stripe.elements();
+            card = elements.create('card');
+            card.mount('#card-element');
+        }
+
+        // ================================
+        // Update Payment UI Based on Method
+        // ================================
+        function updatePaymentDisplay(method) {
+            paymentMethod.value = method;
+
+            if (method === 'CARD') {
+                paymentTitle.innerText = 'Card Payment';
+                stripeCardContainer.style.display = 'block';
+                stripeTokenInput.value = 'step-token';
+                initializeStripe();
+            } else {
+                paymentTitle.innerText = 'Cash Payment';
+                stripeCardContainer.style.display = 'none';
+                if (stripeTokenInput) {
+        stripeTokenInput.disabled = true; // Disable it to avoid submission
+        stripeTokenInput.removeAttribute('name'); // Ensure it's not submitted
+        stripePayment.removeAttribute('name');
+        stripeTokenInput.value = '';
+    }
+            }
+        }
+
+        // Initial Load
+        updatePaymentDisplay(paymentSelect.value);
+
+        // On Payment Option Change
+        paymentSelect.addEventListener('change', function () {
+            updatePaymentDisplay(this.value);
+        });
+
+        // ================================
+        // Amount Input Formatting
+        // ================================
+        amountInputJQ.on('input', function () {
             let enteredAmount = parseFloat(this.value.replace(/,/g, '') || 0);
-            alert(enteredAmount)
             if (enteredAmount > payableAmount) {
                 Toastify({
                     text: `You cannot pay more than ₦${payableAmount.toLocaleString()}.`,
@@ -65,8 +86,7 @@
             }
         });
 
-        // Handle input formatting with plain JavaScript
-        amountInputJS.addEventListener('input', function() {
+        amountInputJS.addEventListener('input', function () {
             let inputVal = this.value.replace(/[^0-9.]/g, '');
             const parts = inputVal.split('.');
             if (parts[0]) {
@@ -75,15 +95,35 @@
             this.value = parts.join('.');
         });
 
-        // Ensure proper format before form submission
-        document.getElementById('payWithWallet').addEventListener('submit', function() {
+        // ================================
+        // Stripe + Form Submit
+        // ================================
+        form.addEventListener('submit', function (e) {
+            // Set payment method to selected option
+            paymentMethod.value = paymentSelect.value;
+
+            // Clean amount input
             amountInputJQ.val(amountInputJQ.val().replace(/,/g, ''));
-        });
-        document.getElementById('paymentInitiate').addEventListener('submit', function() {
-            amountInputJQ.val(amountInputJQ.val().replace(/,/g, ''));
-        });
-        document.getElementById('fundGuestWallet').addEventListener('submit', function() {
-            amountInput.value = amountInput.value.replace(/,/g, '');
+            amountInputJS.value = amountInputJS.value.replace(/,/g, '');
+
+            // Check if platform is Stripe
+            if (paymentSelect.value === 'CARD' && paymentPlatform.slug === 'stripe') {
+                e.preventDefault();
+                document.getElementById('form-preloader')?.style?.setProperty('display', 'flex');
+
+                stripe.createToken(card).then(function (result) {
+                    if (result.error) {
+                        document.getElementById('form-preloader')?.style?.setProperty('display', 'none');
+                        document.getElementById('card-errors').textContent = result.error.message;
+                    } else {
+                        stripeTokenInput.value = result.token.id;
+                        form.submit();
+                    }
+                });
+            } else {
+                // If not Stripe, allow form to submit normally
+                stripeTokenInput.value = '';
+            }
         });
     });
 </script>

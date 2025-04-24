@@ -50,8 +50,8 @@ Route::middleware('auth', 'verified')->group(function () {
                 ->name('impersonate')->middleware('signed');
             Route::post('/switch-back-impersonator', [HotelsController::class, 'switchBackImpersonator'])->name('switch-back-impersonator');
         });
-        Route::prefix('users')->as('userss.')->group(function () {
-            Route::get('/users', [DeveloperUsersController::class, 'index'])->name('users');
+        Route::prefix('users')->as('users.')->group(function () {
+            Route::get('/', [DeveloperUsersController::class, 'index']);
         });
 
         Route::get('download.sample', [RestaurantItemsController::class, 'downloadSample'])->name('download.sample');
@@ -87,6 +87,11 @@ Route::middleware('auth', 'verified')->group(function () {
 
             Route::put('/update-hotel-currency', [ManageCurrencyController::class, 'update'])->name('update-hotel-currency');
 
+            Route::prefix('payments')->as('payments.')->group(function () {
+                Route::get('pay', [PaymentController::class, 'pay'])->name('pay');
+                Route::get('index', [PaymentController::class, 'list'])->name('list');
+                Route::post('initiate', [PaymentController::class, 'initiatePayment'])->name('initiate');
+            });
 
             Route::get('set-guest-info', [GuestController::class, 'getGuestInfo'])->name('set-guest-info');
             Route::post('check-room-availability', [RoomReservationController::class, 'getRoomAvailability']);
@@ -162,9 +167,11 @@ Route::middleware('auth', 'verified')->group(function () {
             });
         });
         Route::prefix('payments')->as('payments.')->group(function () {
+            Route::get('pay', [PaymentController::class, 'pay'])->name('pay');
             Route::post('initiate', [PaymentController::class, 'initiatePayment'])->name('initiate');
         });
     })->middleware(HotelUserMiddleware::class);
+
     Route::get('/get-states-by-country', [OnboardingController::class, 'getStatesByCountry'])->name('get-states-by-country');
 
     Route::prefix('onboarding')->as('onboarding.')->group(function () {

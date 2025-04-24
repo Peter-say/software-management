@@ -244,8 +244,8 @@
                             </p>
                             @if ($payableAmount > 0)
                             <div class="mt-3">
-                                <button data-bs-toggle="modal" data-bs-target="#paymentMethodModal"
-                                    class="btn btn-dark mt-2">Make Payment</button>
+                                <a href="{{ route('dashboard.payments.pay') }}?reservation_id={{ $reservation->id }}"
+                                    class="btn btn-primary mt-2">Pay Now</a>
                             </div>
                             @else
                             <div class="mt-3">
@@ -344,16 +344,18 @@
     </div>
     @if ($reservation)
     @include('dashboard.hotel.room.reservation.payment-methods')
-    @include('dashboard.hotel.room.reservation.pay-with-wallet-modal')
+    {{-- @include('dashboard.hotel.room.reservation.pay-with-wallet-modal') --}}
     @include('dashboard.general.payment.modal', [
     'reservation' => $reservation,
     'payableType' => get_class($reservation)
     ])
-
-    @include('dashboard.hotel.guest.wallet.credit', [
+@include('dashboard.general.payment.payable-details', [
+     'reservation' => $reservation,
+     'payableType' => get_class($reservation)
+])
+    {{-- @include('dashboard.hotel.guest.wallet.credit', [
     'guest' => $reservation->guest,
-    'payment_platform' => $payment_platform,
-    ])
+    ]) --}}
     @endif
 
     <script>

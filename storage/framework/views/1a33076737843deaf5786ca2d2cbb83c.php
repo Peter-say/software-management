@@ -64,7 +64,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <form action="<?php echo e(route('dashboard.hotel.fund-guest-wallet')); ?>" id="fundGuestWallet" method="post">
+            <form action="<?php echo e(route('dashboard.hotel.fund-guest-wallet')); ?>" id="paymentInitiate" method="post">
                 <?php echo csrf_field(); ?>
                 <div class="modal-body">
                     <!-- Amount Field -->
@@ -93,21 +93,21 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>">
                                     <?php
-                                        $currency = getHotelCurrency();
+                                    $currency = getHotelCurrency();
                                     ?>
                                     <option value="">Select Currency</option>
-                                        <option value="<?php echo e($currency->short_name); ?>"
-                                            <?php echo e(old('currency', $currency->short_name ?? '') == $currency->short_name ? 'selected' : ''); ?>>
-                                            <?php echo e($currency->short_name); ?>
+                                    <option value="<?php echo e($currency->short_name); ?>"
+                                        <?php echo e(old('currency', $currency->short_name ?? '') == $currency->short_name ? 'selected' : ''); ?>>
+                                        <?php echo e($currency->short_name); ?>
 
-                                        </option>
+                                    </option>
                                 </select>
                                 <?php $__errorArgs = ['currency'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                <div class="invalid-feedback"><?php echo e($message); ?></div>
                                 <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
@@ -115,12 +115,12 @@ unset($__errorArgs, $__bag); ?>
                             </div>
                         </div>
                     </div>
- <!-- Stripe Card Element -->
- <div class="row mb-3">
-                        <div class="col-12">
-                            <label for="card-element">Credit or Debit Card</label>
-                            <div id="card-element"  class="form-control"></div>
-                            <div id="card-errors" role="alert"></div>
+                    <!-- Stripe Card Element -->
+                    <div class="mb-3">
+                        <div id="stripe-card">
+                            <label for="card-element" class="form-label">Credit or Debit Card</label>
+                            <div id="card-element" class="form-control"></div>
+                            <div id="card-errors" role="alert" class="text-danger mt-2"></div>
                         </div>
                     </div>
                     <!-- Comment Field -->
@@ -145,8 +145,8 @@ unset($__errorArgs, $__bag); ?>
 
                     <!-- Hidden Fields -->
                     <input type="hidden" name="stripeToken" id="stripe-token">
-                    <input type="hidden" name="stripe_payment" id="fund-wallet-method" value="Stripe">
-                    <input type="hidden" name="payment_method" id="fund-wallet-method" value="CARD">
+                    <input type="hidden" name="stripe_payment" id="stripe-payment-method" value="Stripe">
+                    <input type="hidden" name="payment_method" id="payment-method" value="CARD">                    
                     <input type="hidden" name="hotel_id" value="<?php echo e(auth()->user()->id); ?>">
                     <input type="hidden" name="guest_id" value="<?php echo e($guest->id); ?>">
                     <input type="hidden" name="payable_id" value="<?php echo e($guest->id); ?>">
@@ -163,38 +163,7 @@ unset($__errorArgs, $__bag); ?>
         </div>
     </div>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const amountInput = document.getElementById('amount');
-
-        amountInput.addEventListener('input', function() {
-            let inputVal = this.value;
-
-            // Remove all non-numeric characters except the decimal point
-            inputVal = inputVal.replace(/[^0-9.]/g, '');
-
-            // Split the value at the decimal point, if it exists
-            const parts = inputVal.split('.');
-
-            // Format the integer part with commas
-            if (parts[0]) {
-                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            }
-
-            // Join the integer and decimal parts, if present
-            this.value = parts.join('.');
-        });
-
-        // Ensure proper format before form submission
-        document.getElementById('fundGuestWallet').addEventListener('submit', function() {
-            // Remove commas before submitting the form
-            amountInput.value = amountInput.value.replace(/,/g, '');
-        });
-    });
-</script>
 <?php echo $__env->make('dashboard.general.form-preloader', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php echo $__env->make('dashboard.general.payment.payment-platform-script', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-<script src="https://js.stripe.com/v3/"></script>
 
 <?php /**PATH C:\Web Development\Backend\Laravel\software-management\software-management\resources\views\dashboard\hotel\guest\wallet\credit.blade.php ENDPATH**/ ?>

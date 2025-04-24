@@ -243,8 +243,8 @@
                             </p>
                             <?php if($payableAmount > 0): ?>
                             <div class="mt-3">
-                                <button data-bs-toggle="modal" data-bs-target="#paymentMethodModal"
-                                    class="btn btn-dark mt-2">Make Payment</button>
+                                <a href="<?php echo e(route('dashboard.payments.pay')); ?>?reservation_id=<?php echo e($reservation->id); ?>"
+                                    class="btn btn-primary mt-2">Pay Now</a>
                             </div>
                             <?php else: ?>
                             <div class="mt-3">
@@ -345,16 +345,16 @@
     </div>
     <?php if($reservation): ?>
     <?php echo $__env->make('dashboard.hotel.room.reservation.payment-methods', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-    <?php echo $__env->make('dashboard.hotel.room.reservation.pay-with-wallet-modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    
     <?php echo $__env->make('dashboard.general.payment.modal', [
     'reservation' => $reservation,
     'payableType' => get_class($reservation)
     ], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
-
-    <?php echo $__env->make('dashboard.hotel.guest.wallet.credit', [
-    'guest' => $reservation->guest,
-    'payment_platform' => $payment_platform,
-    ], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php echo $__env->make('dashboard.general.payment.payable-details', [
+     'reservation' => $reservation,
+     'payableType' => get_class($reservation)
+], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+    
     <?php endif; ?>
 
     <script>

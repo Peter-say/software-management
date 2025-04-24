@@ -102,4 +102,12 @@ class User extends Authenticatable
             // ]);
         });
     }
+    public function photo()
+    {
+        $photo = $this->avatar ? $this->hotelUser->photo : null;
+        if ($photo) {
+            return getStorageUrl('hotel/users/photos/' . $photo);
+        }
+        return getStorageUrl('dashboard/images/gallery/hotel1.jpg');
+    }
 }

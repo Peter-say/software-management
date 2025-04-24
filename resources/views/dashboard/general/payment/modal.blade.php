@@ -8,7 +8,7 @@
                 <h5 class="modal-title me-2" id="payment-title">Card Payment</h5>
 
                 <div class="col-6">
-                    <select class="form-select" id="payment-option" name="payment-option">
+                    <select class="form-select" id="payment-option" name="payment_option">
                         <option value="CARD">CARD</option>
                         <option value="CASH">CASH</option>
                     </select>
@@ -22,7 +22,7 @@
                     <div class="d-flex justify-content-between">
                         <div>
                             <p>Payment Due</p>
-                            <p>
+                            {{-- <p>
                                 <b>{{currencySymbol()}}{{ number_format(
                                         $reservation->total_amount +
                                             $reservation->guest->calculateOrderNetTotal() -
@@ -34,7 +34,7 @@
                                     value="{{ $reservation->total_amount +
                                             $reservation->guest->calculateOrderNetTotal() -
                                             (($reservation->payments() ?? collect())->sum('amount') + $reservation->guest->paidTotalOrders()) }}">
-                            </p>
+                            </p> --}}
                         </div>
                     </div>
                     <!-- Amount Input -->
@@ -79,11 +79,9 @@
                     <!-- Hidden Fields -->
                     <input type="hidden" name="stripeToken" id="stripe-token">
                     <input type="hidden" name="stripe_payment" value="Stripe">
-                    <input type="hidden" name="payment_method" id="payment-method" value="">
+                    <input type="hidden" name="payment_method" id="payment-method">
                     <input type="hidden" name="hotel_id" value="{{ auth()->user()->id }}">
-                    @include('dashboard.general.payment.payable-details')
-                    <input type="hidden" name="amount_due"
-                        value="{{ $reservation->total_amount + $reservation->guest->calculateOrderNetTotal() - ($reservation->payments() ?? collect())->sum('amount') }}">
+                    {{-- @include('dashboard.general.payment.payable-details') --}}
                     <button type="submit" class="btn btn-primary" id="pay-now">Pay Now</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
@@ -91,48 +89,121 @@
         </div>
     </div>
 </div>
-@include('dashboard.general.payment.payment-platform-script')
-
+<!-- Stripe JS -->
+<script src="https://js.stripe.com/v3/"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const paymentSelect = document.getElementById('payment-option');
         const paymentMethod = document.getElementById('payment-method');
-        const stripeField = document.getElementById('stripe-card');
+        const stripeCardContainer = document.getElementById('stripe-card');
         const stripeTokenInput = document.getElementById('stripe-token');
-        const walletBalance = document.getElementById('wallet-balance');
         const paymentTitle = document.getElementById('payment-title');
         const form = document.getElementById('paymentInitiate');
+        const amountInputJQ = $('#amount');
+        const amountInputJS = document.getElementById('amount');
+        const payableAmount = parseFloat(document.getElementById('payable-amount')?.value?.replace(/,/g, '') || 0);
+        const paymentPlatform = @json($payment_platform);
 
-        function updatePaymentMethodDisplay(method) {
-            paymentSelect.value = method;
-            console.log('Submitting form with method:', paymentMethod.value);
-            switch (method) {
-                case 'CARD':
-                    paymentTitle.innerText = 'Card Payment';
-                    stripeField.style.display = 'block';
-                    paymentMethod.value = 'CARD';
-                    stripeTokenInput.value = 'step-token';
-                    break;
-                case 'CASH':
-                    paymentTitle.innerText = 'Cash Payment';
-                    stripeField.style.display = 'none';
-                    paymentMethod.value = 'CASH';
-                    stripeTokenInput.value = '';
-                    break;
+        let stripe = null;
+        let elements = null;
+        let card = null;
+
+        // ================================
+        // Initialize Stripe (Only Once)
+        // ================================
+        function initializeStripe() {
+            if (stripe || !paymentPlatform || paymentPlatform.slug !== 'stripe') return;
+
+            stripe = Stripe(paymentPlatform.public_key);
+            elements = stripe.elements();
+            card = elements.create('card');
+            card.mount('#card-element');
+        }
+
+        // ================================
+        // Update Payment UI Based on Method
+        // ================================
+        function updatePaymentDisplay(method) {
+            paymentMethod.value = method;
+
+            if (method === 'CARD') {
+                paymentTitle.innerText = 'Card Payment';
+                stripeCardContainer.style.display = 'block';
+                stripeTokenInput.value = 'step-token';
+                initializeStripe();
+            } else {
+                paymentTitle.innerText = 'Cash Payment';
+                stripeCardContainer.style.display = 'none';
+                stripeTokenInput.value = '';
             }
         }
 
-        updatePaymentMethodDisplay(paymentSelect.value);
+        // Initial Load
+        updatePaymentDisplay(paymentSelect.value);
 
-        paymentSelect.addEventListener('change', function() {
-            updatePaymentMethodDisplay(this.value);
+        // On Payment Option Change
+        paymentSelect.addEventListener('change', function () {
+            updatePaymentDisplay(this.value);
         });
 
-        form.addEventListener('submit', function() {
-            console.log("Setting payment_method value to:", paymentSelect
-                .value);
-            paymentMethod.value = paymentSelect.value; 
+        // ================================
+        // Amount Input Formatting
+        // ================================
+        amountInputJQ.on('input', function () {
+            let enteredAmount = parseFloat(this.value.replace(/,/g, '') || 0);
+            if (enteredAmount > payableAmount) {
+                Toastify({
+                    text: `You cannot pay more than ₦${payableAmount.toLocaleString()}.`,
+                    duration: 5000,
+                    gravity: 'top',
+                    position: 'right',
+                    backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
+                }).showToast();
+                this.value = payableAmount.toLocaleString();
+            } else {
+                this.value = enteredAmount.toLocaleString();
+            }
         });
 
+        amountInputJS.addEventListener('input', function () {
+            let inputVal = this.value.replace(/[^0-9.]/g, '');
+            const parts = inputVal.split('.');
+            if (parts[0]) {
+                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            }
+            this.value = parts.join('.');
+        });
+
+        // ================================
+        // Stripe + Form Submit
+        // ================================
+        form.addEventListener('submit', function (e) {
+            // Set payment method to selected option
+            paymentMethod.value = paymentSelect.value;
+console.log(paymentSelect.value);
+            // Clean amount input
+            amountInputJQ.val(amountInputJQ.val().replace(/,/g, ''));
+            amountInputJS.value = amountInputJS.value.replace(/,/g, '');
+
+            // Check if platform is Stripe
+            if (paymentSelect.value === 'CARD' && paymentPlatform.slug === 'stripe') {
+                e.preventDefault();
+                document.getElementById('form-preloader')?.style?.setProperty('display', 'flex');
+
+                stripe.createToken(card).then(function (result) {
+                    if (result.error) {
+                        document.getElementById('form-preloader')?.style?.setProperty('display', 'none');
+                        document.getElementById('card-errors').textContent = result.error.message;
+                    } else {
+                        stripeTokenInput.value = result.token.id;
+                        form.submit();
+                    }
+                });
+            } else {
+                // If not Stripe, allow form to submit normally
+                stripeTokenInput.value = '';
+            }
+        });
     });
 </script>
+

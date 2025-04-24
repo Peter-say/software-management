@@ -64,7 +64,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <form action="{{ route('dashboard.hotel.fund-guest-wallet') }}" id="fundGuestWallet" method="post">
+            <form action="{{ route('dashboard.hotel.fund-guest-wallet') }}" id="paymentInitiate" method="post">
                 @csrf
                 <div class="modal-body">
                     <!-- Amount Field -->
@@ -130,8 +130,8 @@
 
                     <!-- Hidden Fields -->
                     <input type="hidden" name="stripeToken" id="stripe-token">
-                    <input type="hidden" name="stripe_payment" id="fund-wallet-method" value="Stripe">
-                    <input type="hidden" name="payment_method" id="fund-wallet-method" value="CARD">
+                    <input type="hidden" name="stripe_payment" id="stripe-payment-method" value="Stripe">
+                    <input type="hidden" name="payment_method" id="payment-method" value="CARD">                    
                     <input type="hidden" name="hotel_id" value="{{ auth()->user()->id }}">
                     <input type="hidden" name="guest_id" value="{{ $guest->id }}">
                     <input type="hidden" name="payable_id" value="{{ $guest->id }}">

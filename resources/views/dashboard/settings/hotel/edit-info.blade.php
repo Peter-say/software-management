@@ -122,6 +122,34 @@
                                     @enderror
                                 </div>
                             </div>
+                            @if(isset($hotel->logo))
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#fileModal">
+                                    View Existing Logo
+                                </button>
+                            </div>
+                            <div class="modal fade" id="fileModal" tabindex="-1" aria-labelledby="fileModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="fileModalLabel">Uploaded File</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <iframe src="{{ getStorageUrl('hotel/logos/' . $hotel->logo) }}"
+                                                width="100%" height="500px"></iframe>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
                         </div>
                         <button type="submit" class="btn btn-primary">{{ 'Submit' }}</button>
                     </form>
@@ -132,9 +160,13 @@
 </div>
 @endsection
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var stateId = '{{ old('state_id', $hotel->state_id ?? '') }}';
-        var countryId = '{{ old('country_id', $hotel->country_id ?? '') }}';
+    document.addEventListener('DOMContentLoaded', function() {
+        var stateId = '{{ old('
+        state_id ', $hotel->state_id ?? '
+        ') }}';
+        var countryId = '{{ old('
+        country_id ', $hotel->country_id ?? '
+        ') }}';
 
         function loadStates(countryId, selectedStateId = null) {
             var stateDropdown = $('#state_id');
@@ -147,14 +179,14 @@
                     data: {
                         country_id: countryId
                     },
-                    success: function (response) {
+                    success: function(response) {
                         stateDropdown.append('<option value="">Select State</option>');
-                        $.each(response.states, function (key, state) {
+                        $.each(response.states, function(key, state) {
                             var selected = (state.id == selectedStateId) ? 'selected' : '';
                             stateDropdown.append('<option value="' + state.id + '" ' + selected + '>' + state.name + '</option>');
                         });
                     },
-                    error: function () {
+                    error: function() {
                         alert('Error fetching states');
                     }
                 });
@@ -164,7 +196,7 @@
         }
 
         // Trigger on country change
-        $('#country_id').on('change', function () {
+        $('#country_id').on('change', function() {
             var selectedCountryId = $(this).val();
             loadStates(selectedCountryId);
         });

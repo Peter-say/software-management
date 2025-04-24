@@ -32,9 +32,7 @@
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="{{ route('dashboard.hotels.') }}">Hotels</a></li>
-                </ul>
-                <ul aria-expanded="false">
-                    <li><a href="{{ route('dashboard.users') }}">Users</a></li>
+                    <li><a href="{{ route('dashboard.users.') }}">Users</a></li>
                 </ul>
             </li>
            @endif
@@ -182,11 +180,19 @@
 
                 <ul aria-expanded="false">
                     <li><a href="{{ route('dashboard.hotel.notifications.view-all') }}">Orders</a></li>
-                    {{-- <li><a href="{{ route('dashboard.hotel.restaurant.create-order') }}">Create Order</a>
+                    {{-- <li><a href="{{ route('dashboard.hotel.restaurant.create-order') }}">Create Order</a> --}}
             </li>
-            <li><a href="{{ route('dashboard.hotel.restaurant.view-orders') }}">View Orders</a></li> --}}
+            @if (Gate::allows('view-module', 'billing-and-payments'))
+            <li><a class="has-arrow " href="javascript:void()" aria-expanded="false">
+                <i class="flaticon-045-heart"></i>
+                <span class="nav-text">Manage Payments</span>
+            </a>
+            <ul aria-expanded="false">
+                <li><a href="{{ route('dashboard.payments.list') }}">List</a></li>
+        </li>
         </ul>
         </li>
+        @endif
         <li>
             <a href="{{ route('dashboard.hotel.settings.') }}" aria-expanded="false">
                 <i class="flaticon-013-checkmark"></i>

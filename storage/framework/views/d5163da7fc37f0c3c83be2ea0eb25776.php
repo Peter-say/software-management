@@ -92,7 +92,7 @@
                                                                 <td><?php echo e($reservation->created_at->format('Y-m-d H:i:s')); ?>
 
                                                                 </td>
-                                                                <td class="text-<?php echo e($reservation->payment_status === 'completed' ? 'seccess' : 'warning'); ?>"><?php echo e(strtoupper( $reservation->payment_status)); ?></td>
+                                                                <td class="text-<?php echo e($reservation->payment_status === 'completed' ? 'success' : 'warning'); ?>"><?php echo e(strtoupper( $reservation->payment_status)); ?></td>
                                                                 <td>
                                                                     <div class="d-flex">
                                                                         <a href="<?php echo e(route('dashboard.hotel.reservations.show', $reservation->reservation_code)); ?>" class="btn btn-primary shadow btn-xs sharp me-1">

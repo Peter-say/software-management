@@ -103,8 +103,11 @@ function getStatuses($status = null)
             'label' => 'Ready'
         ],
     ];
+    if ($status) {
+        return $statuses[$status] ?? null;
+    }
 
-    return $status && isset($statuses[$status]) ? $statuses[$status] : null;
+    return $statuses;
 }
 
 

@@ -43,7 +43,7 @@ class HotelSettingController extends Controller
     public function edit()
     {
         $user = User::getAuthenticatedUser();
-        if (!$user ||$user->role !== 'Developer') {
+        if (!$user || in_array($user->role, ['Hotel_owner', 'Manager', 'Developer'])) {
             abort(403, 'Unauthorized');
         }
         $hotel = $user->hotel;
@@ -51,8 +51,7 @@ class HotelSettingController extends Controller
     if (!$hotel) {
         abort(403, 'Hotel not found or you are Unauthorized to access this section of the website');
     }
-        return view(
-            'dashboard.settings.hotel.edit-info',
+        return view('dashboard.settings.hotel.edit-info',
             [
                 'hotel' => $hotel,
             ]
@@ -64,7 +63,7 @@ class HotelSettingController extends Controller
         try {
             $validated = $request->validate([
                 'hotel_name' => 'required|string|max:255',
-                'email' => 'required|email|max:255',
+                // 'email' => 'required|email|max:255',
                 'phone' => 'required|string|max:20',
                 'address' => 'nullable|string|max:255',
                 'country_id' => 'nullable|exists:countries,id',
@@ -76,7 +75,7 @@ class HotelSettingController extends Controller
             if ($request->hasFile('logo')) {
                 $logoDirectory = 'hotel/logos';
                 $logoPath = FileHelpers::saveImageRequest($request->file('logo'), $logoDirectory);
-                $validatedData['logo'] = basename($logoPath);
+                $validated['logo'] = basename($logoPath);
                 if (!empty($oldlogoPath)) {
                     FileHelpers::deleteFiles([public_path($logoDirectory . '/' . $oldlogoPath)]);
                 }

@@ -32,6 +32,7 @@
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="<?php echo e(route('dashboard.hotels.')); ?>">Hotels</a></li>
+                    <li><a href="<?php echo e(route('dashboard.users.')); ?>">Users</a></li>
                 </ul>
             </li>
            <?php endif; ?>
@@ -180,8 +181,18 @@
                 <ul aria-expanded="false">
                     <li><a href="<?php echo e(route('dashboard.hotel.notifications.view-all')); ?>">Orders</a></li>
                     
+            </li>
+            <?php if(Gate::allows('view-module', 'billing-and-payments')): ?>
+            <li><a class="has-arrow " href="javascript:void()" aria-expanded="false">
+                <i class="flaticon-045-heart"></i>
+                <span class="nav-text">Manage Payments</span>
+            </a>
+            <ul aria-expanded="false">
+                <li><a href="<?php echo e(route('dashboard.payments.list')); ?>">List</a></li>
+        </li>
         </ul>
         </li>
+        <?php endif; ?>
         <li>
             <a href="<?php echo e(route('dashboard.hotel.settings.')); ?>" aria-expanded="false">
                 <i class="flaticon-013-checkmark"></i>

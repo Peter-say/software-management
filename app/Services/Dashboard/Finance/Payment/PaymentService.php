@@ -3,6 +3,9 @@
 namespace App\Services\Dashboard\Finance\Payment;
 
 use App\Constants\CurrencyConstants;
+use App\Models\HotelSoftware\BarOrder;
+use App\Models\HotelSoftware\RestaurantOrder;
+use App\Models\HotelSoftware\RoomReservation;
 use App\Models\Payment;
 use App\Models\User;
 use Exception;
@@ -55,7 +58,7 @@ class PaymentService
 
     public function processPayment(Request $request, $payment_id = null)
     {
-        dd($request->all());
+        // dd($request->all());
         return DB::transaction(function () use ($request, $payment_id) {
             $this->validatePayment($request->all());
 
@@ -93,7 +96,6 @@ class PaymentService
                     'transaction_id' => 'TXN' . strtoupper(uniqid()),
                     'user_id' => $data['user_id'],
                 ]);
-                // dd($data, $payments );
             }
 
             // Handle Stripe Payment
@@ -123,11 +125,13 @@ class PaymentService
                 $statusInfo = $this->evaluatePaymentStatus($payment->amount, $request->total_amount);
                 $payment->status = $statusInfo['status'];
                 $payment->save();
+                $this->updatePaymentStatusForPayable($payment->payable_type, $payment->payable_id, 'completed');
             } else {
                 $payments->each(function ($payment) use ($request) {
                     $statusInfo = $this->evaluatePaymentStatus($payment->amount, $request->total_amount);
                     $payment->status = $statusInfo['status'];
                     $payment->save();
+                    $this->updatePaymentStatusForPayable($payment->payable_type, $payment->payable_id, 'completed');
                 });
             }
             
@@ -162,10 +166,41 @@ class PaymentService
         ];
     }
 
+    /**
+ * Update the payment status of the related payable model (e.g., RoomReservation, BarOrder)
+ *
+ * @param string $payableType
+ * @param int $payableId
+ * @param string $status
+ */
+public function updatePaymentStatusForPayable($payableType, $payableId, $status)
+{
+    $payable = app($payableType)::find($payableId);
+
+    if ($payable) {
+        if ($payable instanceof RoomReservation) {
+            $payable->payment_status = $status;
+            $payable->save();
+        } elseif ($payable instanceof BarOrder) {
+            $payable->status = $status;
+            $payable->save();
+        } elseif ($payable instanceof RestaurantOrder) {
+            $payable->payment_status = $status;
+            $payable->save();
+        }
+    }
+}
+
     public function stripCredit() {}
 
     public function payWithCard(Request $request)
     {
         $this->validatePayment($request->al);
+    }
+
+    public function list() 
+    {
+       $payments = Payment::latast()->paginate(30);
+       return $payments;
     }
 }

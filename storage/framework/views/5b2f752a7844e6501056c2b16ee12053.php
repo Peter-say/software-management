@@ -17,7 +17,6 @@
         <!-- End::page-header -->
         <div class="row">
             <div class="col-xl-12">
-           
                 <div class="row">
                     <?php $__currentLoopData = $cards; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $card): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="col-xl-3 col-sm-6">
@@ -25,10 +24,12 @@
                             <div class="card-body">
                                 <div class="booking-status d-flex align-items-center">
                                     <span>
-                                        <!-- Example SVG Icon -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
-                                            <!-- SVG path omitted for brevity -->
-                                            <path d="..." fill="var(--<?php echo e($card['class']); ?>)" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="28"
+                                            height="28" viewBox="0 0 28 28">
+                                            <path data-name="Path 1957"
+                                                d="M129.035,178.842v2.8a5.6,5.6,0,0,0,5.6,5.6h14a5.6,5.6,0,0,0,5.6-5.6v-16.8a5.6,5.6,0,0,0-5.6-5.6h-14a5.6,5.6,0,0,0-5.6,5.6v2.8a1.4,1.4,0,0,0,2.8,0v-2.8a2.8,2.8,0,0,1,2.8-2.8h14a2.8,2.8,0,0,1,2.8,2.8v16.8a2.8,2.8,0,0,1-2.8,2.8h-14a2.8,2.8,0,0,1-2.8-2.8v-2.8a1.4,1.4,0,0,0-2.8,0Zm10.62-7-1.81-1.809a1.4,1.4,0,1,1,1.98-1.981l4.2,4.2a1.4,1.4,0,0,1,0,1.981l-4.2,4.2a1.4,1.4,0,1,1-1.98-1.981l1.81-1.81h-12.02a1.4,1.4,0,1,1,0-2.8Z"
+                                                transform="translate(-126.235 -159.242)"
+                                                fill="var(--<?php echo e($card['class']); ?>)" fill-rule="evenodd" />
                                         </svg>
                                     </span>
                                     <div class="ms-4">

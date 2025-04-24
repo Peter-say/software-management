@@ -226,6 +226,34 @@ endif;
 unset($__errorArgs, $__bag); ?>
                                 </div>
                             </div>
+                            <?php if(isset($hotel->logo)): ?>
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#fileModal">
+                                    View Existing Logo
+                                </button>
+                            </div>
+                            <div class="modal fade" id="fileModal" tabindex="-1" aria-labelledby="fileModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="fileModalLabel">Uploaded File</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <iframe src="<?php echo e(getStorageUrl('hotel/logos/' . $hotel->logo)); ?>"
+                                                width="100%" height="500px"></iframe>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php endif; ?>
                         </div>
                         <button type="submit" class="btn btn-primary"><?php echo e('Submit'); ?></button>
                     </form>
@@ -236,9 +264,13 @@ unset($__errorArgs, $__bag); ?>
 </div>
 <?php $__env->stopSection(); ?>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var stateId = '<?php echo e(old('state_id', $hotel->state_id ?? '')); ?>';
-        var countryId = '<?php echo e(old('country_id', $hotel->country_id ?? '')); ?>';
+    document.addEventListener('DOMContentLoaded', function() {
+        var stateId = '<?php echo e(old('
+        state_id ', $hotel->state_id ?? '
+        ')); ?>';
+        var countryId = '<?php echo e(old('
+        country_id ', $hotel->country_id ?? '
+        ')); ?>';
 
         function loadStates(countryId, selectedStateId = null) {
             var stateDropdown = $('#state_id');
@@ -251,14 +283,14 @@ unset($__errorArgs, $__bag); ?>
                     data: {
                         country_id: countryId
                     },
-                    success: function (response) {
+                    success: function(response) {
                         stateDropdown.append('<option value="">Select State</option>');
-                        $.each(response.states, function (key, state) {
+                        $.each(response.states, function(key, state) {
                             var selected = (state.id == selectedStateId) ? 'selected' : '';
                             stateDropdown.append('<option value="' + state.id + '" ' + selected + '>' + state.name + '</option>');
                         });
                     },
-                    error: function () {
+                    error: function() {
                         alert('Error fetching states');
                     }
                 });
@@ -268,7 +300,7 @@ unset($__errorArgs, $__bag); ?>
         }
 
         // Trigger on country change
-        $('#country_id').on('change', function () {
+        $('#country_id').on('change', function() {
             var selectedCountryId = $(this).val();
             loadStates(selectedCountryId);
         });
@@ -279,5 +311,4 @@ unset($__errorArgs, $__bag); ?>
         }
     });
 </script>
-
 <?php echo $__env->make('dashboard.layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Web Development\Backend\Laravel\software-management\software-management\resources\views\dashboard\settings\hotel\edit-info.blade.php ENDPATH**/ ?>

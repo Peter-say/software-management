@@ -91,7 +91,7 @@
                                                                 </td>
                                                                 <td>{{ $reservation->created_at->format('Y-m-d H:i:s') }}
                                                                 </td>
-                                                                <td class="text-{{$reservation->payment_status === 'completed' ? 'seccess' : 'warning'}}">{{strtoupper( $reservation->payment_status) }}</td>
+                                                                <td class="text-{{$reservation->payment_status === 'completed' ? 'success' : 'warning'}}">{{strtoupper( $reservation->payment_status) }}</td>
                                                                 <td>
                                                                     <div class="d-flex">
                                                                         <a href="{{ route('dashboard.hotel.reservations.show', $reservation->reservation_code) }}" class="btn btn-primary shadow btn-xs sharp me-1">

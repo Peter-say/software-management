@@ -74,6 +74,9 @@ class GuestWalletService
         try {
             $validatedData = $this->validateData($request);
             $payment = $this->payment_service->processPayment($request);
+            if ($payment instanceof \Illuminate\Support\Collection) {
+                $payment = $payment->first();
+            }
             $transaction = $this->transaction_service->processTransaction($request, $payment);
             $transaction->transaction_type = 'credit';
             $payment->transactions()->save($transaction);

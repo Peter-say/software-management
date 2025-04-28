@@ -26,6 +26,7 @@ class DashboardController extends Controller
     }
     public function dashboard(Request $request)
     {
+        // phpinfo();
         $period = $request->get('period', 'day');
         $booking_period = $request->get('booking_period', 'week');
 

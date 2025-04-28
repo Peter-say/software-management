@@ -89,7 +89,7 @@ Route::middleware('auth', 'verified')->group(function () {
 
             Route::prefix('payments')->as('payments.')->group(function () {
                 Route::get('pay', [PaymentController::class, 'pay'])->name('pay');
-                Route::get('index', [PaymentController::class, 'list'])->name('list');
+                Route::get('list', [PaymentController::class, 'list'])->name('list');
                 Route::post('initiate', [PaymentController::class, 'initiatePayment'])->name('initiate');
             });
 
@@ -168,6 +168,7 @@ Route::middleware('auth', 'verified')->group(function () {
         });
         Route::prefix('payments')->as('payments.')->group(function () {
             Route::get('pay', [PaymentController::class, 'pay'])->name('pay');
+            Route::get('list', [PaymentController::class, 'list'])->name('list');
             Route::post('initiate', [PaymentController::class, 'initiatePayment'])->name('initiate');
         });
     })->middleware(HotelUserMiddleware::class);

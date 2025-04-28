@@ -8,6 +8,8 @@
             var results = regex.exec(location.search);
             return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
         }
+
+        const cardPaymentForm = document.getElementById('card-payment-form');
         const paymentSelect = document.getElementById('payment-option');
         const stripePayment = document.getElementById('stripe-payment');
         const paymentMethod = document.getElementById('payment-method');
@@ -23,42 +25,41 @@
         let stripe = null;
         let elements = null;
         let card = null;
-
-        // ================================
+    
+     // ================================
         // Initialize Stripe (Only Once)
         // ================================
         function initializeStripe() {
-            if (stripe || !paymentPlatform || paymentPlatform.slug !== 'stripe') return;
+    if (!stripe && paymentPlatform && paymentPlatform.slug === 'stripe') {
+        stripe = Stripe(paymentPlatform.public_key);
+        elements = stripe.elements();
+    }
 
-            stripe = Stripe(paymentPlatform.public_key);
-            elements = stripe.elements();
-            card = elements.create('card');
+    if (!card && (document.getElementById('card-element') || walletCardElementContainer)) {
+        card = elements.create('card', { hidePostalCode: true });
             card.mount('#card-element');
-        }
+    }
+}
+
+        // Call the initialization function
+        initializeStripe();
 
         // ================================
         // Update Payment UI Based on Method
         // ================================
         function updatePaymentDisplay(method) {
-            paymentMethod.value = method;
+    paymentMethod.value = method;
 
-            if (method === 'CARD') {
-                paymentTitle.innerText = 'Card Payment';
-                stripeCardContainer.style.display = 'block';
-                stripeTokenInput.value = 'step-token';
-                initializeStripe();
-            } else {
-                paymentTitle.innerText = 'Cash Payment';
-                stripeCardContainer.style.display = 'none';
-                if (stripeTokenInput) {
-        stripeTokenInput.disabled = true; // Disable it to avoid submission
-        stripeTokenInput.removeAttribute('name'); // Ensure it's not submitted
-        stripePayment.removeAttribute('name');
-        stripeTokenInput.value = '';
+    if (method === 'CARD') {
+        paymentTitle.innerText = 'Card Payment';
+        stripeCardContainer.style.display = 'block';
+        card.unmount(); // unmount before remounting
+        card.mount('#card-element');
+    } else {
+        paymentTitle.innerText = 'Cash Payment';
+        stripeCardContainer.style.display = 'none';
     }
-            }
-        }
-
+}
         // Initial Load
         updatePaymentDisplay(paymentSelect.value);
 
@@ -99,14 +100,10 @@
         // Stripe + Form Submit
         // ================================
         form.addEventListener('submit', function (e) {
-            // Set payment method to selected option
             paymentMethod.value = paymentSelect.value;
-
-            // Clean amount input
             amountInputJQ.val(amountInputJQ.val().replace(/,/g, ''));
             amountInputJS.value = amountInputJS.value.replace(/,/g, '');
 
-            // Check if platform is Stripe
             if (paymentSelect.value === 'CARD' && paymentPlatform.slug === 'stripe') {
                 e.preventDefault();
                 document.getElementById('form-preloader')?.style?.setProperty('display', 'flex');
@@ -121,9 +118,9 @@
                     }
                 });
             } else {
-                // If not Stripe, allow form to submit normally
                 stripeTokenInput.value = '';
             }
         });
+
     });
 </script>

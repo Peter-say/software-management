@@ -134,7 +134,7 @@ class PaymentService
                     $this->updatePaymentStatusForPayable($payment->payable_type, $payment->payable_id, 'completed');
                 });
             }
-            
+            // dd($payments);
             return $payments;
             
         });
@@ -185,7 +185,7 @@ public function updatePaymentStatusForPayable($payableType, $payableId, $status)
             $payable->status = $status;
             $payable->save();
         } elseif ($payable instanceof RestaurantOrder) {
-            $payable->payment_status = $status;
+            $payable->status = $status;
             $payable->save();
         }
     }

@@ -131,30 +131,34 @@
                                                                         </i>
                                                                     </span>
                                                                 </td>
-
                                                                 <td>
                                                                     <div class="d-flex">
-                                                                        {{-- Edit Order --}}
-                                                                        <a href="{{ route('dashboard.hotel.restaurant.edit-order', $order->id) }}"
-                                                                            class="btn btn-primary shadow btn-xs sharp me-2">
-                                                                            <i class="fas fa-pencil-alt"></i>
-                                                                        </a>
+                                                                        {{-- Edit Order (only show if not fully paid) --}}
+                                                                        @if ($order->total_amount > $order->payments()->sum('amount'))
+                                                                            <a href="{{ route('dashboard.hotel.restaurant.edit-order', $order->id) }}"
+                                                                                class="btn btn-primary shadow btn-xs sharp me-2">
+                                                                                <i class="fas fa-pencil-alt"></i>
+                                                                            </a>
+                                                                        @endif
+                                                                
                                                                         {{-- Delete Order --}}
                                                                         <a href="javascript:void(0);"
                                                                             class="btn btn-danger shadow btn-xs sharp me-2"
                                                                             onclick="confirmDelete('{{ route('dashboard.hotel.restaurant.destroy-order', $order->id) }}')">
                                                                             <i class="fa fa-trash"></i>
                                                                         </a>
+                                                                
+                                                                        {{-- Payment Modal Button (if not fully paid) --}}
                                                                         @if ($order->total_amount > $order->payments()->sum('amount') || $order->payments() === null)
-                                                                            {{-- Payment Modal Button --}}
                                                                             <a type="button" data-bs-toggle="modal"
                                                                                 data-bs-target="#paymentModal{{ $order->id }}"
                                                                                 class="btn btn-primary shadow btn-xs sharp me-2">
                                                                                 <i class="fas fa-money-bill"></i>
                                                                             </a>
                                                                         @endif
-                                                                        @if ($order->status !== 'Cancelled')
-                                                                            <!-- Button to trigger modal for each order -->
+                                                                
+                                                                        {{-- Cancel Button (only show if not cancelled and not fully paid) --}}
+                                                                        @if ($order->status !== 'Cancelled' && $order->total_amount > $order->payments()->sum('amount'))
                                                                             <a type="button" data-bs-toggle="modal"
                                                                                 data-bs-target="#cancelOrderModal"
                                                                                 data-order-id="{{ $order->id }}"
@@ -162,10 +166,9 @@
                                                                                 <i class="fas fa-times"></i>
                                                                             </a>
                                                                         @endif
-
-                                                                        </a>
                                                                     </div>
                                                                 </td>
+                                                                
                                                             </tr>
                                                             @include('dashboard.hotel.restaurant-item.order.choose-paymet-method-modal',[
                                                                 'order' => $order,

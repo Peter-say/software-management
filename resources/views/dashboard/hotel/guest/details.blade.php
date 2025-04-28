@@ -90,7 +90,7 @@
                                                 <!-- Wallet Details -->
                                                 <div>
                                                     <h5 class="card-subtitle mb-2 text-muted">
-                                                        Wallet Balance: ₦{{ number_format($guest->wallet->balance) }}
+                                                        Wallet Balance: {{currencySymbol()}}{{ number_format($guest->wallet->balance) }}
                                                     </h5>
                                                     <!-- Action Buttons -->
                                                     <div class="d-flex">
@@ -422,7 +422,7 @@
                                                     <div class="mt-sm-0 mt-3">
                                                         <span class="d-block mb-2 text-black">Price</span>
                                                         <span
-                                                            class="font-w500 fs-24 text-black">{{ $purchase_history->room->roomType->currency->symbol ?? '' }}{{ $purchase_history->room->roomType->rate }}<small
+                                                            class="font-w500 fs-24 text-black">{{ $purchase_history->room->roomType->currency->symbol ?? '' }}{{ number_format($purchase_history->room->roomType->rate) }}<small
                                                                 class="fs-14 ms-2 text-secondary">/night</small></span>
                                                     </div>
                                                 </div>

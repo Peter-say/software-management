@@ -28,6 +28,8 @@
                                     $totalDue = $order->total_amount - $order->payments->sum('amount');
                                 @endphp
                                 <b>{{ currencySymbol() }}{{ number_format($totalDue, 2, '.', ',') }}</b>
+                                <input type="hidden" id="payable-amount" name="payable-amount"
+                                    value="{{ number_format($totalDue, 2, '.', ',') }}">
                             </p>
                         </div>
                     </div>

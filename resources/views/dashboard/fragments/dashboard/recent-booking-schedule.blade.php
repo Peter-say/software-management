@@ -35,7 +35,7 @@
                                 <span><small>({{ 'From: ' . $recent->calculateDaysLengthFrom() . ' To: ' . $recent->calculateDaysLengthTo() }})</small></span>
                                 <div class="users d-flex align-items-center">
                                     @if ($recent->guest->id_picture_location)
-                                        <img src="{{ getStorageUrl('hotel/guests/id_picture_locations/' . $guest->id_picture_location) }}"
+                                        <img src="{{ getStorageUrl('hotel/guests/id_picture_locations/' . $recent->guest->id_picture_location) }}"
                                             alt="{{ $recent->guest->full_name }}">
                                     @else
                                         <img src="{{ getStorageUrl('dashboard/images/users/user1.jpg') }}"

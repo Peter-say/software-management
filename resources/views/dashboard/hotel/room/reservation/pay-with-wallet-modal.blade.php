@@ -83,4 +83,42 @@ $date = Date('d/m/y');
         </div>
     </div>
 </div>
-@include('dashboard.general.payment.payment-platform-script')
+{{-- @include('dashboard.general.payment.payment-platform-script') --}}
+
+<script>
+            const amountInputJQ = $('#amount');
+            const amountInputJS = document.getElementById('amount');
+            const payableAmount = parseFloat(document.getElementById('payable-amount')?.value?.replace(/,/g, '') || 0);
+            const form = document.getElementById('payWithWallet');
+     // ================================
+        // Amount Input Formatting
+        // ================================
+        amountInputJQ.on('input', function () {
+            let enteredAmount = parseFloat(this.value.replace(/,/g, '') || 0);
+            if (enteredAmount > payableAmount) {
+                Toastify({
+                    text: `You cannot pay more than ₦${payableAmount.toLocaleString()}.`,
+                    duration: 5000,
+                    gravity: 'top',
+                    position: 'right',
+                    backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
+                }).showToast();
+                this.value = payableAmount.toLocaleString();
+            } else {
+                this.value = enteredAmount.toLocaleString();
+            }
+        });
+    amountInputJS.addEventListener('input', function () {
+            let inputVal = this.value.replace(/[^0-9.]/g, '');
+            const parts = inputVal.split('.');
+            if (parts[0]) {
+                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            }
+            this.value = parts.join('.');
+        });
+        form.addEventListener('submit', function (e) {
+            amountInputJQ.val(amountInputJQ.val().replace(/,/g, ''));
+            amountInputJS.value = amountInputJS.value.replace(/,/g, '');
+
+        });
+</script>

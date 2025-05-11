@@ -271,14 +271,12 @@
                 // Trigger change event on page load to populate states if country is pre-selected
                 $('#country_id').trigger('change');
             });
-        </script>
-        // Initialize Bootstrap tooltips
+            // Initialize Bootstrap tooltips
             document.addEventListener('DOMContentLoaded', function() {
                 var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
                 var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
                     return new bootstrap.Tooltip(tooltipTriggerEl);
-                } <script>
-           );
+                });
             });
         </script>
 

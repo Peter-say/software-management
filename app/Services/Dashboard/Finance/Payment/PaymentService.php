@@ -200,7 +200,7 @@ public function updatePaymentStatusForPayable($payableType, $payableId, $status)
 
     public function list() 
     {
-       $payments = Payment::latast()->paginate(30);
+       $payments = Payment::latest()->paginate(30);
        return $payments;
     }
 }

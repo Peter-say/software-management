@@ -58,9 +58,9 @@ class PaymentController extends Controller
     public function list()
     {
         $request = request();
-        $payments = $this->payment_service->list($request);
-        return view('dashboard.finance.payment.index', [
-            'payments' => $payments,
-        ]);
+        // $payments = $this->payment_service->list($request);
+        // return view('dashboard.finance.payment.index', [
+        //     'payments' => $payments,
+        // ]);
     }
 }

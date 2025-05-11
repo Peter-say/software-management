@@ -67,13 +67,12 @@ class Room extends Model
 
     public function isAvailable($checkin_date, $checkout_date)
     {
-        // If no reservations, the room is available
         if (!$this->reservations()->exists()) {
             return true;
         }
     
         if (!$checkin_date || !$checkout_date) {
-            return true; // If missing dates, assume available
+            return true;
         }
     
         $checkin_date = $checkin_date;

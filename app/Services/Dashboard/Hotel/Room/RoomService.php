@@ -68,6 +68,7 @@ class RoomService
         $available_rooms = Room::with('roomType')
             ->where('hotel_id', $hotel->id)
             ->whereDoesntHave('reservations', function ($query) {
+                $query->whereNull('checked_in_at');
                 $query->whereNull('checked_out_at');
             });
 
@@ -80,7 +81,7 @@ class RoomService
         $occupied_rooms = Room::with('roomType')
             ->where('hotel_id', $hotel->id)
             ->whereHas('reservations', function ($query) {
-                $query->whereNull('checked_out_at');
+                $query->whereNotNull('checked_out_at');
             });
 
         return $occupied_rooms;

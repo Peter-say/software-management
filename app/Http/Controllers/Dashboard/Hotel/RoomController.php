@@ -104,6 +104,7 @@ class RoomController extends Controller
 
     public function filterRoom(Request $request)
     {
+        dd($request->all());
         $selection = $request->input('select_room', 'Newest');
         $search = $request->input('search_term');
 

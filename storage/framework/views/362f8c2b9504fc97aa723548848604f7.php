@@ -1,23 +1,27 @@
 <!-- Stripe JS -->
 <script src="https://js.stripe.com/v3/"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         function getUrlParameter(name) {
             name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
             var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
             var results = regex.exec(location.search);
             return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
         }
+
+        const cardPaymentForm = document.getElementById('card-payment-form');
         const paymentSelect = document.getElementById('payment-option');
         const stripePayment = document.getElementById('stripe-payment');
         const paymentMethod = document.getElementById('payment-method');
         const stripeCardContainer = document.getElementById('stripe-card');
         const stripeTokenInput = document.getElementById('stripe-token');
+
         const paymentTitle = document.getElementById('payment-title');
         const form = document.getElementById('paymentInitiate');
         const amountInputJQ = $('#amount');
         const amountInputJS = document.getElementById('amount');
-        const payableAmount = parseFloat(document.getElementById('payable-amount')?.value?.replace(/,/g, '') || 0);
+        const payableAmount = parseFloat(document.getElementById('payable-amount')?.value?.replace(/,/g, '') ||
+            0);
         const paymentPlatform = <?php echo json_encode($payment_platform, 15, 512) ?>;
         const requestedRoom = getUrlParameter('requested_payment_id');
         let stripe = null;
@@ -28,13 +32,21 @@
         // Initialize Stripe (Only Once)
         // ================================
         function initializeStripe() {
-            if (stripe || !paymentPlatform || paymentPlatform.slug !== 'stripe') return;
+            if (!stripe && paymentPlatform && paymentPlatform.slug === 'stripe') {
+                stripe = Stripe(paymentPlatform.public_key);
+                elements = stripe.elements();
+            }
 
-            stripe = Stripe(paymentPlatform.public_key);
-            elements = stripe.elements();
-            card = elements.create('card');
-            card.mount('#card-element');
+            if (!card && (document.getElementById('card-element') || walletCardElementContainer)) {
+                card = elements.create('card', {
+                    hidePostalCode: true
+                });
+                card.mount('#card-element');
+            }
         }
+
+        // Call the initialization function
+        initializeStripe();
 
         // ================================
         // Update Payment UI Based on Method
@@ -43,34 +55,30 @@
             paymentMethod.value = method;
 
             if (method === 'CARD') {
+                // alert('Card payment selected. Please enter your card details.');
                 paymentTitle.innerText = 'Card Payment';
                 stripeCardContainer.style.display = 'block';
-                stripeTokenInput.value = 'step-token';
-                initializeStripe();
+                paymentMethod.value = 'CARD';
+                card.unmount(); // unmount before remounting
+                card.mount('#card-element');
             } else {
                 paymentTitle.innerText = 'Cash Payment';
                 stripeCardContainer.style.display = 'none';
-                if (stripeTokenInput) {
-        stripeTokenInput.disabled = true; // Disable it to avoid submission
-        stripeTokenInput.removeAttribute('name'); // Ensure it's not submitted
-        stripePayment.removeAttribute('name');
-        stripeTokenInput.value = '';
-    }
+                paymentMethod.value = 'CASH';
             }
         }
-
         // Initial Load
         updatePaymentDisplay(paymentSelect.value);
 
         // On Payment Option Change
-        paymentSelect.addEventListener('change', function () {
+        paymentSelect.addEventListener('change', function() {
             updatePaymentDisplay(this.value);
         });
 
         // ================================
         // Amount Input Formatting
         // ================================
-        amountInputJQ.on('input', function () {
+        amountInputJQ.on('input', function() {
             let enteredAmount = parseFloat(this.value.replace(/,/g, '') || 0);
             if (enteredAmount > payableAmount) {
                 Toastify({
@@ -86,7 +94,7 @@
             }
         });
 
-        amountInputJS.addEventListener('input', function () {
+        amountInputJS.addEventListener('input', function() {
             let inputVal = this.value.replace(/[^0-9.]/g, '');
             const parts = inputVal.split('.');
             if (parts[0]) {
@@ -98,33 +106,31 @@
         // ================================
         // Stripe + Form Submit
         // ================================
-        form.addEventListener('submit', function (e) {
-            // Set payment method to selected option
+        form.addEventListener('submit', function(e) {
             paymentMethod.value = paymentSelect.value;
-
-            // Clean amount input
             amountInputJQ.val(amountInputJQ.val().replace(/,/g, ''));
             amountInputJS.value = amountInputJS.value.replace(/,/g, '');
 
-            // Check if platform is Stripe
             if (paymentSelect.value === 'CARD' && paymentPlatform.slug === 'stripe') {
                 e.preventDefault();
                 document.getElementById('form-preloader')?.style?.setProperty('display', 'flex');
 
-                stripe.createToken(card).then(function (result) {
+                stripe.createToken(card).then(function(result) {
                     if (result.error) {
-                        document.getElementById('form-preloader')?.style?.setProperty('display', 'none');
-                        document.getElementById('card-errors').textContent = result.error.message;
+                        document.getElementById('form-preloader')?.style?.setProperty('display',
+                            'none');
+                        document.getElementById('card-errors').textContent = result.error
+                            .message;
                     } else {
                         stripeTokenInput.value = result.token.id;
                         form.submit();
                     }
                 });
             } else {
-                // If not Stripe, allow form to submit normally
                 stripeTokenInput.value = '';
             }
         });
+
     });
 </script>
 <?php /**PATH C:\Web Development\Backend\Laravel\software-management\software-management\resources\views\dashboard\general\payment\payment-platform-script.blade.php ENDPATH**/ ?>

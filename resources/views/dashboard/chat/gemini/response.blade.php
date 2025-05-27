@@ -1,0 +1,1 @@
+<div id="gemini-response" class="mt-4"></div>

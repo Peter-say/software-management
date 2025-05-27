@@ -31,6 +31,7 @@ use App\Http\Controllers\Dashboard\Notification\NotificationController;
 use App\Http\Controllers\Dashboard\OnboardingController;
 use App\Http\Controllers\Dashboard\Settings\HotelSettingController;
 use App\Http\Controllers\Dashboard\Settings\SettingController;
+use App\Http\Controllers\GeminiController;
 use App\Http\Middleware\HotelUserMiddleware;
 use App\Models\HotelSoftware\PaymentPlatform;
 use App\Models\HotelSoftware\StoreInventory;
@@ -58,6 +59,10 @@ Route::middleware('auth', 'verified')->group(function () {
 
         Route::get('home', [DashboardController::class, 'dashboard'])->name('home');
         Route::get('load-more-recent-reservation', [RoomReservationController::class, 'loadRecentReservation'])->name('load-more-recent-reservation');
+
+        Route::get('chat-gemini', [GeminiController::class, 'showGeminiForm'])->name('chat-gemini');
+        Route::post('ask-gemini', [GeminiController::class, 'ask'])->name('ask-gemini');
+        Route::delete('clear-conversation', [GeminiController::class, 'clear'])->name('clear-conversation');
 
         Route::prefix('hotel-users')->as('hotel-users.')->group(function () {
             Route::get('overview', [UsersController::class, 'overview'])->name('overview');

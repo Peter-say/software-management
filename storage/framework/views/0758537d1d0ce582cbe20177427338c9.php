@@ -1,0 +1,1 @@
+<div id="gemini-response" class="mt-4"></div><?php /**PATH C:\Web Development\Backend\Laravel\software-management\software-management\resources\views\dashboard\chat\gemini\response.blade.php ENDPATH**/ ?>

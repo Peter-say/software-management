@@ -114,4 +114,42 @@ unset($__errorArgs, $__bag); ?>
         </div>
     </div>
 </div>
-<?php echo $__env->make('dashboard.general.payment.payment-platform-script', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Web Development\Backend\Laravel\software-management\software-management\resources\views\dashboard\hotel\room\reservation\pay-with-wallet-modal.blade.php ENDPATH**/ ?>
+
+
+<script>
+            const amountInputJQ = $('#amount');
+            const amountInputJS = document.getElementById('amount');
+            const payableAmount = parseFloat(document.getElementById('payable-amount')?.value?.replace(/,/g, '') || 0);
+            const form = document.getElementById('payWithWallet');
+     // ================================
+        // Amount Input Formatting
+        // ================================
+        amountInputJQ.on('input', function () {
+            let enteredAmount = parseFloat(this.value.replace(/,/g, '') || 0);
+            if (enteredAmount > payableAmount) {
+                Toastify({
+                    text: `You cannot pay more than ₦${payableAmount.toLocaleString()}.`,
+                    duration: 5000,
+                    gravity: 'top',
+                    position: 'right',
+                    backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
+                }).showToast();
+                this.value = payableAmount.toLocaleString();
+            } else {
+                this.value = enteredAmount.toLocaleString();
+            }
+        });
+    amountInputJS.addEventListener('input', function () {
+            let inputVal = this.value.replace(/[^0-9.]/g, '');
+            const parts = inputVal.split('.');
+            if (parts[0]) {
+                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            }
+            this.value = parts.join('.');
+        });
+        form.addEventListener('submit', function (e) {
+            amountInputJQ.val(amountInputJQ.val().replace(/,/g, ''));
+            amountInputJS.value = amountInputJS.value.replace(/,/g, '');
+
+        });
+</script><?php /**PATH C:\Web Development\Backend\Laravel\software-management\software-management\resources\views\dashboard\hotel\room\reservation\pay-with-wallet-modal.blade.php ENDPATH**/ ?>

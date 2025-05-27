@@ -28,6 +28,8 @@
                                     $totalDue = $order->total_amount - $order->payments->sum('amount');
                                 ?>
                                 <b><?php echo e(currencySymbol()); ?><?php echo e(number_format($totalDue, 2, '.', ',')); ?></b>
+                                <input type="hidden" id="payable-amount" name="payable-amount"
+                                    value="<?php echo e(number_format($totalDue, 2, '.', ',')); ?>">
                             </p>
                         </div>
                     </div>

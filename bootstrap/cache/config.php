@@ -1,14 +1,14 @@
 <?php return array (
-  4 => 'concurrency',
-  5 => 'cors',
-  8 => 'hashing',
-  14 => 'view',
+  1 => 'hashing',
+  7 => 'view',
+  10 => 'cors',
+  13 => 'concurrency',
   'app' => 
   array (
     'name' => 'Stackkit',
-    'env' => 'local',
+    'env' => 'live',
     'debug' => true,
-    'url' => 'http://localhost',
+    'url' => 'https://stackkit.swiftlysend.online/',
     'frontend_url' => 'http://localhost:3000',
     'asset_url' => NULL,
     'timezone' => 'UTC',
@@ -199,7 +199,7 @@
   ),
   'cache' => 
   array (
-    'default' => 'file',
+    'default' => 'database',
     'stores' => 
     array (
       'array' => 
@@ -218,8 +218,8 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'C:\\Web Development\\Backend\\Laravel\\software-management\\software-management\\storage\\framework/cache/data',
-        'lock_path' => 'C:\\Web Development\\Backend\\Laravel\\software-management\\software-management\\storage\\framework/cache/data',
+        'path' => '/home/swifbayo/public_html/software-management/storage/framework/cache/data',
+        'lock_path' => '/home/swifbayo/public_html/software-management/storage/framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -274,7 +274,7 @@
       array (
         'driver' => 'sqlite',
         'url' => NULL,
-        'database' => 'software_management',
+        'database' => 'swifbayo_software_management',
         'prefix' => '',
         'foreign_key_constraints' => true,
         'busy_timeout' => NULL,
@@ -287,9 +287,9 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'software_management',
-        'username' => 'root',
-        'password' => '',
+        'database' => 'swifbayo_software_management',
+        'username' => 'swifbayo_peter',
+        'password' => 'aidohenren@22',
         'unix_socket' => '',
         'charset' => 'utf8mb4',
         'collation' => 'utf8mb4_unicode_ci',
@@ -307,9 +307,9 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'software_management',
-        'username' => 'root',
-        'password' => '',
+        'database' => 'swifbayo_software_management',
+        'username' => 'swifbayo_peter',
+        'password' => 'aidohenren@22',
         'unix_socket' => '',
         'charset' => 'utf8mb4',
         'collation' => 'utf8mb4_unicode_ci',
@@ -327,9 +327,9 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'software_management',
-        'username' => 'root',
-        'password' => '',
+        'database' => 'swifbayo_software_management',
+        'username' => 'swifbayo_peter',
+        'password' => 'aidohenren@22',
         'charset' => 'utf8',
         'prefix' => '',
         'prefix_indexes' => true,
@@ -342,9 +342,9 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'software_management',
-        'username' => 'root',
-        'password' => '',
+        'database' => 'swifbayo_software_management',
+        'username' => 'swifbayo_peter',
+        'password' => 'aidohenren@22',
         'charset' => 'utf8',
         'prefix' => '',
         'prefix_indexes' => true,
@@ -391,14 +391,14 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Web Development\\Backend\\Laravel\\software-management\\software-management\\storage\\app',
+        'root' => '/home/swifbayo/public_html/software-management/storage/app',
         'throw' => false,
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Web Development\\Backend\\Laravel\\software-management\\software-management\\storage\\app/public',
-        'url' => 'http://localhost/storage',
+        'root' => '/home/swifbayo/public_html/software-management/storage/app/public',
+        'url' => 'https://stackkit.swiftlysend.online//storage',
         'visibility' => 'public',
         'throw' => false,
       ),
@@ -417,7 +417,7 @@
     ),
     'links' => 
     array (
-      'C:\\Web Development\\Backend\\Laravel\\software-management\\software-management\\public\\storage' => 'C:\\Web Development\\Backend\\Laravel\\software-management\\software-management\\storage\\app/public',
+      '/home/swifbayo/public_html/software-management/public/storage' => '/home/swifbayo/public_html/software-management/storage/app/public',
     ),
   ),
   'logging' => 
@@ -442,14 +442,14 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'C:\\Web Development\\Backend\\Laravel\\software-management\\software-management\\storage\\logs/laravel.log',
+        'path' => '/home/swifbayo/public_html/software-management/storage/logs/laravel.log',
         'level' => 'debug',
         'replace_placeholders' => true,
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'C:\\Web Development\\Backend\\Laravel\\software-management\\software-management\\storage\\logs/laravel.log',
+        'path' => '/home/swifbayo/public_html/software-management/storage/logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
         'replace_placeholders' => true,
@@ -514,26 +514,26 @@
       ),
       'emergency' => 
       array (
-        'path' => 'C:\\Web Development\\Backend\\Laravel\\software-management\\software-management\\storage\\logs/laravel.log',
+        'path' => '/home/swifbayo/public_html/software-management/storage/logs/laravel.log',
       ),
     ),
   ),
   'mail' => 
   array (
-    'default' => 'log',
+    'default' => 'smtp',
     'mailers' => 
     array (
       'smtp' => 
       array (
         'transport' => 'smtp',
         'url' => NULL,
-        'host' => '127.0.0.1',
-        'port' => '2525',
-        'encryption' => NULL,
-        'username' => NULL,
-        'password' => NULL,
+        'host' => 'stackkit.swiftlysend.online',
+        'port' => '465',
+        'encryption' => 'ssl',
+        'username' => 'support@stackkit.swiftlysend.online',
+        'password' => 'aidohenren@22',
         'timeout' => NULL,
-        'local_domain' => 'localhost',
+        'local_domain' => 'stackkit.swiftlysend.online',
       ),
       'ses' => 
       array (
@@ -582,7 +582,7 @@
     ),
     'from' => 
     array (
-      'address' => 'hello@example.com',
+      'address' => 'support@stackkit.swiftlysend.online',
       'name' => 'Stackkit',
     ),
     'markdown' => 
@@ -590,7 +590,7 @@
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'C:\\Web Development\\Backend\\Laravel\\software-management\\software-management\\resources\\views/vendor/mail',
+        0 => '/home/swifbayo/public_html/software-management/resources/views/vendor/mail',
       ),
     ),
   ),
@@ -685,7 +685,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\Web Development\\Backend\\Laravel\\software-management\\software-management\\storage\\framework/sessions',
+    'files' => '/home/swifbayo/public_html/software-management/storage/framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -822,9 +822,30 @@
       'Laravel\\Telescope\\Watchers\\ViewWatcher' => true,
     ),
   ),
-  'concurrency' => 
+  'hashing' => 
   array (
-    'default' => 'process',
+    'driver' => 'bcrypt',
+    'bcrypt' => 
+    array (
+      'rounds' => '12',
+      'verify' => true,
+    ),
+    'argon' => 
+    array (
+      'memory' => 65536,
+      'threads' => 1,
+      'time' => 4,
+      'verify' => true,
+    ),
+    'rehash_on_login' => true,
+  ),
+  'view' => 
+  array (
+    'paths' => 
+    array (
+      0 => '/home/swifbayo/public_html/software-management/resources/views',
+    ),
+    'compiled' => '/home/swifbayo/public_html/software-management/storage/framework/views',
   ),
   'cors' => 
   array (
@@ -854,30 +875,9 @@
     'max_age' => 0,
     'supports_credentials' => false,
   ),
-  'hashing' => 
+  'concurrency' => 
   array (
-    'driver' => 'bcrypt',
-    'bcrypt' => 
-    array (
-      'rounds' => '12',
-      'verify' => true,
-    ),
-    'argon' => 
-    array (
-      'memory' => 65536,
-      'threads' => 1,
-      'time' => 4,
-      'verify' => true,
-    ),
-    'rehash_on_login' => true,
-  ),
-  'view' => 
-  array (
-    'paths' => 
-    array (
-      0 => 'C:\\Web Development\\Backend\\Laravel\\software-management\\software-management\\resources\\views',
-    ),
-    'compiled' => 'C:\\Web Development\\Backend\\Laravel\\software-management\\software-management\\storage\\framework\\views',
+    'default' => 'process',
   ),
   'dompdf' => 
   array (
@@ -886,10 +886,10 @@
     'convert_entities' => true,
     'options' => 
     array (
-      'font_dir' => 'C:\\Web Development\\Backend\\Laravel\\software-management\\software-management\\storage\\fonts',
-      'font_cache' => 'C:\\Web Development\\Backend\\Laravel\\software-management\\software-management\\storage\\fonts',
-      'temp_dir' => 'C:\\Users\\PETERI~1\\AppData\\Local\\Temp',
-      'chroot' => 'C:\\Web Development\\Backend\\Laravel\\software-management\\software-management',
+      'font_dir' => '/home/swifbayo/public_html/software-management/storage/fonts',
+      'font_cache' => '/home/swifbayo/public_html/software-management/storage/fonts',
+      'temp_dir' => '/tmp',
+      'chroot' => '/home/swifbayo/public_html/software-management',
       'allowed_protocols' => 
       array (
         'file://' => 
@@ -1041,7 +1041,7 @@
     ),
     'temporary_files' => 
     array (
-      'local_path' => 'C:\\Web Development\\Backend\\Laravel\\software-management\\software-management\\storage\\framework/cache/laravel-excel',
+      'local_path' => '/home/swifbayo/public_html/software-management/storage/framework/cache/laravel-excel',
       'local_permissions' => 
       array (
       ),

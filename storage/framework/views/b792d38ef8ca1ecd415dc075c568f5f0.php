@@ -1,1 +1,0 @@
-<?php /**PATH C:\Web Development\Backend\Laravel\software-management\software-management\resources\views\dashboard\hotel\restaurant-item\order\order-notification.blade.php ENDPATH**/ ?>

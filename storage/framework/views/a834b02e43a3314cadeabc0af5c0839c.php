@@ -1,1 +1,0 @@
-<?php /**PATH C:\Web Development\Backend\Laravel\software-management\software-management\resources\views\dashboard\settings\hotel\module-preference.blade.php ENDPATH**/ ?>

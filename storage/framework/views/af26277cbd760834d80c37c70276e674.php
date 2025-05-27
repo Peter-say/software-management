@@ -1,1 +1,0 @@
-<?php /**PATH /home/swifbayo/public_html/software-management/resources/views/dashboard/settings/hotel/module-preference.blade.php ENDPATH**/ ?>

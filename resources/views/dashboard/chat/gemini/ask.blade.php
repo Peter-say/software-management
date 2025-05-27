@@ -23,8 +23,8 @@
                             @if (isset($chat_histories) && is_array($chat_histories) && count($chat_histories) > 0)
                                 @foreach ($chat_histories as $msg)
                                     <div>
-                                        <h6 class="mb-1">{{ ucfirst($msg['sender']) }}:</h6>
-                                        <div class="alert alert-{{ $msg['sender'] === 'user' ? 'info' : 'secondary' }}">
+                                        <h6 class="mb-1 text-dark">{{ ucfirst($msg['sender']) }}:</h6>
+                                        <div class="alert alert-{{ $msg['sender'] === 'user' ? 'info' : 'secondary' }} text-dark">
                                             {!! nl2br(e($msg['content'])) !!}
                                         </div>
                                     </div>

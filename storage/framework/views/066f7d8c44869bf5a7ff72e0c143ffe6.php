@@ -26,6 +26,7 @@
     <link rel="shortcut icon" type="image/png" href="<?php echo e(asset('dashboard/images/favicon.png')); ?>" />
     <?php echo app('Illuminate\Foundation\Vite')(['resources/js/app.js', 'resources/js/echo.js']); ?>
 
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
     <!-- Google Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -77,6 +78,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
+
+
     <script>
         window.storageBaseUrl = <?php echo json_encode(url('/'), 15, 512) ?>;
         window.environment = <?php echo json_encode(app()->environment(), 15, 512) ?>;
@@ -271,8 +274,6 @@
                 // Trigger change event on page load to populate states if country is pre-selected
                 $('#country_id').trigger('change');
             });
-        </script>
-        <script>
             // Initialize Bootstrap tooltips
             document.addEventListener('DOMContentLoaded', function() {
                 var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));

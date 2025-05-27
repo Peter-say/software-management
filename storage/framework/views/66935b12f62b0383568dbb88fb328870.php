@@ -88,7 +88,7 @@
                                                 <!-- Wallet Details -->
                                                 <div>
                                                     <h5 class="card-subtitle mb-2 text-muted">
-                                                        Wallet Balance: ₦<?php echo e(number_format($guest->wallet->balance)); ?>
+                                                        Wallet Balance: <?php echo e(currencySymbol()); ?><?php echo e(number_format($guest->wallet->balance)); ?>
 
                                                     </h5>
                                                     <!-- Action Buttons -->
@@ -427,7 +427,7 @@
                                                     <div class="mt-sm-0 mt-3">
                                                         <span class="d-block mb-2 text-black">Price</span>
                                                         <span
-                                                            class="font-w500 fs-24 text-black"><?php echo e($purchase_history->room->roomType->currency->symbol ?? ''); ?><?php echo e($purchase_history->room->roomType->rate); ?><small
+                                                            class="font-w500 fs-24 text-black"><?php echo e($purchase_history->room->roomType->currency->symbol ?? ''); ?><?php echo e(number_format($purchase_history->room->roomType->rate)); ?><small
                                                                 class="fs-14 ms-2 text-secondary">/night</small></span>
                                                     </div>
                                                 </div>

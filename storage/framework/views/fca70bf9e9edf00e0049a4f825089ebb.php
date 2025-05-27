@@ -30,10 +30,15 @@
                 <div class="col-md-8">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 id="payment-title" class="mb-0">Card Payment</h5>
-                        <select class="form-select w-auto ms-3" id="payment-option" name="payment_option">
-                            <option value="CARD">CARD</option>
-                            <option value="CASH">CASH</option>
-                        </select>
+                        <div class="d-flex align-items-center">
+                            <select class="form-select w-auto ms-3" id="payment-option" name="payment_option">
+                                <option value="CARD">CARD</option>
+                                <option value="CASH">CASH</option>
+                            </select>
+                            <button type="button" class="btn btn-outline-primary ms-2" data-bs-toggle="modal" data-bs-target="#Pay-with-wallet-modal">
+                                <i class="fas fa-wallet"></i> Pay with Wallet
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -46,20 +51,22 @@
                         <div class="d-flex justify-content-between">
                             <div>
                                 <p>Payment Due</p>
-                                <p>
-                                    <b><?php echo e(currencySymbol()); ?><?php echo e(number_format(
-                                            $reservation->total_amount +
-                                                $reservation->guest->calculateOrderNetTotal() -
-                                                (($reservation->payments() ?? collect())->sum('amount') + $reservation->guest->paidTotalOrders()),
-                                            2,
-                                        )); ?>
+                               <?php if(isset($reservation)): ?>
+                               <p>
+                                <b><?php echo e(currencySymbol()); ?><?php echo e(number_format(
+                                        $reservation->total_amount +
+                                            $reservation->guest->calculateOrderNetTotal() -
+                                            (($reservation->payments() ?? collect())->sum('amount') + $reservation->guest->paidTotalOrders()),
+                                        2,
+                                    )); ?>
 
-                                    </b>
-                                    <input type="hidden" id="payable-amount" name="payable-amount"
-                                        value="<?php echo e($reservation->total_amount +
-                                                $reservation->guest->calculateOrderNetTotal() -
-                                                (($reservation->payments() ?? collect())->sum('amount') + $reservation->guest->paidTotalOrders())); ?>">
-                                </p>
+                                </b>
+                                <input type="hidden" id="payable-amount" name="payable-amount"
+                                    value="<?php echo e($reservation->total_amount +
+                                            $reservation->guest->calculateOrderNetTotal() -
+                                            (($reservation->payments() ?? collect())->sum('amount') + $reservation->guest->paidTotalOrders())); ?>">
+                            </p>
+                               <?php endif; ?>
                             </div>
                         </div>
                         <div class="mb-3">
@@ -123,7 +130,7 @@ unset($__errorArgs, $__bag); ?>
     </div>
  <?php $__env->stopSection(); ?>
 
-
+<?php echo $__env->make('dashboard.hotel.room.reservation.pay-with-wallet-modal', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php echo $__env->make('dashboard.general.payment.payment-platform-script', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 

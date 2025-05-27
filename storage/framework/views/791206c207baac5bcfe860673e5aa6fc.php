@@ -133,30 +133,34 @@
                                                                         </i>
                                                                     </span>
                                                                 </td>
-
                                                                 <td>
                                                                     <div class="d-flex">
                                                                         
-                                                                        <a href="<?php echo e(route('dashboard.hotel.restaurant.edit-order', $order->id)); ?>"
-                                                                            class="btn btn-primary shadow btn-xs sharp me-2">
-                                                                            <i class="fas fa-pencil-alt"></i>
-                                                                        </a>
+                                                                        <?php if($order->total_amount > $order->payments()->sum('amount')): ?>
+                                                                            <a href="<?php echo e(route('dashboard.hotel.restaurant.edit-order', $order->id)); ?>"
+                                                                                class="btn btn-primary shadow btn-xs sharp me-2">
+                                                                                <i class="fas fa-pencil-alt"></i>
+                                                                            </a>
+                                                                        <?php endif; ?>
+                                                                
                                                                         
                                                                         <a href="javascript:void(0);"
                                                                             class="btn btn-danger shadow btn-xs sharp me-2"
                                                                             onclick="confirmDelete('<?php echo e(route('dashboard.hotel.restaurant.destroy-order', $order->id)); ?>')">
                                                                             <i class="fa fa-trash"></i>
                                                                         </a>
+                                                                
+                                                                        
                                                                         <?php if($order->total_amount > $order->payments()->sum('amount') || $order->payments() === null): ?>
-                                                                            
                                                                             <a type="button" data-bs-toggle="modal"
                                                                                 data-bs-target="#paymentModal<?php echo e($order->id); ?>"
                                                                                 class="btn btn-primary shadow btn-xs sharp me-2">
                                                                                 <i class="fas fa-money-bill"></i>
                                                                             </a>
                                                                         <?php endif; ?>
-                                                                        <?php if($order->status !== 'Cancelled'): ?>
-                                                                            <!-- Button to trigger modal for each order -->
+                                                                
+                                                                        
+                                                                        <?php if($order->status !== 'Cancelled' && $order->total_amount > $order->payments()->sum('amount')): ?>
                                                                             <a type="button" data-bs-toggle="modal"
                                                                                 data-bs-target="#cancelOrderModal"
                                                                                 data-order-id="<?php echo e($order->id); ?>"
@@ -164,10 +168,9 @@
                                                                                 <i class="fas fa-times"></i>
                                                                             </a>
                                                                         <?php endif; ?>
-
-                                                                        </a>
                                                                     </div>
                                                                 </td>
+                                                                
                                                             </tr>
                                                             <?php echo $__env->make('dashboard.hotel.restaurant-item.order.choose-paymet-method-modal',[
                                                                 'order' => $order,

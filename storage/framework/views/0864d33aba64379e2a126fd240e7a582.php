@@ -35,7 +35,7 @@
                                 <span><small>(<?php echo e('From: ' . $recent->calculateDaysLengthFrom() . ' To: ' . $recent->calculateDaysLengthTo()); ?>)</small></span>
                                 <div class="users d-flex align-items-center">
                                     <?php if($recent->guest->id_picture_location): ?>
-                                        <img src="<?php echo e(getStorageUrl('hotel/guests/id_picture_locations/' . $guest->id_picture_location)); ?>"
+                                        <img src="<?php echo e(getStorageUrl('hotel/guests/id_picture_locations/' . $recent->guest->id_picture_location)); ?>"
                                             alt="<?php echo e($recent->guest->full_name); ?>">
                                     <?php else: ?>
                                         <img src="<?php echo e(getStorageUrl('dashboard/images/users/user1.jpg')); ?>"

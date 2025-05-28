@@ -28,7 +28,7 @@ class UsersController extends Controller
     {
 
         $hotel = Hotel::where('uuid', User::getAuthenticatedUser()->hotel->uuid)->firstOrFail();
-        $hotel_users = $hotel->hotelUsers()->latest()->paginate(30);
+        $hotel_users = HotelUser::where('user_id', $hotel->id)->latest()->paginate(30);
         return view('dashboard.hotel.users.index', [
             'hotel_users' => $hotel_users
         ]);
@@ -89,7 +89,7 @@ class UsersController extends Controller
         } catch (ValidationException $e) {
             return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
-            return redirect()->back()->with('error_message', 'An error occurred while updating the user.' . $e->getMessage());
+            return redirect()->back()->with('error_message', 'An error occurred while deleting the user.' . $e->getMessage());
         }
     }
 

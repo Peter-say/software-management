@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const notificationList = document.querySelector(
         "#DZ_W_Notification1 .timeline"
     );
-   
+
     const maxNotifications = 5; // Limit to 5 notifications
     let unreadCount = 0;
 
@@ -42,7 +42,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
     // Function to add a notification to the DOM
     function addNotificationToList(notificationData) {
-       console.log("Adding notification:", notificationData);
         // Check if the notification has already been added
         if (addedNotificationIds.has(notificationData.id)) {
             return; // Skip adding duplicate notification
@@ -52,19 +51,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         const notificationItem = document.createElement("li");
         notificationItem.innerHTML = `
-            <div class="timeline-panel" data-notification-id="${notificationData.id}">
-                <div class="media me-2">
-                    <img alt="image" width="50" src="${notificationData.imageUrl}">
-                </div>
-                <div class="media-body">
-                    <a href="${notificationData.linkUrl}" class="notification-link" target="_blank">
-                        <h6 class="mb-1">${notificationData.message}</h6>
-                        <small class="d-block">${notificationData.description}</small>
-                        <small class="d-block">${notificationData.createdAt}</small>
-                    </a>
-                </div>
-            </div>
-        `;
+    <div class="timeline-panel">
+        <p>${notificationData.message}</p>
+        <small>${notificationData.createdAt}</small>
+    </div>
+`;
 
         // Add click event to mark as read
         notificationItem.addEventListener("click", async () => {
@@ -87,7 +78,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Fetch unread notifications on page load
     try {
         const response = await fetch("/dashboard/hotel/notifications/unread");
-        const data = await response.json();   
+        const data = await response.json();
         unreadCount = data.unread_count;
         badge.innerText = unreadCount;
         badge.classList.toggle("bg-primary", unreadCount > 0);
@@ -98,7 +89,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         } else {
             data.notification.forEach((notification) => {
                 const formattedData = formatNotificationData(notification);
-                
+
                 // Only add the notification if it hasn't been added already
                 if (!addedNotificationIds.has(formattedData.id)) {
                     addedNotificationIds.add(formattedData.id);

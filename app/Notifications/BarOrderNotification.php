@@ -51,22 +51,22 @@ class BarOrderNotification extends Notification implements ShouldBroadcast
      * Get the mail representation of the notification.
      */
     public function toMail(object $notifiable): MailMessage
-{
-    $itemsList = $this->barOrder->barOrderItems->map(function ($item) {
-        return $item->barItem->name . ' (Quantity: ' . $item->qty . ')';
-    })->implode("\n");
+    {
+        $itemsList = $this->barOrder->barOrderItems->map(function ($item) {
+            return $item->barItem->name . ' (Quantity: ' . $item->qty . ')';
+        })->implode("\n");
 
-    return (new MailMessage)
-        ->subject('New Bar Order Created')
-        ->line('A new order has been created in the bar.')
-        ->line('Order ID: ' . $this->barOrder->id)
-        ->line('Total Amount: $' . $this->barOrder->total_amount)
-        ->line('Status: ' . $this->barOrder->status)
-        ->line('Items in the order:')
-        ->line($itemsList)
-        ->action('View Order', url($this->buildData($notifiable)['link']))
-        ->line('Thank you for managing the kitchen orders!');
-}
+        return (new MailMessage)
+            ->subject('New Bar Order Created')
+            ->line('A new order has been created in the bar.')
+            ->line('Order ID: ' . $this->barOrder->id)
+            ->line('Total Amount: $' . $this->barOrder->total_amount)
+            ->line('Status: ' . $this->barOrder->status)
+            ->line('Items in the order:')
+            ->line($itemsList)
+            ->action('View Order', url($this->buildData($notifiable)['link']))
+            ->line('Thank you for managing the kitchen orders!');
+    }
 
 
     public function broadcastOn()
@@ -100,28 +100,27 @@ class BarOrderNotification extends Notification implements ShouldBroadcast
     }
 
     protected function buildData($notifiable): array
-{
-    $items = $this->barOrder->barOrderItems;
-    $itemCount = $items->count();
-    
-    $title = $itemCount === 1 ? 'Bar Order Created!' : 'Bar Orders Created!';
-    $message = $itemCount === 1 ? "A new order was created in the bar" : "$itemCount bar orders were created";
+    {
+        $items = $this->barOrder->barOrderItems;
+        $itemCount = $items->count();
 
-    return [
-        'title' => $title,
-        'message' => $message,
-        'order_id' => $this->barOrder->id,
-        'total_amount' => $this->barOrder->total_amount,
-        'link' => route('dashboard.hotel.notifications.view', $this->id),
-        'status' => $this->barOrder->status,
-        'items' => $items->map(function ($item) {
-            return [
-                'name' => $item->barItem ? $item->barItem->name : 'Unknown Item',
-                'quantity' => $item->qty,
-                'image' => $item->barItem ? getStorageUrl('hotel/bar/items/' . $item->barItem->image) : asset('dashboard/drink/wiskey.jpeg')
-            ];
-        }),
-    ];
-}
+        $title = $itemCount === 1 ? 'Bar Order Created!' : 'Bar Orders Created!';
+        $message = $itemCount === 1 ? "A new order was created in the bar" : "$itemCount bar orders were created";
 
+        return [
+            'title' => $title,
+            'message' => $message,
+            'order_id' => $this->barOrder->id,
+            'total_amount' => $this->barOrder->total_amount,
+            'link' => route('dashboard.hotel.notifications.view', $this->id),
+            'status' => $this->barOrder->status,
+            'items' => $items->map(function ($item) {
+                return [
+                    'name' => $item->barItem ? $item->barItem->name : 'Unknown Item',
+                    'quantity' => $item->qty,
+                    'image' => $item->barItem ? getStorageUrl('hotel/bar/items/' . $item->barItem->image) : asset('dashboard/drink/wiskey.jpeg')
+                ];
+            }),
+        ];
+    }
 }

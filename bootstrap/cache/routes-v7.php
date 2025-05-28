@@ -13,7 +13,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::QpZjnnyRjDJgCERg',
+            '_route' => 'generated::iJqd3ODhCEZ3MVyK',
           ),
           1 => NULL,
           2 => 
@@ -32,7 +32,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::oT4uDvOZaw0mEYCe',
+            '_route' => 'generated::xIwGeIrChqrcLxW1',
           ),
           1 => NULL,
           2 => 
@@ -51,7 +51,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::RmRXy38nOSUuXSdb',
+            '_route' => 'generated::BYsrDgAy4WHLz7vP',
           ),
           1 => NULL,
           2 => 
@@ -70,7 +70,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::Ego3MK7mN17x89Ge',
+            '_route' => 'generated::9fD8MNP6YzOu3jlP',
           ),
           1 => NULL,
           2 => 
@@ -89,7 +89,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::JJwzg3C24Pbwq07I',
+            '_route' => 'generated::cJoglMbveZpf0eWL',
           ),
           1 => NULL,
           2 => 
@@ -108,7 +108,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::PTtTt4vOMMYRnZPJ',
+            '_route' => 'generated::OJlrjO093s5qCO3Y',
           ),
           1 => NULL,
           2 => 
@@ -127,7 +127,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::904yaGyAT7yzQKyf',
+            '_route' => 'generated::OPhyIwS6Pw8dLHl2',
           ),
           1 => NULL,
           2 => 
@@ -146,7 +146,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::FuLylIBloz8UFPth',
+            '_route' => 'generated::OQoSl4vqv7OkZYD2',
           ),
           1 => NULL,
           2 => 
@@ -165,7 +165,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::GuW9fP9DIpd7QyfV',
+            '_route' => 'generated::83z6TKnaQYFLT7b2',
           ),
           1 => NULL,
           2 => 
@@ -184,7 +184,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::iXn4nbuSMPgO4ufn',
+            '_route' => 'generated::GvbK1bWTgri6qMX1',
           ),
           1 => NULL,
           2 => 
@@ -203,7 +203,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::ONet2s1vvJJmW8h5',
+            '_route' => 'generated::lQaWM6zQ4wGee8s5',
           ),
           1 => NULL,
           2 => 
@@ -222,7 +222,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::RjHLNput9Eu9tozP',
+            '_route' => 'generated::7rf81xmzxi7ycCqg',
           ),
           1 => NULL,
           2 => 
@@ -241,7 +241,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::DTtS5PgoVnMshbnl',
+            '_route' => 'generated::uxFvlyvKrFKDSiy6',
           ),
           1 => NULL,
           2 => 
@@ -260,7 +260,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::Rpm4bzgAc0m6r3iv',
+            '_route' => 'generated::OkXlqq3fgIIXakWF',
           ),
           1 => NULL,
           2 => 
@@ -279,7 +279,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::RYheN5ygVeqeQWWB',
+            '_route' => 'generated::TnYsUba4df2cBKCV',
           ),
           1 => NULL,
           2 => 
@@ -298,7 +298,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::6F5iuURRvWe2I7wg',
+            '_route' => 'generated::2AwKi6KJ8PaFWDpA',
           ),
           1 => NULL,
           2 => 
@@ -317,7 +317,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::thO26kGuh7PFDN1n',
+            '_route' => 'generated::Jmc16zJDTBMaPtP0',
           ),
           1 => NULL,
           2 => 
@@ -336,7 +336,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::9Kq8EftQHvc676zH',
+            '_route' => 'generated::wa0sjKwWWflSAcA8',
           ),
           1 => NULL,
           2 => 
@@ -355,7 +355,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::kMotENEQbQufTKEC',
+            '_route' => 'generated::vVl6NreEaqUmgCql',
           ),
           1 => NULL,
           2 => 
@@ -372,7 +372,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::M5yKqMp6UveRSb4B',
+            '_route' => 'generated::MDlOeuB7qm6FPIev',
           ),
           1 => NULL,
           2 => 
@@ -391,7 +391,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::LyhXhjrik86vdngq',
+            '_route' => 'generated::AxEzCtFjsRcShDlK',
           ),
           1 => NULL,
           2 => 
@@ -410,7 +410,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::3lRAeqpmTe9vYZov',
+            '_route' => 'generated::MiokBBndzkC3WYh5',
           ),
           1 => NULL,
           2 => 
@@ -429,7 +429,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::Ai7TF4O7Iir3vICS',
+            '_route' => 'generated::XkyJsk3NneKb9v4K',
           ),
           1 => NULL,
           2 => 
@@ -448,7 +448,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::r4FevAZnAP6YGuSb',
+            '_route' => 'generated::PmwEM9gKQfl97sRs',
           ),
           1 => NULL,
           2 => 
@@ -537,7 +537,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::5qWSVpcPeWgPvO5m',
+            '_route' => 'generated::mTMK4vj0RO5OvDLb',
           ),
           1 => NULL,
           2 => 
@@ -573,7 +573,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::EX5C6hGgSrblCxHr',
+            '_route' => 'generated::4ulVcigxVrXJBlh0',
           ),
           1 => NULL,
           2 => 
@@ -703,7 +703,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::bAMHI86Jtxui0P7Q',
+            '_route' => 'generated::OKnYdi9AqgVWqWjI',
           ),
           1 => NULL,
           2 => 
@@ -2593,7 +2593,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::ofLuetnIqjRw4Jqu',
+            '_route' => 'generated::wGJ0GjgjGrvDAN4M',
           ),
           1 => NULL,
           2 => 
@@ -2613,7 +2613,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::cjntYsaJrqF4bN6r',
+            '_route' => 'generated::XDCEibqc8e0PCmRv',
           ),
           1 => NULL,
           2 => 
@@ -2631,7 +2631,7 @@ app('router')->setCompiledRoutes(
     ),
     2 => 
     array (
-      0 => '{^(?|/telescope(?|/telescope\\-api/(?|m(?|ail/([^/]++)(?|(*:58)|/(?|preview(*:76)|download(*:91)))|odels/([^/]++)(*:114))|e(?|xceptions/([^/]++)(?|(*:148))|vents/([^/]++)(*:171))|logs/([^/]++)(*:193)|notifications/([^/]++)(*:223)|jobs/([^/]++)(*:244)|batches/([^/]++)(*:268)|gates/([^/]++)(*:290)|c(?|ache/([^/]++)(*:315)|ommands/([^/]++)(*:339)|lient\\-requests/([^/]++)(*:371))|queries/([^/]++)(*:396)|re(?|quests/([^/]++)(*:424)|dis/([^/]++)(*:444))|views/([^/]++)(*:467)|schedule/([^/]++)(*:492))|(?:/((?:.*)))?(*:515))|/reset\\-password/([^/]++)(*:549)|/verify\\-email/([^/]++)/([^/]++)(*:589)|/dashboard/hotel(?|s/(?|show\\-hotel/([^/]++)(*:641)|delete\\-hotel/([^/]++)(*:671)|login\\-as\\-hotel\\-owner/([^/]++)(*:711)|impersonate/([^/]++)(*:739))|\\-users/(?|([^/]++)(?|/(?|edit(*:778)|delete(*:792))|(*:801))|search(*:816))|/(?|r(?|ooms/([^/]++)(?|(*:849)|/edit(*:862)|(*:870))|e(?|s(?|ervation(?|s/([^/]++)(?|(*:911)|/edit(*:924)|(*:932))|/(?|([^/]++)/check\\-(?|in\\-guest(*:973)|out\\-guest(*:991))|print/([^/]++)/invoice\\-pdf(*:1027)))|taurant(?|\\-items/(?|([^/]++)(?|(*:1070)|/edit(*:1084)|(*:1093))|upload(*:1109)|truncate(*:1126))|/([^/]++)/cancel\\-order(*:1159)))|quisitions/([^/]++)(?|(*:1192)|/edit(*:1206)|(*:1215))))|guests/([^/]++)(?|(*:1245)|/edit(*:1259)|(*:1268))|outlets/([^/]++)(?|(*:1297)|/edit(*:1311)|(*:1320))|s(?|uppliers/([^/]++)(?|(*:1354)|/edit(*:1368)|(*:1377))|tore\\-items/([^/]++)(?|(*:1410)|/edit(*:1424)|(*:1433)))|expenses/([^/]++)(?|(*:1464)|/edit(*:1478)|(*:1487))|module\\-preferences/([^/]++)(?|(*:1528)|/edit(*:1542)|(*:1551))|purchases/([^/]++)(?|(*:1582)|/edit(*:1596)|(*:1605))|bar(?|\\-items/(?|([^/]++)(?|(*:1643)|/edit(*:1657)|(*:1666))|upload(*:1682)|truncate(*:1699))|/(?|destroy\\-order/([^/]++)(*:1736)|([^/]++)/cancel\\-order(*:1767)))|update\\-payment\\-platform/([^/]++)(*:1812)|kitchen/orders/([^/]++)/(?|change\\-status(*:1862)|a(?|dd\\-note(*:1883)|ssign\\-task(*:1903)))|notifications/(?|mark\\-as\\-read/([^/]++)(*:1954)|([^/]++)/(?|view(*:1979)|delete(*:1994))))))/?$}sDu',
+      0 => '{^(?|/telescope(?|/telescope\\-api/(?|m(?|ail/([^/]++)(?|(*:58)|/(?|preview(*:76)|download(*:91)))|odels/([^/]++)(*:114))|e(?|xceptions/([^/]++)(?|(*:148))|vents/([^/]++)(*:171))|logs/([^/]++)(*:193)|notifications/([^/]++)(*:223)|jobs/([^/]++)(*:244)|batches/([^/]++)(*:268)|gates/([^/]++)(*:290)|c(?|ache/([^/]++)(*:315)|ommands/([^/]++)(*:339)|lient\\-requests/([^/]++)(*:371))|queries/([^/]++)(*:396)|re(?|quests/([^/]++)(*:424)|dis/([^/]++)(*:444))|views/([^/]++)(*:467)|schedule/([^/]++)(*:492))|(?:/((?:.*)))?(*:515))|/reset\\-password/([^/]++)(*:549)|/verify\\-email/([^/]++)/([^/]++)(*:589)|/dashboard/(?|hotel(?|s/(?|show\\-hotel/([^/]++)(*:644)|delete\\-hotel/([^/]++)(*:674)|login\\-as\\-hotel\\-owner/([^/]++)(*:714)|impersonate/([^/]++)(*:742))|\\-users/(?|([^/]++)(?|/(?|edit(*:781)|delete(*:795))|(*:804))|search(*:819))|/(?|r(?|ooms/([^/]++)(?|(*:852)|/edit(*:865)|(*:873))|e(?|s(?|ervation(?|s/([^/]++)(?|(*:914)|/edit(*:927)|(*:935))|/(?|([^/]++)/check\\-(?|in\\-guest(*:976)|out\\-guest(*:994))|print/([^/]++)/invoice\\-pdf(*:1030)))|taurant(?|\\-items/(?|([^/]++)(?|(*:1073)|/edit(*:1087)|(*:1096))|upload(*:1112)|truncate(*:1129))|/([^/]++)/cancel\\-order(*:1162)))|quisitions/([^/]++)(?|(*:1195)|/edit(*:1209)|(*:1218))))|guests/([^/]++)(?|(*:1248)|/edit(*:1262)|(*:1271))|outlets/([^/]++)(?|(*:1300)|/edit(*:1314)|(*:1323))|s(?|uppliers/([^/]++)(?|(*:1357)|/edit(*:1371)|(*:1380))|tore\\-items/([^/]++)(?|(*:1413)|/edit(*:1427)|(*:1436)))|expenses/([^/]++)(?|(*:1467)|/edit(*:1481)|(*:1490))|module\\-preferences/([^/]++)(?|(*:1531)|/edit(*:1545)|(*:1554))|purchases/([^/]++)(?|(*:1585)|/edit(*:1599)|(*:1608))|bar(?|\\-items/(?|([^/]++)(?|(*:1646)|/edit(*:1660)|(*:1669))|upload(*:1685)|truncate(*:1702))|/(?|destroy\\-order/([^/]++)(*:1739)|([^/]++)/cancel\\-order(*:1770)))|update\\-payment\\-platform/([^/]++)(*:1815)|kitchen/orders/([^/]++)/(?|change\\-status(*:1865)|a(?|dd\\-note(*:1886)|ssign\\-task(*:1906)))|notifications/(?|mark\\-as\\-read/([^/]++)(*:1957)|([^/]++)/(?|view(*:1982)|delete(*:1997)))))|users/([^/]++)/delete(*:2031)))/?$}sDu',
     ),
     3 => 
     array (
@@ -2641,7 +2641,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::yS0vjoqnTxtZlXdE',
+            '_route' => 'generated::wnV25mN2JB7b6rmG',
           ),
           1 => 
           array (
@@ -2664,7 +2664,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::Vat0FhyFaB39Aw9d',
+            '_route' => 'generated::Llrd5XnHDYMAJZhH',
           ),
           1 => 
           array (
@@ -2687,7 +2687,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::fF8qKC3ryL2DjNXm',
+            '_route' => 'generated::ZpjnYmjEk6t0gDOW',
           ),
           1 => 
           array (
@@ -2710,7 +2710,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::V88CNzbzseLVpTUF',
+            '_route' => 'generated::EN46oheEPLrs7b43',
           ),
           1 => 
           array (
@@ -2733,7 +2733,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::euNVPSaymMaxDP9W',
+            '_route' => 'generated::JwBZkzcPuQ8XUUZv',
           ),
           1 => 
           array (
@@ -2753,7 +2753,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::24etuBHLyRhlhDkn',
+            '_route' => 'generated::KLQTjMctB2fvZBs4',
           ),
           1 => 
           array (
@@ -2775,7 +2775,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::3wTPPuM0lgGZQku5',
+            '_route' => 'generated::8D7t681b4fKDnrrb',
           ),
           1 => 
           array (
@@ -2798,7 +2798,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::csD2isllOB6PlfJR',
+            '_route' => 'generated::SCezDknDqCNpcJxx',
           ),
           1 => 
           array (
@@ -2821,7 +2821,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::NkbncCgmle34VKaP',
+            '_route' => 'generated::TiXomsIBUVDgGk06',
           ),
           1 => 
           array (
@@ -2844,7 +2844,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::sdtqLCZ9hE6i5pRt',
+            '_route' => 'generated::KYNSykKMrcPfSFJu',
           ),
           1 => 
           array (
@@ -2867,7 +2867,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::qlevdTUdk8WSiy3I',
+            '_route' => 'generated::Pu2VdtVJYhBZiPZT',
           ),
           1 => 
           array (
@@ -2890,7 +2890,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::29iHYos8HgfoQ5fm',
+            '_route' => 'generated::uf8P47FFsIUvVcA3',
           ),
           1 => 
           array (
@@ -2913,7 +2913,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::wwOelDriPncvHsni',
+            '_route' => 'generated::WPJKl3duIszuejj2',
           ),
           1 => 
           array (
@@ -2936,7 +2936,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::Nh1IS5LQKGDvYACd',
+            '_route' => 'generated::zRXZBmuRKKgFvNpV',
           ),
           1 => 
           array (
@@ -2959,7 +2959,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::EcbwIERIdx0kqsjp',
+            '_route' => 'generated::AhrT3BBmvJ8mxLl3',
           ),
           1 => 
           array (
@@ -2982,7 +2982,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::qD9SQ6Cz9XbTJHJT',
+            '_route' => 'generated::od41cRlLZtwFLSfX',
           ),
           1 => 
           array (
@@ -3005,7 +3005,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::TvlllbETczFo9kfD',
+            '_route' => 'generated::FTZ9jPrhbgt7tpiB',
           ),
           1 => 
           array (
@@ -3028,7 +3028,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::KNbbFsPDsNjIZJH4',
+            '_route' => 'generated::V6kwLVn1eROexolJ',
           ),
           1 => 
           array (
@@ -3051,7 +3051,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::iLcg0OQR55IaHq2R',
+            '_route' => 'generated::sMNBA6XwdmzcDzCl',
           ),
           1 => 
           array (
@@ -3074,7 +3074,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 
           array (
-            '_route' => 'generated::MpVgQvSzU59Ne0Ij',
+            '_route' => 'generated::i0OHqFHTM81J9Tpk',
           ),
           1 => 
           array (
@@ -3162,7 +3162,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      641 => 
+      644 => 
       array (
         0 => 
         array (
@@ -3185,7 +3185,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      671 => 
+      674 => 
       array (
         0 => 
         array (
@@ -3207,7 +3207,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      711 => 
+      714 => 
       array (
         0 => 
         array (
@@ -3229,7 +3229,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      739 => 
+      742 => 
       array (
         0 => 
         array (
@@ -3252,7 +3252,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      778 => 
+      781 => 
       array (
         0 => 
         array (
@@ -3275,7 +3275,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      792 => 
+      795 => 
       array (
         0 => 
         array (
@@ -3297,7 +3297,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      801 => 
+      804 => 
       array (
         0 => 
         array (
@@ -3319,7 +3319,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      816 => 
+      819 => 
       array (
         0 => 
         array (
@@ -3341,7 +3341,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      849 => 
+      852 => 
       array (
         0 => 
         array (
@@ -3364,7 +3364,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      862 => 
+      865 => 
       array (
         0 => 
         array (
@@ -3387,7 +3387,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      870 => 
+      873 => 
       array (
         0 => 
         array (
@@ -3429,7 +3429,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      911 => 
+      914 => 
       array (
         0 => 
         array (
@@ -3452,7 +3452,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      924 => 
+      927 => 
       array (
         0 => 
         array (
@@ -3475,7 +3475,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      932 => 
+      935 => 
       array (
         0 => 
         array (
@@ -3517,7 +3517,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      973 => 
+      976 => 
       array (
         0 => 
         array (
@@ -3539,7 +3539,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      991 => 
+      994 => 
       array (
         0 => 
         array (
@@ -3561,7 +3561,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1027 => 
+      1030 => 
       array (
         0 => 
         array (
@@ -3584,7 +3584,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1070 => 
+      1073 => 
       array (
         0 => 
         array (
@@ -3607,7 +3607,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1084 => 
+      1087 => 
       array (
         0 => 
         array (
@@ -3630,7 +3630,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1093 => 
+      1096 => 
       array (
         0 => 
         array (
@@ -3672,7 +3672,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1109 => 
+      1112 => 
       array (
         0 => 
         array (
@@ -3693,7 +3693,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1126 => 
+      1129 => 
       array (
         0 => 
         array (
@@ -3714,7 +3714,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1159 => 
+      1162 => 
       array (
         0 => 
         array (
@@ -3736,7 +3736,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1192 => 
+      1195 => 
       array (
         0 => 
         array (
@@ -3759,7 +3759,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1206 => 
+      1209 => 
       array (
         0 => 
         array (
@@ -3782,7 +3782,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1215 => 
+      1218 => 
       array (
         0 => 
         array (
@@ -3824,7 +3824,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1245 => 
+      1248 => 
       array (
         0 => 
         array (
@@ -3847,7 +3847,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1259 => 
+      1262 => 
       array (
         0 => 
         array (
@@ -3870,7 +3870,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1268 => 
+      1271 => 
       array (
         0 => 
         array (
@@ -3912,7 +3912,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1297 => 
+      1300 => 
       array (
         0 => 
         array (
@@ -3935,7 +3935,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1311 => 
+      1314 => 
       array (
         0 => 
         array (
@@ -3958,7 +3958,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1320 => 
+      1323 => 
       array (
         0 => 
         array (
@@ -4000,7 +4000,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1354 => 
+      1357 => 
       array (
         0 => 
         array (
@@ -4023,7 +4023,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1368 => 
+      1371 => 
       array (
         0 => 
         array (
@@ -4046,7 +4046,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1377 => 
+      1380 => 
       array (
         0 => 
         array (
@@ -4088,7 +4088,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1410 => 
+      1413 => 
       array (
         0 => 
         array (
@@ -4111,7 +4111,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1424 => 
+      1427 => 
       array (
         0 => 
         array (
@@ -4134,7 +4134,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1433 => 
+      1436 => 
       array (
         0 => 
         array (
@@ -4176,7 +4176,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1464 => 
+      1467 => 
       array (
         0 => 
         array (
@@ -4199,7 +4199,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1478 => 
+      1481 => 
       array (
         0 => 
         array (
@@ -4222,7 +4222,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1487 => 
+      1490 => 
       array (
         0 => 
         array (
@@ -4264,7 +4264,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1528 => 
+      1531 => 
       array (
         0 => 
         array (
@@ -4287,7 +4287,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1542 => 
+      1545 => 
       array (
         0 => 
         array (
@@ -4310,7 +4310,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1551 => 
+      1554 => 
       array (
         0 => 
         array (
@@ -4352,7 +4352,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1582 => 
+      1585 => 
       array (
         0 => 
         array (
@@ -4375,7 +4375,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1596 => 
+      1599 => 
       array (
         0 => 
         array (
@@ -4398,7 +4398,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1605 => 
+      1608 => 
       array (
         0 => 
         array (
@@ -4440,7 +4440,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1643 => 
+      1646 => 
       array (
         0 => 
         array (
@@ -4463,7 +4463,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1657 => 
+      1660 => 
       array (
         0 => 
         array (
@@ -4486,7 +4486,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1666 => 
+      1669 => 
       array (
         0 => 
         array (
@@ -4528,7 +4528,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1682 => 
+      1685 => 
       array (
         0 => 
         array (
@@ -4549,7 +4549,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1699 => 
+      1702 => 
       array (
         0 => 
         array (
@@ -4570,7 +4570,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1736 => 
+      1739 => 
       array (
         0 => 
         array (
@@ -4592,7 +4592,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1767 => 
+      1770 => 
       array (
         0 => 
         array (
@@ -4614,7 +4614,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1812 => 
+      1815 => 
       array (
         0 => 
         array (
@@ -4636,7 +4636,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1862 => 
+      1865 => 
       array (
         0 => 
         array (
@@ -4658,7 +4658,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1883 => 
+      1886 => 
       array (
         0 => 
         array (
@@ -4680,7 +4680,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1903 => 
+      1906 => 
       array (
         0 => 
         array (
@@ -4702,7 +4702,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1954 => 
+      1957 => 
       array (
         0 => 
         array (
@@ -4724,7 +4724,7 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1979 => 
+      1982 => 
       array (
         0 => 
         array (
@@ -4747,13 +4747,35 @@ app('router')->setCompiledRoutes(
           6 => NULL,
         ),
       ),
-      1994 => 
+      1997 => 
       array (
         0 => 
         array (
           0 => 
           array (
             '_route' => 'dashboard.hotel.notifications.delete',
+          ),
+          1 => 
+          array (
+            0 => 'id',
+          ),
+          2 => 
+          array (
+            'DELETE' => 0,
+          ),
+          3 => NULL,
+          4 => false,
+          5 => false,
+          6 => NULL,
+        ),
+      ),
+      2031 => 
+      array (
+        0 => 
+        array (
+          0 => 
+          array (
+            '_route' => 'dashboard.users.delete',
           ),
           1 => 
           array (
@@ -4784,7 +4806,7 @@ app('router')->setCompiledRoutes(
   ),
   'attributes' => 
   array (
-    'generated::QpZjnnyRjDJgCERg' => 
+    'generated::iJqd3ODhCEZ3MVyK' => 
     array (
       'methods' => 
       array (
@@ -4802,7 +4824,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::QpZjnnyRjDJgCERg',
+        'as' => 'generated::iJqd3ODhCEZ3MVyK',
       ),
       'fallback' => false,
       'defaults' => 
@@ -4818,7 +4840,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::yS0vjoqnTxtZlXdE' => 
+    'generated::wnV25mN2JB7b6rmG' => 
     array (
       'methods' => 
       array (
@@ -4837,7 +4859,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::yS0vjoqnTxtZlXdE',
+        'as' => 'generated::wnV25mN2JB7b6rmG',
       ),
       'fallback' => false,
       'defaults' => 
@@ -4853,7 +4875,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::Vat0FhyFaB39Aw9d' => 
+    'generated::Llrd5XnHDYMAJZhH' => 
     array (
       'methods' => 
       array (
@@ -4872,7 +4894,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::Vat0FhyFaB39Aw9d',
+        'as' => 'generated::Llrd5XnHDYMAJZhH',
       ),
       'fallback' => false,
       'defaults' => 
@@ -4888,7 +4910,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::fF8qKC3ryL2DjNXm' => 
+    'generated::ZpjnYmjEk6t0gDOW' => 
     array (
       'methods' => 
       array (
@@ -4907,7 +4929,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::fF8qKC3ryL2DjNXm',
+        'as' => 'generated::ZpjnYmjEk6t0gDOW',
       ),
       'fallback' => false,
       'defaults' => 
@@ -4923,7 +4945,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::oT4uDvOZaw0mEYCe' => 
+    'generated::xIwGeIrChqrcLxW1' => 
     array (
       'methods' => 
       array (
@@ -4941,7 +4963,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::oT4uDvOZaw0mEYCe',
+        'as' => 'generated::xIwGeIrChqrcLxW1',
       ),
       'fallback' => false,
       'defaults' => 
@@ -4957,7 +4979,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::euNVPSaymMaxDP9W' => 
+    'generated::JwBZkzcPuQ8XUUZv' => 
     array (
       'methods' => 
       array (
@@ -4976,7 +4998,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::euNVPSaymMaxDP9W',
+        'as' => 'generated::JwBZkzcPuQ8XUUZv',
       ),
       'fallback' => false,
       'defaults' => 
@@ -4992,7 +5014,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::24etuBHLyRhlhDkn' => 
+    'generated::KLQTjMctB2fvZBs4' => 
     array (
       'methods' => 
       array (
@@ -5010,7 +5032,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::24etuBHLyRhlhDkn',
+        'as' => 'generated::KLQTjMctB2fvZBs4',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5026,7 +5048,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::RmRXy38nOSUuXSdb' => 
+    'generated::BYsrDgAy4WHLz7vP' => 
     array (
       'methods' => 
       array (
@@ -5044,7 +5066,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::RmRXy38nOSUuXSdb',
+        'as' => 'generated::BYsrDgAy4WHLz7vP',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5060,7 +5082,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::Ego3MK7mN17x89Ge' => 
+    'generated::9fD8MNP6YzOu3jlP' => 
     array (
       'methods' => 
       array (
@@ -5078,7 +5100,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::Ego3MK7mN17x89Ge',
+        'as' => 'generated::9fD8MNP6YzOu3jlP',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5094,7 +5116,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::csD2isllOB6PlfJR' => 
+    'generated::SCezDknDqCNpcJxx' => 
     array (
       'methods' => 
       array (
@@ -5113,7 +5135,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::csD2isllOB6PlfJR',
+        'as' => 'generated::SCezDknDqCNpcJxx',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5129,7 +5151,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::JJwzg3C24Pbwq07I' => 
+    'generated::cJoglMbveZpf0eWL' => 
     array (
       'methods' => 
       array (
@@ -5147,7 +5169,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::JJwzg3C24Pbwq07I',
+        'as' => 'generated::cJoglMbveZpf0eWL',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5163,7 +5185,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::NkbncCgmle34VKaP' => 
+    'generated::TiXomsIBUVDgGk06' => 
     array (
       'methods' => 
       array (
@@ -5182,7 +5204,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::NkbncCgmle34VKaP',
+        'as' => 'generated::TiXomsIBUVDgGk06',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5198,7 +5220,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::PTtTt4vOMMYRnZPJ' => 
+    'generated::OJlrjO093s5qCO3Y' => 
     array (
       'methods' => 
       array (
@@ -5216,7 +5238,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::PTtTt4vOMMYRnZPJ',
+        'as' => 'generated::OJlrjO093s5qCO3Y',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5232,7 +5254,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::sdtqLCZ9hE6i5pRt' => 
+    'generated::KYNSykKMrcPfSFJu' => 
     array (
       'methods' => 
       array (
@@ -5251,7 +5273,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::sdtqLCZ9hE6i5pRt',
+        'as' => 'generated::KYNSykKMrcPfSFJu',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5267,7 +5289,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::904yaGyAT7yzQKyf' => 
+    'generated::OPhyIwS6Pw8dLHl2' => 
     array (
       'methods' => 
       array (
@@ -5285,7 +5307,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::904yaGyAT7yzQKyf',
+        'as' => 'generated::OPhyIwS6Pw8dLHl2',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5301,7 +5323,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::qlevdTUdk8WSiy3I' => 
+    'generated::Pu2VdtVJYhBZiPZT' => 
     array (
       'methods' => 
       array (
@@ -5320,7 +5342,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::qlevdTUdk8WSiy3I',
+        'as' => 'generated::Pu2VdtVJYhBZiPZT',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5336,7 +5358,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::FuLylIBloz8UFPth' => 
+    'generated::OQoSl4vqv7OkZYD2' => 
     array (
       'methods' => 
       array (
@@ -5354,7 +5376,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::FuLylIBloz8UFPth',
+        'as' => 'generated::OQoSl4vqv7OkZYD2',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5370,7 +5392,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::3wTPPuM0lgGZQku5' => 
+    'generated::8D7t681b4fKDnrrb' => 
     array (
       'methods' => 
       array (
@@ -5389,7 +5411,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::3wTPPuM0lgGZQku5',
+        'as' => 'generated::8D7t681b4fKDnrrb',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5405,7 +5427,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::GuW9fP9DIpd7QyfV' => 
+    'generated::83z6TKnaQYFLT7b2' => 
     array (
       'methods' => 
       array (
@@ -5423,7 +5445,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::GuW9fP9DIpd7QyfV',
+        'as' => 'generated::83z6TKnaQYFLT7b2',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5439,7 +5461,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::29iHYos8HgfoQ5fm' => 
+    'generated::uf8P47FFsIUvVcA3' => 
     array (
       'methods' => 
       array (
@@ -5458,7 +5480,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::29iHYos8HgfoQ5fm',
+        'as' => 'generated::uf8P47FFsIUvVcA3',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5474,7 +5496,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::iXn4nbuSMPgO4ufn' => 
+    'generated::GvbK1bWTgri6qMX1' => 
     array (
       'methods' => 
       array (
@@ -5492,7 +5514,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::iXn4nbuSMPgO4ufn',
+        'as' => 'generated::GvbK1bWTgri6qMX1',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5508,7 +5530,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::wwOelDriPncvHsni' => 
+    'generated::WPJKl3duIszuejj2' => 
     array (
       'methods' => 
       array (
@@ -5527,7 +5549,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::wwOelDriPncvHsni',
+        'as' => 'generated::WPJKl3duIszuejj2',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5543,7 +5565,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::ONet2s1vvJJmW8h5' => 
+    'generated::lQaWM6zQ4wGee8s5' => 
     array (
       'methods' => 
       array (
@@ -5561,7 +5583,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::ONet2s1vvJJmW8h5',
+        'as' => 'generated::lQaWM6zQ4wGee8s5',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5577,7 +5599,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::qD9SQ6Cz9XbTJHJT' => 
+    'generated::od41cRlLZtwFLSfX' => 
     array (
       'methods' => 
       array (
@@ -5596,7 +5618,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::qD9SQ6Cz9XbTJHJT',
+        'as' => 'generated::od41cRlLZtwFLSfX',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5612,7 +5634,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::RjHLNput9Eu9tozP' => 
+    'generated::7rf81xmzxi7ycCqg' => 
     array (
       'methods' => 
       array (
@@ -5630,7 +5652,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::RjHLNput9Eu9tozP',
+        'as' => 'generated::7rf81xmzxi7ycCqg',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5646,7 +5668,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::V88CNzbzseLVpTUF' => 
+    'generated::EN46oheEPLrs7b43' => 
     array (
       'methods' => 
       array (
@@ -5665,7 +5687,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::V88CNzbzseLVpTUF',
+        'as' => 'generated::EN46oheEPLrs7b43',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5681,7 +5703,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::DTtS5PgoVnMshbnl' => 
+    'generated::uxFvlyvKrFKDSiy6' => 
     array (
       'methods' => 
       array (
@@ -5699,7 +5721,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::DTtS5PgoVnMshbnl',
+        'as' => 'generated::uxFvlyvKrFKDSiy6',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5715,7 +5737,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::TvlllbETczFo9kfD' => 
+    'generated::FTZ9jPrhbgt7tpiB' => 
     array (
       'methods' => 
       array (
@@ -5734,7 +5756,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::TvlllbETczFo9kfD',
+        'as' => 'generated::FTZ9jPrhbgt7tpiB',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5750,7 +5772,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::Rpm4bzgAc0m6r3iv' => 
+    'generated::OkXlqq3fgIIXakWF' => 
     array (
       'methods' => 
       array (
@@ -5768,7 +5790,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::Rpm4bzgAc0m6r3iv',
+        'as' => 'generated::OkXlqq3fgIIXakWF',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5784,7 +5806,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::iLcg0OQR55IaHq2R' => 
+    'generated::sMNBA6XwdmzcDzCl' => 
     array (
       'methods' => 
       array (
@@ -5803,7 +5825,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::iLcg0OQR55IaHq2R',
+        'as' => 'generated::sMNBA6XwdmzcDzCl',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5819,7 +5841,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::RYheN5ygVeqeQWWB' => 
+    'generated::TnYsUba4df2cBKCV' => 
     array (
       'methods' => 
       array (
@@ -5837,7 +5859,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::RYheN5ygVeqeQWWB',
+        'as' => 'generated::TnYsUba4df2cBKCV',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5853,7 +5875,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::Nh1IS5LQKGDvYACd' => 
+    'generated::zRXZBmuRKKgFvNpV' => 
     array (
       'methods' => 
       array (
@@ -5872,7 +5894,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::Nh1IS5LQKGDvYACd',
+        'as' => 'generated::zRXZBmuRKKgFvNpV',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5888,7 +5910,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::6F5iuURRvWe2I7wg' => 
+    'generated::2AwKi6KJ8PaFWDpA' => 
     array (
       'methods' => 
       array (
@@ -5906,7 +5928,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::6F5iuURRvWe2I7wg',
+        'as' => 'generated::2AwKi6KJ8PaFWDpA',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5922,7 +5944,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::MpVgQvSzU59Ne0Ij' => 
+    'generated::i0OHqFHTM81J9Tpk' => 
     array (
       'methods' => 
       array (
@@ -5941,7 +5963,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::MpVgQvSzU59Ne0Ij',
+        'as' => 'generated::i0OHqFHTM81J9Tpk',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5957,7 +5979,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::thO26kGuh7PFDN1n' => 
+    'generated::Jmc16zJDTBMaPtP0' => 
     array (
       'methods' => 
       array (
@@ -5975,7 +5997,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::thO26kGuh7PFDN1n',
+        'as' => 'generated::Jmc16zJDTBMaPtP0',
       ),
       'fallback' => false,
       'defaults' => 
@@ -5991,7 +6013,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::KNbbFsPDsNjIZJH4' => 
+    'generated::V6kwLVn1eROexolJ' => 
     array (
       'methods' => 
       array (
@@ -6010,7 +6032,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::KNbbFsPDsNjIZJH4',
+        'as' => 'generated::V6kwLVn1eROexolJ',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6026,7 +6048,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::9Kq8EftQHvc676zH' => 
+    'generated::wa0sjKwWWflSAcA8' => 
     array (
       'methods' => 
       array (
@@ -6044,7 +6066,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::9Kq8EftQHvc676zH',
+        'as' => 'generated::wa0sjKwWWflSAcA8',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6060,7 +6082,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::EcbwIERIdx0kqsjp' => 
+    'generated::AhrT3BBmvJ8mxLl3' => 
     array (
       'methods' => 
       array (
@@ -6079,7 +6101,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::EcbwIERIdx0kqsjp',
+        'as' => 'generated::AhrT3BBmvJ8mxLl3',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6095,7 +6117,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::kMotENEQbQufTKEC' => 
+    'generated::vVl6NreEaqUmgCql' => 
     array (
       'methods' => 
       array (
@@ -6114,7 +6136,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::kMotENEQbQufTKEC',
+        'as' => 'generated::vVl6NreEaqUmgCql',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6130,7 +6152,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::M5yKqMp6UveRSb4B' => 
+    'generated::MDlOeuB7qm6FPIev' => 
     array (
       'methods' => 
       array (
@@ -6148,7 +6170,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::M5yKqMp6UveRSb4B',
+        'as' => 'generated::MDlOeuB7qm6FPIev',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6164,7 +6186,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::LyhXhjrik86vdngq' => 
+    'generated::AxEzCtFjsRcShDlK' => 
     array (
       'methods' => 
       array (
@@ -6182,7 +6204,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::LyhXhjrik86vdngq',
+        'as' => 'generated::AxEzCtFjsRcShDlK',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6198,7 +6220,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::3lRAeqpmTe9vYZov' => 
+    'generated::MiokBBndzkC3WYh5' => 
     array (
       'methods' => 
       array (
@@ -6216,7 +6238,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::3lRAeqpmTe9vYZov',
+        'as' => 'generated::MiokBBndzkC3WYh5',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6232,7 +6254,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::Ai7TF4O7Iir3vICS' => 
+    'generated::XkyJsk3NneKb9v4K' => 
     array (
       'methods' => 
       array (
@@ -6250,7 +6272,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::Ai7TF4O7Iir3vICS',
+        'as' => 'generated::XkyJsk3NneKb9v4K',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6302,7 +6324,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::r4FevAZnAP6YGuSb' => 
+    'generated::PmwEM9gKQfl97sRs' => 
     array (
       'methods' => 
       array (
@@ -6323,7 +6345,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::r4FevAZnAP6YGuSb',
+        'as' => 'generated::PmwEM9gKQfl97sRs',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6489,7 +6511,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::5qWSVpcPeWgPvO5m' => 
+    'generated::mTMK4vj0RO5OvDLb' => 
     array (
       'methods' => 
       array (
@@ -6510,7 +6532,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::5qWSVpcPeWgPvO5m',
+        'as' => 'generated::mTMK4vj0RO5OvDLb',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6564,7 +6586,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::EX5C6hGgSrblCxHr' => 
+    'generated::4ulVcigxVrXJBlh0' => 
     array (
       'methods' => 
       array (
@@ -6585,7 +6607,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::EX5C6hGgSrblCxHr',
+        'as' => 'generated::4ulVcigxVrXJBlh0',
       ),
       'fallback' => false,
       'defaults' => 
@@ -6905,7 +6927,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::bAMHI86Jtxui0P7Q' => 
+    'generated::OKnYdi9AqgVWqWjI' => 
     array (
       'methods' => 
       array (
@@ -6926,7 +6948,7 @@ app('router')->setCompiledRoutes(
         'where' => 
         array (
         ),
-        'as' => 'generated::bAMHI86Jtxui0P7Q',
+        'as' => 'generated::OKnYdi9AqgVWqWjI',
       ),
       'fallback' => false,
       'defaults' => 
@@ -7031,6 +7053,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Developer\\HotelsController@index',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Developer\\HotelsController@index',
@@ -7070,6 +7093,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Developer\\HotelsController@show',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Developer\\HotelsController@show',
@@ -7108,6 +7132,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Developer\\HotelsController@delete',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Developer\\HotelsController@delete',
@@ -7146,6 +7171,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Developer\\HotelsController@loginAsHotelOwner',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Developer\\HotelsController@loginAsHotelOwner',
@@ -7185,7 +7211,8 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
-          3 => 'signed',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
+          4 => 'signed',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Developer\\HotelsController@impersonate',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Developer\\HotelsController@impersonate',
@@ -7224,6 +7251,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Developer\\HotelsController@switchBackImpersonator',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Developer\\HotelsController@switchBackImpersonator',
@@ -7263,10 +7291,50 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Developer\\UsersController@index',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Developer\\UsersController@index',
         'as' => 'dashboard.users.',
+        'namespace' => NULL,
+        'prefix' => 'dashboard/users',
+        'where' => 
+        array (
+        ),
+      ),
+      'fallback' => false,
+      'defaults' => 
+      array (
+      ),
+      'wheres' => 
+      array (
+      ),
+      'bindingFields' => 
+      array (
+      ),
+      'lockSeconds' => NULL,
+      'waitSeconds' => NULL,
+      'withTrashed' => false,
+    ),
+    'dashboard.users.delete' => 
+    array (
+      'methods' => 
+      array (
+        0 => 'DELETE',
+      ),
+      'uri' => 'dashboard/users/{id}/delete',
+      'action' => 
+      array (
+        'middleware' => 
+        array (
+          0 => 'web',
+          1 => 'auth',
+          2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
+        ),
+        'uses' => 'App\\Http\\Controllers\\Dashboard\\Developer\\UsersController@delete',
+        'controller' => 'App\\Http\\Controllers\\Dashboard\\Developer\\UsersController@delete',
+        'as' => 'dashboard.users.delete',
         'namespace' => NULL,
         'prefix' => 'dashboard/users',
         'where' => 
@@ -7302,6 +7370,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Restaurant\\RestaurantItemsController@downloadSample',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Restaurant\\RestaurantItemsController@downloadSample',
@@ -7341,6 +7410,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\DashboardController@dashboard',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\DashboardController@dashboard',
@@ -7380,6 +7450,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RoomReservationController@loadRecentReservation',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RoomReservationController@loadRecentReservation',
@@ -7419,6 +7490,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\GeminiController@showGeminiForm',
         'controller' => 'App\\Http\\Controllers\\GeminiController@showGeminiForm',
@@ -7457,6 +7529,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\GeminiController@ask',
         'controller' => 'App\\Http\\Controllers\\GeminiController@ask',
@@ -7495,6 +7568,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\GeminiController@clear',
         'controller' => 'App\\Http\\Controllers\\GeminiController@clear',
@@ -7534,6 +7608,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\UsersController@overview',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\UsersController@overview',
@@ -7573,6 +7648,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\UsersController@create',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\UsersController@create',
@@ -7611,6 +7687,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\UsersController@store',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\UsersController@store',
@@ -7650,6 +7727,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\UsersController@edit',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\UsersController@edit',
@@ -7688,6 +7766,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\UsersController@update',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\UsersController@update',
@@ -7726,6 +7805,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\UsersController@delete',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\UsersController@delete',
@@ -7765,6 +7845,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\UsersController@search',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\UsersController@search',
@@ -7804,6 +7885,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.rooms.index',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RoomController@index',
@@ -7843,6 +7925,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.rooms.create',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RoomController@create',
@@ -7881,6 +7964,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.rooms.store',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RoomController@store',
@@ -7920,6 +8004,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.rooms.show',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RoomController@show',
@@ -7959,6 +8044,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.rooms.edit',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RoomController@edit',
@@ -7998,6 +8084,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.rooms.update',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RoomController@update',
@@ -8036,6 +8123,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.rooms.destroy',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RoomController@destroy',
@@ -8075,6 +8163,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.reservations.index',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RoomReservationController@index',
@@ -8114,6 +8203,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.reservations.create',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RoomReservationController@create',
@@ -8152,6 +8242,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.reservations.store',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RoomReservationController@store',
@@ -8191,6 +8282,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.reservations.show',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RoomReservationController@show',
@@ -8230,6 +8322,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.reservations.edit',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RoomReservationController@edit',
@@ -8269,6 +8362,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.reservations.update',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RoomReservationController@update',
@@ -8307,6 +8401,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.reservations.destroy',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RoomReservationController@destroy',
@@ -8346,6 +8441,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.guests.index',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Guest\\GuestController@index',
@@ -8385,6 +8481,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.guests.create',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Guest\\GuestController@create',
@@ -8423,6 +8520,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.guests.store',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Guest\\GuestController@store',
@@ -8462,6 +8560,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.guests.show',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Guest\\GuestController@show',
@@ -8501,6 +8600,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.guests.edit',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Guest\\GuestController@edit',
@@ -8540,6 +8640,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.guests.update',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Guest\\GuestController@update',
@@ -8578,6 +8679,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.guests.destroy',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Guest\\GuestController@destroy',
@@ -8617,6 +8719,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.restaurant-items.index',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Restaurant\\RestaurantItemsController@index',
@@ -8656,6 +8759,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.restaurant-items.create',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Restaurant\\RestaurantItemsController@create',
@@ -8694,6 +8798,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.restaurant-items.store',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Restaurant\\RestaurantItemsController@store',
@@ -8733,6 +8838,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.restaurant-items.show',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Restaurant\\RestaurantItemsController@show',
@@ -8772,6 +8878,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.restaurant-items.edit',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Restaurant\\RestaurantItemsController@edit',
@@ -8811,6 +8918,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.restaurant-items.update',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Restaurant\\RestaurantItemsController@update',
@@ -8849,6 +8957,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.restaurant-items.destroy',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Restaurant\\RestaurantItemsController@destroy',
@@ -8888,6 +8997,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.outlets.index',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\OutletController@index',
@@ -8927,6 +9037,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.outlets.create',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\OutletController@create',
@@ -8965,6 +9076,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.outlets.store',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\OutletController@store',
@@ -9004,6 +9116,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.outlets.show',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\OutletController@show',
@@ -9043,6 +9156,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.outlets.edit',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\OutletController@edit',
@@ -9082,6 +9196,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.outlets.update',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\OutletController@update',
@@ -9120,6 +9235,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.outlets.destroy',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\OutletController@destroy',
@@ -9159,6 +9275,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.suppliers.index',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\SupplierController@index',
@@ -9198,6 +9315,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.suppliers.create',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\SupplierController@create',
@@ -9236,6 +9354,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.suppliers.store',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\SupplierController@store',
@@ -9275,6 +9394,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.suppliers.show',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\SupplierController@show',
@@ -9314,6 +9434,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.suppliers.edit',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\SupplierController@edit',
@@ -9353,6 +9474,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.suppliers.update',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\SupplierController@update',
@@ -9391,6 +9513,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.suppliers.destroy',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\SupplierController@destroy',
@@ -9430,6 +9553,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.expenses.index',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\ExpenseController@index',
@@ -9469,6 +9593,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.expenses.create',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\ExpenseController@create',
@@ -9507,6 +9632,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.expenses.store',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\ExpenseController@store',
@@ -9546,6 +9672,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.expenses.show',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\ExpenseController@show',
@@ -9585,6 +9712,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.expenses.edit',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\ExpenseController@edit',
@@ -9624,6 +9752,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.expenses.update',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\ExpenseController@update',
@@ -9662,6 +9791,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.expenses.destroy',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\ExpenseController@destroy',
@@ -9701,6 +9831,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.module-preferences.index',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\ModulePreferenceController@index',
@@ -9740,6 +9871,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.module-preferences.create',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\ModulePreferenceController@create',
@@ -9778,6 +9910,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.module-preferences.store',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\ModulePreferenceController@store',
@@ -9817,6 +9950,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.module-preferences.show',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\ModulePreferenceController@show',
@@ -9856,6 +9990,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.module-preferences.edit',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\ModulePreferenceController@edit',
@@ -9895,6 +10030,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.module-preferences.update',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\ModulePreferenceController@update',
@@ -9933,6 +10069,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.module-preferences.destroy',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\ModulePreferenceController@destroy',
@@ -9972,6 +10109,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.purchases.index',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\PurchaseController@index',
@@ -10011,6 +10149,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.purchases.create',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\PurchaseController@create',
@@ -10049,6 +10188,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.purchases.store',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\PurchaseController@store',
@@ -10088,6 +10228,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.purchases.show',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\PurchaseController@show',
@@ -10127,6 +10268,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.purchases.edit',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\PurchaseController@edit',
@@ -10166,6 +10308,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.purchases.update',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\PurchaseController@update',
@@ -10204,6 +10347,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.purchases.destroy',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\PurchaseController@destroy',
@@ -10243,6 +10387,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.store-items.index',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Store\\StoreItemController@index',
@@ -10282,6 +10427,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.store-items.create',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Store\\StoreItemController@create',
@@ -10320,6 +10466,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.store-items.store',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Store\\StoreItemController@store',
@@ -10359,6 +10506,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.store-items.show',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Store\\StoreItemController@show',
@@ -10398,6 +10546,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.store-items.edit',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Store\\StoreItemController@edit',
@@ -10437,6 +10586,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.store-items.update',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Store\\StoreItemController@update',
@@ -10475,6 +10625,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.store-items.destroy',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Store\\StoreItemController@destroy',
@@ -10514,6 +10665,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.requisitions.index',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RequisitionController@index',
@@ -10553,6 +10705,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.requisitions.create',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RequisitionController@create',
@@ -10591,6 +10744,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.requisitions.store',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RequisitionController@store',
@@ -10630,6 +10784,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.requisitions.show',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RequisitionController@show',
@@ -10669,6 +10824,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.requisitions.edit',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RequisitionController@edit',
@@ -10708,6 +10864,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.requisitions.update',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RequisitionController@update',
@@ -10746,6 +10903,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.requisitions.destroy',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RequisitionController@destroy',
@@ -10785,6 +10943,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.bar-items.index',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Bar\\BarItemsController@index',
@@ -10824,6 +10983,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.bar-items.create',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Bar\\BarItemsController@create',
@@ -10862,6 +11022,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.bar-items.store',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Bar\\BarItemsController@store',
@@ -10901,6 +11062,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.bar-items.show',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Bar\\BarItemsController@show',
@@ -10940,6 +11102,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.bar-items.edit',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Bar\\BarItemsController@edit',
@@ -10979,6 +11142,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.bar-items.update',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Bar\\BarItemsController@update',
@@ -11017,6 +11181,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'as' => 'dashboard.hotel.bar-items.destroy',
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Bar\\BarItemsController@destroy',
@@ -11055,6 +11220,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\PaymentPlatformController@store',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\PaymentPlatformController@store',
@@ -11093,6 +11259,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\PaymentPlatformController@update',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\PaymentPlatformController@update',
@@ -11131,6 +11298,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\ManageCurrencyController@update',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\ManageCurrencyController@update',
@@ -11170,6 +11338,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Finance\\PaymentController@pay',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Finance\\PaymentController@pay',
@@ -11209,6 +11378,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Finance\\PaymentController@list',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Finance\\PaymentController@list',
@@ -11247,6 +11417,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Finance\\PaymentController@initiatePayment',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Finance\\PaymentController@initiatePayment',
@@ -11286,6 +11457,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Guest\\GuestController@getGuestInfo',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Guest\\GuestController@getGuestInfo',
@@ -11324,6 +11496,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RoomReservationController@getRoomAvailability',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RoomReservationController@getRoomAvailability',
@@ -11362,6 +11535,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RoomReservationController@checkInGuest',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RoomReservationController@checkInGuest',
@@ -11400,6 +11574,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RoomReservationController@CheckOutGuest',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RoomReservationController@CheckOutGuest',
@@ -11438,6 +11613,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Guest\\GuestWalletController@creditGuestWallet',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Guest\\GuestWalletController@creditGuestWallet',
@@ -11476,6 +11652,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Guest\\GuestWalletController@recordDebitTransaction',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Guest\\GuestWalletController@recordDebitTransaction',
@@ -11514,6 +11691,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Guest\\GuestWalletController@payWithGuestWallet',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Guest\\GuestWalletController@payWithGuestWallet',
@@ -11553,6 +11731,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Invoices\\Guest\\RoomReservationInvoiceController@printInvoicePDF',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Invoices\\Guest\\RoomReservationInvoiceController@printInvoicePDF',
@@ -11591,6 +11770,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Restaurant\\RestaurantItemsController@importItems',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Restaurant\\RestaurantItemsController@importItems',
@@ -11629,6 +11809,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Restaurant\\RestaurantItemsController@truncateItems',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Restaurant\\RestaurantItemsController@truncateItems',
@@ -11668,6 +11849,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Restaurant\\RestaurantOrderController@createOrder',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Restaurant\\RestaurantOrderController@createOrder',
@@ -11706,6 +11888,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Restaurant\\RestaurantOrderController@saveOrder',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Restaurant\\RestaurantOrderController@saveOrder',
@@ -11745,6 +11928,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Restaurant\\RestaurantOrderController@viewOrders',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Restaurant\\RestaurantOrderController@viewOrders',
@@ -11784,6 +11968,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Restaurant\\RestaurantOrderController@editOrder',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Restaurant\\RestaurantOrderController@editOrder',
@@ -11822,6 +12007,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Restaurant\\RestaurantOrderController@destroyOrder',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Restaurant\\RestaurantOrderController@destroyOrder',
@@ -11860,6 +12046,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Restaurant\\RestaurantOrderController@cancelOrder',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Restaurant\\RestaurantOrderController@cancelOrder',
@@ -11898,6 +12085,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Bar\\BarItemsController@importItems',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Bar\\BarItemsController@importItems',
@@ -11936,6 +12124,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Bar\\BarItemsController@truncateItems',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Bar\\BarItemsController@truncateItems',
@@ -11975,6 +12164,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Bar\\BarOrderController@createOrder',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Bar\\BarOrderController@createOrder',
@@ -12013,6 +12203,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Bar\\BarOrderController@saveOrder',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Bar\\BarOrderController@saveOrder',
@@ -12052,6 +12243,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Bar\\BarOrderController@viewOrders',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Bar\\BarOrderController@viewOrders',
@@ -12091,6 +12283,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Bar\\BarOrderController@editOrder',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Bar\\BarOrderController@editOrder',
@@ -12129,6 +12322,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Bar\\BarOrderController@deleteOrder',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Bar\\BarOrderController@deleteOrder',
@@ -12167,6 +12361,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Bar\\BarOrderController@cancelOrder',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Bar\\BarOrderController@cancelOrder',
@@ -12206,6 +12401,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Kitchen\\KitchenOrderController@viewOrders',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Kitchen\\KitchenOrderController@viewOrders',
@@ -12244,6 +12440,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Kitchen\\KitchenOrderController@updateStatus',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Kitchen\\KitchenOrderController@updateStatus',
@@ -12282,6 +12479,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Kitchen\\KitchenOrderController@addNote',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Kitchen\\KitchenOrderController@addNote',
@@ -12320,6 +12518,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Kitchen\\KitchenOrderController@assignTask',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Kitchen\\KitchenOrderController@assignTask',
@@ -12359,6 +12558,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Store\\StoreIssueController@index',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Store\\StoreIssueController@index',
@@ -12398,6 +12598,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Store\\StoreIssueController@create',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Store\\StoreIssueController@create',
@@ -12436,6 +12637,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Store\\StoreIssueController@store',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Store\\StoreIssueController@store',
@@ -12475,6 +12677,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Store\\StoreIssueController@getItemByCategory',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Store\\StoreIssueController@getItemByCategory',
@@ -12514,6 +12717,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Store\\StoreInventoryController@incoming',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Store\\StoreInventoryController@incoming',
@@ -12553,6 +12757,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Store\\StoreInventoryController@outgoing',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Store\\StoreInventoryController@outgoing',
@@ -12592,6 +12797,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Notification\\NotificationController@unread',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Notification\\NotificationController@unread',
@@ -12630,6 +12836,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Notification\\NotificationController@makeAsRead',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Notification\\NotificationController@makeAsRead',
@@ -12669,6 +12876,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Notification\\NotificationController@view',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Notification\\NotificationController@view',
@@ -12708,6 +12916,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Notification\\NotificationController@viewAll',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Notification\\NotificationController@viewAll',
@@ -12747,6 +12956,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Notification\\NotificationController@fetchAll',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Notification\\NotificationController@fetchAll',
@@ -12785,6 +12995,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Notification\\NotificationController@deleteNotification',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Notification\\NotificationController@deleteNotification',
@@ -12823,6 +13034,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Notification\\NotificationController@deleteBulk',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Notification\\NotificationController@deleteBulk',
@@ -12862,6 +13074,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\ExpenseController@dashboard',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\ExpenseController@dashboard',
@@ -12901,6 +13114,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\PurchaseController@overview',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\PurchaseController@overview',
@@ -12940,6 +13154,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Store\\StoreController@overview',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\Store\\StoreController@overview',
@@ -12979,6 +13194,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RoomReservationController@overview',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RoomReservationController@overview',
@@ -13018,6 +13234,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Settings\\SettingController@index',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Settings\\SettingController@index',
@@ -13057,6 +13274,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Settings\\HotelSettingController@index',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Settings\\HotelSettingController@index',
@@ -13096,6 +13314,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Settings\\HotelSettingController@paymentPlaform',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Settings\\HotelSettingController@paymentPlaform',
@@ -13135,6 +13354,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Settings\\HotelSettingController@editCurrency',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Settings\\HotelSettingController@editCurrency',
@@ -13174,6 +13394,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Settings\\HotelSettingController@edit',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Settings\\HotelSettingController@edit',
@@ -13212,6 +13433,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Settings\\HotelSettingController@update',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Settings\\HotelSettingController@update',
@@ -13251,6 +13473,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RoomController@filterRoom',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Hotel\\RoomController@filterRoom',
@@ -13290,6 +13513,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Finance\\PaymentController@pay',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Finance\\PaymentController@pay',
@@ -13329,6 +13553,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Finance\\PaymentController@list',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Finance\\PaymentController@list',
@@ -13367,6 +13592,7 @@ app('router')->setCompiledRoutes(
           0 => 'web',
           1 => 'auth',
           2 => 'verified',
+          3 => 'App\\Http\\Middleware\\HotelUserMiddleware',
         ),
         'uses' => 'App\\Http\\Controllers\\Dashboard\\Finance\\PaymentController@initiatePayment',
         'controller' => 'App\\Http\\Controllers\\Dashboard\\Finance\\PaymentController@initiatePayment',
@@ -13507,7 +13733,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::ofLuetnIqjRw4Jqu' => 
+    'generated::wGJ0GjgjGrvDAN4M' => 
     array (
       'methods' => 
       array (
@@ -13535,8 +13761,8 @@ app('router')->setCompiledRoutes(
                     return response(\\Illuminate\\Support\\Facades\\View::file(\'C:\\\\Web Development\\\\Backend\\\\Laravel\\\\software-management\\\\software-management\\\\vendor\\\\laravel\\\\framework\\\\src\\\\Illuminate\\\\Foundation\\\\Configuration\'.\'/../resources/health-up.blade.php\', [
                         \'exception\' => $exception,
                     ]), status: $exception ? 500 : 200);
-                }";s:5:"scope";s:54:"Illuminate\\Foundation\\Configuration\\ApplicationBuilder";s:4:"this";N;s:4:"self";s:32:"0000000000000a5e0000000000000000";}}',
-        'as' => 'generated::ofLuetnIqjRw4Jqu',
+                }";s:5:"scope";s:54:"Illuminate\\Foundation\\Configuration\\ApplicationBuilder";s:4:"this";N;s:4:"self";s:32:"0000000000000a5f0000000000000000";}}',
+        'as' => 'generated::wGJ0GjgjGrvDAN4M',
       ),
       'fallback' => false,
       'defaults' => 
@@ -13552,7 +13778,7 @@ app('router')->setCompiledRoutes(
       'waitSeconds' => NULL,
       'withTrashed' => false,
     ),
-    'generated::cjntYsaJrqF4bN6r' => 
+    'generated::XDCEibqc8e0PCmRv' => 
     array (
       'methods' => 
       array (
@@ -13578,7 +13804,7 @@ app('router')->setCompiledRoutes(
         array (
           0 => 'Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken',
         ),
-        'as' => 'generated::cjntYsaJrqF4bN6r',
+        'as' => 'generated::XDCEibqc8e0PCmRv',
       ),
       'fallback' => false,
       'defaults' => 

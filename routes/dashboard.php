@@ -40,12 +40,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth', 'verified')->group(function () {
 
-    Route::prefix('dashboard')->as('dashboard.')->group(function () {
+    Route::prefix('dashboard')->as('dashboard.')->middleware(HotelUserMiddleware::class)->group(function () {
 
         Route::prefix('hotels')->as('hotels.')->group(function () {
             Route::get('/', [HotelsController::class, 'index']);
             Route::get('/show-hotel/{id}', [HotelsController::class, 'show'])->name('show-hotel');
             Route::delete('/delete-hotel/{id}', [HotelsController::class, 'delete'])->name('delete-hotel');
+
             Route::post('/login-as-hotel-owner/{id}', [HotelsController::class, 'loginAsHotelOwner'])->name('login-as-hotel-owner');
             Route::get('/impersonate/{id}', [HotelsController::class, 'impersonate'])
                 ->name('impersonate')->middleware('signed');
@@ -53,6 +54,7 @@ Route::middleware('auth', 'verified')->group(function () {
         });
         Route::prefix('users')->as('users.')->group(function () {
             Route::get('/', [DeveloperUsersController::class, 'index']);
+            Route::delete('/{id}/delete', [DeveloperUsersController::class, 'delete'])->name('delete');
         });
 
         Route::get('download.sample', [RestaurantItemsController::class, 'downloadSample'])->name('download.sample');
@@ -176,7 +178,7 @@ Route::middleware('auth', 'verified')->group(function () {
             Route::get('list', [PaymentController::class, 'list'])->name('list');
             Route::post('initiate', [PaymentController::class, 'initiatePayment'])->name('initiate');
         });
-    })->middleware(HotelUserMiddleware::class);
+    });
 
     Route::get('/get-states-by-country', [OnboardingController::class, 'getStatesByCountry'])->name('get-states-by-country');
 

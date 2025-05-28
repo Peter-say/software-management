@@ -4,12 +4,12 @@
     "name": "pusher"
   },
   "resources/css/app.css": {
-    "file": "assets/app-D_X3qlX9.css",
+    "file": "assets/app-BFsYYLyi.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-qpc41TLv.js",
+    "file": "assets/app-Cy787Tis.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -18,7 +18,7 @@
     ]
   },
   "resources/js/echo.js": {
-    "file": "assets/echo-BIg3wo_8.js",
+    "file": "assets/echo-eT3FqJNk.js",
     "name": "echo",
     "src": "resources/js/echo.js",
     "isEntry": true,

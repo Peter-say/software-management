@@ -23,10 +23,7 @@
                             <th>Photo</th>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Address</th>
-                            <th>Hotel</th>
                             <th>Role</th>
-                            <th>Phone</th>
                             <th>Joined Date</th>
                             <th>Action</th>
                         </tr>
@@ -41,25 +38,21 @@
                                 </div>
                             </td>
                             <td>
-                                <a href="{{ $user->photo }}"
+                                <a href="{{ $user->photo() }}"
                                     data-fancybox="gallery_{{ $user->id }}"
                                     data-caption="{{ $user->name }}">
-                                    <img src="{{ $user->photo }}"
+                                    <img src="{{ $user->photo() }}"
                                         alt="Image" class="img-thumbnail"
                                         style="width: 60px; height: 60px;">
                                 </a>
                             </td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
-                            <td>{{ $user->address ?? 'N/A' }}</td>
-                            <td>{{ $user->hotel ?? 'N/A' }}</td>
                             <td>{{ $user->role }}</td>
-                            <td>{{ $user->phone ?? 'N/A' }}</td>
                             <td>{{ optional($user->created_at)->format('D M, Y') ?? 'N/A' }}</td>
-
                             <td>
                                 <div class="d-flex">
-                                    <a href="javascript:void(0);" class="btn btn-danger shadow btn-xs sharp" onclick="confirmDelete('{{ route('dashboard.hotel-users.delete', $user->id) }}')">
+                                    <a href="javascript:void(0);" class="btn btn-danger shadow btn-xs sharp" onclick="confirmDelete('{{ route('dashboard.users.delete', $user->id) }}')">
                                         <i class="fa fa-trash"></i>
                                     </a>
                                 </div>

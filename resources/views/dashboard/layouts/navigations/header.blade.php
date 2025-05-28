@@ -8,88 +8,85 @@
                 <div class="header-left">
                     <div class="dashboard_bar">
                         @if (Route::currentRouteName() == 'dashboard.home')
-                        Dashboard
+                            Dashboard
                         @elseif (in_array(Route::currentRouteName(), [
-                        'dashboard.hotel-users.overview',
-                        'dashboard.hotel-users.create',
-                        'dashboard.hotel-users.edit',
-                        ]))
-                        Hotel Users
+                                'dashboard.hotel-users.overview',
+                                'dashboard.hotel-users.create',
+                                'dashboard.hotel-users.edit',
+                            ]))
+                            Hotel Users
                         @elseif (in_array(Route::currentRouteName(), [
-                        'dashboard.hotel.expenses.index',
-                        'dashboard.hotel.expenses.create',
-                        'dashboard.hotel.expenses.edit',
-                        ]))
-                        Expenses
+                                'dashboard.hotel.expenses.index',
+                                'dashboard.hotel.expenses.create',
+                                'dashboard.hotel.expenses.edit',
+                            ]))
+                            Expenses
                         @elseif (in_array(Route::currentRouteName(), [
-                        'dashboard.hotel.guests.index',
-                        'dashboard.hotel.guests.create',
-                        'dashboard.hotel.guests.edit',
-                        'dashboard.hotel.guests.show',
-                        ]))
-                        Guest
+                                'dashboard.hotel.guests.index',
+                                'dashboard.hotel.guests.create',
+                                'dashboard.hotel.guests.edit',
+                                'dashboard.hotel.guests.show',
+                            ]))
+                            Guest
                         @elseif (Route::currentRouteName() == 'dashboard.hotel.kitchen.orders')
-                        Kitchen Order
+                            Kitchen Order
                         @elseif (in_array(Route::currentRouteName(), [
-                        'dashboard.hotel.notifications.view-all',
-                        'dashboard.hotel.notifications.view',
-                        ]))
-                        Notification
+                                'dashboard.hotel.notifications.view-all',
+                                'dashboard.hotel.notifications.view',
+                            ]))
+                            Notification
                         @elseif (in_array(Route::currentRouteName(), [
-                        'dashboard.hotel.outlets.index',
-                        'dashboard.hotel.outlets.create',
-                        'dashboard.hotel.outlets.edit',
-                        ]))
-                        Outlets
+                                'dashboard.hotel.outlets.index',
+                                'dashboard.hotel.outlets.create',
+                                'dashboard.hotel.outlets.edit',
+                            ]))
+                            Outlets
                         @elseif (in_array(Route::currentRouteName(), [
-                        'dashboard.hotel.reservations.index',
-                        'dashboard.hotel.reservations.create',
-                        'dashboard.hotel.reservations.show',
-                        'dashboard.hotel.reservations.edit',
-                        'dashboard.hotel.reservation-dashboard',
-                        ]))
-                        Room Reservation
+                                'dashboard.hotel.reservations.index',
+                                'dashboard.hotel.reservations.create',
+                                'dashboard.hotel.reservations.show',
+                                'dashboard.hotel.reservations.edit',
+                                'dashboard.hotel.reservation-dashboard',
+                            ]))
+                            Room Reservation
                         @elseif (in_array(Route::currentRouteName(), [
-                        'dashboard.hotel.restaurant-items.index',
-                        'dashboard.hotel.restaurant-items.create',
-                        'dashboard.hotel.restaurant-items.edit',
-                        ]))
-                        Restaurant Items
+                                'dashboard.hotel.restaurant-items.index',
+                                'dashboard.hotel.restaurant-items.create',
+                                'dashboard.hotel.restaurant-items.edit',
+                            ]))
+                            Restaurant Items
                         @elseif (in_array(Route::currentRouteName(), [
-                        'dashboard.hotel.restaurant.create-order',
-                        'dashboard.hotel.restaurant.view-orders',
-                        ]))
-                        Restaurant Order
+                                'dashboard.hotel.restaurant.create-order',
+                                'dashboard.hotel.restaurant.view-orders',
+                            ]))
+                            Restaurant Order
                         @elseif (in_array(Route::currentRouteName(), [
-                        'dashboard.hotel.bar-items.index',
-                        'dashboard.hotel.bar-items.create',
-                        'dashboard.hotel.bar-items.edit',
-                        ]))
-                        Bar Items
+                                'dashboard.hotel.bar-items.index',
+                                'dashboard.hotel.bar-items.create',
+                                'dashboard.hotel.bar-items.edit',
+                            ]))
+                            Bar Items
+                        @elseif (in_array(Route::currentRouteName(), ['dashboard.hotel.bar.create-order', 'dashboard.hotel.bar.view-orders']))
+                            Restaurant Order
                         @elseif (in_array(Route::currentRouteName(), [
-                        'dashboard.hotel.bar.create-order',
-                        'dashboard.hotel.bar.view-orders'
-                        ]))
-                        Restaurant Order
+                                'dashboard.hotel.rooms.index',
+                                'dashboard.hotel.rooms.create',
+                                'dashboard.hotel.rooms.edit',
+                            ]))
+                            Rooms
                         @elseif (in_array(Route::currentRouteName(), [
-                        'dashboard.hotel.rooms.index',
-                        'dashboard.hotel.rooms.create',
-                        'dashboard.hotel.rooms.edit',
-                        ]))
-                        Rooms
+                                'dashboard.hotel.suppliers.index',
+                                'dashboard.hotel.suppliers.create',
+                                'dashboard.hotel.suppliers.edit',
+                            ]))
+                            Suppliers
                         @elseif (in_array(Route::currentRouteName(), [
-                        'dashboard.hotel.suppliers.index',
-                        'dashboard.hotel.suppliers.create',
-                        'dashboard.hotel.suppliers.edit',
-                        ]))
-                        Suppliers
-                        @elseif (in_array(Route::currentRouteName(), [
-                        'dashboard.hotel.settings.',
-                        'dashboard.hotel.settings.hotel-info.',
-                        'dashboard.hotel.module-preferences.edit',
-                        'dashboard.hotel.settings.hotel-info.edit',
-                        ]))
-                        Settings
+                                'dashboard.hotel.settings.',
+                                'dashboard.hotel.settings.hotel-info.',
+                                'dashboard.hotel.module-preferences.edit',
+                                'dashboard.hotel.settings.hotel-info.edit',
+                            ]))
+                            Settings
                         @endif
                     </div>
                 </div>
@@ -100,6 +97,7 @@
                                     class="flaticon-381-search-2"></i></a></span>
                     </div>
                 </div>
+
                 <ul class="navbar-nav header-right">
                     <li class="nav-item dropdown notification_dropdown">
                         <a class="nav-link" href="javascript:void(0);">
@@ -111,7 +109,7 @@
                             </svg>
                         </a>
                     </li>
-                    <li class="nav-item dropdown notification_dropdown">
+                    {{-- <li class="nav-item dropdown notification_dropdown">
                         <a class="nav-link bell-link " href="javascript:void(0);">
                             <svg xmlns="http://www.w3.org/2000/svg" width="26.667" height="24"
                                 viewBox="0 0 26.667 24">
@@ -123,7 +121,15 @@
                             </svg>
                             <span class="badge light text-white bg-primary rounded-circle">76</span>
                         </a>
-                    </li>
+                    </li> --}}
+                    @unless (Route::currentRouteName() === 'dashboard.chat-gemini')
+                        <li class="nav-item dropdown notification_dropdown">
+                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#aiChatModal">
+                                Ask AI
+                            </button>
+                        </li>
+                    @endunless
+
                     <li class="nav-item dropdown notification_dropdown">
                         <a class="nav-link" href="javascript:void(0);" role="button" data-bs-toggle="dropdown">
                             <svg xmlns="http://www.w3.org/2000/svg" width="19.375" height="24"
@@ -151,7 +157,7 @@
 
                     </li>
 
-                    <li class="nav-item dropdown notification_dropdown">
+                    {{-- <li class="nav-item dropdown notification_dropdown">
                         <a class="nav-link " href="javascript:void(0);" data-bs-toggle="dropdown">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="21.6" viewBox="0 0 24 21.6">
                                 <g id="_008-chat" data-name="008-chat" transform="translate(-250.397 -62.547)">
@@ -221,7 +227,7 @@
                                 </ul>
                             </div>
                         </div>
-                    </li>
+                    </li> --}}
                     <li class="nav-item dropdown header-profile">
                         <a class="nav-link" href="javascript:void(0);" role="button" data-bs-toggle="dropdown">
 
@@ -250,35 +256,39 @@
                                 </svg>
                                 <span class="ms-2">Inbox </span>
                             </a>
-                            @if(session()->has('impersonator_id'))
-                            <a href="{{ route('dashboard.hotels.switch-back-impersonator') }}" class="dropdown-item ai-icon"
-                                onclick="event.preventDefault(); document.getElementById('switch-back-form').submit();">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="text-warning" width="18"
-                                    height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M3 12l18 0"></path>
-                                    <path d="M12 3l0 18"></path>
-                                </svg>
-                                <span class="ms-2">Switch to Developer</span>
-                            </a>
-                            <form id="switch-back-form" action="{{ route('dashboard.hotels.switch-back-impersonator') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
+                            @if (session()->has('impersonator_id'))
+                                <a href="{{ route('dashboard.hotels.switch-back-impersonator') }}"
+                                    class="dropdown-item ai-icon"
+                                    onclick="event.preventDefault(); document.getElementById('switch-back-form').submit();">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="text-warning" width="18"
+                                        height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 12l18 0"></path>
+                                        <path d="M12 3l0 18"></path>
+                                    </svg>
+                                    <span class="ms-2">Switch to Developer</span>
+                                </a>
+                                <form id="switch-back-form"
+                                    action="{{ route('dashboard.hotels.switch-back-impersonator') }}" method="POST"
+                                    style="display: none;">
+                                    @csrf
+                                </form>
                             @else
-                            <a href="{{ route('logout') }}" class="dropdown-item ai-icon"
-                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="text-danger" width="18"
-                                    height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                                    <polyline points="16 17 21 12 16 7"></polyline>
-                                    <line x1="21" y1="12" x2="9" y2="12"></line>
-                                </svg>
-                                <span class="ms-2">Logout</span>
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
+                                <a href="{{ route('logout') }}" class="dropdown-item ai-icon"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="text-danger" width="18"
+                                        height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                        <polyline points="16 17 21 12 16 7"></polyline>
+                                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                                    </svg>
+                                    <span class="ms-2">Logout</span>
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                    style="display: none;">
+                                    @csrf
+                                </form>
                             @endif
 
                         </div>

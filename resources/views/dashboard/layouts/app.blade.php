@@ -142,13 +142,17 @@
 
     <div id="main-wrapper">
         @include('dashboard.layouts.navigations.top-nav')
-        @include('dashboard.layouts.navigations.sidebar');
+        @include('dashboard.layouts.navigations.sidebar')
         @include('notifications.flash-messages')
         @include('dashboard.general.modal.item-description-modal')
         @include('dashboard.hotel.restaurant-item.upload-modal')
         @include('dashboard.hotel.bar-items.upload-modal')
-        @include('dashboard.hotel.bar-items.truncate-modal');
-
+        @include('dashboard.hotel.bar-items.truncate-modal')
+        @include('dashboard.general.modal.ai-chat.modal', [
+            'chat_histories' => $chat_histories ?? [],
+            'conversation_id' => $conversation_id ?? '',
+            'prompt' => $prompt ?? '',
+        ])
         @yield('contents')
 
 
@@ -311,8 +315,9 @@
  ***********************************-->
     <!-- jQuery (only include once) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <!-- SweetAlert2 -->
+    @include('dashboard.general.modal.ai-chat.script', ['chat_histories' => $chat_histories ?? []])
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Moment.js (required for date/time handling) -->
@@ -371,9 +376,9 @@
     <script src="{{ asset('dashboard/js/styleSwitcher.js') }}"></script>
 
     <!-- Pickadate (for date/time picking functionality) -->
-    <script src="{{ asset('dashboard/vendor/pickadate/picker.js') }}"></script>
+    {{-- <script src="{{ asset('dashboard/vendor/pickadate/picker.js') }}"></script>
     <script src="{{ asset('dashboard/vendor/pickadate/picker.time.js') }}"></script>
-    <script src="{{ asset('dashboard/vendor/pickadate/picker.date.js') }}"></script>
+    <script src="{{ asset('dashboard/vendor/pickadate/picker.date.js') }}"></script> --}}
 
     <!-- Daterangepicker Initialization -->
     <script src="{{ asset('dashboard/js/plugins-init/bs-daterange-picker-init.js') }}"></script>
@@ -441,11 +446,11 @@
                 }, 1000);
             });
 
-            $(function() {
-                $('#datetimepicker').datetimepicker({
-                    inline: true,
-                });
-            });
+            // $(function() {
+            //     $('#datetimepicker').datetimepicker({
+            //         inline: true,
+            //     });
+            // });
 
             $(document).ready(function() {
                 $(".booking-calender .fa.fa-clock-o").removeClass(this);

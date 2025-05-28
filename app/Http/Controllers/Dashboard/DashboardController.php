@@ -26,7 +26,6 @@ class DashboardController extends Controller
     }
     public function dashboard(Request $request)
     {
-        // phpinfo();
         $period = $request->get('period', 'day');
         $booking_period = $request->get('booking_period', 'week');
 
@@ -36,15 +35,26 @@ class DashboardController extends Controller
         if (!in_array($booking_period, ['week', 'year'])) {
             $booking_period = 'week';
         }
+
         $user = User::getAuthenticatedUser();
-        $hotelUser = HotelUser::where('user_id', $user->id)->whereHas('user', function ($query) {
-            $query->where('role', '!=', 'Developer');
-        })->first();
-        if ($hotelUser) {
+
+        // Handle Developer
+        if ($user->role === 'Developer') {
+            return view('dashboard.developer.index', [
+                'cards' => $this->developer_appstat_service->appStats(),
+            ]);
+        }
+
+        // Handle non-developer users
+        $hotelUser = HotelUser::where('user_id', $user->id)->first();
+
+        if ($hotelUser && $hotelUser->hotel) {
             $hasModules = HotelModulePreference::where('hotel_id', $hotelUser->hotel->id)->exists();
             if (!$hasModules) {
-                return redirect()->route('dashboard.hotel.module-preferences.create');
+                return redirect()->route('dashboard.hotel.module-preferences.create')
+                    ->with('error_message', 'Please, select the modules your hotel would like to manage.');
             }
+
             return view('dashboard.index', [
                 'room_reservation_stats' => $this->dashboard_service->stats(['period' => $period]),
                 'occupiedRooms' => $this->dashboard_service->countOccupiedRoomsToday(),
@@ -53,14 +63,12 @@ class DashboardController extends Controller
                 'reservation_data' => $this->dashboard_reservation_service->stats(['booking_period' => $booking_period]),
                 'recent_room_reservations' => $this->dashboard_service->recentBookingSchedule(),
             ]);
-        }else{
-            // dd($this->developer_appstat_service->appStats());
-            return view('dashboard.developer.index', [
-                'cards' => $this->developer_appstat_service->appStats(),
-            ]);
         }
+
+        // If user is neither a developer nor a valid hotel user
         return redirect()->route('onboarding.setup-app');
     }
+
 
 
     public function loadRecentReservation(Request $request)

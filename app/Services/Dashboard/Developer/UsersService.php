@@ -7,11 +7,27 @@ use App\Models\User;
 
 class UsersService
 {
+    public function delete($user_id)
+    {
+
+        try {
+            $user = User::findOrFail($user_id);
+            $hotel_user = $user->hotelUser;
+            $user->delete();
+           if($hotel_user) {
+                $hotel_user->delete();
+            }
+            return true;
+        } catch (\Exception $e) {
+            throw new \Exception("An error occurred while deleting the user: " . $e->getMessage());
+        }
+    }
+
     public function getAllHotelAndRegularUsers()
     {
         $users_without_hotel = User::whereDoesntHave('hotelUser')->get()->map(function ($user) {
             return (object)[
-                'id' => $user->id,
+                'user_id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
                 'address' => null,
@@ -27,7 +43,7 @@ class UsersService
 
         $users_with_hotels = HotelUser::with(['user', 'hotel'])->get()->map(function ($hotelUser) {
             return (object)[
-                'id' => $hotelUser->user->id,
+                'user_id' => $hotelUser->user->id,
                 'name' => $hotelUser->user->name,
                 'email' => $hotelUser->user->email,
                 'address' => $hotelUser->address,

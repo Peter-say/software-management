@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Services\AI\Gemini\GeminiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -61,54 +62,17 @@ class Conversation
             ]);
             $conversation->chats()->save($prompt);
 
-            // Check for user statistics query
-            $keywords = ['how many', 'users', 'day', 'week', 'month', 'year', 'total', 'count', 'statistics'];
-            $promptLower = strtolower($request->prompt);
-            $isUserQuery = false;
-            foreach ($keywords as $keyword) {
-                if (strpos($promptLower, $keyword) !== false) {
-                    $isUserQuery = true;
-                    break;
-                }
-            }
+            $user = User::getAuthenticatedUser();
+            $role = $user->role;
+            $roleDescription = $json['user_roles'][$role] ?? 'Role description not found.';
+            $instructionsJson = Storage::get('ai_contexts/hotelmaster_instructions.json');
+            $instructions = json_decode($instructionsJson, true);
 
-            if ($isUserQuery) {
-                $period = null;
-                foreach (['day', 'week', 'month', 'year'] as $p) {
-                    if (strpos($promptLower, $p) !== false) {
-                        $period = $p;
-                        break;
-                    }
-                }
-                if ($period) {
-                    $sql = $this->getUserQueryWithGemini($period);
-                    $result = DB::select($sql);
-                    $dbText = "User statistics by $period:\n";
-                    foreach ($result as $row) {
-                        $dbText .= implode(', ', (array)$row) . "\n";
-                    }
+            $systemPrompt = "You are an assistant for the HotelMaster app. Here's the app context:\n\n"
+                . json_encode($instructions, JSON_PRETTY_PRINT)
+                . "\n\nUser Info:\nRole: {$role}\nRole Description: {$roleDescription}";
 
-                    // Ask Gemini to explain the DB result
-                    $geminiPrompt = "The user asked: '{$request->prompt}'. Here is the data from the database:\n{$dbText}\nPlease explain or summarize this result for the user in plain language.";
-                    $explainedText = $this->gemini_service->sendPrompt($geminiPrompt);
-
-                    // Save AI response
-                    $response = new Chat([
-                        'sender' => 'ai',
-                        'content' => $explainedText,
-                    ]);
-                    $conversation->chats()->save($response);
-
-                    return [
-                        'conversation' => $conversation,
-                        'prompt' => $request->prompt,
-                        'response' => $explainedText,
-                    ];
-                }
-            }
-
-            // Default: send prompt to Gemini as usual
-            $responseText = $this->gemini_service->sendPrompt($request->prompt);
+            $responseText = $this->gemini_service->sendPrompt($systemPrompt . "\n\nUser asked: " . $request->prompt);
             $response = new Chat([
                 'sender' => 'ai',
                 'content' => $responseText,
@@ -135,6 +99,11 @@ class Conversation
         $conversations = ModelsConversation::where('user_id', $user->id)
             ->where('ai_type', 'gemini')
             ->get();
+        if (empty($conversations)) {
+            return [
+                'message' => 'No conversations found to clear',
+            ];
+        }
         foreach ($conversations as $conversation) {
             $conversation->chats()->delete();
             $conversation->delete();
@@ -142,39 +111,5 @@ class Conversation
         return [
             'message' => 'Conversation cleared successfully',
         ];
-    }
-
-
-    public function getUserQueryWithGemini(string $period): string
-    {
-        $allowedPeriods = ['day', 'week', 'month', 'year', 'total'];
-        if (!in_array(strtolower($period), $allowedPeriods)) {
-            throw new \InvalidArgumentException('Invalid period specified.');
-        }
-
-        switch (strtolower($period)) {
-            case 'day':
-                $sql = "SELECT COUNT(*) as total FROM users WHERE DATE(created_at) = CURDATE()";
-                break;
-            case 'week':
-                $sql = "SELECT COUNT(*) as total FROM users WHERE YEARWEEK(created_at, 1) = YEARWEEK(CURDATE(), 1)";
-                break;
-            case 'month':
-                $sql = "SELECT COUNT(*) as total FROM users WHERE YEAR(created_at) = YEAR(CURDATE()) AND MONTH(created_at) = MONTH(CURDATE())";
-                break;
-            case 'year':
-                $sql = "SELECT COUNT(*) as total FROM users WHERE YEAR(created_at) = YEAR(CURDATE())";
-                break;
-            case 'total':
-                $sql = "SELECT COUNT(*) as total FROM users";
-                break;
-            default:
-                throw new \InvalidArgumentException('Invalid period specified.');
-        }
-
-        if (!preg_match('/^SELECT/i', trim($sql))) {
-            throw new \RuntimeException('Unsafe query');
-        }
-        return $sql;
     }
 }

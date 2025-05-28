@@ -45,7 +45,7 @@
 <!--**********************************
    Chat box start
   ***********************************-->
-<div class="chatbox">
+{{-- <div class="chatbox">
     <div class="chatbox-close"></div>
     <div class="custom-tab-1">
         <ul class="nav nav-tabs">
@@ -662,7 +662,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 <!--**********************************
    Chat box End
   ***********************************-->

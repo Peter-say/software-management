@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Conversation;
 use App\Models\HotelSoftware\HotelPaymentPlatform;
 use App\Models\hotelSoftware\Notification;
 use App\Models\HotelSoftware\PaymentPlatform;
@@ -39,23 +40,40 @@ class AppServiceProvider extends ServiceProvider
         Route::middleware('web')
             ->group(base_path('routes/dashboard.php'));
 
-            view()->composer('*', function ($view) {
-              
-                $user = Auth::user(); 
+        view()->composer('*', function ($view) {
 
-                if ($user && $user->hotel) {
-                    $paymentPlatform = HotelPaymentPlatform::where('hotel_id', $user->hotel->id)
+            $user = Auth::user();
+
+            if ($user && $user->hotel) {
+                $paymentPlatform = HotelPaymentPlatform::where('hotel_id', $user->hotel->id)
                     ->with('paymentPlatform')
-                    
-                    ->first();
-                } else {
-                    $paymentPlatform = null; 
-                }
-                $view->with('payment_platform', [
-                    'public_key' =>  $paymentPlatform?->public_key,
-                    'slug' => $paymentPlatform?->paymentPlatform->slug,
-                ]);
-            });
-    }
 
+                    ->first();
+            } else {
+                $paymentPlatform = null;
+            }
+            $user = User::getAuthenticatedUser();
+            $conversations = Conversation::with('chats')
+                ->where('user_id', $user?->id)
+                ->where('ai_type', 'gemini')
+                ->orderBy('created_at', 'asc')
+                ->get();
+            $chat_histories = [];
+            foreach ($conversations as $conv) {
+                foreach ($conv->chats as $chat) {
+                    $chat_histories[] = [
+                        'sender' => $chat->sender,
+                        'content' => $chat->content,
+                    ];
+                }
+            }
+            $view->with([
+                'payment_platform' => [
+                    'public_key' => $paymentPlatform?->public_key,
+                    'slug' => $paymentPlatform?->paymentPlatform->slug,
+                ],
+                'chat_histories' => $chat_histories,
+            ]);
+        });
+    }
 }

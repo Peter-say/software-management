@@ -53,28 +53,28 @@ class RegistrationService
     {
         // Get the HotelUser ID from the request, if available
         $hotelUserId = $request->input('id');
-    
+
         // Attempt to find the HotelUser by ID
         $hotelUser = HotelUser::find($hotelUserId);
-    
+
         $auth_user = User::getAuthenticatedUser();
         // If a HotelUser is found, use the corresponding User ID for validation
         $userId = $hotelUser ? $hotelUser->user_id : null;
-    
+
         // Validate data
         $validatedData = $this->validated($data, $userId);
         $oldPhotoPath = null;
-    
+
         if ($hotelUser) {
             // Store the old photo path
             $oldPhotoPath = $hotelUser->photo;
-    
+
             // Update the existing User
             $hotelUser->user->update([
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
             ]);
-    
+
             $isNewUser = false;
         } else {
             // Create a new User
@@ -86,15 +86,15 @@ class RegistrationService
             ]);
             // Exclude unwanted fields
             unset($validatedData['name'], $validatedData['email'], $validatedData['password']);
-    
+
             // Add required fields for HotelUser
             $validatedData['hotel_id'] = $auth_user->hotel->id;
             $validatedData['user_id'] = $user->id;
             $validatedData['user_account_id'] = $auth_user->id;
-    
+
             $isNewUser = true;
         }
-    
+
         if ($request->hasFile('photo')) {
             $photoDirectory = 'hotel/users/photos';
             $photoPath = FileHelpers::saveImageRequest($request->file('photo'), $photoDirectory);
@@ -104,8 +104,8 @@ class RegistrationService
                 FileHelpers::deleteFiles([public_path($photoDirectory . '/' . $oldPhotoPath)]);
             }
         }
-        
-    
+
+
         if ($hotelUser) {
             // Update the HotelUser with the new data
             $hotelUser->update($validatedData);
@@ -117,17 +117,17 @@ class RegistrationService
         if ($isNewUser) {
             $this->sendLoginDetails($hotelUser->user_id);
         }
-    
+
         return $hotelUser;
     }
-    
+
 
     public function delete($hotelUserId)
     {
+
         try {
             // Find the HotelUser by ID
             $hotelUser = HotelUser::findOrFail($hotelUserId);
-
             // Get the associated User ID
             $userId = $hotelUser->user_id;
 

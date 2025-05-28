@@ -19,7 +19,15 @@ class HotelUserMiddleware
     public function handle($request, Closure $next)
     {
         $user = Auth::user();
-        $hotelUser = HotelUser::where('user_id', $user->id)->first();
+        if (!$user) {
+            return redirect()->route('login');
+        }
+        if ($user->role === 'Developer') {
+            return $next($request);
+        }
+        $hotelUser = HotelUser::where('user_id', $user->id)->whereHas('user', function ($query) {
+            $query->where('role', '!=', 'Developer');
+        })->first();
         $hasModules = false;
 
         if ($hotelUser && $hotelUser->hotel) {

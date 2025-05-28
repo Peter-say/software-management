@@ -49,19 +49,19 @@ class GeminiController extends Controller
                 'prompt' => $result['prompt'],
                 'response' => $result['response']
             ]);
-        } catch (ValidationException $e) {
-            return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
+            return response()->json([
+                'message' => 'Something went wrong. <a href="javascript:location.reload()">Click here to refresh the page</a>. If the error persists, please contact the developers.'
+            ], 500);
         }
     }
 
     public function clear(Request $request)
     {
         try {
-            $this->conversation_service->clearConversation($request);
+            $message = $this->conversation_service->clearConversation($request);
             return response()->json([
-                'message' => 'conversation cleared successfully',
+                'message' => $message,
             ]);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);

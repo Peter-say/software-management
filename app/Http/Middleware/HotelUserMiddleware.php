@@ -18,25 +18,17 @@ class HotelUserMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $user = Auth::user();
-        if (!$user) {
-            return redirect()->route('login');
-        }
-        if ($user->role === 'Developer') {
-            return $next($request);
-        }
-        $hotelUser = HotelUser::where('user_id', $user->id)->whereHas('user', function ($query) {
-            $query->where('role', '!=', 'Developer');
-        })->first();
-        $hasModules = false;
+        // $user = Auth::user();
+        // $hotelUser = HotelUser::where('user_id', $user->id)->first();
+        // $hasModules = false;
 
-        if ($hotelUser && $hotelUser->hotel) {
-            $hasModules = HotelModulePreference::where('hotel_id', $hotelUser->hotel->id)->exists();
-        }
+        // if ($hotelUser && $hotelUser->hotel) {
+        //     $hasModules = HotelModulePreference::where('hotel_id', $hotelUser->hotel->id)->exists();
+        // }
 
-        if (!$hasModules) {
-            return redirect()->route('dashboard.hotel.module-preferences.create')->with('error_message', 'Please, select the modules your hotel would like to manage.');
-        }
+        // if (!$hasModules) {
+        //     return redirect()->route('dashboard.hotel.module-preferences.create')->with('error_message', 'Please, select the modules your hotel would like to manage.');
+        // }
 
         return $next($request);
     }

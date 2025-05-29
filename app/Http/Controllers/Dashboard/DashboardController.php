@@ -38,35 +38,33 @@ class DashboardController extends Controller
 
         $user = User::getAuthenticatedUser();
 
-        // Handle Developer
         if ($user->role === 'Developer') {
             return view('dashboard.developer.index', [
                 'cards' => $this->developer_appstat_service->appStats(),
             ]);
         }
 
-        // Handle non-developer users
         $hotelUser = HotelUser::where('user_id', $user->id)->first();
 
-        if ($hotelUser && $hotelUser->hotel) {
-            $hasModules = HotelModulePreference::where('hotel_id', $hotelUser->hotel->id)->exists();
-            if (!$hasModules) {
-                return redirect()->route('dashboard.hotel.module-preferences.create')
-                    ->with('error_message', 'Please, select the modules your hotel would like to manage.');
-            }
-
-            return view('dashboard.index', [
-                'room_reservation_stats' => $this->dashboard_service->stats(['period' => $period]),
-                'occupiedRooms' => $this->dashboard_service->countOccupiedRoomsToday(),
-                'available_rooms' => $this->dashboard_service->countAvailableRoomsToday(),
-                'total_transaction' => $this->dashboard_service->calculateTotalTransaction(),
-                'reservation_data' => $this->dashboard_reservation_service->stats(['booking_period' => $booking_period]),
-                'recent_room_reservations' => $this->dashboard_service->recentBookingSchedule(),
-            ]);
+        if (!$hotelUser || !$hotelUser->hotel) {
+            return redirect()->route('onboarding.setup-app')
+                ->with('error_message', 'Please complete your hotel setup.');
         }
 
-        // If user is neither a developer nor a valid hotel user
-        return redirect()->route('onboarding.setup-app');
+        $hasModules = HotelModulePreference::where('hotel_id', $hotelUser->hotel->id)->exists();
+        if (!$hasModules) {
+            return redirect()->route('dashboard.hotel.module-preferences.create')
+                ->with('error_message', 'Please select the modules your hotel would like to manage.');
+        }
+
+        return view('dashboard.index', [
+            'room_reservation_stats' => $this->dashboard_service->stats(['period' => $period]),
+            'occupiedRooms' => $this->dashboard_service->countOccupiedRoomsToday(),
+            'available_rooms' => $this->dashboard_service->countAvailableRoomsToday(),
+            'total_transaction' => $this->dashboard_service->calculateTotalTransaction(),
+            'reservation_data' => $this->dashboard_reservation_service->stats(['booking_period' => $booking_period]),
+            'recent_room_reservations' => $this->dashboard_service->recentBookingSchedule(),
+        ]);
     }
 
 

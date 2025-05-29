@@ -40,7 +40,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth', 'verified')->group(function () {
 
-    Route::prefix('dashboard')->as('dashboard.')->middleware(HotelUserMiddleware::class)->group(function () {
+    Route::prefix('dashboard')->as('dashboard.')->group(function () {
 
         Route::prefix('hotels')->as('hotels.')->group(function () {
             Route::get('/', [HotelsController::class, 'index']);

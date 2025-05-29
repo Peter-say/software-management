@@ -76,7 +76,7 @@ class Onboarding
 
         // Generate UUID
         $data['uuid'] = Str::uuid(); 
-        $data['user_id'] =User::getAuthenticatedUser()->id; // Assign the authenticated user's ID
+        $data['user_id'] = User::getAuthenticatedUser()->id; // Assign the authenticated user's ID
 
         $hotel = Hotel::create($data);
 

@@ -26,16 +26,16 @@ class OnboardingController extends Controller
 
         // Check if the user is associated with any hotel
         $hotelUser = HotelUser::where('user_id', $user->id)->first();
-        $hasModules = false;
-        if ($hotelUser && $hotelUser->hotel) {
-            $hasModules = HotelModulePreference::where('hotel_id', $hotelUser->hotel->id)->exists();
+        if (!$hotelUser || !$hotelUser->hotel) {
+            return view('dashboard.onboarding.onboarding');
         }
+
+        $hasModules = HotelModulePreference::where('hotel_id', $hotelUser->hotel->id)->exists();
+
         if ($hasModules) {
             return redirect()->route('dashboard.home');
-        } elseif (!$hasModules) {
-            return redirect()->route('dashboard.hotel.module-preferences.create');
         } else {
-            return view('dashboard.onbaording.onboarding');
+            return redirect()->route('dashboard.hotel.module-preferences.create');
         }
     }
 

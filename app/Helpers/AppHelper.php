@@ -21,7 +21,7 @@ function getModelItems($model)
 {
     $model_list = null;
 
-    $hotel_id = User::getAuthenticatedUser()->hotel->id;
+    $hotel_id = User::getAuthenticatedUser()->hotel?->id;
 
     if ($model == 'countries') {
         $model_list = DB::table('countries')->select('id', 'name')->orderBy('name', 'asc')->get();

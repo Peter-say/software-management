@@ -42,10 +42,7 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-        $hotel =  Hotel::create([
-            'user_id' => $user->id,
-            'uuid' => Str::uuid(),
-        ]);
+   
         event(new Registered($user));
 
         Auth::login($user);

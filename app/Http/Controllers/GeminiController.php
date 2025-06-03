@@ -56,15 +56,64 @@ class GeminiController extends Controller
         }
     }
 
-    public function clear(Request $request)
+    public function clear()
     {
         try {
-            $message = $this->conversation_service->clearConversation($request);
+            $message = $this->conversation_service->clearConversation();
             return response()->json([
                 'message' => $message,
             ]);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
+    }
+
+    public function generateResumeForm()
+    {
+        return view('dashboard.chat.resume.create');
+    }
+
+    public function askForResume(Request $request)
+    {
+        try {
+            $result = $this->conversation_service->generateResume($request);
+            return response()->json([
+                'full_response' => $result['response'],
+                // 'name' => $result['name'],
+                // 'email' => $result['email'],
+                // 'phone' => $result['phone'] ?? '',
+                // 'summary' => $result['summary'] ?? '',
+                // 'skills' => $result['skills'] ?? '',
+                // 'education' => $this->mapEducation($result),
+                // 'experience' => $this->mapExperience($result),
+                // 'full_response' => $result['response'] ?? '',
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json(['message' => $e->getMessage()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Something went wrong.'], 500);
+        }
+    }
+
+    private function mapEducation(array $result): array
+    {
+        return collect($result['education'] ?? [])->map(function ($school, $i) use ($result) {
+            return [
+                'school' => $school,
+                'degree' => $result['degree'][$i] ?? '',
+                'years' => $result['years'][$i] ?? '',
+            ];
+        })->toArray();
+    }
+
+    private function mapExperience(array $result): array
+    {
+        return collect($result['company'] ?? [])->map(function ($company, $i) use ($result) {
+            return [
+                'company' => $company,
+                'position' => $result['position'][$i] ?? '',
+                'description' => $result['job_description'][$i] ?? '',
+            ];
+        })->toArray();
     }
 }

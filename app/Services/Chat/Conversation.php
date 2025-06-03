@@ -24,9 +24,10 @@ class Conversation
     public function validated(array $data)
     {
         $validator = Validator::make($data, [
-            'conversation_id' => 'required|integer',
-            'ai_type' => 'required|string',
-            'title' => 'required|string|max:255',
+            'prompt' => 'required|string',
+            'conversation_id' => 'nullable|integer|min:0',
+            'ai_type' => 'nullable|string',
+            'title' => 'nullable|string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -35,23 +36,40 @@ class Conversation
         return $validator->validated();
     }
 
+
     public function createConversation(Request $request)
     {
         return DB::transaction(function () use ($request) {
             $user = User::getAuthenticatedUser();
-
             // Auto-generate title from prompt
             $title = $this->generateTitleFromPrompt($request->prompt);
-
             $validated = $this->validated([
+                'prompt' => $request->prompt,
                 'conversation_id' => $request->conversation_id ?? 0,
                 'ai_type' => $request->ai_type,
                 'title' => $title,
             ]);
 
+            if (!empty($validated['conversation_id']) && $validated['conversation_id'] > 0) {
+                $conversation = ModelsConversation::where('id', $validated['conversation_id'])
+                    ->where('user_id', $user->id)
+                    ->first();
+
+                // if (!$conversation) {
+                //     throw new \Exception('Conversation not found.');
+                // }
+            } else {
+                $conversation = ModelsConversation::create([
+                    'user_id' => $user->id,
+                    'ai_type' => $validated['ai_type'] ?? '',
+                    'title' => $validated['title'],
+                ]);
+            }
+
+
             $conversation = ModelsConversation::firstOrCreate([
                 'user_id' => $user->id,
-                'ai_type' => $validated['ai_type'],
+                'ai_type' => $validated['ai_type'] ?? '',
                 'title' => $validated['title'],
             ]);
 
@@ -93,7 +111,7 @@ class Conversation
         return ucfirst(implode(' ', array_slice($words, 0, 6))) . (count($words) > 6 ? '...' : '');
     }
 
-    public function clearConversation(Request $request)
+    public function clearConversation()
     {
         $user = User::getAuthenticatedUser();
         $conversations = ModelsConversation::where('user_id', $user->id)
@@ -111,5 +129,43 @@ class Conversation
         return [
             'message' => 'Conversation cleared successfully',
         ];
+    }
+
+    public function generateResume(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'phone' => 'nullable|string',
+            'summary' => 'nullable|string',
+            'education' => 'array',
+            'degree' => 'array',
+            'years' => 'array',
+            'company' => 'array',
+            'position' => 'array',
+            'job_description' => 'array',
+            'skills' => 'nullable|string',
+        ]);
+
+        $prompt = $this->buildPrompt($data);
+        $responseText = $this->gemini_service->sendPrompt($prompt);
+
+        return array_merge($data, ['response' => $responseText]);
+    }
+
+    private function buildPrompt(array $data): string
+    {
+        return "You are an assistant for the resume generator. Generate resume for this:\n\n" .
+            "Name: {$data['name']}\n" .
+            "Email: {$data['email']}\n" .
+            "Phone: {$data['phone']}\n" .
+            "Summary: {$data['summary']}\n" .
+            "Education: " . json_encode($data['education']) . "\n" .
+            "Degree: " . json_encode($data['degree']) . "\n" .
+            "Years: " . json_encode($data['years']) . "\n" .
+            "Company: " . json_encode($data['company']) . "\n" .
+            "Position: " . json_encode($data['position']) . "\n" .
+            "Job Description: " . json_encode($data['job_description']) . "\n" .
+            "Skills: {$data['skills']}";
     }
 }

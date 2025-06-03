@@ -66,6 +66,11 @@ Route::middleware('auth', 'verified')->group(function () {
         Route::post('ask-gemini', [GeminiController::class, 'ask'])->name('ask-gemini');
         Route::delete('clear-conversation', [GeminiController::class, 'clear'])->name('clear-conversation');
 
+         Route::get('generate/resume/create', [GeminiController::class, 'generateResumeForm'])->name('generate.resume.create');
+        Route::post('generate/resume/store', [GeminiController::class, 'askForResume'])->name('generate.resume.store');
+
+
+
         Route::prefix('hotel-users')->as('hotel-users.')->group(function () {
             Route::get('overview', [UsersController::class, 'overview'])->name('overview');
             Route::get('create', [UsersController::class, 'create'])->name('create');

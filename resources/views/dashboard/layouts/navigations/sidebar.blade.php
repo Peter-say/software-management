@@ -29,7 +29,7 @@
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="{{ route('dashboard.chat-gemini') }}">Gemini</a></li>
-                    <li><a href="#">ChatGPT</a></li>
+                    <li><a href="{{route('dashboard.generate.resume.create')}}">Resume Generator</a></li>
                 </ul>
             </li>
             @if (Gate::allows('developer'))

@@ -111,7 +111,23 @@ class Conversation
         return ucfirst(implode(' ', array_slice($words, 0, 6))) . (count($words) > 6 ? '...' : '');
     }
 
-    public function clearConversation()
+    public function clearConversation($uuid)
+    {
+        $user = User::getAuthenticatedUser();
+        $conversation = ModelsConversation::where('user_id', $user->id)
+            ->where('uuid', $uuid)
+            ->first();
+
+        if (!$conversation) {
+            return response()->json(['message' => 'Conversation not found'], 404);
+        }
+
+        $conversation->chats()->delete();
+        $conversation->delete();
+    }
+
+
+    public function clearConversations()
     {
         $user = User::getAuthenticatedUser();
         $conversations = ModelsConversation::where('user_id', $user->id)

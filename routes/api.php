@@ -21,7 +21,8 @@ Route::prefix('v1')->group(function () {
             Route::get('get-conversations', [ChatController::class, 'getUserConversation'])->name('get-conversations');
             Route::get('conversations/{uuid}', [ChatController::class, 'getConversationMessages'])->name('conversations');
             Route::post('chat-ai', [ChatController::class, 'ask'])->name('chat-ai');
-            Route::delete('clear-conversation', [ChatController::class, 'clearConversations'])->name('clear-conversation');
+            Route::delete('clear-conversation/{uuid}', [ChatController::class, 'clearConversation'])->name('clear-conversation');
+            Route::delete('clear-conversations', [ChatController::class, 'clearConversations'])->name('clear-conversations');
         });
         Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
             return $request->user();

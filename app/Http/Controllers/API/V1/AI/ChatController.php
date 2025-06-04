@@ -26,13 +26,13 @@ class ChatController extends Controller
         try {
             $user = User::getAuthenticatedUser();
             $conversations = ModelsConversation::with('chats')
-                ->where('user_id', $user->id)
+                ->where('user_id', $user->id)->latest()
                 ->get();
 
             if ($conversations->isEmpty()) {
                 return [];
             }
-           
+
             return ApiHelper::successResponse('User conversations fetched successfully', [
                 'conversations' => $conversations,
             ]);
@@ -53,7 +53,7 @@ class ChatController extends Controller
             if (!$conversation) {
                 return ApiHelper::errorResponse('Conversation not found', 404);
             }
-           
+
             return ApiHelper::successResponse('Conversation messages fetched successfully', [
                 'conversation' => $conversation,
             ]);
@@ -84,12 +84,22 @@ class ChatController extends Controller
         }
     }
 
-     public function clearConversations()
+    public function clearConversation($uuid)
+    {
+        try {
+            $this->conversation_service->clearConversation($uuid);
+            return ApiHelper::successResponse('Conversation cleared successfully');
+        } catch (Exception $e) {
+            return ApiHelper::errorResponse('Something went wrong: ' . $e->getMessage(), 500);
+        }
+    }
+
+    public function clearConversations()
     {
         try {
             $user = User::getAuthenticatedUser();
-            $conversations =  $this->conversation_service->clearConversation();
-            return ApiHelper::successResponse('Conversation cleared successfully', [
+            $conversations =  $this->conversation_service->clearConversations();
+            return ApiHelper::successResponse('Conversations cleared successfully', [
                 'conversation' => $conversations,
             ]);
         } catch (Exception $e) {

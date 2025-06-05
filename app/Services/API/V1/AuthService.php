@@ -8,6 +8,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,9 +33,15 @@ class AuthService
             'password' => bcrypt($validatedData['password']),
         ]);
 
-        $accessToken = $user->createToken('authToken');
-
-        return response()->json(['user' => $user, 'access_token' => $accessToken->plainTextToken], 201);
+        $accessToken = $user->createToken('authToken')->plainTextToken;
+        event(new Registered($user));
+        return response()->json([
+            'user' => $user,
+            'data' => [
+                'access_token' => $accessToken,
+                'token_type' => 'Bearer',
+            ],
+        ], 201);
     }
 
     public static function login(Request $request)

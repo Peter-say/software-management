@@ -55,9 +55,9 @@ class Conversation
                     ->where('user_id', $user->id)
                     ->first();
 
-                // if (!$conversation) {
-                //     throw new \Exception('Conversation not found.');
-                // }
+                if (!$conversation) {
+                    throw new \Exception('Conversation not found.');
+                }
             } else {
                 $conversation = ModelsConversation::create([
                     'user_id' => $user->id,
@@ -66,12 +66,6 @@ class Conversation
                 ]);
             }
 
-
-            $conversation = ModelsConversation::firstOrCreate([
-                'user_id' => $user->id,
-                'ai_type' => $validated['ai_type'] ?? '',
-                'title' => $validated['title'],
-            ]);
 
             // Save user prompt
             $prompt = new Chat([
@@ -142,9 +136,6 @@ class Conversation
             $conversation->chats()->delete();
             $conversation->delete();
         }
-        return [
-            'message' => 'Conversation cleared successfully',
-        ];
     }
 
     public function generateResume(Request $request)

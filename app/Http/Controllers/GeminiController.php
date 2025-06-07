@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Conversation as ModelsConversation;
 use App\Models\User;
-use App\Services\AI\Gemini\GeminiService;
 use App\Services\Chat\Conversation;
 use Exception;
 use Illuminate\Http\Request;
@@ -53,18 +52,6 @@ class GeminiController extends Controller
             return response()->json([
                 'message' => 'Something went wrong. <a href="javascript:location.reload()">Click here to refresh the page</a>. If the error persists, please contact the developers.'
             ], 500);
-        }
-    }
-
-    public function clear()
-    {
-        try {
-            $message = $this->conversation_service->clearConversation();
-            return response()->json([
-                'message' => $message,
-            ]);
-        } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 

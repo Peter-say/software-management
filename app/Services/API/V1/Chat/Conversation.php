@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Chat;
+namespace App\Services\API\V1\Chat;
 
 use App\Models\Chat;
 use App\Models\Conversation as ModelsConversation;
@@ -105,6 +105,38 @@ class Conversation
         return ucfirst(implode(' ', array_slice($words, 0, 6))) . (count($words) > 6 ? '...' : '');
     }
 
+    public function clearConversation($uuid)
+    {
+        $user = User::getAuthenticatedUser();
+        $conversation = ModelsConversation::where('user_id', $user->id)
+            ->where('uuid', $uuid)
+            ->first();
+
+        if (!$conversation) {
+            return response()->json(['message' => 'Conversation not found'], 404);
+        }
+
+        $conversation->chats()->delete();
+        $conversation->delete();
+    }
+
+
+    public function clearConversations()
+    {
+        $user = User::getAuthenticatedUser();
+        $conversations = ModelsConversation::where('user_id', $user->id)
+            ->where('ai_type', 'gemini')
+            ->get();
+        if (empty($conversations)) {
+            return [
+                'message' => 'No conversations found to clear',
+            ];
+        }
+        foreach ($conversations as $conversation) {
+            $conversation->chats()->delete();
+            $conversation->delete();
+        }
+    }
 
     public function generateResume(Request $request)
     {

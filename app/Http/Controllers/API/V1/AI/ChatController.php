@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\AI\V1\ChatResource;
 use App\Models\Conversation as ModelsConversation;
 use App\Models\User;
-use App\Services\Chat\Conversation;
+use App\Services\API\V1\Chat\Conversation;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;

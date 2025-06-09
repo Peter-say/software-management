@@ -4,6 +4,14 @@ namespace App\Services\SiteInspector;
 
 class SiteInspectorService
 {
+     protected function normalizeUrl(string $url): string
+    {
+        if (!preg_match('#^https?://#i', $url)) {
+            $url = 'https://' . $url;
+        }
+        return rtrim($url, '/');
+    }
+
     public function checkSiteAccessibility(string $url): array
     {
         $headers = @get_headers($url, 1);
@@ -58,6 +66,8 @@ class SiteInspectorService
 
     public function inspect(string $url): array
     {
+        $url = $this->normalizeUrl($url);
+
         $check = $this->checkSiteAccessibility($url);
         if (!$check['status']) {
             return [

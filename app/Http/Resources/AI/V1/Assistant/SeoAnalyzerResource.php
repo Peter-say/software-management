@@ -26,6 +26,7 @@ class SeoAnalyzerResource extends JsonResource
             'title' => $this->resource['title'] ?? null,
             'prompt' => $this->resource['prompt'] ?? null,
             'response' => $this->resource['response'] ?? null,
+            'raw_response' => $this->resource['raw_response'] ?? null,
         ];
     }
 }

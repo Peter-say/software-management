@@ -24,8 +24,9 @@ class SeoAnalyzerController extends Controller
     public function analyze(Request $request)
     {
         try {
-            $inspection = $this->validateUrl($request->input('url'));
-            if ($inspection !== true) return $inspection;
+             set_time_limit(360);
+            // $inspection = $this->validateUrl($request->input('url'));
+            // if ($inspection !== true) return $inspection;
 
             $result = $this->seoAnalyzerService->analyzer($request);
 

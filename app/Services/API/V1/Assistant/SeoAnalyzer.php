@@ -78,11 +78,10 @@ class SeoAnalyzer
             // Collect metrics if URL is provided
             $pageSpeedMetrics = $indexability = $brokenLinks = [];
 
-
             if ($url) {
                 $pageSpeedMetrics = $this->page_speed_insight->fetchPageSpeedMetrics($url);
                 $indexability = $this->page_speed_insight->checkHttpsAndCanonical($url, $htmlContent ?? '');
-                $brokenLinks = $this->page_speed_insight->findBrokenLinks($htmlContent ?? '');
+                $brokenLinks = $this->page_speed_insight->findBrokenLinks($htmlContent ?? '', $url);
             }
 
             // Build the merged prompt
@@ -124,34 +123,51 @@ class SeoAnalyzer
             ->map(fn($i) => "- **{$i['task']}**: {$i['description']}")
             ->implode("\n");
     }
-    protected function buildPrompt(
-        $instructions,
-        $userPrompt,
-        $pageSpeedMetrics,
-        $indexability,
-        $brokenLinks
-    ): string {
-        $brokenLinksCount = count($brokenLinks);
-        $brokenLinksSample = implode(', ', array_slice($brokenLinks, 0, 5));
-        if ($brokenLinksCount > 5) {
-            $brokenLinksSample .= '...';
-        }
+   protected function buildPrompt(
+    $instructions,
+    $userPrompt,
+    $pageSpeedMetrics,
+    $indexability,
+    $brokenLinks
+): string {
+    $brokenLinksCount = count($brokenLinks);
+    $brokenLinksSample = implode(', ', array_slice($brokenLinks, 0, 5));
+    if ($brokenLinksCount > 5) {
+        $brokenLinksSample .= '...';
+    }
 
-        $lcp = $pageSpeedMetrics['LCP'] ?? 'N/A';
-        $cls = $pageSpeedMetrics['CLS'] ?? 'N/A';
-        $inp = $pageSpeedMetrics['INP'] ?? 'N/A';
-        $recommendations = $pageSpeedMetrics['recommendations'] ?? 'N/A';
+    // Core Web Vitals
+    $lcp = $pageSpeedMetrics['LCP'] ?? 'N/A';
+    $cls = $pageSpeedMetrics['CLS'] ?? 'N/A';
+    $inp = $pageSpeedMetrics['INP'] ?? 'N/A';
 
-        $https = isset($indexability['https']) && $indexability['https'] ? 'Yes' : 'No';
-        $canonical = $indexability['canonical']['url'] ?? 'None';
-        $indexable = isset($indexability['indexable']) && $indexability['indexable'] ? 'Yes' : 'No';
-        $notes = $indexability['notes'] ?? '';
-        $extraMetrics = <<<EXTRA
+    // Additional PageSpeed Metrics
+    $fcp = $pageSpeedMetrics['FCP'] ?? 'N/A';
+    $ttfb = $pageSpeedMetrics['TTFB'] ?? 'N/A';
+    $tti = $pageSpeedMetrics['TTI'] ?? 'N/A';
+    $tbt = $pageSpeedMetrics['TBT'] ?? 'N/A';
+    $speedIndex = $pageSpeedMetrics['speed_index'] ?? 'N/A';
+
+    $recommendations = $pageSpeedMetrics['recommendations'] ?? 'N/A';
+
+    // Indexability Info
+    $https = isset($indexability['https']) && $indexability['https'] ? 'Yes' : 'No';
+    $canonical = $indexability['canonical']['url'] ?? 'None';
+    $indexable = isset($indexability['indexable']) && $indexability['indexable'] ? 'Yes' : 'No';
+    $notes = $indexability['notes'] ?? '';
+
+    // Section: Metrics
+    $extraMetrics = <<<EXTRA
 
 ## PageSpeed Metrics
-- LCP: {$lcp}
-- CLS: {$cls}
-- INP: {$inp}
+- LCP (Largest Contentful Paint): {$lcp}
+- INP (Interaction to Next Paint): {$inp}
+- CLS (Cumulative Layout Shift): {$cls}
+- FCP (First Contentful Paint): {$fcp}
+- TTFB (Time to First Byte): {$ttfb}
+- TTI (Time to Interactive): {$tti}
+- TBT (Total Blocking Time): {$tbt}
+- Speed Index: {$speedIndex}
 - Recommendations: {$recommendations}
 
 ## HTTPS & Canonical Info
@@ -166,11 +182,11 @@ class SeoAnalyzer
 
 EXTRA;
 
-        $instructionsFormatted = $this->formatInstructions($instructions);
+    $instructionsFormatted = $this->formatInstructions($instructions);
 
-        return <<<EOT
+    return <<<EOT
 You are an SEO assistant. Analyze the provided HTML or webpage content and return the response in the following JSON format. Provide definitive results. If certain data is
- missing or cannot be determined, state that explicitly. Avoid vague terms like "might" or "possibly." 
+missing or cannot be determined, state that explicitly. Avoid vague terms like "might" or "possibly." 
 Also include a suggested_questions array with 4 to 8 diverse and insightful follow-up questions tailored to the webpage or HTML provided. 
 Avoid generic or repeated suggestions. 
 Base your questions on actual SEO findings from the analysis.
@@ -199,7 +215,6 @@ Format:
   ]
 }
 
-
 ## Instructions
 {$instructionsFormatted}
 
@@ -208,5 +223,6 @@ Format:
 
 {$extraMetrics}
 EOT;
-    }
+}
+
 }

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Spatie\Browsershot\Browsershot;
 
 class SeoAnalyzer
 {
@@ -29,15 +30,22 @@ class SeoAnalyzer
         $validator = Validator::make($data, [
             'html_input' => 'nullable|string',
             'url' => 'nullable|url',
+            'question_context' => 'nullable|string',
             'conversation_id' => 'nullable|integer|min:0',
             'ai_type' => 'nullable|string',
             'title' => 'nullable|string|max:255',
+            'response' => 'nullable|string', // Optional, for question_context handling
         ]);
 
         $validator->after(function ($validator) use ($data) {
-            if (empty($data['html_input']) && empty($data['url'])) {
-                $validator->errors()->add('html_input', 'Either html_input or url must be provided.');
-                $validator->errors()->add('url', 'Either html_input or url must be provided.');
+            if (
+                empty($data['html_input']) &&
+                empty($data['url']) &&
+                empty($data['question_context'])
+            ) {
+                $validator->errors()->add('html_input', 'Either html_input, url, or question_context must be provided.');
+                $validator->errors()->add('url', 'Either html_input, url, or question_context must be provided.');
+                $validator->errors()->add('question_context', 'Either html_input, url, or question_context must be provided.');
             }
         });
 
@@ -48,6 +56,7 @@ class SeoAnalyzer
         return $validator->validated();
     }
 
+
     public function analyzer(Request $request): array
     {
         return DB::transaction(function () use ($request) {
@@ -55,9 +64,11 @@ class SeoAnalyzer
             $data = $this->validated($request->only([
                 'html_input',
                 'url',
+                'question_context',
                 'conversation_id',
                 'ai_type',
                 'title',
+                'response', // Optional, for question_context handling
             ]));
 
             $htmlContent = $data['html_input'] ?? null;
@@ -66,29 +77,38 @@ class SeoAnalyzer
             if ($url && !$htmlContent) {
                 $htmlContent = @file_get_contents($url);
             }
-
-            // Default prompt if HTML is not given directly
-            $userPrompt = $htmlContent ?? "Please analyze the page at this URL: {$url}";
-            $title = $data['title'] ?? $this->generateTitleFromPrompt($userPrompt);
-
+            $title = $data['title'] ?? $this->generateTitleFromPrompt($htmlContent ?? $url ?? '');
             // Load instructions
             $instructionsJson = Storage::get('ai_contexts/seoanalyzer_instructions.json');
             $instructions = json_decode($instructionsJson, true);
 
-            // Collect metrics if URL is provided
-            $pageSpeedMetrics = $indexability = $brokenLinks = [];
+            // If question_context is present, handle only that
+            if (!empty($data['question_context'])) {
+                $response = $data['response'] ?? '';
+                $systemPrompt = "Please, give a clear recommended approach to fix the issues in: {$response}" .
+                    " with the question: {$data['question_context']}";
+                $response = $this->gemini_service->sendPrompt($systemPrompt);
+                // $parsedResponse = json_decode($this->stripCodeBlock($rawResponse), true) ?? [];
+                return [
+                    'response' => $response,
+                ];
+            }
 
+            // Otherwise, do the full analysis
+            $userPrompt = $htmlContent ?? "Please analyze the page at this URL: {$url}";
+            $screenshotUrl = null;
+            $pageSpeedMetrics = $indexability = $brokenLinks = [];
             if ($url) {
+                $screenshotUrl = $this->getScreenshot($url);
                 $pageSpeedMetrics = $this->page_speed_insight->fetchPageSpeedMetrics($url);
                 $indexability = $this->page_speed_insight->checkHttpsAndCanonical($url, $htmlContent ?? '');
                 $brokenLinks = $this->page_speed_insight->findBrokenLinks($htmlContent ?? '', $url);
             }
 
-            // Build the merged prompt
             $systemPrompt = $this->buildPrompt($instructions, $userPrompt, $pageSpeedMetrics, $indexability, $brokenLinks);
-
             $rawResponse = $this->gemini_service->sendPrompt($systemPrompt);
             $parsedResponse = json_decode($this->stripCodeBlock($rawResponse), true) ?? [];
+
             return [
                 'prompt' => $systemPrompt,
                 'title' => $title,
@@ -97,9 +117,27 @@ class SeoAnalyzer
                     'pagespeed_metrics' => $pageSpeedMetrics,
                     'indexability_https' => $indexability,
                     'broken_links' => $brokenLinks,
+                    'screenshot_url' => $screenshotUrl,
                 ]),
             ];
         });
+    }
+
+    public function getScreenshot(string $url): string
+    {
+        $fileName = md5($url . microtime()) . '.png';
+        $savePath = storage_path('app/public/screenshots/' . $fileName); // <-- use 'public/screenshots'
+
+        if (!file_exists(storage_path('app/public/screenshots'))) {
+            mkdir(storage_path('app/public/screenshots'), 0777, true);
+        }
+
+        Browsershot::url($url)
+            ->windowSize(1280, 800)
+            ->waitUntilNetworkIdle()
+            ->save($savePath);
+
+        return asset('storage/screenshots/' . $fileName);
     }
 
     protected function stripCodeBlock(string $text): string
@@ -123,41 +161,41 @@ class SeoAnalyzer
             ->map(fn($i) => "- **{$i['task']}**: {$i['description']}")
             ->implode("\n");
     }
-   protected function buildPrompt(
-    $instructions,
-    $userPrompt,
-    $pageSpeedMetrics,
-    $indexability,
-    $brokenLinks
-): string {
-    $brokenLinksCount = count($brokenLinks);
-    $brokenLinksSample = implode(', ', array_slice($brokenLinks, 0, 5));
-    if ($brokenLinksCount > 5) {
-        $brokenLinksSample .= '...';
-    }
+    protected function buildPrompt(
+        $instructions,
+        $userPrompt,
+        $pageSpeedMetrics,
+        $indexability,
+        $brokenLinks
+    ): string {
+        $brokenLinksCount = count($brokenLinks);
+        $brokenLinksSample = implode(', ', array_slice($brokenLinks, 0, 5));
+        if ($brokenLinksCount > 5) {
+            $brokenLinksSample .= '...';
+        }
 
-    // Core Web Vitals
-    $lcp = $pageSpeedMetrics['LCP'] ?? 'N/A';
-    $cls = $pageSpeedMetrics['CLS'] ?? 'N/A';
-    $inp = $pageSpeedMetrics['INP'] ?? 'N/A';
+        // Core Web Vitals
+        $lcp = $pageSpeedMetrics['LCP'] ?? 'N/A';
+        $cls = $pageSpeedMetrics['CLS'] ?? 'N/A';
+        $inp = $pageSpeedMetrics['INP'] ?? 'N/A';
 
-    // Additional PageSpeed Metrics
-    $fcp = $pageSpeedMetrics['FCP'] ?? 'N/A';
-    $ttfb = $pageSpeedMetrics['TTFB'] ?? 'N/A';
-    $tti = $pageSpeedMetrics['TTI'] ?? 'N/A';
-    $tbt = $pageSpeedMetrics['TBT'] ?? 'N/A';
-    $speedIndex = $pageSpeedMetrics['speed_index'] ?? 'N/A';
+        // Additional PageSpeed Metrics
+        $fcp = $pageSpeedMetrics['FCP'] ?? 'N/A';
+        $ttfb = $pageSpeedMetrics['TTFB'] ?? 'N/A';
+        $tti = $pageSpeedMetrics['TTI'] ?? 'N/A';
+        $tbt = $pageSpeedMetrics['TBT'] ?? 'N/A';
+        $speedIndex = $pageSpeedMetrics['speed_index'] ?? 'N/A';
 
-    $recommendations = $pageSpeedMetrics['recommendations'] ?? 'N/A';
+        $recommendations = $pageSpeedMetrics['recommendations'] ?? 'N/A';
 
-    // Indexability Info
-    $https = isset($indexability['https']) && $indexability['https'] ? 'Yes' : 'No';
-    $canonical = $indexability['canonical']['url'] ?? 'None';
-    $indexable = isset($indexability['indexable']) && $indexability['indexable'] ? 'Yes' : 'No';
-    $notes = $indexability['notes'] ?? '';
+        // Indexability Info
+        $https = isset($indexability['https']) && $indexability['https'] ? 'Yes' : 'No';
+        $canonical = $indexability['canonical']['url'] ?? 'None';
+        $indexable = isset($indexability['indexable']) && $indexability['indexable'] ? 'Yes' : 'No';
+        $notes = $indexability['notes'] ?? '';
 
-    // Section: Metrics
-    $extraMetrics = <<<EXTRA
+        // Section: Metrics
+        $extraMetrics = <<<EXTRA
 
 ## PageSpeed Metrics
 - LCP (Largest Contentful Paint): {$lcp}
@@ -182,9 +220,9 @@ class SeoAnalyzer
 
 EXTRA;
 
-    $instructionsFormatted = $this->formatInstructions($instructions);
+        $instructionsFormatted = $this->formatInstructions($instructions);
 
-    return <<<EOT
+        return <<<EOT
 You are an SEO assistant. Analyze the provided HTML or webpage content and return the response in the following JSON format. Provide definitive results. If certain data is
 missing or cannot be determined, state that explicitly. Avoid vague terms like "might" or "possibly." 
 Also include a suggested_questions array with 4 to 8 diverse and insightful follow-up questions tailored to the webpage or HTML provided. 
@@ -196,6 +234,7 @@ Format:
   "meta_suggestions": {
     "title": "string",
     "description": "string"
+    "recommendations": "string"
   },
   "headings": {
     "current": ["H1", "H2", "H3", "..."],
@@ -223,6 +262,5 @@ Format:
 
 {$extraMetrics}
 EOT;
-}
-
+    }
 }

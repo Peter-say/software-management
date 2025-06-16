@@ -55,6 +55,16 @@ class GeminiController extends Controller
         }
     }
 
+    public function clear()
+    {
+        try {
+            $this->conversation_service->clearConversation();
+            return response()->json(['message' => 'Conversation cleared successfully'], 200);
+        } catch (Exception $e) {
+            return response()->json('Something went wrong: ' . $e->getMessage(), 500);
+        }
+    }
+
     public function generateResumeForm()
     {
         return view('dashboard.chat.resume.create');

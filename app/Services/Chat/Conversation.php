@@ -99,6 +99,19 @@ class Conversation
         });
     }
 
+    public function clearConversation()
+    {
+        $user = User::getAuthenticatedUser();
+        $conversation = ModelsConversation::where('user_id', $user->id)
+            ->get();
+
+        if (!$conversation) {
+            return response()->json(['message' => 'Conversation not found'], 404);
+        }
+        $conversation->chats()->delete();
+        $conversation->delete();
+    }
+
     protected function generateTitleFromPrompt(string $prompt): string
     {
         $words = explode(' ', strip_tags($prompt));

@@ -4,7 +4,7 @@ namespace App\Services\SiteInspector;
 
 class SiteInspectorService
 {
-     protected function normalizeUrl(string $url): string
+    protected function normalizeUrl(string $url): string
     {
         if (!preg_match('#^https?://#i', $url)) {
             $url = 'https://' . $url;
@@ -15,16 +15,16 @@ class SiteInspectorService
     public function checkSiteAccessibility(string $url): array
     {
         $headers = @get_headers($url, 1);
-
+        // dd($headers);
         if ($headers === false) {
             return ['status' => false, 'message' => 'Site is unreachable or does not exist.'];
         }
 
         $statusLine = $headers[0] ?? '';
 
-        if (str_contains($statusLine, '403') || str_contains($statusLine, '401')) {
-            return ['status' => false, 'message' => 'Site is blocking access (403/401 Forbidden).'];
-        }
+        // if (str_contains($statusLine, '403') || str_contains($statusLine, '401')) {
+        //     return ['status' => false, 'message' => 'Site is blocking access (403/401 Forbidden).'];
+        // }
 
         if (str_contains($statusLine, '404')) {
             return ['status' => false, 'message' => 'Site not found (404).'];
@@ -87,12 +87,12 @@ To proceed with SEO analysis, please ensure the robots.txt file permits user-age
         }
 
         $html = $this->fetchWithTimeout($url);
-        if (!$html) {
-            return [
-                'error' => true,
-                'message' => 'Failed to fetch content within timeout. The site may be slow or blocking bots.',
-            ];
-        }
+        // if (!$html) {
+        //     return [
+        //         'error' => true,
+        //         'message' => 'Failed to fetch content within timeout. The site may be slow or blocking bots.',
+        //     ];
+        // }
 
         return [
             'error' => false,

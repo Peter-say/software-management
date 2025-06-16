@@ -24,18 +24,27 @@ class SeoAnalyzerController extends Controller
     public function analyze(Request $request)
     {
         try {
-             set_time_limit(360);
-            // $inspection = $this->validateUrl($request->input('url'));
-            // if ($inspection !== true) return $inspection;
-
+            set_time_limit(360);
+            if ($request->has('html_input') && $request->has('url')) {
+                $inspection = $this->validateUrl($request->input('url'));
+                if ($inspection !== true) return $inspection;
+            }
             $result = $this->seoAnalyzerService->analyzer($request);
-
-            return ApiHelper::successResponse('SEO analysis completed successfully', new SeoAnalyzerResource([
-                'title' => $result['title'],
-                'prompt' => $result['prompt'],
-                'response' => $result['response'],
-                'raw_response' => $result['raw_response'] ?? null,
-            ]));
+            $responseData = [];
+            if (isset($result['response'])) {
+                $responseData['response'] = $result['response'];
+            }
+            if (isset($result['title'])) {
+                $responseData['title'] = $result['title'];
+            }
+            if (isset($result['prompt'])) {
+                $responseData['prompt'] = $result['prompt'];
+            }
+            if (isset($result['raw_response'])) {
+                $responseData['raw_response'] = $result['raw_response'];
+            }
+           
+            return ApiHelper::successResponse('SEO analysis completed successfully', new SeoAnalyzerResource($responseData));
         } catch (ValidationException $e) {
             return ApiHelper::validationErrorResponse($e->errors());
         } catch (\Exception $e) {

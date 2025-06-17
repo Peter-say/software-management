@@ -2,16 +2,20 @@
 
 namespace App\Services\API\V1\Assistant;
 
+use App\Models\SeoAnalysis;
 use App\Models\User;
 use App\Services\AI\Gemini\GeminiService;
 use App\Services\PageSpeedInsight\PageSpeedInsight;
 use App\Services\SiteInspectorService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use RuntimeException;
 use Spatie\Browsershot\Browsershot;
+use Illuminate\Support\Str;
 
 class SeoAnalyzer
 {
@@ -31,10 +35,12 @@ class SeoAnalyzer
             'html_input' => 'nullable|string',
             'url' => 'nullable|url',
             'question_context' => 'nullable|string',
-            'conversation_id' => 'nullable|integer|min:0',
             'ai_type' => 'nullable|string',
             'title' => 'nullable|string|max:255',
+            'prompt' => 'nullable|string', // Optional, for question_context handling
             'response' => 'nullable|string', // Optional, for question_context handling
+            'screenshot_url' => 'nullable|url',
+            'uuid' => 'nullable|uuid',
         ]);
 
         $validator->after(function ($validator) use ($data) {
@@ -65,7 +71,6 @@ class SeoAnalyzer
                 'html_input',
                 'url',
                 'question_context',
-                'conversation_id',
                 'ai_type',
                 'title',
                 'response', // Optional, for question_context handling
@@ -108,8 +113,9 @@ class SeoAnalyzer
             $systemPrompt = $this->buildPrompt($instructions, $userPrompt, $pageSpeedMetrics, $indexability, $brokenLinks);
             $rawResponse = $this->gemini_service->sendPrompt($systemPrompt);
             $parsedResponse = json_decode($this->stripCodeBlock($rawResponse), true) ?? [];
-
+            $uuid = $data['uuid'] ?? (string) Str::uuid();
             return [
+                'uuid' => $uuid,
                 'prompt' => $systemPrompt,
                 'title' => $title,
                 'raw_response' => $rawResponse,
@@ -123,21 +129,68 @@ class SeoAnalyzer
         });
     }
 
+    public function saveAnalysis(array $data): array
+{
+    $user = User::getAuthenticatedUser();
+
+    $query = SeoAnalysis::where('user_id', $user->id)->where('uuid', $data['uuid'] ?? null);
+
+    if (!empty($data['html_input'])) {
+        $query->where('html_input', $data['html_input']);
+    } elseif (!empty($data['url'])) {
+        $query->where('url', $data['url']);
+    }
+
+    $analysis = $query->first();
+
+    $payload = [
+        'title' => $data['title'] ?? null,
+        'input_type' => !empty($data['html_input']) ? 'html' : 'url',
+        'html_input' => $data['html_input'] ?? null,
+        'url' => $data['url'] ?? null,
+        'prompt' => $data['prompt'] ?? null,
+        'response' => $data['response'] ?? [],
+    ];
+
+    if ($analysis) {
+        $analysis->update($payload);
+        $status = 'updated';
+    } else {
+        $payload['uuid'] = $data['uuid'];
+        $payload['user_id'] = $user->id;
+        $analysis = SeoAnalysis::create($payload);
+        $status = 'created';
+    }
+
+    return [
+        'analysis' => SeoAnalysis::with('user')->find($analysis->id),
+        'status' => $status,
+    ];
+}
+
+
     public function getScreenshot(string $url): string
     {
-        $fileName = md5($url . microtime()) . '.png';
-        $savePath = storage_path('app/public/screenshots/' . $fileName); // <-- use 'public/screenshots'
+        try {
+            $fileName = md5($url . microtime()) . '.png';
+            $savePath = storage_path('app/public/screenshots/' . $fileName); // <-- use 'public/screenshots'
 
-        if (!file_exists(storage_path('app/public/screenshots'))) {
-            mkdir(storage_path('app/public/screenshots'), 0777, true);
+            if (!file_exists(storage_path('app/public/screenshots'))) {
+                mkdir(storage_path('app/public/screenshots'), 0777, true);
+            }
+
+            Browsershot::url($url)
+                ->windowSize(1280, 800)
+                ->waitUntilNetworkIdle()
+                ->save($savePath);
+
+            return asset('storage/screenshots/' . $fileName);
+        } catch (Exception $e) {
+            if (str_contains($e->getMessage(), 'net::ERR_INTERNET_DISCONNECTED')) {
+                throw new RuntimeException('Internet connection appears to be offline. Please check your connection and try again.');
+            }
+            throw new RuntimeException('Internet connection appears to be offline. Please check your connection and try again.');
         }
-
-        Browsershot::url($url)
-            ->windowSize(1280, 800)
-            ->waitUntilNetworkIdle()
-            ->save($savePath);
-
-        return asset('storage/screenshots/' . $fileName);
     }
 
     protected function stripCodeBlock(string $text): string

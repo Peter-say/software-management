@@ -4,11 +4,14 @@ namespace App\Http\Controllers\API\V1\Assistant;
 
 use App\Helpers\ApiHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AI\V1\Assistant\SeoAnalysesResource;
 use App\Http\Resources\AI\V1\Assistant\SeoAnalyzerResource;
 use App\Services\API\V1\Assistant\SeoAnalyzer;
 use App\Services\SiteInspector\SiteInspectorService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use RuntimeException;
 
 class SeoAnalyzerController extends Controller
 {
@@ -31,6 +34,9 @@ class SeoAnalyzerController extends Controller
             }
             $result = $this->seoAnalyzerService->analyzer($request);
             $responseData = [];
+            if (isset($result['uuid'])) {
+                $responseData['uuid'] = $result['uuid'];
+            }
             if (isset($result['response'])) {
                 $responseData['response'] = $result['response'];
             }
@@ -43,14 +49,44 @@ class SeoAnalyzerController extends Controller
             if (isset($result['raw_response'])) {
                 $responseData['raw_response'] = $result['raw_response'];
             }
-           
+
             return ApiHelper::successResponse('SEO analysis completed successfully', new SeoAnalyzerResource($responseData));
         } catch (ValidationException $e) {
             return ApiHelper::validationErrorResponse($e->errors());
-        } catch (\Exception $e) {
+        } catch (RuntimeException $e) {
+            $message = $e->getMessage();
+            if (str_contains($message, 'net::ERR_INTERNET_DISCONNECTED')) {
+                $message = 'Internet connection appears to be offline. Please check your connection and try again.';
+            }
+            return ApiHelper::validationErrorResponse([$message]);
+        } catch (Exception $e) {
             return ApiHelper::errorResponse('An unexpected error occurred: ' . $e->getMessage(), 500);
         }
     }
+
+    public function save(Request $request)
+    {
+        try {
+            $result = $this->seoAnalyzerService->saveAnalysis($request->all());
+
+            $message = $result['status'] === 'created'
+                ? 'SEO analysis saved successfully.'
+                : 'SEO analysis updated successfully.';
+
+            return ApiHelper::successResponse($message, new SeoAnalysesResource($result['analysis']));
+        } catch (ValidationException $e) {
+            return ApiHelper::validationErrorResponse($e->errors());
+        } catch (RuntimeException $e) {
+            $message = $e->getMessage();
+            if (str_contains($message, 'net::ERR_INTERNET_DISCONNECTED')) {
+                $message = 'Internet connection appears to be offline. Please check your connection and try again.';
+            }
+            return ApiHelper::validationErrorResponse([$message]);
+        } catch (Exception $e) {
+            return ApiHelper::errorResponse('An unexpected error occurred: ' . $e->getMessage(), 500);
+        }
+    }
+
 
     protected function validateUrl(?string $url)
     {

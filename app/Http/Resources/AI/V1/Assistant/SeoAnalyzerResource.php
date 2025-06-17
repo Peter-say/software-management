@@ -17,6 +17,7 @@ class SeoAnalyzerResource extends JsonResource
     {
         $user =  User::getAuthenticatedUser();
         return [
+            'uuid' => $this->resource['uuid'] ?? null,
             'user' => [
                 'user_id' => $user->id,
                 'name' => $user->name,

@@ -35,10 +35,13 @@ class PageSpeedInsight
         $tti = $audits['interactive']['displayValue'] ?? 'N/A';
         $tbt = $audits['total-blocking-time']['displayValue'] ?? 'N/A';
         $speedIndex = $audits['speed-index']['displayValue'] ?? 'N/A';
-
         $recommendations = collect($audits)
             ->filter(fn($audit) => isset($audit['score']) && $audit['score'] !== 1)
-            ->pluck('title')
+            ->map(function ($audit) {
+            $title = $audit['title'] ?? '';
+            $description = $audit['description'] ?? '';
+            return $title . ': ' . $description;
+            })
             ->implode(', ');
 
         return [

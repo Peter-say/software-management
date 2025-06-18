@@ -34,11 +34,12 @@ class SeoAnalyzer
         $validator = Validator::make($data, [
             'html_input' => 'nullable|string',
             'url' => 'nullable|url',
+            'content' => 'nullable|string',
             'question_context' => 'nullable|string',
             'ai_type' => 'nullable|string',
             'title' => 'nullable|string|max:255',
             'prompt' => 'nullable|string', // Optional, for question_context handling
-            'response' => 'nullable|string', // Optional, for question_context handling
+            'response' => 'nullable|array', // Optional, for question_context handling
             'screenshot_url' => 'nullable|url',
             'uuid' => 'nullable|uuid',
         ]);
@@ -47,11 +48,13 @@ class SeoAnalyzer
             if (
                 empty($data['html_input']) &&
                 empty($data['url']) &&
+                empty($data['content']) &&
                 empty($data['question_context'])
             ) {
-                $validator->errors()->add('html_input', 'Either html_input, url, or question_context must be provided.');
-                $validator->errors()->add('url', 'Either html_input, url, or question_context must be provided.');
-                $validator->errors()->add('question_context', 'Either html_input, url, or question_context must be provided.');
+                $validator->errors()->add('html_input', 'Either html_input, url, content, or question_context must be provided.');
+                $validator->errors()->add('url', 'Either html_input, url, content, or question_context must be provided.');
+                $validator->errors()->add('content', 'Either html_input, url, content, or question_context must be provided.');
+                $validator->errors()->add('question_context', 'Either html_input, url, content, or question_context must be provided.');
             }
         });
 
@@ -70,20 +73,23 @@ class SeoAnalyzer
             $data = $this->validated($request->only([
                 'html_input',
                 'url',
+                'content',
                 'question_context',
                 'ai_type',
                 'title',
                 'response', // Optional, for question_context handling
             ]));
 
+
             $htmlContent = $data['html_input'] ?? null;
             $url = $data['url'] ?? null;
+            $content = $data['content'] ?? null;
+
 
             if ($url && !$htmlContent) {
                 $htmlContent = @file_get_contents($url);
             }
-            $title = $data['title'] ?? $this->generateTitleFromPrompt($htmlContent ?? $url ?? '');
-            // Load instructions
+            $title = $data['title'] ?? $this->generateTitleFromPrompt($htmlContent ?? $url ?? $content ?? '', $url);
             $instructionsJson = Storage::get('ai_contexts/seoanalyzer_instructions.json');
             $instructions = json_decode($instructionsJson, true);
 
@@ -93,7 +99,6 @@ class SeoAnalyzer
                 $systemPrompt = "Please, give a clear recommended approach to fix the issues in: {$response}" .
                     " with the question: {$data['question_context']}";
                 $response = $this->gemini_service->sendPrompt($systemPrompt);
-                // $parsedResponse = json_decode($this->stripCodeBlock($rawResponse), true) ?? [];
                 return [
                     'response' => $response,
                 ];
@@ -101,8 +106,20 @@ class SeoAnalyzer
 
             // Otherwise, do the full analysis
             $userPrompt = $htmlContent ?? "Please analyze the page at this URL: {$url}";
+
             $screenshotUrl = null;
             $pageSpeedMetrics = $indexability = $brokenLinks = [];
+            if ($content) {
+                $screenshotUrl = $this->getScreenshot($content);
+                $systemPrompt = "Please analyze this page content: {$content}" . "If there is any issues please, give a clear recommended approach to fix the issues in: {$content}" .
+                    "If not return why the page content is okay";
+                $response = $this->gemini_service->sendPrompt($systemPrompt);
+                return [
+                    'response' => array_merge($response, [
+                        'screenshot_url' => $screenshotUrl,
+                    ]),
+                ];
+            }
             if ($url) {
                 $screenshotUrl = $this->getScreenshot($url);
                 $pageSpeedMetrics = $this->page_speed_insight->fetchPageSpeedMetrics($url);
@@ -113,7 +130,7 @@ class SeoAnalyzer
             $systemPrompt = $this->buildPrompt($instructions, $userPrompt, $pageSpeedMetrics, $indexability, $brokenLinks);
             $rawResponse = $this->gemini_service->sendPrompt($systemPrompt);
             $parsedResponse = json_decode($this->stripCodeBlock($rawResponse), true) ?? [];
-            $uuid = $data['uuid'] ?? (string) Str::uuid();
+            $uuid = $this->resolveAnalysisUuid($data, $user);
             return [
                 'uuid' => $uuid,
                 'prompt' => $systemPrompt,
@@ -129,45 +146,73 @@ class SeoAnalyzer
         });
     }
 
-    public function saveAnalysis(array $data): array
-{
-    $user = User::getAuthenticatedUser();
+    public function saveAnalysis(Request $request): array
+    {
+        return DB::transaction(function () use ($request) {
+            $user = User::getAuthenticatedUser();
+            $data = $this->validated($request->only([
+                'html_input',
+                'url',
+                'title',
+                'prompt',
+                'response',
+                'uuid', // Optional, for updating existing analysis
+            ]));
+            $query = SeoAnalysis::where('user_id', $user->id)->where('uuid', $data['uuid'] ?? null);
 
-    $query = SeoAnalysis::where('user_id', $user->id)->where('uuid', $data['uuid'] ?? null);
+            if (!empty($data['html_input'])) {
+                $query->where('html_input', $data['html_input']);
+            } elseif (!empty($data['url'])) {
+                $query->where('url', $data['url']);
+            }
 
-    if (!empty($data['html_input'])) {
-        $query->where('html_input', $data['html_input']);
-    } elseif (!empty($data['url'])) {
-        $query->where('url', $data['url']);
+            $analysis = $query->first();
+
+            $payload = [
+                'title' => $data['title'] ?? null,
+                'input_type' => !empty($data['html_input']) ? 'html' : 'url',
+                'html_input' => $data['html_input'] ?? null,
+                'url' => $data['url'] ?? null,
+                'prompt' => $data['prompt'] ?? null,
+                'response' => $data['response'] ?? [],
+            ];
+
+            if ($analysis) {
+                $analysis->update($payload);
+                $status = 'updated';
+            } else {
+                $payload['uuid'] = $data['uuid'];
+                $payload['user_id'] = $user->id;
+                $analysis = SeoAnalysis::create($payload);
+                $status = 'created';
+            }
+
+            return [
+                'analysis' => SeoAnalysis::with('user')->find($analysis->id),
+                'status' => $status,
+            ];
+        });
     }
 
-    $analysis = $query->first();
+    protected function resolveAnalysisUuid(array $data, User $user): string
+    {
+        $uuid = $data['uuid'] ?? null;
+        $url = $data['url'] ?? null;
 
-    $payload = [
-        'title' => $data['title'] ?? null,
-        'input_type' => !empty($data['html_input']) ? 'html' : 'url',
-        'html_input' => $data['html_input'] ?? null,
-        'url' => $data['url'] ?? null,
-        'prompt' => $data['prompt'] ?? null,
-        'response' => $data['response'] ?? [],
-    ];
+        if (!$uuid && $url) {
+            $existing = SeoAnalysis::where('user_id', $user->id)
+                ->where('url', $url)->first();
+            if ($existing) {
+                $uuid = $existing->uuid;
+            } else {
+                $uuid = (string) Str::uuid();
+            }
+        } elseif (!$uuid) {
+            $uuid = (string) Str::uuid();
+        }
 
-    if ($analysis) {
-        $analysis->update($payload);
-        $status = 'updated';
-    } else {
-        $payload['uuid'] = $data['uuid'];
-        $payload['user_id'] = $user->id;
-        $analysis = SeoAnalysis::create($payload);
-        $status = 'created';
+        return $uuid;
     }
-
-    return [
-        'analysis' => SeoAnalysis::with('user')->find($analysis->id),
-        'status' => $status,
-    ];
-}
-
 
     public function getScreenshot(string $url): string
     {
@@ -199,12 +244,36 @@ class SeoAnalyzer
     }
 
 
-    protected function generateTitleFromPrompt(string $input): string
+
+    protected function generateTitleFromPrompt(string $input, ?string $url = null): ?string
     {
-        $text = strip_tags($input);
-        $text = preg_replace('/[^a-zA-Z0-9\s]/', '', $text);
-        $words = explode(' ', trim($text));
-        return ucfirst(implode(' ', array_slice($words, 0, 6))) . (count($words) > 6 ? '...' : '');
+        $text = trim(strip_tags($input));
+        $words = preg_split('/\s+/', $text);
+
+        // If only one word, don't generate a title
+        if (count($words) <= 1) {
+            return null;
+        }
+
+        // If the prompt contains 'analyze' and a URL is provided
+        if ($url && stripos($text, 'analyze') !== false) {
+            return 'Analyze ' . $url;
+        }
+
+        // Try to extract <title> from HTML input
+        if ($input && stripos($input, '<title>') !== false) {
+            if (preg_match('/<title>(.*?)<\/title>/is', $input, $matches)) {
+                $titleTag = trim($matches[1]);
+                if ($titleTag) {
+                    return $titleTag;
+                }
+            }
+        }
+
+        // Otherwise, generate a title from the first 6 words
+        $cleanText = preg_replace('/[^a-zA-Z0-9\s]/', '', $text);
+        $cleanWords = explode(' ', trim($cleanText));
+        return ucfirst(implode(' ', array_slice($cleanWords, 0, 6))) . (count($cleanWords) > 6 ? '...' : '');
     }
 
 

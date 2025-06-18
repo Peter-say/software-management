@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use RuntimeException;
 
 class LoginController extends Controller
 {
@@ -25,6 +26,15 @@ class LoginController extends Controller
             ]);
         } catch (ValidationException $e) {
             return ApiHelper::validationErrorResponse($e);
+        } catch (RuntimeException $e) {
+            $message = $e->getMessage();
+            if (str_contains($message, 'net::ERR_INTERNET_DISCONNECTED')) {
+                $message = 'Internet connection appears to be offline. Please check your connection and try again.';
+            }
+            if (str_contains($message, 'net::ERR_CONNECTION_REFUSED')) {
+                $message = 'We are having issues logging you in. Issues seems to be from our machine.';
+            }
+            return ApiHelper::errorResponse([$message, 500]);
         } catch (AuthenticationException $e) {
             return ApiHelper::errorResponse('Login attempt failed. Invalid credentials.', 401);
         }

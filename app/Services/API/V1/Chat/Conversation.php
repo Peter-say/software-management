@@ -99,10 +99,21 @@ class Conversation
         });
     }
 
-    protected function generateTitleFromPrompt(string $prompt): string
+    protected function generateTitleFromPrompt(string $prompt): ?string
     {
-        $words = explode(' ', strip_tags($prompt));
-        return ucfirst(implode(' ', array_slice($words, 0, 6))) . (count($words) > 6 ? '...' : '');
+        $text = trim(strip_tags($prompt));
+        $words = preg_split('/\s+/', $text);
+
+        // If only one word, don't generate a title
+        if (count($words) <= 1) {
+            return null;
+        }
+
+        // Otherwise, generate a title from the first 6 words
+        $cleanText = preg_replace('/[^a-zA-Z0-9\s]/', '', $text);
+        $cleanWords = preg_split('/\s+/', trim($cleanText));
+        $title = implode(' ', array_slice($cleanWords, 0, 6));
+        return ucfirst($title) . (count($cleanWords) > 6 ? '...' : '');
     }
 
     public function clearConversation($uuid)

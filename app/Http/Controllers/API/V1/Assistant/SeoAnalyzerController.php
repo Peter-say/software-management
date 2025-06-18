@@ -67,7 +67,7 @@ class SeoAnalyzerController extends Controller
     public function save(Request $request)
     {
         try {
-            $result = $this->seoAnalyzerService->saveAnalysis($request->all());
+            $result = $this->seoAnalyzerService->saveAnalysis($request);
 
             $message = $result['status'] === 'created'
                 ? 'SEO analysis saved successfully.'

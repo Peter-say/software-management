@@ -10,6 +10,7 @@ use App\Services\SiteInspectorService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -39,7 +40,7 @@ class SeoAnalyzer
             'ai_type' => 'nullable|string',
             'title' => 'nullable|string|max:255',
             'prompt' => 'nullable|string', // Optional, for question_context handling
-            'response' => 'nullable|array', // Optional, for question_context handling
+            'response' => 'nullable', // Optional, for question_context handling
             'screenshot_url' => 'nullable|url',
             'uuid' => 'nullable|uuid',
         ]);
@@ -80,7 +81,6 @@ class SeoAnalyzer
                 'response', // Optional, for question_context handling
             ]));
 
-
             $htmlContent = $data['html_input'] ?? null;
             $url = $data['url'] ?? null;
             $content = $data['content'] ?? null;
@@ -90,9 +90,10 @@ class SeoAnalyzer
                 $htmlContent = @file_get_contents($url);
             }
             $title = $data['title'] ?? $this->generateTitleFromPrompt($htmlContent ?? $url ?? $content ?? '', $url);
+            // Log::info('SEO Analyzer generated title', ['title' => $title, 'hello' => $data]);
             $instructionsJson = Storage::get('ai_contexts/seoanalyzer_instructions.json');
             $instructions = json_decode($instructionsJson, true);
-
+            //  dd($title);
             // If question_context is present, handle only that
             if (!empty($data['question_context'])) {
                 $response = $data['response'] ?? '';
@@ -110,39 +111,45 @@ class SeoAnalyzer
             $screenshotUrl = null;
             $pageSpeedMetrics = $indexability = $brokenLinks = [];
             if ($content) {
-                $screenshotUrl = $this->getScreenshot($content);
-                $systemPrompt = "Please analyze this page content: {$content}" . "If there is any issues please, give a clear recommended approach to fix the issues in: {$content}" .
-                    "If not return why the page content is okay";
+                $systemPrompt = "Please analyze this page content: {$content}. " .
+                    "If there are any issues, give a clear recommended approach to fix them. " .
+                    "If not, explain why the content is okay.";
+
                 $response = $this->gemini_service->sendPrompt($systemPrompt);
+                $uuid = $this->resolveAnalysisUuid($data, $user);
+
                 return [
-                    'response' => array_merge($response, [
-                        'screenshot_url' => $screenshotUrl,
-                    ]),
+                    'uuid' => $uuid,
+                    'prompt' => $systemPrompt,
+                    'title' => $title,
+                    'response' => $response,
                 ];
             }
+
             if ($url) {
+                $screenshotUrl = null;
                 $screenshotUrl = $this->getScreenshot($url);
                 $pageSpeedMetrics = $this->page_speed_insight->fetchPageSpeedMetrics($url);
                 $indexability = $this->page_speed_insight->checkHttpsAndCanonical($url, $htmlContent ?? '');
                 $brokenLinks = $this->page_speed_insight->findBrokenLinks($htmlContent ?? '', $url);
-            }
 
-            $systemPrompt = $this->buildPrompt($instructions, $userPrompt, $pageSpeedMetrics, $indexability, $brokenLinks);
-            $rawResponse = $this->gemini_service->sendPrompt($systemPrompt);
-            $parsedResponse = json_decode($this->stripCodeBlock($rawResponse), true) ?? [];
-            $uuid = $this->resolveAnalysisUuid($data, $user);
-            return [
-                'uuid' => $uuid,
-                'prompt' => $systemPrompt,
-                'title' => $title,
-                'raw_response' => $rawResponse,
-                'response' => array_merge($parsedResponse, [
-                    'pagespeed_metrics' => $pageSpeedMetrics,
-                    'indexability_https' => $indexability,
-                    'broken_links' => $brokenLinks,
-                    'screenshot_url' => $screenshotUrl,
-                ]),
-            ];
+                $systemPrompt = $this->buildPrompt($instructions, $userPrompt, $pageSpeedMetrics, $indexability, $brokenLinks);
+                $rawResponse = $this->gemini_service->sendPrompt($systemPrompt);
+                $parsedResponse = json_decode($this->stripCodeBlock($rawResponse), true) ?? [];
+                $uuid = $this->resolveAnalysisUuid($data, $user);
+                return [
+                    'uuid' => $uuid,
+                    'prompt' => $systemPrompt,
+                    'title' => $title,
+                    'raw_response' => $rawResponse,
+                    'response' => array_merge($parsedResponse, [
+                        'pagespeed_metrics' => $pageSpeedMetrics,
+                        'indexability_https' => $indexability,
+                        'broken_links' => $brokenLinks,
+                        'screenshot_url' => $screenshotUrl,
+                    ]),
+                ];
+            }
         });
     }
 
@@ -156,6 +163,7 @@ class SeoAnalyzer
                 'title',
                 'prompt',
                 'response',
+                'content',
                 'uuid', // Optional, for updating existing analysis
             ]));
             $query = SeoAnalysis::where('user_id', $user->id)->where('uuid', $data['uuid'] ?? null);
@@ -168,11 +176,27 @@ class SeoAnalyzer
 
             $analysis = $query->first();
 
+            // 🟡 Check for duplicate/similar content if analysis not found
+            if (!$analysis && !empty($data['content'])) {
+                $existing = SeoAnalysis::where('user_id', $user->id)->get();
+                foreach ($existing as $item) {
+                    $existingContent = strtolower($item->html_input ?? $item->content ?? '');
+                    $newContent = strtolower($data['html_input'] ?? $data['content']);
+
+                    similar_text($existingContent, $newContent, $percent);
+                    if ($percent >= 80) {
+                        $analysis = $item;
+                        break;
+                    }
+                }
+            }
+
             $payload = [
                 'title' => $data['title'] ?? null,
                 'input_type' => !empty($data['html_input']) ? 'html' : 'url',
                 'html_input' => $data['html_input'] ?? null,
                 'url' => $data['url'] ?? null,
+                'content' => $data['content'] ?? null,
                 'prompt' => $data['prompt'] ?? null,
                 'response' => $data['response'] ?? [],
             ];
@@ -234,7 +258,7 @@ class SeoAnalyzer
             if (str_contains($e->getMessage(), 'net::ERR_INTERNET_DISCONNECTED')) {
                 throw new RuntimeException('Internet connection appears to be offline. Please check your connection and try again.');
             }
-            throw new RuntimeException('Internet connection appears to be offline. Please check your connection and try again.');
+            throw new RuntimeException('Failed to capture screenshot. Please check your internet connection and ensure the URL is accessible.');
         }
     }
 
@@ -270,11 +294,30 @@ class SeoAnalyzer
             }
         }
 
-        // Otherwise, generate a title from the first 6 words
+        // Fallback 1: Generate from the first few words if meaningful
         $cleanText = preg_replace('/[^a-zA-Z0-9\s]/', '', $text);
-        $cleanWords = explode(' ', trim($cleanText));
-        return ucfirst(implode(' ', array_slice($cleanWords, 0, 6))) . (count($cleanWords) > 6 ? '...' : '');
+        $cleanWords = array_filter(explode(' ', trim($cleanText)));
+
+        if (count($cleanWords) >= 15) {
+            return ucfirst(implode(' ', array_slice($cleanWords, 0, 15))) . '...';
+        }
+
+        // Fallback 2: Ask AI to generate a title from the content
+        $systemPrompt = <<<PROMPT
+Please generate a concise and descriptive SEO-friendly title for the following content. 
+Ensure the title summarizes the main subject and is written in proper title case. 
+Avoid generic phrases. Only return the title.
+
+Content:
+\"\"\"{$text}\"\"\"
+PROMPT;
+
+        $aiTitle = $this->gemini_service->sendPrompt($systemPrompt);
+
+        // Ensure a non-empty string is returned
+        return is_string($aiTitle) && trim($aiTitle) !== '' ? trim($aiTitle) : null;
     }
+
 
 
     protected function formatInstructions(array $instructions): string

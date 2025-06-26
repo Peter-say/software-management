@@ -14,6 +14,7 @@ class SeoAnalysis extends Model
         'input_type',
         'url',
         'html_input',
+        'content',
         'prompt',
         'response',
     ];

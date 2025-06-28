@@ -26,7 +26,9 @@ Route::prefix('v1')->group(function () {
             Route::delete('clear-conversations', [ChatController::class, 'clearConversations'])->name('clear-conversations');
             Route::prefix('assistant')->group(function () {
                 Route::get('/seo/analyze', [SeoAnalyzerController::class, 'analyze'])->name('seo.analyze');
-                 Route::post('/seo/save-analysis', [SeoAnalyzerController::class, 'save'])->name('seo.save-analysis');
+                Route::post('/seo/save-analysis', [SeoAnalyzerController::class, 'save'])->name('seo.save-analysis');
+                Route::get('seo/get-analyses', [SeoAnalyzerController::class, 'getAnalyses'])->name('seo.get-analyses');
+                Route::get('seo/analyses/{uuid}', [SeoAnalyzerController::class, 'getAnalysis'])->name('seo.analyses');
             });
         });
         Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

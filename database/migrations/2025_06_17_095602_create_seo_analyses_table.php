@@ -16,7 +16,7 @@ return new class extends Migration
              $table->uuid('uuid')->unique();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('title')->nullable();
-            $table->enum('input_type', ['url', 'html']);
+            $table->enum('input_type', ['url', 'html', 'content']);
             $table->text('url')->nullable();
             $table->longText('html_input')->nullable();
             $table->longText('prompt')->nullable();

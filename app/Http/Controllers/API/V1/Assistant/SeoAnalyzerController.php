@@ -6,6 +6,8 @@ use App\Helpers\ApiHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AI\V1\Assistant\SeoAnalysesResource;
 use App\Http\Resources\AI\V1\Assistant\SeoAnalyzerResource;
+use App\Models\SeoAnalysis;
+use App\Models\User;
 use App\Services\API\V1\Assistant\SeoAnalyzer;
 use App\Services\SiteInspector\SiteInspectorService;
 use Exception;
@@ -84,6 +86,46 @@ class SeoAnalyzerController extends Controller
             return ApiHelper::validationErrorResponse([$message]);
         } catch (Exception $e) {
             return ApiHelper::errorResponse('An unexpected error occurred: ' . $e->getMessage(), 500);
+        }
+    }
+
+    public function getAnalyses()
+    {
+        try {
+            $user = User::getAuthenticatedUser();
+            $analyses = SeoAnalysis::with('user')
+                ->where('user_id', $user->id)->latest()
+                ->get();
+
+            if ($analyses->isEmpty()) {
+                return [];
+            }
+            return ApiHelper::successResponse('User analyses fetched successfully', [
+                'analyses' => $analyses,
+            ]);
+        } catch (Exception $e) {
+            return ApiHelper::errorResponse('Something went wrong: ' . $e->getMessage(), 500);
+        }
+    }
+
+    public function getAnalysis($uuid)
+    {
+        try {
+            $user = User::getAuthenticatedUser();
+            $analysis = SeoAnalysis::with('user')
+                ->where('uuid', $uuid)
+                ->where('user_id', $user->id)
+                ->first();
+
+            if (!$analysis) {
+                return ApiHelper::errorResponse('Analysis not found', 404);
+            }
+
+            return ApiHelper::successResponse('Analysis fetched successfully', [
+                'analysis' => $analysis,
+            ]);
+        } catch (Exception $e) {
+            return ApiHelper::errorResponse('Something went wrong: ' . $e->getMessage(), 500);
         }
     }
 

@@ -126,7 +126,7 @@ class SeoAnalyzer
                 ];
             }
 
-            if ($url) {
+            if ($url ?? $htmlContent) {
                 $screenshotUrl = null;
                 $screenshotUrl = $this->getScreenshot($url);
                 $pageSpeedMetrics = $this->page_speed_insight->fetchPageSpeedMetrics($url);
@@ -193,7 +193,7 @@ class SeoAnalyzer
 
             $payload = [
                 'title' => $data['title'] ?? null,
-                'input_type' => !empty($data['html_input']) ? 'html' : 'url',
+                'input_type' => !empty($data['html_input']) ? 'html' : (!empty($data['content']) ? 'content' : 'url'),
                 'html_input' => $data['html_input'] ?? null,
                 'url' => $data['url'] ?? null,
                 'content' => $data['content'] ?? null,

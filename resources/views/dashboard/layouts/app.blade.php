@@ -5,6 +5,7 @@
 
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="keywords" content="" />
@@ -153,6 +154,7 @@
             'conversation_id' => $conversation_id ?? '',
             'prompt' => $prompt ?? '',
         ])
+        @include('dashboard.general.form-preloader')
         @yield('contents')
 
 

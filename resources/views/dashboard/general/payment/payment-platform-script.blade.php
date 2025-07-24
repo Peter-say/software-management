@@ -2,42 +2,35 @@
 <script src="https://js.stripe.com/v3/"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        function getUrlParameter(name) {
-            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-            var results = regex.exec(location.search);
-            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-        }
 
-        const cardPaymentForm = document.getElementById('card-payment-form');
-        const paymentSelect = document.getElementById('payment-option');
-        const stripePayment = document.getElementById('stripe-payment');
-        const paymentMethod = document.getElementById('payment-method');
-        const stripeCardContainer = document.getElementById('stripe-card');
-        const stripeTokenInput = document.getElementById('stripe-token');
-
-        const paymentTitle = document.getElementById('payment-title');
+        // ======================
+        // DOM References
+        // ======================
         const form = document.getElementById('paymentInitiate');
-        const amountInputJQ = $('#amount');
-        const amountInputJS = document.getElementById('amount');
-        const payableAmount = parseFloat(document.getElementById('payable-amount')?.value?.replace(/,/g, '') ||
-            0);
+        const paymentSelect = document.getElementById('payment-option'); // <-- must match HTML
+        const paymentMethodInput = document.getElementById('main-payment-method');
+        const stripeTokenInput = document.getElementById('stripe-token');
+        const stripeCardContainer = document.getElementById('stripe-card');
+        const cardErrors = document.getElementById('card-errors');
+        const amountInputJQ = $('#main-amount');
+        const amountInputJS = document.getElementById('main-amount');
+        const payableAmount = parseFloat(document.getElementById('main-payable-amount')?.value?.replace(/,/g,
+            '') || 0);
+        const paymentTitle = document.getElementById('payment-title');
+        const formPreloader = document.getElementById('form-preloader');
         const paymentPlatform = @json($payment_platform);
-        const requestedRoom = getUrlParameter('requested_payment_id');
+
         let stripe = null;
         let elements = null;
         let card = null;
 
-        // ================================
-        // Initialize Stripe (Only Once)
-        // ================================
+        // ======================
+        // Initialize Stripe
+        // ======================
         function initializeStripe() {
-            if (!stripe && paymentPlatform && paymentPlatform.slug === 'stripe') {
+            if (paymentPlatform?.slug === 'stripe') {
                 stripe = Stripe(paymentPlatform.public_key);
                 elements = stripe.elements();
-            }
-
-            if (!card && (document.getElementById('card-element') || walletCardElementContainer)) {
                 card = elements.create('card', {
                     hidePostalCode: true
                 });
@@ -45,39 +38,27 @@
             }
         }
 
-        // Call the initialization function
-        initializeStripe();
-
-        // ================================
-        // Update Payment UI Based on Method
-        // ================================
+        // ======================
+        // Update UI Based on Method
+        // ======================
         function updatePaymentDisplay(method) {
-            paymentMethod.value = method;
+            paymentMethodInput.value = method; // Update hidden field
 
             if (method === 'CARD') {
-                // alert('Card payment selected. Please enter your card details.');
                 paymentTitle.innerText = 'Card Payment';
                 stripeCardContainer.style.display = 'block';
-                paymentMethod.value = 'CARD';
-                card.unmount(); // unmount before remounting
+                if (card) card.unmount();
+                if (!stripe || !elements || !card) initializeStripe();
                 card.mount('#card-element');
             } else {
                 paymentTitle.innerText = 'Cash Payment';
                 stripeCardContainer.style.display = 'none';
-                paymentMethod.value = 'CASH';
             }
         }
-        // Initial Load
-        updatePaymentDisplay(paymentSelect.value);
 
-        // On Payment Option Change
-        paymentSelect.addEventListener('change', function() {
-            updatePaymentDisplay(this.value);
-        });
-
-        // ================================
-        // Amount Input Formatting
-        // ================================
+        // ======================
+        // Format Amount Input
+        // ======================
         amountInputJQ.on('input', function() {
             let enteredAmount = parseFloat(this.value.replace(/,/g, '') || 0);
             if (enteredAmount > payableAmount) {
@@ -103,33 +84,77 @@
             this.value = parts.join('.');
         });
 
-        // ================================
-        // Stripe + Form Submit
-        // ================================
-        form.addEventListener('submit', function(e) {
-            paymentMethod.value = paymentSelect.value;
+        // ======================
+        // Form Submission
+        // ======================
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Clean the amounts
             amountInputJQ.val(amountInputJQ.val().replace(/,/g, ''));
             amountInputJS.value = amountInputJS.value.replace(/,/g, '');
 
-            if (paymentSelect.value === 'CARD' && paymentPlatform.slug === 'stripe') {
-                e.preventDefault();
-                document.getElementById('form-preloader')?.style?.setProperty('display', 'flex');
+            const selectedMethod = paymentSelect?.value || 'CARD';
+            paymentMethodInput.value = selectedMethod;
 
-                stripe.createToken(card).then(function(result) {
-                    if (result.error) {
-                        document.getElementById('form-preloader')?.style?.setProperty('display',
-                            'none');
-                        document.getElementById('card-errors').textContent = result.error
-                            .message;
-                    } else {
-                        stripeTokenInput.value = result.token.id;
-                        form.submit();
-                    }
+            const formData = new FormData(form);
+
+            if (selectedMethod === 'CARD' && paymentPlatform?.slug === 'stripe') {
+                formPreloader?.style?.setProperty('display', 'flex');
+
+                const result = await stripe.createToken(card);
+                if (result.error) {
+                    formPreloader?.style?.setProperty('display', 'none');
+                    cardErrors.textContent = result.error.message;
+                    return;
+                }
+
+                formData.append('stripeToken', result.token.id);
+            }
+
+            try {
+                const response = await fetch(`{{ route('dashboard.payments.initiate') }}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]')
+                            .value,
+                        'Accept': 'application/json'
+                    },
+                    body: formData
                 });
-            } else {
-                stripeTokenInput.value = '';
+
+                const json = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(json.message || 'Payment failed');
+                }
+
+                Toastify({
+                    text: json?.message || "Payment successful",
+                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                    duration: 5000,
+                }).showToast();
+
+                form.reset();
+                formPreloader?.style?.setProperty('display', 'none');
+
+            } catch (error) {
+                Toastify({
+                    text: error.message,
+                    backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                    duration: 6000,
+                }).showToast();
+                formPreloader?.style?.setProperty('display', 'none');
             }
         });
 
+        // ======================
+        // Init
+        // ======================
+        updatePaymentDisplay(paymentSelect?.value || 'CARD');
+
+        paymentSelect?.addEventListener('change', function() {
+            updatePaymentDisplay(this.value);
+        });
     });
 </script>

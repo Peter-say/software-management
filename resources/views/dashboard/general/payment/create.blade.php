@@ -16,14 +16,14 @@
                         <a href="javascript:void(0)">Pay</a>
                     </li>
                 </ol>
-        
+
                 <!-- Go Back Button -->
                 <div class="col-auto">
                     <a href="javascript:history.back()" class="btn btn-primary btn-sm">Go Back</a>
                 </div>
             </div>
         </div>
-        
+
         <div class="container">
             <!-- Title and Payment Option Row -->
             <div class="row justify-content-center mb-4">
@@ -35,7 +35,8 @@
                                 <option value="CARD">CARD</option>
                                 <option value="CASH">CASH</option>
                             </select>
-                            <button type="button" class="btn btn-outline-primary ms-2" data-bs-toggle="modal" data-bs-target="#Pay-with-wallet-modal">
+                            <button type="button" class="btn btn-outline-primary ms-2" data-bs-toggle="modal"
+                                data-bs-target="#Pay-with-wallet-modal">
                                 <i class="fas fa-wallet"></i> Pay with Wallet
                             </button>
                         </div>
@@ -46,38 +47,41 @@
             <!-- Payment Form -->
             <div class="row justify-content-center">
                 <div class="col-md-8">
-                    <form action="{{ route('dashboard.payments.initiate') }}" id="paymentInitiate" method="POST">
+                    <form id="paymentInitiate" method="POST">
                         @csrf
                         <div class="d-flex justify-content-between">
                             <div>
                                 <p>Payment Due</p>
-                               @if(isset($reservation))
-                               <p>
-                                <b>{{currencySymbol()}}{{ number_format(
-                                        $reservation->total_amount +
-                                            $reservation->guest->calculateOrderNetTotal() -
-                                            (($reservation->payments() ?? collect())->sum('amount') + $reservation->guest->paidTotalOrders()),
-                                        2,
-                                    ) }}
-                                </b>
-                                <input type="hidden" id="payable-amount" name="payable-amount"
-                                    value="{{ $reservation->total_amount +
-                                            $reservation->guest->calculateOrderNetTotal() -
-                                            (($reservation->payments() ?? collect())->sum('amount') + $reservation->guest->paidTotalOrders()) }}">
-                            </p>
-                               @endif
+                                @if (isset($reservation))
+                                    <p>
+                                        <b>{{ currencySymbol() }}{{ number_format(
+                                            $reservation->total_amount +
+                                                $reservation->guest->calculateOrderNetTotal() -
+                                                (($reservation->payments() ?? collect())->sum('amount') + $reservation->guest->paidTotalOrders()),
+                                            2,
+                                        ) }}
+                                        </b>
+                                        <input type="hidden" id="main-payable-amount" name="payable-amount"
+                                            value="{{ $reservation->total_amount +
+                                                $reservation->guest->calculateOrderNetTotal() -
+                                                (($reservation->payments() ?? collect())->sum('amount') + $reservation->guest->paidTotalOrders()) }}">
+                                    </p>
+                                @endif
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="amount" class="form-label">How Much Do You Want To Pay?</label>
-                            <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter Amount" required>
+                            <input type="text" class="form-control" id="main-amount" name="amount"
+                                placeholder="Enter Amount" required>
                         </div>
 
                         <div class="mb-3">
                             <label for="currency" class="form-label">Currency</label>
-                            <select id="currency" name="currency" class="form-control @error('currency') is-invalid @enderror">
+                            <select id="currency" name="currency"
+                                class="form-control @error('currency') is-invalid @enderror">
                                 @php $currency = getHotelCurrency(); @endphp
-                                <option value="{{ $currency->short_name }}" {{ old('currency', $currency->short_name) == $currency->short_name ? 'selected' : '' }}>
+                                <option value="{{ $currency->short_name }}"
+                                    {{ old('currency', $currency->short_name) == $currency->short_name ? 'selected' : '' }}>
                                     {{ $currency->short_name }}
                                 </option>
                             </select>
@@ -100,9 +104,11 @@
                         <!-- Hidden Fields -->
                         <input type="hidden" name="stripeToken" id="stripe-token">
                         <input type="hidden" name="stripe_payment" id="stripe-payment" value="Stripe">
-                        <input type="hidden" name="payment_method" id="payment-method">
+                        <input type="hidden" name="payment_method" id="main-payment-method">
                         <input type="hidden" name="hotel_id" value="{{ auth()->user()->id }}">
-                        @include('dashboard.general.payment.payable-details', ['reservation' => $reservation])
+                        @include('dashboard.general.payment.payable-details', [
+                            'reservation' => $reservation,
+                        ])
                         <input type="hidden" name="amount_due"
                             value="{{ $reservation->total_amount + $reservation->guest->calculateOrderNetTotal() - ($reservation->payments() ?? collect())->sum('amount') }}">
                         <button type="submit" class="btn btn-primary" id="pay-now">Pay Now</button>
@@ -112,8 +118,17 @@
             </div>
         </div>
     </div>
- @endsection
+    @include('dashboard.hotel.room.reservation.pay-with-wallet-modal')
+    @include('dashboard.general.payment.payment-platform-script')
 
-@include('dashboard.hotel.room.reservation.pay-with-wallet-modal')
-@include('dashboard.general.payment.payment-platform-script')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const walletButton = document.getElementById('loadWalletModal');
+            const walletModal = new bootstrap.Modal(document.getElementById('Pay-with-wallet-modal'));
 
+            walletButton.addEventListener('click', function() {
+                walletModal.show();
+            });
+        });
+    </script>
+@endsection

@@ -14,7 +14,7 @@
                     <div class="card">
                         <div class="card-body p-0">
                             <div class="table-responsive">
-                                <table class="table card-table display mb-4 shadow-hover table-responsive-lg" aria-labelledby="inventory-table">
+                                <table  class="table card-table display mb-4 shadow-hover table-responsive-lg" aria-labelledby="inventory-table">
                                     <thead>
                                         <tr>
                                             <th>S/N</th>
@@ -42,14 +42,13 @@
                                         @else
                                             <tr>
                                                 <td colspan="6" class="text-center bg-dark text-white">
-                                                    No incoming store inventories
+                                                    No outgoing store inventories
                                                 </td>
                                             </tr>
                                         @endif
                                     </tbody>
                                 </table>
-                            </div>
-                            <!-- Pagination Section -->
+                                 <!-- Pagination Section -->
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <div class="text-muted">
                                     Showing {{ $inventories->firstItem() }} to
@@ -62,9 +61,9 @@
                                     </ul>
                                 </nav>
                             </div>
+                            </div>
                         </div>
                     </div>
-                    
                 </div>
             </div>
         </div>

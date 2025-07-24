@@ -218,6 +218,33 @@ class SeoAnalyzer
         });
     }
 
+    public function clearAnalysis($uuid)
+    {
+        $user = User::getAuthenticatedUser();
+        $analysis = SeoAnalysis::where('user_id', $user->id)
+            ->where('uuid', $uuid)
+            ->first();
+
+        if (!$analysis) {
+            return response()->json(['message' => 'Analysis not found'], 404);
+        }
+        $analysis->delete();
+    }
+
+    public function clearAnalyses()
+    {
+        $user = User::getAuthenticatedUser();
+        $analyses = SeoAnalysis::where('user_id', $user->id)->get();
+
+        if (!$analyses) {
+            return response()->json(['message' => 'Analyses not found'], 404);
+        }
+        foreach ($analyses as $analysis) {
+            $analysis->delete();
+        }
+    }
+
+
     protected function resolveAnalysisUuid(array $data, User $user): string
     {
         $uuid = $data['uuid'] ?? null;

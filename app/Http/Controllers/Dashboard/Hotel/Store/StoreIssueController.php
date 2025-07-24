@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Services\Dashboard\Hotel\Store\StoreIssueService;
 use Exception;
 use Illuminate\Http\Request;
+use Throwable;
 
 class StoreIssueController extends Controller
 {
@@ -46,8 +47,9 @@ class StoreIssueController extends Controller
             $this->store_issue_service->save($request);
             return redirect()->back()->with('success_message', 'Item issued to ' . ($request->extenal_recipient_name ?? $request->recipient_name) . ' successfully');
         } catch (Exception $e) {
+            dd($e);
             return redirect()->back()->withInput($request->all())->with('error_message', $e->getMessage());
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             throw $th;
             return redirect()->back()->with('error_message', 'Something went wrong');
         }

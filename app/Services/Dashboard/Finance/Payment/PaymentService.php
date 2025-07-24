@@ -95,6 +95,9 @@ class PaymentService
                     'amount' => $request->input('amount'),
                     'transaction_id' => 'TXN' . strtoupper(uniqid()),
                     'user_id' => $data['user_id'],
+                    'payment_method' => $request->input('payment_method'),
+                    'description' => $request->input('description', ''),
+                    'currency' => $request->input('currency', 'USD'),
                 ]);
             }
 
@@ -113,8 +116,6 @@ class PaymentService
                     throw new Exception('Stripe payment failed: ' . ($stripeCharge->failure_message ?? 'Unknown error'));
                 }
             }
-
-            // Save payments using Eloquent
             foreach ($payments as $payment) {
                 $payment->save();
             }
@@ -134,9 +135,7 @@ class PaymentService
                     $this->updatePaymentStatusForPayable($payment->payable_type, $payment->payable_id, 'completed');
                 });
             }
-            // dd($payments);
             return $payments;
-            
         });
     }
 
@@ -167,29 +166,29 @@ class PaymentService
     }
 
     /**
- * Update the payment status of the related payable model (e.g., RoomReservation, BarOrder)
- *
- * @param string $payableType
- * @param int $payableId
- * @param string $status
- */
-public function updatePaymentStatusForPayable($payableType, $payableId, $status)
-{
-    $payable = app($payableType)::find($payableId);
+     * Update the payment status of the related payable model (e.g., RoomReservation, BarOrder)
+     *
+     * @param string $payableType
+     * @param int $payableId
+     * @param string $status
+     */
+    public function updatePaymentStatusForPayable($payableType, $payableId, $status)
+    {
+        $payable = app($payableType)::find($payableId);
 
-    if ($payable) {
-        if ($payable instanceof RoomReservation) {
-            $payable->payment_status = $status;
-            $payable->save();
-        } elseif ($payable instanceof BarOrder) {
-            $payable->status = $status;
-            $payable->save();
-        } elseif ($payable instanceof RestaurantOrder) {
-            $payable->status = $status;
-            $payable->save();
+        if ($payable) {
+            if ($payable instanceof RoomReservation) {
+                $payable->payment_status = $status;
+                $payable->save();
+            } elseif ($payable instanceof BarOrder) {
+                $payable->status = $status;
+                $payable->save();
+            } elseif ($payable instanceof RestaurantOrder) {
+                $payable->status = $status;
+                $payable->save();
+            }
         }
     }
-}
 
     public function stripCredit() {}
 
@@ -198,9 +197,61 @@ public function updatePaymentStatusForPayable($payableType, $payableId, $status)
         $this->validatePayment($request->al);
     }
 
-    public function list() 
+    public function list($request)
     {
-       $payments = Payment::latest()->paginate(30);
-       return $payments;
+        $query = Payment::query();
+
+        if ($request->filled('search')) {
+            $search = strtolower(trim($request->search));
+
+            $query->where(function ($q) use ($search) {
+                $q->where('transaction_id', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhere('currency', 'like', "%{$search}%");
+
+                // Match amount exactly (with float conversion)
+                if (is_numeric($search)) {
+                    $q->orWhere('amount', (float) $search);
+                }
+
+                // Search by user name
+                $q->orWhereHas('user', function ($userQuery) use ($search) {
+                    $userQuery->where('name', 'like', "%{$search}%");
+                });
+
+                // Search by payable ID
+                $q->orWhereHas('payable', function ($payableQuery) use ($search) {
+                    $payableQuery->where('id', 'like', "%{$search}%");
+                });
+
+                // Search by payable type keywords
+                if (str_contains($search, 'restaurant')) {
+                    $q->orWhere('payable_type', 'like', '%RestaurantOrder%');
+                }
+
+                if (str_contains($search, 'bar')) {
+                    $q->orWhere('payable_type', 'like', '%BarOrder%');
+                }
+
+                if (str_contains($search, 'guest')) {
+                    $q->orWhere('payable_type', 'like', '%Guest%');
+                }
+            });
+        }
+
+        // Sorting
+        if ($request->filled('selection')) {
+            match ($request->selection) {
+                'Newest' => $query->latest(),
+                'Oldest' => $query->oldest(),
+                'Highest' => $query->orderByDesc('amount'),
+                'Lowest' => $query->orderBy('amount'),
+                'Paid' => $query->where('status', 'completed'),
+                'Pending' => $query->where('status', 'pending'),
+                default => null,
+            };
+        }
+
+        return $query->latest()->paginate(30);
     }
 }

@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 
 class PaymentController extends Controller
 {
@@ -17,6 +18,26 @@ class PaymentController extends Controller
     {
         $this->payment_service = $payment_service;
     }
+
+    public function list()
+    {
+        $request = request();
+        $payments = $this->payment_service->list($request);
+        $totalAmount = $payments->sum('amount');
+
+        if ($request->ajax()) {
+            $html = view('dashboard.hotel.finance.payment.search', compact('payments', 'totalAmount'))->render();
+            $formattedAmount = '₦' . number_format($totalAmount, 2);
+
+            return response()->json([
+                'html' => $html,
+                'totalAmount' => "<strong>Total Amount:</strong> $formattedAmount"
+            ]);
+        }
+
+        return view('dashboard.hotel.finance.payment.list', compact('payments', 'totalAmount'));
+    }
+
 
     public function pay()
     {
@@ -38,29 +59,22 @@ class PaymentController extends Controller
 
     public function initiatePayment(Request $request)
     {
-        dd($request->all());
         try {
-            $this->payment_service->processPayment($request);
-            return back()->with('success_message', "Payment made successfully");
-        } catch (ModelNotFoundException $e) {
-            return redirect()->back()->withInput($request->all())
-                ->with('error_message', 'The specified resource was not found.');
-        } catch (Exception $e) {
-            return redirect()->back()->withInput($request->all())->with('error_message', $e->getMessage());
-            throw $th;
-        } catch (\Throwable $th) {
-            Log::info($th);
-            throw $th;
-            return back()->with('error_message', 'An error occurred while submitting your request. Please try again.');
-        }
-    }
 
-    public function list()
-    {
-        $request = request();
-        // $payments = $this->payment_service->list($request);
-        // return view('dashboard.finance.payment.index', [
-        //     'payments' => $payments,
-        // ]);
+            $this->payment_service->processPayment($request);
+            return response()->json([
+                'success' => true,
+                'message' => "Payment made successfully.",
+            ]);
+            return response()->json(['success' => false, 'message' => "Payment made successfully."], 400);
+        } catch (ValidationException $e) {
+            return response()->json(['success' => false, 'errors' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            throw $e;
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while creating the reservation.',
+            ]);
+        }
     }
 }

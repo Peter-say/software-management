@@ -45,8 +45,8 @@ class StoreStatsService
                 ],
                 [
                     // "icon" => "home",
-                    "title" => "Total OutComing Store Items",
-                    "value" => number_format(array_sum($store_data['totalOutComingStoreItems'])),
+                    "title" => "Total Outgoing Store Items",
+                    "value" => number_format(array_sum($store_data['totalOutGoingStoreItems'])),
                     "class" => "primary",
                     'period' =>  $period,
                 ],
@@ -99,7 +99,7 @@ class StoreStatsService
             'totalStoreItems' => $currentData['totalStoreItems'],
             'totalStoreItemAmount' => $currentData['totalStoreItemAmount'],
             'totalIncomingStoreItems' => $currentData['totalIncomingStoreItems'],
-            'totalOutComingStoreItems' => $currentData['totalOutComingStoreItems'],
+            'totalOutGoingStoreItems' => $currentData['totalOutGoingStoreItems'],
         ];
     }
 
@@ -133,7 +133,7 @@ class StoreStatsService
             'totalStoreItems' => $total_store_items,
             'totalStoreItemAmount' => $total_store_items_amount,
             'totalIncomingStoreItems' => $total_incoming_store_items,
-            'totalOutComingStoreItems' =>  $total_outgoing_store_items,
+            'totalOutGoingStoreItems' =>  $total_outgoing_store_items,
         ];
     }
 }

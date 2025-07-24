@@ -24,7 +24,6 @@ class GuestWalletController extends Controller
 
     public function creditGuestWallet(Request $request)
     {
-        // dd($request->all());
         try {
          $wallet = $this->guest_wallet_service->recordCreditTransaction($request);
           return back()->with('success_message', 'wallet credit successfully');
@@ -41,6 +40,7 @@ class GuestWalletController extends Controller
 
     public function payWithGuestWallet(Request $request, $id = null)
     {
+        // dd($request->all());
         try {
          $wallet = $this->guest_wallet_service->payWithGuestWallet($request, $id);
           return back()->with('success_message', 'Payment made successfully');

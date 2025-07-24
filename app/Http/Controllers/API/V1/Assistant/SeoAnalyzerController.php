@@ -129,6 +129,28 @@ class SeoAnalyzerController extends Controller
         }
     }
 
+     public function clearAnalysis($uuid)
+    {
+        try {
+            $this->seoAnalyzerService->clearAnalysis($uuid);
+            return ApiHelper::successResponse('Analysis cleared successfully');
+        } catch (Exception $e) {
+            return ApiHelper::errorResponse('Something went wrong: ' . $e->getMessage(), 500);
+        }
+    }
+
+    public function clearAnalyses()
+    {
+        try {
+            $user = User::getAuthenticatedUser();
+            $conversations =  $this->seoAnalyzerService->clearAnalyses();
+            return ApiHelper::successResponse('Analyses cleared successfully', [
+                'conversation' => $conversations,
+            ]);
+        } catch (Exception $e) {
+            return ApiHelper::errorResponse('Something went wrong: ' . $e->getMessage(), 500);
+        }
+    }
 
     protected function validateUrl(?string $url)
     {

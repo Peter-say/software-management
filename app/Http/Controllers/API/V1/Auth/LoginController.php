@@ -17,7 +17,7 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         try {
-            $user = AuthService::login($request); // Handles validation & authentication
+            $user = AuthService::login($request);
             $accessToken = $user->createToken('authToken')->plainTextToken;
 
             return ApiHelper::successResponse('User logged in successfully', [
@@ -25,20 +25,25 @@ class LoginController extends Controller
                 'access_token' => $accessToken,
             ]);
         } catch (ValidationException $e) {
-            return ApiHelper::validationErrorResponse($e);
+           return ApiHelper::validationErrorResponse($e->errors(), [], 422);
+        } catch (AuthenticationException $e) {
+           return ApiHelper::errorResponse('Login attempt failed. Invalid credentials.', [], 401);
         } catch (RuntimeException $e) {
             $message = $e->getMessage();
+
             if (str_contains($message, 'net::ERR_INTERNET_DISCONNECTED')) {
                 $message = 'Internet connection appears to be offline. Please check your connection and try again.';
             }
             if (str_contains($message, 'net::ERR_CONNECTION_REFUSED')) {
-                $message = 'We are having issues logging you in. Issues seems to be from our machine.';
+                $message = 'We are having issues logging you in. The problem seems to be on our end.';
             }
-            return ApiHelper::errorResponse([$message, 500]);
-        } catch (AuthenticationException $e) {
-            return ApiHelper::errorResponse('Login attempt failed. Invalid credentials.', 401);
+
+            return ApiHelper::errorResponse($message, 500);
+        } catch (\Exception $e) {
+            return ApiHelper::errorResponse('An unexpected error occurred.', 500);
         }
     }
+
 
     public function logout(Request $request)
     {

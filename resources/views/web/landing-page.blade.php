@@ -7,13 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Arnau Ros – Graphic Designer & Content Creator based in Barcelona. Available for freelance & collaborations. View projects, content, and get in touch.">
-    <meta name="keywords" content="Arnau Ros, graphic designer, content creator, Barcelona, freelance, branding, web design, portfolio, Figma, Webflow">
+    <meta name="description"
+        content="Arnau Ros – Graphic Designer & Content Creator based in Barcelona. Available for freelance & collaborations. View projects, content, and get in touch.">
+    <meta name="keywords"
+        content="Arnau Ros, graphic designer, content creator, Barcelona, freelance, branding, web design, portfolio, Figma, Webflow">
     <meta name="author" content="Arnau Ros">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:title" content="Arnau Ros – Graphic Designer & Content Creator">
-    <meta property="og:description" content="Portfolio of Arnau Ros, Barcelona-based designer. Projects, content, and contact.">
+    <meta property="og:description"
+        content="Portfolio of Arnau Ros, Barcelona-based designer. Projects, content, and contact.">
     <meta property="og:image" content="{{ asset('web/images/og-image.jpg') }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
@@ -21,7 +24,8 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Arnau Ros – Graphic Designer & Content Creator">
-    <meta name="twitter:description" content="Portfolio of Arnau Ros, Barcelona-based designer. Projects, content, and contact.">
+    <meta name="twitter:description"
+        content="Portfolio of Arnau Ros, Barcelona-based designer. Projects, content, and contact.">
     <meta name="twitter:image" content="{{ asset('web/images/og-image.jpg') }}">
 
     <!-- Bootstrap CSS -->
@@ -48,7 +52,7 @@
         </div>
         <!-- Mobile menu -->
         <div class="d-md-none mobile-nav-collapse" id="mobileNav">
-            <div class="bg-white px-4 py-3 shadow-sm d-flex flex-column align-items-center justify-content-center" >
+            <div class="bg-white px-4 py-3 shadow-sm d-flex flex-column align-items-center justify-content-center">
                 <a href="#" class="mb-2 nav-link-custom">Work</a>
                 <a href="#" class="mb-2 nav-link-custom">About</a>
                 <a href="#" class="mb-2 nav-link-custom">Contact</a>
@@ -90,9 +94,9 @@
         </div>
 
 
-        
+
         <section class=" py-5">
-              <h2 class="display-4 fw-bold">Content Creation</h2>
+            <h2 class="display-4 fw-bold">Content Creation</h2>
             <div class="row align-items-center">
                 <div class="col-md-6 mb-4 mb-md-0">
                     <p class="lead">Join my YouTube channel where I show my design thinking, my process, and my
@@ -137,8 +141,8 @@
                                     <span><span class="service-number">①</span> Branding / Logo</span>
                                 </button>
                             </h2>
-                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                                data-bs-parent="#accordionServices">
+                            <div id="collapseOne" class="accordion-collapse collapse show"
+                                aria-labelledby="headingOne" data-bs-parent="#accordionServices">
                                 <div class="accordion-body">
                                     <p class="small text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing
                                         elit. Mi

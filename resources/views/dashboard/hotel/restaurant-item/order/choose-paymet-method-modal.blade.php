@@ -17,10 +17,9 @@
                 @endif
 
                 <!-- Pay with Card Button -->
-                <button type="button" class="btn btn-outline-success m-2" data-bs-toggle="modal"
-                    data-bs-target="#payment-modal-{{ $order->id }}">
+                <a class="btn btn-outline-primary" href="{{ route('dashboard.payments.pay') }}?order_id={{ $order->id }}">
                     <i class="fas fa-credit-card"></i> Pay with Card
-                </button>
+                </a>
 
                 <!-- Pay with Cash Button -->
                 <button type="button" class="btn btn-outline-warning m-2">

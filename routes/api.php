@@ -29,6 +29,9 @@ Route::prefix('v1')->group(function () {
                 Route::post('/seo/save-analysis', [SeoAnalyzerController::class, 'save'])->name('seo.save-analysis');
                 Route::get('seo/get-analyses', [SeoAnalyzerController::class, 'getAnalyses'])->name('seo.get-analyses');
                 Route::get('seo/analyses/{uuid}', [SeoAnalyzerController::class, 'getAnalysis'])->name('seo.analyses');
+                Route::delete('seo/analyses/clear/{uuid}', [SeoAnalyzerController::class, 'clearAnalysis'])->name('seo.analyses.clear');
+                Route::delete('seo/analyses/clear-all', [SeoAnalyzerController::class, 'clearAnalyses'])->name('seo.analyses.clear-all');
+
             });
         });
         Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

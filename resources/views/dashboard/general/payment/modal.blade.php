@@ -180,7 +180,6 @@
         form.addEventListener('submit', function (e) {
             // Set payment method to selected option
             paymentMethod.value = paymentSelect.value;
-console.log(paymentSelect.value);
             // Clean amount input
             amountInputJQ.val(amountInputJQ.val().replace(/,/g, ''));
             amountInputJS.value = amountInputJS.value.replace(/,/g, '');

@@ -1,56 +1,3 @@
-<!-- Button trigger modal -->
-<style>
-    #form-preloader {
-        display: none;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        align-items: center;
-        justify-content: center;
-        transform: translate(-50%, -50%);
-        z-index: 9999;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    #form-preloader .lds-ripple {
-        display: inline-block;
-        position: relative;
-        width: 64px;
-        height: 64px;
-    }
-
-    #form-preloader .form-lds-ripple div {
-        position: absolute;
-        border: 4px solid var(--primary);
-        opacity: 1;
-        border-radius: 50%;
-        animation: form-lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
-    }
-
-    #form-preloader .form-lds-ripple div:nth-child(2) {
-        animation-delay: -0.5s;
-    }
-
-    @keyframes form-lds-ripple {
-        0% {
-            top: 28px;
-            left: 28px;
-            width: 0;
-            height: 0;
-            opacity: 1;
-        }
-
-        100% {
-            top: 0;
-            left: 0;
-            width: 56px;
-            height: 56px;
-            opacity: 0;
-        }
-    }
-</style>
 
 <div class="modal fade" id="fund-guest-wallet-modal" tabindex="-1" role="dialog" aria-labelledby="fund-guest-wallet-modal" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -127,7 +74,8 @@
                     <input type="hidden" name="hotel_id" value="{{ auth()->user()->id }}">
                     <input type="hidden" name="guest_id" value="{{ isset($guest) ? $guest->id : '' }}">
                     <input type="hidden" name="payable_id" value="{{ isset($guest) ? $guest->id : '' }}">
-                    <input type="hidden" name="payable_type" value="{{ isset($guest) ? get_class($guest) : '' }}">
+                   <input type="hidden" name="payable_type" value="{{ optional($guest)->getMorphClass() }}">
+
 
                     <!-- Modal Footer -->
                     <div class="modal-footer">
@@ -140,7 +88,7 @@
     </div>
 </div>
 
-@include('dashboard.general.form-preloader')
+
 
 <!-- Stripe JS -->
 <script src="https://js.stripe.com/v3/"></script>

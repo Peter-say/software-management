@@ -135,7 +135,7 @@ class RestaurantItemsController extends Controller
 
     public function downloadSample(Request $request)
     {
-
+d($request->all());
         // Initialize filePath variable
         $filePath = null;
 
@@ -144,7 +144,7 @@ class RestaurantItemsController extends Controller
             $filePath = public_path('dashboard/samples/restaurant_menu_sample_with_ingredients.xlsx'); // Use forward slashes
         }
         if ($request->current_url === url(route('dashboard.hotel.bar-items.index'))) {
-            $filePath = public_path('dashboard/samples/restaurant_menu_sample_with_ingredients.xlsx'); // Use forward slashes
+            $filePath = public_path('dashboard/hod/restaurant_menu_sample_with_ingredients.xlsx'); // Use forward slashes
         }
         // Check if the file exists
         if (!file_exists($filePath)) {

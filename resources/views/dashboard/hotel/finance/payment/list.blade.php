@@ -8,7 +8,8 @@
             <div class="row page-titles">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('dashboard.home') }}">Home</a></li>
-                    <li class="breadcrumb-item active"><a href="#">Payments</a></li>
+                    <li class="breadcrumb-item "><a href="{{route('dashboard.payments.overview')}}">Overview</a></li>
+                     <li class="breadcrumb-item active"><a href="#">List</a></li>
                 </ol>
             </div>
 

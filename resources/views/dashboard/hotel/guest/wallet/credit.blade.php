@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <form action="{{ route('dashboard.hotel.fund-guest-wallet') }}" id="walletPaymentForm" method="post">
+            <form id="walletPaymentForm" method="post">
                 @csrf
                 <div class="modal-body">
                     <!-- Amount Field -->
@@ -57,16 +57,6 @@
                         </div>
                     </div>
 
-                    <!-- Preloader -->
-                    <div id="form-preloader" class="row mb-3 text-center">
-                        <div class="col-12">
-                            <div class="form-lds-ripple">
-                                <div></div>
-                                <div></div>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Hidden Fields -->
                     <input type="hidden" name="stripeToken" id="stripe-wallet-token">
                     <input type="hidden" name="stripe_payment" id="stripe-payment-method" value="Stripe">
@@ -102,6 +92,7 @@
         const amountInputJQ = $('#wallet-amount');
         const amountInputJS = document.getElementById('wallet-amount');
         const paymentPlatform = @json($payment_platform);
+
         let stripe = null;
         let elements = null;
         let walletCard = null;
@@ -112,6 +103,7 @@
             walletCard = elements.create('card');
             walletCard.mount('#wallet-card-element');
         }
+
         amountInputJS.addEventListener('input', function () {
             let inputVal = this.value.replace(/[^0-9.]/g, '');
             const parts = inputVal.split('.');
@@ -120,21 +112,64 @@
             }
             this.value = parts.join('.');
         });
-        walletPaymentForm.addEventListener('submit', function (e) {
+
+        walletPaymentForm.addEventListener('submit', async function (e) {
             e.preventDefault();
             formPreloader.style.display = 'flex';
             amountInputJQ.val(amountInputJQ.val().replace(/,/g, ''));
             amountInputJS.value = amountInputJS.value.replace(/,/g, '');
-            stripe.createToken(walletCard).then(function (result) {
+
+            try {
+                const result = await stripe.createToken(walletCard);
+
                 if (result.error) {
-                    const errorElement = document.getElementById('wallet-card-errors');
-                    errorElement.textContent = result.error.message;
+                    document.getElementById('wallet-card-errors').textContent = result.error.message;
                     formPreloader.style.display = 'none';
-                } else {
-                    stripeTokenInputWallet.value = result.token.id;
-                    walletPaymentForm.submit();
+                    return;
                 }
-            });
+
+                stripeTokenInputWallet.value = result.token.id;
+
+                let formData = new FormData(walletPaymentForm);
+
+                // ✅ Using explicit Laravel route
+                const response = await fetch(`{{ route('dashboard.hotel.fund-guest-wallet') }}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value,
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                });
+
+                const json = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(json.message || 'Payment failed');
+                }
+
+                Toastify({
+                    text: json?.message || "Wallet funded successfully",
+                    backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                    duration: 5000,
+                    close: true
+                }).showToast();
+
+                walletPaymentForm.reset();
+                $('#fund-guest-wallet-modal').modal('hide');
+                formPreloader.style.display = 'none';
+
+            } catch (error) {
+                Toastify({
+                    text: error.message,
+                    backgroundColor: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                    duration: 6000,
+                    close: true
+                }).showToast();
+
+                formPreloader.style.display = 'none';
+            }
         });
     });
 </script>
+

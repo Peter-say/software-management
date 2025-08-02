@@ -224,6 +224,7 @@
                         </a>
                         <ul aria-expanded="false">
                             <li><a href="{{ route('dashboard.payments.list') }}">List</a></li>
+                            <li><a href="{{ route('dashboard.payments.overview') }}">Overview</a></li>
                         </ul>
                     </li>
                 @endif

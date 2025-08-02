@@ -10,7 +10,7 @@
                         <a href="{{ route('dashboard.home') }}">Home</a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="javascript:void(0)">Payment</a>
+                        <a href="{{route('dashboard.payments.list')}}">Payment</a>
                     </li>
                     <li class="breadcrumb-item">
                         <a href="javascript:void(0)">Pay</a>

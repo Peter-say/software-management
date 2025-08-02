@@ -79,7 +79,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js">
+    </script>
 
     <script>
         window.storageBaseUrl = @json(url('/'));
@@ -342,9 +344,9 @@
     <!-- ApexCharts -->
     <script src="{{ asset('dashboard/vendor/apexchart/apexchart.js') }}"></script>
 
-    <!-- Chart ChartJS plugin files -->
+    {{-- <!-- Chart ChartJS plugin files -->
     <script src="{{ asset('dashboard/vendor/chart.js/Chart.bundle.min.js') }}"></script>
-    <script src="{{ asset('dashboard/js/plugins-init/chartjs-init.js') }}"></script>
+    <script src="{{ asset('dashboard/js/plugins-init/chartjs-init.js') }}"></script> --}}
 
     <!-- jQuery Nice Select (only include once) -->
     <script src="{{ asset('dashboard/vendor/jquery-nice-select/js/jquery.nice-select.min.js') }}"></script>

@@ -37,6 +37,16 @@ class GuestWalletService
         ]);
     }
 
+    public function validateWalletData(Request $request)
+    {
+        return $request->validate([
+            'guest_id' => 'nullable|exists:guests,id',
+            'wallet_amount' => 'required|numeric|min:1',
+            'wallet_description' => 'nullable|string',
+            'payment_method' => 'required|string|in:CARD,BANK_TRANSFER,WALLET,CASH',
+        ]);
+    }
+
 
 
     public function getReservationById($id)
@@ -88,10 +98,10 @@ class GuestWalletService
 
             DB::commit();
 
-            return $guestWallet; 
+            return $guestWallet;
         } catch (Exception $e) {
-            DB::rollBack(); 
-            throw $e; 
+            DB::rollBack();
+            throw $e;
         }
     }
 
@@ -134,7 +144,7 @@ class GuestWalletService
     public function payWithGuestWallet(Request $request)
     {
         return DB::transaction(function () use ($request) {
-            $validatedData = $this->validateData($request);
+            $validatedData = $this->validateWalletData($request);
             $guest = null;
             $reservation = null;
             $order = null;
@@ -150,9 +160,10 @@ class GuestWalletService
                     $guest = $order->guest;
                 }
             }
-            if ($validatedData['amount'] > $guest->wallet->balance) {
+            if ($validatedData['wallet_amount'] > $guest->wallet->balance) {
                 throw new \Exception('Insufficient balance to deduct from.');
             }
+            
             $payments = $this->payment_service->processPayment($request);
             if ($payments instanceof \Illuminate\Database\Eloquent\Collection) {
                 $payment = $payments->first();
@@ -167,17 +178,17 @@ class GuestWalletService
                 }
             }
 
-            $guest->wallet->balance -= $validatedData['amount'];
+            $guest->wallet->balance -= $validatedData['wallet_amount'];
             $guest->wallet->save();
             GuestPayment::create([
                 'guest_id' => $guest->id,
             ]);
 
             if ($reservation) {
-                $this->updateReservationStatus($reservation, $validatedData['amount']);
+                $this->updateReservationStatus($reservation, $validatedData['wallet_amount']);
             }
             if ($order) {
-                $this->updateOrderStatus($order, $validatedData['amount']);
+                $this->updateOrderStatus($order, $validatedData['wallet_amount']);
             }
             return $payment;
         });

@@ -119,7 +119,7 @@ class RoomReservationController extends Controller
         }
         return view('dashboard.hotel.room.reservation.single', [
             'reservation' => $reservation,
-            'payment_platform' => HotelPaymentPlatform::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->first(),
+            // 'payment_platform' => HotelPaymentPlatform::where('hotel_id', User::getAuthenticatedUser()->hotel->id)->first(),
         ]);
     }
 

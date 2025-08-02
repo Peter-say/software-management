@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard\Finance;
 use App\Http\Controllers\Controller;
 use App\Models\HotelSoftware\RoomReservation;
 use App\Services\Dashboard\Finance\Payment\PaymentService;
+use App\Services\Dashboard\Hotel\Chart\PaymentOverviewService;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -14,10 +15,25 @@ use Illuminate\Validation\ValidationException;
 class PaymentController extends Controller
 {
     protected $payment_service;
+    protected $payment_overview_service;
     public function __construct(PaymentService $payment_service)
     {
         $this->payment_service = $payment_service;
+        $this->payment_overview_service = new PaymentOverviewService();
     }
+
+    public function overview(Request $request)
+    {
+        $period = $request->get('chart_period', 'month');
+        $stats = $this->payment_overview_service->stats(['period' => $period]);
+
+        return view('dashboard.hotel.finance.payment.overview', [
+            'payment_stats' => $stats,
+            'period' => $period
+        ]);
+    }
+
+
 
     public function list()
     {

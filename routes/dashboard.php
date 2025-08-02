@@ -181,6 +181,7 @@ Route::middleware('auth', 'verified')->group(function () {
         Route::prefix('payments')->as('payments.')->group(function () {
             Route::get('pay', [PaymentController::class, 'pay'])->name('pay');
             Route::get('list', [PaymentController::class, 'list'])->name('list');
+            Route::get('overview', [PaymentController::class, 'overview'])->name('overview');
             Route::post('initiate', [PaymentController::class, 'initiatePayment'])->name('initiate');
         });
     });

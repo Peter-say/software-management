@@ -60,29 +60,34 @@
         // Format Amount Input
         // ======================
         amountInputJQ.on('input', function() {
-            let enteredAmount = parseFloat(this.value.replace(/,/g, '') || 0);
+            let rawValue = this.value.replace(/,/g, '');
+            let enteredAmount = parseFloat(rawValue || 0);
+
             if (enteredAmount > payableAmount) {
                 Toastify({
-                    text: `You cannot pay more than ₦${payableAmount.toLocaleString()}.`,
+                    text: `You cannot pay more than ₦${payableAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}.`,
                     duration: 5000,
                     gravity: 'top',
                     position: 'right',
                     backgroundColor: 'linear-gradient(to right, #ff5f6d, #ffc371)',
                 }).showToast();
-                this.value = payableAmount.toLocaleString();
+
+                // ✅ Ensure correct formatting with 2 decimal places
+                this.value = payableAmount
+                    .toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    });
             } else {
-                this.value = enteredAmount.toLocaleString();
+                // ✅ Format entered amount with 2 decimals always
+                this.value = (isNaN(enteredAmount) ? '' : enteredAmount
+                    .toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }));
             }
         });
 
-        amountInputJS.addEventListener('input', function() {
-            let inputVal = this.value.replace(/[^0-9.]/g, '');
-            const parts = inputVal.split('.');
-            if (parts[0]) {
-                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            }
-            this.value = parts.join('.');
-        });
 
         // ======================
         // Form Submission
